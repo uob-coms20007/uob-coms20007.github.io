@@ -1,0 +1,35 @@
+{% comment %}
+  This is a simplified version of https://github.com/allejo/jekyll-anchor-headings/blob/master/_includes/anchor_headings.html
+{% endcomment %}
+
+{% assign nodes = include.html | split: '<strong' %}
+
+{% capture acc %}{% endcapture %}
+
+{% for _node in nodes %}
+  {% capture node %}{{ _node | strip }}{% endcapture %}
+  
+  {% if node == "" %}
+    {% continue %}
+  {% endif %}
+
+  {% assign nextChar = node | slice: 0, 1 %}
+  {% if nextChar == '>' %}
+    
+    <!-- this node started with the strong tag -->
+    
+    {% assign nameAndClosing = node | split: '>' %}
+    
+    {% capture closing %}</strong{% endcapture %}
+
+    {% assign name = nameAndClosing[1] | split: closing | first %}
+    {% assign idName = name | strip | replace: ' ', '-' %}
+
+    {% capture acc %}{{ acc }}<a href="#{{idName}}" aria-labelledby="{{idname}}">&#x1F587;</a><strong id="{{ idName }}"{{ _node }}{% endcapture %}
+
+  {% else %}
+  {% capture acc %}{{ acc }}{{ _node }}{% endcapture %}
+  {% endif %}
+
+{% endfor %}
+{{ acc }}

@@ -5,5 +5,10 @@ mathjax: true
 
 {% include mathjax.html %}
 
-{{ content }}
+\[
+  \newcommand{\tr}{\Rightarrow}
+  \newcommand{\trs}{\tr^{\!\ast}}
+\]
+
+{% include mk_ids.html html=content %}
 
