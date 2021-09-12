@@ -25,7 +25,7 @@ The __traffic light example__ transition system consists of the following data:
 
 The following circuit implements a 2-bit counter with reset line and an output.
 
-![circuit](/assets/circuit.svg)
+![circuit](../assets/circuit.svg)
 
 The __circuit example__ transition system consists of the following data:
   * The configurations are all 4-tuples of bits $(x,q_0,q_1,y)$.
