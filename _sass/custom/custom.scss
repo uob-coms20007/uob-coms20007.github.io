@@ -10,3 +10,7 @@
 table.schedule tr:nth-child(even) td {background: rgb(224, 224, 224); border: 1px solid $grey-dk-000;}
 table.schedule tr:nth-child(odd) td {background: #FFF; border: 1px solid $grey-dk-000; }
 table.schedule th { border: 1px solid $grey-dk-000; color:#FFF; background: rgb(63, 63, 63); }
+
+html {
+  font-size: 16pt
+}
