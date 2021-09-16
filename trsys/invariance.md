@@ -7,10 +7,13 @@ title: Invariants
 
 # Invariants
 
-Fix a transition system $(C,\,\tr)$ and an "initial" configuration $c_0$.  
+Fix a transition system $(C,\,\tr)$ and a set of "initial" configurations $I \subseteq C$.  
 
-A property $P(c)$ of configurations is an __invariant__ just if $P$ is true for all the configurations reachable from $c_0$.
+A set $P$ of configurations is an __invariant__ just if $P$ contains all the configurations reachable from $c_0$, i.e. 
+\[
+  \{ d \mid \exists c \in I.\: c \trs d \} \subseteq P
+\]
 
-A property $P(c)$ of configurations is an __inductive invariant__ just if:
-  * $P(c_0)$
-  * and, for all $c,\,d \in C$: $P(c)$ and $c \tr d$ together imply $P(d)$
+A set $P$ of configurations is an __inductive invariant__ just if:
+  * $I \subseteq P$
+  * and, for all $c,\,d \in C$: if $c \in P$ and $c \tr d$ then $d \in P$ too.
