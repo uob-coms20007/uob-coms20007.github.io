@@ -34,7 +34,7 @@ The __circuit example__ transition system consists of the following data:
     $$
       \begin{array}{|cccc|cccc|}
       \hline
-      x & q_0 & q_1 & y & x' & q_0' & q_1' & y'\\
+      x & q_1 & q_0 & y & x' & q_1' & q_0' & y'\\
       \hline
       0 & 0 & 0 & \_ & \_ & 0 & 1 & 0 \\
       0 & 0 & 1 & \_ & \_ & 1 & 0 & 0 \\
@@ -62,11 +62,11 @@ The __circuit example__ transition system consists of the following data:
 
 Consider the following *While* program:
 
-```c
-  x := x * x + 1
-  while x != 0 do
+```
+  x := x ٭ x + 1
+  while ¬(x = 0) do
       x := x - 2
-      y := 2 * y - 1
+      y := 2 ٭ y - 1
   print (100 / (y - x))
 ```
 
