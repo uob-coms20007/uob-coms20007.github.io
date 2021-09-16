@@ -9,7 +9,7 @@ title: Invariants
 
 Fix a transition system $(C,\,\tr)$ and a set of "initial" configurations $I \subseteq C$.  
 
-A set $P$ of configurations is an __invariant__ just if $P$ contains all the configurations reachable from $c_0$, i.e. 
+A set $P$ of configurations is an __invariant__ just if $P$ contains all the configurations reachable from $I$, i.e. 
 $$
   \{ d \mid \exists c \in I.\: c \trs d \} \subseteq P
 $$
