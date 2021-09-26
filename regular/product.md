@@ -1,10 +1,9 @@
 ---
-layout: obs
+layout: math
 title: Product Construction
-nav_order: 2
+nav_order: 3
 mathjax: true
 parent: Finite State Automata
-grand_parent: Reference
 ---
 
 ## The Product Construction
@@ -18,12 +17,8 @@ $$
     \end{array}
 $$
 
-The __product automata__ are the family of DFA defined as $(Q,\,\Sigma,\,\delta,\,q_0,\,F)$, for some choice of $$F \subseteq Q$$,
+The __product automaton__ is the DFA defined as $(Q,\,\Sigma,\,\delta,\,q_0,\,F_1 \times F_2)$,
 where:
 * $Q = Q_1 \times Q_2$
-* $\delta((p_1,\,p_2),a) = \{(p_1',\,p_2')\}$ where $$\{p_1'\} = \delta_1(p_1,\,a)$$ and $$\{p_2'\} = \delta_2(p_2,\,a)$$.
+* $\delta((p_1,\,p_2),a) = (p_1',\,p_2')$ where $p_1' = \delta_1(p_1,\,a)$ and $p_2' = \delta_2(p_2,\,a)$.
 * $q_0 = (q_1,\,q_2)$
-
-Setting $$F := F_1 \times F_2$$ we obtain the __intersection automaton__ which we shall write as $$M_1 \otimes M_2$$.  This definition ensures that $$L(M_1 \otimes M_2) = L(M_1) \cap L(M_2)$$.
-
-Setting $$F := (F_1 \times Q) \cup (Q \times F_2)$$ we obtain the __union automaton__ which we shall write as $$M_1 \oplus M_2$$.  This definition ensures that $$L(M_1 \oplus M_2) = L(M_1) \cup L(M_2)$$.
