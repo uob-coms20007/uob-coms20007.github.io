@@ -17,3 +17,8 @@ $$
 A set $P$ of configurations is an __inductive invariant__ just if:
   * $I \subseteq P$
   * and, for all $c,\,d \in C$: if $c \in P$ and $c \tr d$ then $d \in P$ too.
+
+## Example
+
+The _chameleons modulo invariant_ is an inductive invariant for the [chameleons](examples.md#chameleons) transition system, starting from configuration $(2,3,4)$.  The proof from the lecture is written [here](../assets/chameleons-inductive-invariant-proof.pdf).  Although the final two cases are missing, they are analogous to the first.
+
