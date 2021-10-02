@@ -17,8 +17,9 @@ $$
     \end{array}
 $$
 
-The __product automaton__ is the DFA defined as $(Q,\,\Sigma,\,\delta,\,q_0,\,F_1 \times F_2)$,
+The __product automaton__ is the DFA defined as $(Q,\,\Sigma,\,\delta,\,q_0,\,F)$,
 where:
 * $Q = Q_1 \times Q_2$
 * $\delta((p_1,\,p_2),a) = (p_1',\,p_2')$ where $p_1' = \delta_1(p_1,\,a)$ and $p_2' = \delta_2(p_2,\,a)$.
 * $q_0 = (q_1,\,q_2)$
+* $F = \\{(p,q) \in Q \mid p \in F_1 \wedge q \in F_2\\}$
