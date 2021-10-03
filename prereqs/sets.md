@@ -1,10 +1,9 @@
 ---
-layout: obs
+layout: math
 title: Sets
 mathjax: true
 nav_order: 2
-parent: Prerequesites
-grand_parent: Part I
+parent: Prerequisites
 ---
 
 # Basic Set Theory
