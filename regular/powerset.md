@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Powerset Construction
+title: Subset Construction
 nav_order: 4
 mathjax: true
 parent: Finite State Automata
