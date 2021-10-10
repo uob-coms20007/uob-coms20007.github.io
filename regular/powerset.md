@@ -8,9 +8,14 @@ parent: Finite State Automata
 
 ## Subset Construction
 
-The __epsilon closure__ $E(P)$ of a set of states $P$ is defined by:
+The __epsilon closure__ $\mathsf{eps}(P)$ of an NFA state $p$ is the set of all states that can be reached only via epsilon transitions (no matter the word being processed):
 $$
-  E(P) = \{ q \mid \exists p \in P.\: (p,\epsilon) \trs (q,\epsilon) \}
+  \mathsf{eps}(p) = \{ q \mid \forall w.\, (p,w) \trs (q,w) \}
+$$
+
+The epsilon closure of a set of states $P$ is defined by:
+$$
+  E(P) = \bigcup_{p \in P} \mathsf{eps}(p)
 $$
 
 Suppose $N = (Q_N,\,\Sigma,\,\delta_N,\,q_N,\,F_N)$ is an NFA.  Then we construct a DFA written $\mathsf{Pow}(N)$, called the __powerset automaton__, as follows:
