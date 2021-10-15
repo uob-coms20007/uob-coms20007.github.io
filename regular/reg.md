@@ -29,7 +29,7 @@ The regular languages are closed under various operations.  This means that, if 
 
 ## Limitations
 
-*Theorem* (__Pumping Lemma__): If $A$ is regular, then there is a number $p$ such that, if $s \in A$ is of length at least $p$, then $s$ can be divided as $s = uvw$ such that:
+*Theorem* (__Pumping Lemma__): If $A$ is regular, then there is a number $p > 0$ such that, if $s \in A$ is of length at least $p$, then $s$ can be divided as $s = uvw$ such that:
   1. $v$ is not empty
   2. the length of $uv$ is at most $p$
   3. for each $i \in \mathbb{N}$: $uv^iw \in A$
