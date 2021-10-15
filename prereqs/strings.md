@@ -8,7 +8,7 @@ parent: Prerequisites
 
 # Strings
 
-An __alphabet__ is any finite set, whose members are called __letters__ (equivalently: *symbols* or *characters*).  We typically use $\Sigma$ to denote a generic alphabet and $a,b,c,d$ to denote its letters.
+An __alphabet__ is any set, whose members are called __letters__ (equivalently: *symbols* or *characters*).  We typically use $\Sigma$ to denote a generic alphabet and $a,b,c,d$ to denote its letters.
 
 A __string__ (equivalently: *word*) over an alphabet $\Sigma$ is a finite sequence of characters from $\Sigma$.  The sequence may be empty, and we write the __empty string__ as $\epsilon$.  We typically use $u,v,w,x,y,z$ to denote a generic string.
 
