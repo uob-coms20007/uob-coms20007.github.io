@@ -40,7 +40,7 @@ Whitespace (including newlines and tabs) has no syntactic or semantic meaning, s
 
 # Concrete Syntax (Context-Free Grammar)
 
-In the following, terminals are denoted in <tt>typewriter font</tt>, non-terminals are single-letter capitals in $\mathif{math}\ \mathif{font}$.
+In the following, terminals are denoted in <tt>typewriter font</tt>, non-terminals are single-letter capitals in $\mathit{math}\ \mathit{font}$.
 
 ## Arithmetic Expressions ($E$)
 
