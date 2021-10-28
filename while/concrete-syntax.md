@@ -51,7 +51,7 @@ $$
 E  & \rightarrow E\ \texttt{+}\ T    & T  & \rightarrow T\ \texttt{*}\ F    & F  & \rightarrow\ \texttt{Id}\\
 E  & \rightarrow E\ \texttt{-}\ T    & T  & \rightarrow F                   & F  & \rightarrow\ \texttt{IntLit}\\
 E  & \rightarrow T                   &    &                                 & F  & \rightarrow\ \texttt{-}\ \texttt{IntLit}\\
-   &                                 &    &                                 & F  & \texttt{(}\ E\ \texttt{)}
+   &                                 &    &                                 & F  & \rightarrow\ \texttt{(}\ E\ \texttt{)}
 \end{xalignat}
 $$
 
@@ -73,15 +73,15 @@ The following context-free grammar defines the concrete syntax for statements ($
 
 $$
 \begin{xalignat}{2}
-S  & \rightarrow I\ S      & I  & \rightarrow \texttt{Id}\ \texttt{:=}\ E                       \\
-S  & \rightarrow \epsilon  & I  & \rightarrow \texttt{if}\ B\ \texttt{then}\ I \texttt{else}\ I \\
-   &                       & I  & \rightarrow \texttt{while}\ B\ I                              \\
+S  & \rightarrow I\ S      & I  & \rightarrow \texttt{Id}\ \texttt{:=}\ E                        \\
+S  & \rightarrow \epsilon  & I  & \rightarrow \texttt{if}\ B\ \texttt{then}\ I\ \texttt{else}\ I \\
+   &                       & I  & \rightarrow \texttt{while}\ B\ I                               \\
    &                       & I  & \rightarrow \texttt{\{}\ S\ \texttt{\}}
 \end{xalignat}
 $$
 
 ## Programs
 
-A While program is simply a While statement. Our implementation expects it to be followed by the end of the file, for parsing to be considered complete.
+A While program is simply a While statement. Our implementation expects it to be followed by the end of the file, for parsing to be considered complete. (In other words, a statement with garbage at the end is not a program.)
 
 Formally, we would normally add a rule $P \rightarrow S \texttt{\square}$, where $\texttt{\square}$ is a special terminal denoting the end-of-file token.
