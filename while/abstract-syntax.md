@@ -47,16 +47,16 @@ A program in abstract syntax is really just a tree in the set $S$ defined above.
 
 In general, this is done using another form of abstract syntax which _looks like_ the concrete syntax, but is simpler—and often omits all syntactic sugar, so we can focus on a core language instead. (We'll see how having more constructions than needed in the core language forces us down really tedious paths for defining and reasoning about semantics and compilation.) We give some examples throughout the video lectures in Week 7.
 
-This abstract syntax is often presented in Backus-Naur Form (or BNF), which is really just another way of presenting context-free grammars, but is typically used to describe abstract syntax instead of the concrete syntax that's used to parse the language in the first place. Below, we give the BNF for the abstract syntax of While programs as we define them. Do note, in particular, that the language remains structured, and parentheses and braces are only added when denoting the programs linearly to represent that structure.
+This abstract syntax is often presented in Backus-Naur Form (or BNF), which is really just another way of presenting context-free grammars, but is typically used to describe abstract syntax instead of the concrete syntax that's used to parse the language in the first place (so we don't care about ambiguities anymore). Below, we give the BNF for the abstract syntax of While programs as we define them. Do note, in particular, that the language remains structured, and parentheses and braces are only added when denoting the programs linearly to represent that structure.
 We'll also use semicolons to denote sequential composition for readability, even though our concrete syntax does not need them. (This is because we can use newlines in our concrete programs, whereas the point of the abstract syntax's linear representation is to represent programs on a single line.)
 
 $$
 \begin{alignat}{3}
-e ::= & n \textrm{ with } n \in \mathbb{Z}                &  b ::= & e = e           & s ::= & \texttt{x} := e                                    \\
-      & \textrm{\texttt{x} with \texttt{x} a variable}    &        & e <= e          &       & \texttt{if}\ b\ \texttt{then}\ s\ \texttt{else}\ s \\
-      & e + e                                             &        & \texttt{true}   &       & \texttt{while}\ b\ s                               \\
-      & e - e                                             &        & \texttt{false}  &       & s\ s                                               \\
-      & e * e                                             &        & !b              &       &                                                    \\
-      &                                                   &        & b \wedge b      &       &
+e ::= & n \textrm{ with } n \in \mathbb{Z}                         \quad &  b ::= & e = e          \quad & s ::= & \texttt{x} := e                                    \\
+      & \texttt{x} \textrm{ with } \texttt{x} \textrm{ a variable} \quad &        & e <= e         \quad &       & \texttt{if}\ b\ \texttt{then}\ s\ \texttt{else}\ s \\
+      & e + e                                                      \quad &        & \texttt{true}  \quad &       & \texttt{while}\ b\ s                               \\
+      & e - e                                                      \quad &        & \texttt{false} \quad &       & s\ s                                               \\
+      & e * e                                                      \quad &        & !b             \quad &       &                                                    \\
+      &                                                            \quad &        & b \wedge b     \quad &       &
 \end{alignat}
 $$
