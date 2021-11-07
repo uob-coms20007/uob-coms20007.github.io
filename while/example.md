@@ -1,7 +1,7 @@
 ---
 layout: math
 title: An example While program
-nav_order: 3
+nav_order: 10
 mathjax: true
 parent: The While Language
 ---
