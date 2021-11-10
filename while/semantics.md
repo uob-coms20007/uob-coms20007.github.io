@@ -81,8 +81,9 @@ The relation $\Rightarrow$ is the smallest relation such that:
   + if $⟦b⟧_{\mathcal{B}}(\sigma) = \top$, then $\left\langle \texttt{while}\ b\ s, \sigma\right\rangle \Rightarrow \left\langle s; \texttt{while}\ b\ s, \sigma\right\rangle$;
   + if $⟦b⟧_{\mathcal{B}}(\sigma) = \bot$, then $\left\langle \texttt{while}\ b\ s, \sigma\right\rangle \Rightarrow \left\langle \texttt{skip}, \sigma\right\rangle$; and
 - For any two statements $s_1$ and $s_2$ and state $\sigma$:
+  + if $s_1 = \texttt{skip}$, then $\left\langle s_1; s_2, \sigma\right\rangle \Rightarrow \left\langle s_2, \sigma\right\rangle$;
   + for every state $\sigma'$ such that $\left\langle s_1, \sigma\right\rangle \Rightarrow \left\langle \texttt{skip}, \sigma'\right\rangle$, we have $\left\langle s_1; s_2, \sigma\right\rangle \Rightarrow \left\langle s_2, \sigma'\right\rangle$; and
-  - for every statement $s'_1$ and state $\sigma'$ such that $\left\langle s_1, \sigma\right\rangle \Rightarrow \left\langle s'_1, \sigma'\right\rangle$, we have $\left\langle s_1; s_2, \sigma\right\rangle \Rightarrow \left\langle s'_1; s_2, \sigma'\right\rangle$.
+  + for every statement $s'_1$ and state $\sigma'$ such that $\left\langle s_1, \sigma\right\rangle \Rightarrow \left\langle s'_1, \sigma'\right\rangle$, we have $\left\langle s_1; s_2, \sigma\right\rangle \Rightarrow \left\langle s'_1; s_2, \sigma'\right\rangle$.
 
 This defines a transition system, and we use all notations and concepts introduced in their context. In particular, we will consider the traces produced when execution a given program $S$ in a given initial state $\sigma$, and will often refer to these as _execution traces of $S$ in $\sigma$_.
 
