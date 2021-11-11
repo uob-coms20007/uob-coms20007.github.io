@@ -13,10 +13,10 @@ Let $U \subseteq \mathbb{N}$ be a predicate on the natural numbers.
 The __characteristic function__ of $X$ is the function
 $$
   \begin{gathered}
-  \chi_U : \mathbb{N} \to \mathbb{N}
+  \chi_U : \mathbb{N} \to \mathbb{N} \\
   \chi_U(n) =
     \begin{cases}
-      1 & \text{ if $n \in X}
+      1 & \text{ if $n \in X$} \\
       0 & \text{ otherwise}
     \end{cases}
   \end{gathered}

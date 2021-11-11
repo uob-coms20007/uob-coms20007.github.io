@@ -14,13 +14,10 @@ We write $[\texttt{x} \mapsto n]$ for the state that maps the
 variable $\texttt{x}$ to the number $n \in \mathbb{N}$. 
 
 A `while` program $S$ **computes** a partial function  
-$f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if
-$$
-  f(m) \simeq n \quad\Leftrightarrow\quad 
-    \langle S, [\texttt{x} \mapsto m] \rangle \Rightarrow^\ast \langle \texttt{skip}, \sigma' \rangle
-    \text{ for some $\sigma'$ with }
-    \sigma'(\texttt{x}) = n
-$$
+$f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
+\simeq n$ exactly when $\langle S, [\texttt{x} \mapsto m] \rangle
+\Rightarrow^\ast \langle \texttt{skip}, \sigma' \rangle$ for some $\sigma'$
+with $\sigma'(\texttt{x}) = n$.
 
 The function computed by a while program $S$ must be partial, because $S$
 might decide to loop on certain inputs.
@@ -37,12 +34,14 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 ## Examples
 
 1. The function
+
    $$
    \begin{aligned}
    & f : \mathbb{N} \to \mathbb{N} \\
    & f(x) = x+1
    \end{aligned}
    $$
+   
    is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
    ```
      x := x + 1
