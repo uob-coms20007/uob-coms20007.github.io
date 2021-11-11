@@ -24,7 +24,7 @@ might decide to loop on certain inputs.
 
 Given a while program $S$ we write
 $$
-  \llbracket S \rrbracket_{\texttt{x}} : \mathbb{N} ⇀ \mathbb{N}
+  ⟦ S ⟧_{\texttt{x}} : \mathbb{N} ⇀ \mathbb{N}
 $$
 for the function computed by $S$ with respect to variable $\texttt{x}$.
 
@@ -38,7 +38,7 @@ a program $S$ that computes $f$ with respect to the variable \texttt{x}.
    f : \mathbb{N} \to \mathbb{N} \\
    f(x) = x+1
    $$
-   is computable. We have that $f = \llbracket S \rrbracket_{\texttt{x}}$, where $S$ is the program
+   is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
    ```
      x := x + 1
    ```
