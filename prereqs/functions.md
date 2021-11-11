@@ -13,7 +13,7 @@ Let $A$ and $B$ be sets.
 The __cartesian product__ of $A$ and $B$ is the set consisting of pairs $(a,
 b)$ of one element from $A$ and one element from $B$:
 $$
-  A \times B = \{ (a, b) \mid a \in A \land b \in B }
+  A \times B = \{ (a, b) \mid a \in A \land b \in B \}
 $$
 
 A __relation__ from $A$ to $B$ is a subset $R \subseteq A \times B$ of the
@@ -22,13 +22,13 @@ cartesian product.
 
 # Functions
 
-A __function__ $f : A \to B$ from $A$ to $B$ is a relation from $A$ to $B$ that
+A __function__ $f : A \to B$ from $A$ to $B$ is a relation $f$ from $A$ to $B$ that
 has two special properties:
   * it is __total__: for every $a \in A$ there exists _at least one_ $b \in B$ such that $(a, b) \in f$
   * it is __single-valued__: for every $a \in A$ there exists _at most one_ $b \in B$ such that $(a, b) \in f$
 
-Putting these together, $f$ is a function just if for every $a \in A$ there
-exists a _unique_ $b \in B$ such that $(a, b) \in f$. Given some $a \in A$ we
+Putting these together, $f$ is a function just if for every possible input $a
+\in A$ there exists a _unique_ output $b \in B$ such that $(a, b) \in f$. We
 write $f(a)$ for this unique $b \in B$.
 
 
