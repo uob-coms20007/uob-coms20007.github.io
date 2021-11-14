@@ -30,3 +30,23 @@ The lexer and its FSA turns it into the following sequence of tokens (see the co
 Our recursive descent parser recognises the token string as a sentence in the concrete grammar's language _and_ takes action on recognising the most important literals. In our case, we build an Abstract Syntax Tree that represents the factorial program in a structured way. It looks (with somewhat better handwriting) like [this](https://uob-coms20007.github.io/reference/assets/factorial-ast.pdf).
 
 Note that our parser is slightly lazy when parsing sequences of instructions, and always uses ```SSkip``` as a base for lists of instructions. We could instead have put more cleverness in the action that we took when parsing a statement using the grammar rule $S \rightarrow I\ S$, so that instead of always producing ```SSeq (parseI) (parseS)``` we'd only used ```SSeq``` if the second recursive call returns a non-empty tree. Small savings when parsing might turn out to be large savings while making multiple passes over the AST during compilation.
+
+# Factorial as an Abstract Machine program
+
+```
+PUSH 1
+STORE r
+LOOP(
+  PUSH 1
+  LOAD n
+  LE
+, LOAD r
+  LOAD n
+  MUL
+  STORE r
+  LOAD n
+  PUSH 1
+  SUB
+  STORE n
+)
+```
