@@ -50,6 +50,17 @@ configurations have a different type) is the smallest relation such that:
 - $\left\langle \texttt{IF}(P_t, P_e);\ P, \bot : s, \sigma\right\rangle \Rightarrow \left\langle P_e; P, s, \sigma\right\rangle$;
 - $\left\langle \texttt{LOOP}(P_c, P_b);\ P, s, \sigma\right\rangle \Rightarrow \left\langle P_c; \texttt{IF}(P_b; \texttt{LOOP}(P_c, P_b),), s, \sigma\right\rangle$.
 
+## Stuck Configurations
+Note that, unlike the While language, the AM language has \emph{stuck
+configurations}, where the program has not been fully executed but no further
+transitions are possible. This is, for example, the case when the stack is not
+tall enough, or the top of the stack does not have the correct type for the
+next transition to take place.
+
+When an execution starting from some initial configuration $\left\langle P,
+\epsilon, \sigma\right\rangle$ can transition to a stuck state, we say that $P$
+gets stuck in state $\sigma$.
+
 # Compiling While to the Abstract Machine
 
 The main challenge in compiling While programs to the Abstract Machine is in
