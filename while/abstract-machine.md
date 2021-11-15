@@ -39,11 +39,11 @@ configurations have a different type) is the smallest relation such that:
 - $\left\langle \texttt{PUSH}\ v;\ P, s, \sigma\right\rangle \Rightarrow \left\langle P, v : s, \sigma\right\rangle$;
 - $\left\langle \texttt{STORE x};\ P, i : s, \sigma\right\rangle \Rightarrow \left\langle P, s, \left[\texttt{x} \mapsto i\right]\sigma\right\rangle$ when $i \in \mathbb{Z}$;
 - $\left\langle \texttt{LOAD x};\ P, s, \sigma\right\rangle \Rightarrow \left\langle P, \sigma(\texttt{x}) : s, \sigma\right\rangle$;
-- $\left\langle \texttt{ADD};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 + i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{S}$;
-- $\left\langle \texttt{SUB};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 - i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{S}$;
-- $\left\langle \texttt{MUL};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 * i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{S}$;
-- $\left\langle \texttt{EQ};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 = i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{S}$;
-- $\left\langle \texttt{LE};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 ≤ i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{S}$;
+- $\left\langle \texttt{ADD};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 + i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{Z}$;
+- $\left\langle \texttt{SUB};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 - i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{Z}$;
+- $\left\langle \texttt{MUL};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 * i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{Z}$;
+- $\left\langle \texttt{EQ};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 = i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{Z}$;
+- $\left\langle \texttt{LE};\ P, i_2 : i_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (i_1 ≤ i_2) : s, \sigma\right\rangle$ when $i_1, i_2 \in \mathbb{Z}$;
 - $\left\langle \texttt{NOT};\ P, b : s, \sigma\right\rangle \Rightarrow \left\langle P, !b : s, \sigma\right\rangle$ when $b \in \\{\top,\bot\\}$;
 - $\left\langle \texttt{AND};\ P, b_2 : b_1 : s, \sigma\right\rangle \Rightarrow \left\langle P, (b_1 \wedge b_2) : s, \sigma\right\rangle$ when $b_1, b_2 \in \\{\top,\bot\\}$;
 - $\left\langle \texttt{IF}(P_t, P_e);\ P, \top : s, \sigma\right\rangle \Rightarrow \left\langle P_t; P, s, \sigma\right\rangle$;
