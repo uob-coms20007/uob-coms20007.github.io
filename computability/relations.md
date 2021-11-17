@@ -51,11 +51,10 @@ characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
 
 Let $U \subseteq \mathbb{N}$ be a predicate on the natural numbers.
 
-The __semi-characteristic function__ of $U$ is the function
-
+The __semi-characteristic function__ of $U$ is the partial function
 $$
   \begin{aligned}
-  &\xi_U : \mathbb{N} \to \mathbb{N} \\
+  &\xi_U : \mathbb{N} ⇀ \mathbb{N} \\
   &\xi_U(n)
     \begin{cases}
       \simeq 1 & \text{ if $n \in X$} \\
@@ -63,21 +62,19 @@ $$
     \end{cases}
   \end{aligned}
 $$
+The characteristic function $\chi_U$ of $U$ is always total: it always
+returns either $0$ or $1$.
 
-The semi-characteristic function of a predicate $U$ is different to the
-characteristic function.
-
-The characteristic function $\chi_U$ is total: it always returns either $0$
-or $1$.
-
-In contrast, the semi-characteristic function $\xi_U$ is partial. If $n \in
+In contrast, the semi-characteristic function $\xi_U$ is _partial_. If $n \in
 U$ the semi-characteristic function returns $1$. Otherwise, it is undefined.
 
 The idea is that semi-characteritic functions are somewhat easier to compute
-than characteristic functions: they require that a deciding program halt and
-say 'yes' given any number $n \in U$. But when $n \not\in U$, all bets are
-off: the program does not have to output 'no,' and is instead allowed to go
-on computing forever.
+than characteristic functions. A program that computes a characteristic
+function must halt with a specific answer (yes or no) on all valid inputs.
+However, a program that computes the semi-characteristic function must only
+halt for 'yes' inputs. Otherwise, it is allowed to continue computing
+forever.
+
 ## Examples
 
 2.  The predicate
