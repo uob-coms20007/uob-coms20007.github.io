@@ -55,8 +55,8 @@ The __semi-characteristic function__ of $U$ is the function
 
 $$
   \begin{aligned}
-  &\ksi_U : \mathbb{N} \to \mathbb{N} \\
-  &\ksi_U(n)
+  &\xi_U : \mathbb{N} \to \mathbb{N} \\
+  &\xi_U(n)
     \begin{cases}
       \simeq 1 & \text{ if $n \in X$} \\
       \uparrow & \text{ otherwise}
@@ -70,7 +70,7 @@ characteristic function.
 The characteristic function $\chi_U$ is total: it always returns either $0$
 or $1$.
 
-In contrast, the semi-characteristic function $\ksi_U$ is partial. If $n \in
+In contrast, the semi-characteristic function $\xi_U$ is partial. If $n \in
 U$ the semi-characteristic function returns $1$. Otherwise, it is undefined.
 
 The idea is that semi-characteritic functions are somewhat easier to compute
@@ -110,9 +110,9 @@ on computing forever.
     then that would reveal a lot of interesting things for this unresolved
     conjecture!
 
-    However, we can show that $U$ is semi-decidable. It is semi-decided by
-    the following program (wrt `n`), which computes every number in the
-    sequence until it reaches $1$.
+    However, we can show that $U$ is semi-decidable. Its semi-characteristic
+    function $\xi_U$ is computed by the following program (wrt `n`), which
+    calculates every number in the sequence until it reaches $1$.
     ```
     if (n = 0) then skip else {
       while (! (n = 1)) {
