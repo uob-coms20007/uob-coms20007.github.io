@@ -87,7 +87,7 @@ forever.
 
     The ___Collatz sequence___ starting at $k \in \mathbb{N}^+$ is the
     sequence of numbers $(a_n)_{n \in \mathbb{N}}$ defined by
-    
+
     $$
     \begin{aligned}
       a_0 &:= k \\
@@ -123,12 +123,7 @@ forever.
         }
 
         // Depending on the parity compute the next element in the sequence.
-        if (r = 0) then {
-          n := q;
-        }
-        else {
-          n := 3 * n + 1;
-        }
+        if (r = 0) then n := q else n := 3 * n + 1
       }
     }
     ```
