@@ -52,6 +52,7 @@ characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
 Let $U \subseteq \mathbb{N}$ be a predicate on the natural numbers.
 
 The __semi-characteristic function__ of $U$ is the partial function
+
 $$
   \begin{aligned}
   &\xi_U : \mathbb{N} ⇀ \mathbb{N} \\
@@ -62,6 +63,7 @@ $$
     \end{cases}
   \end{aligned}
 $$
+
 The characteristic function $\chi_U$ of $U$ is always total: it always
 returns either $0$ or $1$.
 
@@ -85,6 +87,7 @@ forever.
 
     The ___Collatz sequence___ starting at $k \in \mathbb{N}^+$ is the
     sequence of numbers $(a_n)_{n \in \mathbb{N}}$ defined by
+    
     $$
     \begin{aligned}
       a_0 &:= k \\
