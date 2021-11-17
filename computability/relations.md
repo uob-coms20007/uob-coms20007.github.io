@@ -114,17 +114,15 @@ forever.
     function $\xi_U$ is computed by the following program (wrt `n`), which
     calculates every number in the sequence until it reaches $1$.
     ```
-    if (n = 0) then skip else {
-      while (! (n = 1)) {
-        // Divide n by 2, putting the quotient in q and the remainder in r.
-        q := 0; r := n;
-        while (! (r < 2)) {
-          q := q + 1; r := r - 2      // Loop invariant: n = q * 2 + r & r > 0
-        }
-
-        // Depending on the parity compute the next element in the sequence.
-        if (r = 0) then n := q else n := 3 * n + 1
+    while (! (n = 1)) {
+      // Divide n by 2, putting the quotient in q and the remainder in r.
+      q := 0; r := n;
+      while (! (r < 2)) {
+        q := q + 1; r := r - 2      // Loop invariant: n = q * 2 + r & r > 0
       }
+
+      // Depending on the parity compute the next element in the sequence.
+      if (r = 0) then n := q else n := 3 * n + 1
     }
     ```
     If when starting from $n$ the sequence eventually reaches $1$, the
