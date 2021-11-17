@@ -35,14 +35,34 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 
 1. The function
 
-   $$
-   \begin{aligned}
-   & f : \mathbb{N} \to \mathbb{N} \\
-   & f(x) = x+1
-   \end{aligned}
-   $$
-   
-   is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
-   ```
-     x := x + 1
-   ```
+  $$
+  \begin{aligned}
+  & f : \mathbb{N} \to \mathbb{N} \\
+  & f(x) = x+1
+  \end{aligned}
+  $$
+  
+  is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
+  ```
+    x := x + 1
+  ```
+
+2. The function
+
+  $$
+  \begin{aligned}
+  & f : \mathbb{N} \to \mathbb{N} \\
+  & f(x) = x!
+  \end{aligned}
+  $$
+
+  is computable. We have that $f = ⟦ S ⟧_{\texttt{n}}$, where $S$ is the program
+  ```
+  r := 1
+  while (1 <= n) {
+    r := r * n
+    n := n - 1
+  }
+  n := r
+  ```
+  
