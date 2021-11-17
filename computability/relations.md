@@ -42,10 +42,96 @@ characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
    is decidable. It is decided (with respect to the variable $\texttt{x}$) by
    the program
    ```
-    if (x <= 0) then
-      x := 0
-    else
-      while (x > 0) do
-        x := x - 2
-      if (x = 0) then x := 1 else x := 0 
+    while (x > 0) do
+      x := x - 2
+    if (x = 0) then x := 1 else x := 0 
    ```
+
+# Semi-decidable predicates
+
+Let $U \subseteq \mathbb{N}$ be a predicate on the natural numbers.
+
+The __semi-characteristic function__ of $U$ is the function
+
+$$
+  \begin{aligned}
+  &\ksi_U : \mathbb{N} \to \mathbb{N} \\
+  &\ksi_U(n)
+    \begin{cases}
+      \simeq 1 & \text{ if $n \in X$} \\
+      \uparrow & \text{ otherwise}
+    \end{cases}
+  \end{aligned}
+$$
+
+The semi-characteristic function of a predicate $U$ is different to the
+characteristic function.
+
+The characteristic function $\chi_U$ is total: it always returns either $0$
+or $1$.
+
+In contrast, the semi-characteristic function $\ksi_U$ is partial. If $n \in
+U$ the semi-characteristic function returns $1$. Otherwise, it is undefined.
+
+The idea is that semi-characteritic functions are somewhat easier to compute
+than characteristic functions: they require that a deciding program halt and
+say 'yes' given any number $n \in U$. But when $n \not\in U$, all bets are
+off: the program does not have to output 'no,' and is instead allowed to go
+on computing forever.
+## Examples
+
+2.  The predicate
+    $$
+      U = \{ k \in \mathbb{N} \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
+    $$
+    is semi-decidable.
+
+    The ___Collatz sequence___ starting at $k \in \mathbb{N}^+$ is the
+    sequence of numbers $(a_n)_{n \in \mathbb{N}}$ defined by
+    $$
+    \begin{aligned}
+      a_0 &:= k \\
+      a_{n+1} &:= \begin{cases}
+        n/2      & \text{ if $a_n$ is even} \\
+        (3n+1)/2 & \text{ if $a_n$ is odd}
+      \end{cases}
+    \end{aligned}
+    $$
+
+    The [Collatz
+    conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a
+    famously unsolved problem of mathematics. It states that the Collatz
+    sequence $a_0, a_1, \dots$ starting at any $a_0 \in \mathbb{N}^+$ will
+    eventually reach the number $1$. As a matter of convention we suppose $0
+    \not\in E$.
+
+    If the Collatz conjecture is true, then every number is in the predicate
+    $U$, i.e. $U = \mathbb{N}$. Thus, if $U$ were proven to be decidable,
+    then that would reveal a lot of interesting things for this unresolved
+    conjecture!
+
+    However, we can show that $U$ is semi-decidable. It is semi-decided by
+    the following program (wrt `n`), which computes every number in the
+    sequence until it reaches $1$.
+    ```
+    if (n = 0) then skip else {
+      while (! (n = 1)) {
+        // Divide n by 2, putting the quotient in q and the remainder in r.
+        q := 0; r := n;
+        while (! (r < 2)) {
+          q := q + 1; r := r - 2      // Loop invariant: n = q * 2 + r & r > 0
+        }
+
+        // Depending on the parity compute the next element in the sequence.
+        if (r = 0) then {
+          n := q;
+        }
+        else {
+          n := 3 * n + 1;
+        }
+      }
+    }
+    ```
+    If when starting from $n$ the sequence eventually reaches $1$, the
+    `while` loop will terminate (with the value $1$ in `n`). Otherwise, the
+    loop will run forever.
