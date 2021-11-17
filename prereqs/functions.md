@@ -47,3 +47,23 @@ that.
 
 Whenever $f$ is defined at $x \in A$ and is equal to $y \in B$, we write
 $f(x) \simeq y$. As $f$ is single-valued, there is at most one such $y$.
+
+## Kleene equality
+
+In general, the notation $e \simeq e'$, which is called __Kleene equality__,
+means one of two things:
+* both the expressions $e$ and $e'$ are undefined, or
+* both $e$ and $e'$ have a well-defined value, and their value is equal
+
+For example, we can say that
+$$
+\frac{1}{0} \simeq \frac{2}{0}
+$$
+because both expressions are undefined (division by zero is not
+well-defined---division is a partial function!).
+
+However,
+$$
+\frac{1}{2} \not\simeq \frac{2}{2}
+$$
+as the value of both sides is well-defined, but unequal.
