@@ -10,16 +10,17 @@ parent: Computability
 
 Let $U \subseteq \mathbb{N}$ be a predicate on the natural numbers.
 
-The __characteristic function__ of $X$ is the function
+The __characteristic function__ of $U$ is the function
+
 $$
-  \begin{gathered}
-  \chi_U : \mathbb{N} \to \mathbb{N} \\
-  \chi_U(n) =
+  \begin{aligned}
+  &\chi_U : \mathbb{N} \to \mathbb{N} \\
+  &\chi_U(n) =
     \begin{cases}
       1 & \text{ if $n \in X$} \\
       0 & \text{ otherwise}
     \end{cases}
-  \end{gathered}
+  \end{aligned}
 $$
 
 A number either is or isn't a member of the predicate. Thus, its
@@ -41,7 +42,10 @@ characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
    is decidable. It is decided (with respect to the variable $\texttt{x}$) by
    the program
    ```
-    while (x >= 0) do
-      x := x - 2
-    if (x = 0) then x := 1 else x := 0 
+    if (x <= 0) then
+      x := 0
+    else
+      while (x > 0) do
+        x := x - 2
+      if (x = 0) then x := 1 else x := 0 
    ```
