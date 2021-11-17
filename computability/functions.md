@@ -20,7 +20,9 @@ $f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
 with $\sigma'(\texttt{x}) = n$.
 
 The function computed by a while program $S$ must be partial, because $S$
-might decide to loop on certain inputs.
+might decide to loop on certain inputs. Moreover, if at the end of the
+program the value of $\sigma'(\texttt{x})$ happens to be a negative integer
+(i.e. not a natural number), the function $f$ is considered to be undefined.
 
 A function $f : \mathbb{N} ⇀ \mathbb{N}$ is __computable__ just if there is
 a program $S$ that computes $f$ with respect to the variable $\texttt{x}$.
