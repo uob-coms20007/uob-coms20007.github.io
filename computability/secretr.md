@@ -14,6 +14,8 @@ $a \in A$ it is the case that $r(s(a)) = a$.
 
 In point-free style, this is written as $r \circ s = \textsf{id}_A$.
 
+We sometimes call $(s, r)$ a __section-retraction pair__.
+
 A retraction is _not_ an inverse to the section. Rather, it is a 'one-sided
 inverse.' In terms of data representation, it says that we can encode every
 $a \in A$ as an element $s(a)$ of $B$. We can then 'recover' the original $a
