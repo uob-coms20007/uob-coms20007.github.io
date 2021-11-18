@@ -19,8 +19,6 @@ surjective.
 
 # Inverses
 
-For every set $A$ there is an __identity function
-
 Let $f : A \to B$ be a function.
 
 $f$ has an __inverse__ just if there exists a function $f^{-1} : B \to A$ such that
@@ -32,8 +30,8 @@ composition](https://uob-coms20007.github.io/reference/prereqs/functions.html#co
 and the [identity
 function](https://uob-coms20007.github.io/reference/prereqs/functions.html#identity-function),
 they may be re-written in a so-called _point-free_ style as
-* f^{-1} \circ f = \textsf{id}_A$
-* f \circ f^{-1} = \textsf{id}_B$
+* $f^{-1} \circ f = \textsf{id}_A$
+* $f \circ f^{-1} = \textsf{id}_B$
 
 In the problem sheet you will prove the following result.
 
