@@ -68,6 +68,18 @@ $$
 $$
 as the value of both sides is well-defined, but unequal.
 
+# Identity function
+
+For every set $A$ there exists an __identity function__ which maps every
+element to itself:
+
+$$
+\begin{aligned}
+  & f : A \to A
+  & f(x) = x
+\end{aligned}
+$$
+
 # Composition of functions
 
 Given two functions $f : A \to B$ and $g : B \to C$, their __composition__ $g
