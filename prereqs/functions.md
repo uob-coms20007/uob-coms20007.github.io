@@ -67,3 +67,12 @@ $$
 \frac{1}{2} \not\simeq \frac{2}{2}
 $$
 as the value of both sides is well-defined, but unequal.
+
+# Composition of functions
+
+Given two functions $f : A \to B$ and $g : B \to C$, their __composition__ $g
+\circ f : A \to B$ is defined by
+
+$$
+  (g \circ f)(x) = g(f(x))
+$$
