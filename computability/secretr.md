@@ -51,8 +51,9 @@ We have $r(s(b)) = b$ for all $b \in \mathbb{B}$.
 Many natural numbers ($2, 3, 4, \ldots$) are not in the image of the section
 $s : \mathbb{B} \to \mathbb{N}$. Thus, they do not naturally arise as the
 representation of some Boolean value: only $0$ and $1$ do. Thus, the
-retraction $r : \mathbb{N} \to \mathbb{B}$ makes an "executive decision", by
-mapping $2, 3, 4, \ldots$ to falsity.
+retraction $r : \mathbb{N} \to \mathbb{B}$ makes an 'executive decision' to
+map all other numbers to falsity. (This choice is arbitrary, and we could have
+chosen to map them to truth.)
 
 Incidentally, this is the mathematical way to represent the implicit meaning
 of [Unix/Linux/POSIX exit
