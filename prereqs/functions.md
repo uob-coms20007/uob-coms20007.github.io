@@ -75,8 +75,8 @@ element to itself:
 
 $$
 \begin{aligned}
-  & f : A \to A
-  & f(x) = x
+  & \textsf{id}_A : A \to A
+  & \textsf{id}_A(x) = x
 \end{aligned}
 $$
 

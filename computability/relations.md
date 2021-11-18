@@ -117,7 +117,7 @@ forever.
     while (! (n = 1)) {
       // Divide n by 2, putting the quotient in q and the remainder in r.
       q := 0; r := n;
-      while (! (r < 2)) {
+      while (2 <= r) {
         q := q + 1; r := r - 2      // Loop invariant: n = q * 2 + r & r > 0
       }
 
