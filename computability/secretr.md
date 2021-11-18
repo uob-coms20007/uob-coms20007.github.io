@@ -29,7 +29,7 @@ natural numbers. We pick a Unix-like representation, where
 $$
   \begin{aligned}
     & s : \mathbb{B} \to \mathbb{N}
-    & s(\top) = 0
+    & s(\top) = 0 \\
     & s(\bot) = 1
   \end{aligned}
 $$
@@ -38,7 +38,7 @@ We can recover the original Boolean value through the retraction
 
 $$
   \begin{aligned}
-    & r : \mathbb{N} \to \mathbb{B}
+    & r : \mathbb{N} \to \mathbb{B} \\
     & s(n) = \begin{cases}
       \top & \text{ if $n = 0$} \\
       \bot & \text{ otherwise}
