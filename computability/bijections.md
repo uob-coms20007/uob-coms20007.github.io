@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Data representation
+title: Bijections
 nav_order: 3
 mathjax: true
 parent: Computability
@@ -79,40 +79,3 @@ _Proof._
    * If $n$ is odd, write it as $n = 2n' + 1$. Then $f(-n' - 1) = -2(-n' - 1) - 1 = 2n' + 1$.
 
 Hence $\beta$ is a bijection. ▣
-
-By the _Claim_ about bijections shown above, the function $\beta$ has an inverse. It is explicitly given by
-
-$$
-\begin{aligned}
-  & \beta^{-1} : \mathbb{N} \to \mathbb{Z} \\
-  & \beta^{-1}(n) = \begin{cases}
-    n/2       & \text{ if $n$ is even} \\
-    - (n+1)/2 & \text{ if $n$ is odd}
-  \end{cases}
-\end{aligned}
-$$
-
-Within `while` we can compute $\beta$ (wrt `x`) by the code
-```
-  if (x >= 0) then x := 2 * x else x := (-2 * x) - 1
-```
-
-Moreover, we can compute $\beta^{-1}$ (wrt `x`) by the code
-```
-  r := x; q := 0;
-  while (2 <= r) { q := q + 1; r := r - 2 };
-  if r = 0 then x := q else x := - (q + 1)
-```
-
-# Sections and retractions
-
-A function $s : A \to B$ is a __section__ just when there exists a
-corresponding __retraction__, i.e. a function $r : B \to A$ such that for all
-$a \in A$ it is the case that $r(s(a)) = a$.
-
-In point-free style, this is written as $r \circ s = \textsf{id}_A$.
-
-A retraction is _not_ an inverse to the section. Rather, it is a 'one-sided
-inverse.' In terms of data representation, it says that we can encode every
-$a \in A$ as $s(a) \in B$. We can then 'recover' the original $a$ by
-computing the element $r(s(a)) = a$.

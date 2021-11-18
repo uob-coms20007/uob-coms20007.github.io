@@ -35,6 +35,9 @@ characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
 The `while` program that computes the characteristic function $\chi_U$ of a
 predicate $U \subseteq \mathbb{N}$ is called a _decision procedure_.
 
+Any predicate for which there is no decision procedure is called
+__undecidable__.
+
 ## Examples
 
 1. The predicate
