@@ -24,7 +24,7 @@ $a \in A$ as an element $s(a)$ of $B$. We can then 'recover' the original $a
 # Booleans vs. natural numbers
 
 We may encode the set $\mathbb{B} = \{ \top, \bot \}$ of boolean values as
-natural numbers. We pick a Unix-like representation, where
+natural numbers. We define
 
 $$
   \begin{aligned}
@@ -46,10 +46,22 @@ $$
   \end{aligned}
 $$
 
-We have $s(r(b)) = b$ for all $b \in \mathbb{N}$.
+We have $r(s(b)) = b$ for all $b \in \mathbb{B}$.
 
-While $\mathbb{N}$ is infinite, $\mathbb{B}$ is finite. We cannot expect a
-bijection (= perfect correspondence) between them.
+Many natural numbers ($2, 3, 4, \ldots$) are not in the image of the section
+$s : \mathbb{B} \to \mathbb{N}$. Thus, they do not naturally arise as the
+representation of some Boolean value: only $0$ and $1$ do. Thus, the
+retraction $r : \mathbb{N} \to \mathbb{B}$ makes an "executive decision", by
+mapping $2, 3, 4, \ldots$ to falsity.
+
+Incidentally, this is the mathematical way to represent the implicit meaning
+of [Unix/Linux/POSIX exit
+codes](https://tldp.org/LDP/abs/html/exit-status.html): $0$ represents a
+successful exit (true), while any other number signals an error (false).
+
+This situation cannot be improved. While $\mathbb{N}$ is infinite, the set of
+Boolean values $\mathbb{B}$ is finite. Thus, there cannot be a bijection (=
+perfect correspondence) between them.
 
 However, the section-retraction pair given above shows that we can encode
 Boolean values as natural numbers in a 'lossless' way.
