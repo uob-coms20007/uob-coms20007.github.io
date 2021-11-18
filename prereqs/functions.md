@@ -2,7 +2,7 @@
 layout: math
 title: Functions
 mathjax: true
-nav_order: 1
+nav_order: 3
 parent: Prerequisites
 ---
 
