@@ -102,7 +102,13 @@ Moreover, we can compute $\beta^{-1}$ (wrt `x`) by the code
 
 # Sections and retractions
 
-A function $s : A \to B$ is a __section__ just when there exists a corresponding __retraction__, i.e. a function $r : B \to A$ such that
-for all $a \in A$ it is the case that $r(s(a)) = a$.
+A function $s : A \to B$ is a __section__ just when there exists a
+corresponding __retraction__, i.e. a function $r : B \to A$ such that for all
+$a \in A$ it is the case that $r(s(a)) = a$.
 
 In point-free style, this is written as $r \circ s = \textsf{id}_A$.
+
+A retraction is _not_ an inverse to the section. Rather, it is a 'one-sided
+inverse.' In terms of data representation, it says that we can encode every
+$a \in A$ as $s(a) \in B$. We can then 'recover' the original $a$ by
+computing the element $r(s(a)) = a$.
