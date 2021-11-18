@@ -28,7 +28,7 @@ natural numbers. We pick a Unix-like representation, where
 
 $$
   \begin{aligned}
-    & s : \mathbb{B} \to \mathbb{N}
+    & s : \mathbb{B} \to \mathbb{N} \\
     & s(\top) = 0 \\
     & s(\bot) = 1
   \end{aligned}
