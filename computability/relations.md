@@ -31,7 +31,9 @@ numbers.
 
 A predicate $U \subseteq \mathbb{N}$ is __decidable__ just if its
 characteristic function $\chi_U : \mathbb{N} \to \mathbb{N}$ is computable.
-(That is: if there exists a `while` program that computes it.)
+
+The `while` program that computes the characteristic function $\chi_U$ of a
+predicate $U \subseteq \mathbb{N}$ is called a _decision procedure_.
 
 ## Examples
 
