@@ -16,15 +16,19 @@ exists $a \in A$ such that $f(a) = b$.
 
 * A function $f : A \to B$ is a __bijection__ just if it is injective and
 surjective.
+
 # Inverses
 
 Let $f : A \to B$ be a function.
 
-$f$ has an __inverse__ just if there exists a function $f^{-1} : B \to A$ such that
-* $f^{-1}(f(x)) = x$
-* $f(f^{-1}(x)) = x$
+$f$ has an __inverse__ just if there exists a function $f^{-1} : B \to A$
+such that
+* for all $a \in A$ we have $f^{-1}(f(a)) = a$
+* for all $b \in B$ we have $f(f^{-1}(b)) = b$
 
-Both equations are necessary. Using [function
+Both equations are necessary!
+
+Using [function
 composition](https://uob-coms20007.github.io/reference/prereqs/functions.html#composition)
 and the [identity
 function](https://uob-coms20007.github.io/reference/prereqs/functions.html#identity-function),
@@ -80,7 +84,7 @@ By the _Claim_ about bijections shown above, the function $\beta$ has an inverse
 
 $$
 \begin{aligned}
-  & \beta^{-1} : \mathbb{N} \to \mathbb{Z}
+  & \beta^{-1} : \mathbb{N} \to \mathbb{Z} \\
   & \beta^{-1}(n) = \begin{cases}
     n/2       & \text{ if $n$ is even} \\
     - (n+1)/2 & \text{ if $n$ is odd}
