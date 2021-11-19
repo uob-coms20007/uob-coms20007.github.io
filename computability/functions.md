@@ -11,13 +11,12 @@ parent: Computability
 Let $\texttt{x}$ be a variable of the `while` language.
 
 We write $[\texttt{x} \mapsto n]$ for the state that maps the
-variable $\texttt{x}$ to the number $n \in \mathbb{N}$. 
+variable $\texttt{x}$ to the number $n \in \mathbb{N}$, and every other variable to $0$.
 
-A `while` program $S$ **computes** a partial function  
+A `while` program $\texttt{S}$ **computes** a partial function  
 $f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
 \simeq n$ exactly when $\langle S, [\texttt{x} \mapsto m] \rangle
-\Rightarrow^\ast \langle \texttt{skip}, \sigma' \rangle$ for some $\sigma'$
-with $\sigma'(\texttt{x}) = n$.
+\Rightarrow^\ast \langle \texttt{skip}, [\texttt{x} \mapsto n] \rangle$.
 
 The function computed by a while program $S$ must be partial, because $S$
 might decide to loop on certain inputs. Moreover, if at the end of the
