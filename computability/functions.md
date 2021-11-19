@@ -35,20 +35,21 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 
 1. The function
 
-  $$
-  \begin{aligned}
-  & f : \mathbb{N} \to \mathbb{N} \\
-  & f(x) = x+1
-  \end{aligned}
-  $$
+   $$
+   \begin{aligned}
+   & f : \mathbb{N} \to \mathbb{N} \\
+   & f(x) = x+1
+   \end{aligned}
+   $$
   
-  is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
-  ```
-    x := x + 1
-  ```
+   is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
+   ```
+     x := x + 1
+   ```
 
-2. The factorial function $(\cdot)! : \mathbb{N} \to \mathbb{N}$ is computable.
-   We have that $(\cdot)! = ⟦ Q ⟧_{\texttt{n}}$, where $Q$ is the program
+2. The factorial function $(\cdot)! : \mathbb{N} \to \mathbb{N}$ is
+   computable. We have that $(\cdot)! = ⟦ Q ⟧_{\texttt{n}}$, where $Q$ is the
+   program
    ```
    r := 1;
    while (1 <= n) {
@@ -58,7 +59,7 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    n := r
    ```
 
-3. The integer-division-by-2 function $\textbf{div2} : \mathbb{N} \to
+3. The integer-division-by-2 function $\textbf{div2} : \mathbb{N} ⇀
    \mathbb{N}$, which performs Euclidean division by 2 and returns the
    quotient, is computable. It is computed wrt `n` by the program
    ```
@@ -67,4 +68,26 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
      q := q + 1; r := r - 2   // Loop invariant: n = q * 2 + r & r >= 0
    }
    q := 0; r := 0; n := q
+   ```
+
+4. The partial function 
+
+   $$
+   \begin{aligned}
+   & g : \mathbb{N} \to \mathbb{N} \\
+   & g(x) \begin{cases}
+      \simeq x + 1 & \text{ if $x < 2$} \\
+      \uparrow     & \text{ otherwise}
+     \end{cases}
+   \end{aligned}
+   $$
+
+   is computable. It is computed wrt `x` by the following program.
+   ```
+   if (x = 0) then
+     x := x + 1
+   else if (x = 1) then
+     x := x + 2
+   else
+     while (true) { skip }
    ```
