@@ -18,13 +18,12 @@ $f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
 \simeq n$ exactly when $\langle S, [\texttt{x} \mapsto m] \rangle
 \Rightarrow^\ast \langle \texttt{skip}, [\texttt{x} \mapsto n] \rangle$.
 
-The function computed by a while program $S$ must be partial, because $S$
-might decide to loop on certain inputs. Moreover, if at the end of the
-program the value of $\sigma'(\texttt{x})$ happens to be a negative integer
-(i.e. not a natural number), the function $f$ is considered to be undefined.
+The function computed by a while program $\textt{S}$ must be partial, because
+$\texttt{S]$ might decide to loop on certain inputs.
 
-A function $f : \mathbb{N} ⇀ \mathbb{N}$ is __computable__ just if there is
-a program $S$ that computes $f$ with respect to the variable $\texttt{x}$.
+A function $f : \mathbb{N} ⇀ \mathbb{N}$ is __computable__ just if there is a
+program $S$ that computes $f$ with respect to the variable $\texttt{x}$. We
+often abbreviate "with respect to" to _wrt_.
 
 Given a `while` program $S$ we write
 $$
@@ -48,16 +47,8 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
     x := x + 1
   ```
 
-2. The function
-
-  $$
-  \begin{aligned}
-  & f : \mathbb{N} \to \mathbb{N} \\
-  & f(x) = x!
-  \end{aligned}
-  $$
-
-  is computable. We have that $f = ⟦ S ⟧_{\texttt{n}}$, where $S$ is the program
+2. The factorial function $(\cdot)! : \mathbb{N} \to \mathbb{N}$ is computable.
+   We have that $(\cdot)! = ⟦ Q ⟧_{\texttt{n}}$, where $Q$ is the program
   ```
   r := 1
   while (1 <= n) {
@@ -66,4 +57,14 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
   }
   n := r
   ```
-  
+
+3. The integer-division-by-2 function $\textbf{div-2} : \mathbb{N} \to
+   \mathbb{N}$, which performs Euclidean division by 2 and returns the
+   quotient, is computable. It is computed wrt `n` by the program
+   ```
+   q := 0; r := n;
+   while (! r < 2) {
+     q := q + 1; r := r - 2   // Loop invariant: 
+   }
+   q := 0; r := 0; n := q
+   ```
