@@ -18,8 +18,8 @@ $f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
 \simeq n$ exactly when $\langle S, [\texttt{x} \mapsto m] \rangle
 \Rightarrow^\ast \langle \texttt{skip}, [\texttt{x} \mapsto n] \rangle$.
 
-The function computed by a while program $\textt{S}$ must be partial, because
-$\texttt{S]$ might decide to loop on certain inputs.
+The function computed by a while program $\texttt{S}$ must be partial, because
+$\texttt{S}$ might decide to loop on certain inputs.
 
 A function $f : \mathbb{N} ⇀ \mathbb{N}$ is __computable__ just if there is a
 program $S$ that computes $f$ with respect to the variable $\texttt{x}$. We
