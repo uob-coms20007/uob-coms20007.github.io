@@ -49,22 +49,22 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 
 2. The factorial function $(\cdot)! : \mathbb{N} \to \mathbb{N}$ is computable.
    We have that $(\cdot)! = ⟦ Q ⟧_{\texttt{n}}$, where $Q$ is the program
-  ```
-  r := 1
-  while (1 <= n) {
-    r := r * n
-    n := n - 1
-  }
-  n := r
-  ```
+   ```
+   r := 1;
+   while (1 <= n) {
+     r := r * n;
+     n := n - 1
+   }
+   n := r
+   ```
 
-3. The integer-division-by-2 function $\textbf{div-2} : \mathbb{N} \to
+3. The integer-division-by-2 function $\textbf{div2} : \mathbb{N} \to
    \mathbb{N}$, which performs Euclidean division by 2 and returns the
    quotient, is computable. It is computed wrt `n` by the program
    ```
    q := 0; r := n;
    while (! r < 2) {
-     q := q + 1; r := r - 2   // Loop invariant: 
+     q := q + 1; r := r - 2   // Loop invariant: n = q * 2 + r & r >= 0
    }
    q := 0; r := 0; n := q
    ```
