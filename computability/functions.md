@@ -64,7 +64,7 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    quotient, is computable. It is computed wrt `n` by the program
    ```
    q := 0; r := n;
-   while (! r < 2) {
+   while (2 <= r) {
      q := q + 1; r := r - 2   // Loop invariant: n = q * 2 + r & r >= 0
    }
    q := 0; r := 0; n := q

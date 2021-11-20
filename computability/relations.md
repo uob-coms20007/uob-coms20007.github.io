@@ -47,7 +47,7 @@ __undecidable__.
    is decidable. It is decided (with respect to the variable $\texttt{x}$) by
    the program
    ```
-    while (x > 0) do
+    while (! x <= 0) do
       x := x - 2
     if (x = 0) then x := 1 else x := 0 
    ```
@@ -97,8 +97,8 @@ forever.
     \begin{aligned}
       a_0 &:= k \\
       a_{n+1} &:= \begin{cases}
-        n/2      & \text{ if $a_n$ is even} \\
-        (3n+1)/2 & \text{ if $a_n$ is odd}
+        a_n/2      & \text{ if $a_n$ is even} \\
+        (3a_n+1)/2 & \text{ if $a_n$ is odd}
       \end{cases}
     \end{aligned}
     $$
