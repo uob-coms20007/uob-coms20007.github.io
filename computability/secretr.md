@@ -1,7 +1,7 @@
 ---
 layout: math
 title: Sections and retractions
-nav_order: 4
+nav_order: 5
 mathjax: true
 parent: Computability
 ---
