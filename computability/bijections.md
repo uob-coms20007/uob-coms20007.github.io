@@ -17,11 +17,11 @@ exists $a \in A$ such that $f(a) = b$.
 * A function $f : A \to B$ is a __bijection__ just if it is injective and
 surjective.
 
-# Inverses
+# Isomorphism
 
 Let $f : A \to B$ be a function.
 
-$f$ has an __inverse__ just if there exists a function $f^{-1} : B \to A$
+$f$ is an __isomorphism__ just if it has an __inverse__. That is, if there exists a function $f^{-1} : B \to A$
 such that
 * for all $a \in A$ we have $f^{-1}(f(a)) = a$
 * for all $b \in B$ we have $f(f^{-1}(b)) = b$
@@ -38,7 +38,8 @@ they may be re-written in a so-called _point-free_ style as
 
 In the problem sheet you will prove the following result.
 
-*Claim.* A function $f : A \to B$ is a bijection if and only if it has an inverse.
+*Claim.* A function $f : A \to B$ is a bijection if and only if it is an
+isomorphism.
 
 Thus, a bijection $f : A \to B$ is a device for putting the sets $A$ and $B$
 into perfect correspondence: it maps every $a \in A$ to a uniquely associated
