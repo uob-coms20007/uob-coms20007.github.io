@@ -88,3 +88,35 @@ Given two functions $f : A \to B$ and $g : B \to C$, their __composition__ $g
 $$
   (g \circ f)(x) = g(f(x))
 $$
+
+# Preimage
+
+The __preimage__ of a function $f : A \to B$ at $b \in B$ is the set
+
+$$
+  f^{-1}(\{ b \}) = \{ a \in A \mid f(a) = b \}
+$$
+
+*Warning.* This is _not_ to be confused with the _inverse_ $f^{-1}$ of a
+function, which does not always exist (it only exists when $f$ is a
+bijection). We distinguish the preimage of $f$ by writing it using the
+singleton set $\{ b \}$, as above.
+
+The preimage of a function $f$ at $b$ consists of the set of all solutions of
+the equation $f(x) = b$ for $x$.
+
+## Example
+
+Let $f : \mathbb{N} \to \mathbb{B}$ be defined by
+
+$$
+  \begin{aligned}
+    f(n) = \begin{cases}
+      \top & \text{ if $n$ is even} \\
+      \bot & \text{ if $n$ is odd}
+    \end{cases}
+  \end{aligned}
+$$
+
+Then we have that $f^{-1}(\{ \top \})$ is the set of all even numbers,
+whereas $f^{-1}(\{ \bot \})$ is the set of all odd numbers.
