@@ -82,6 +82,9 @@ However, a program that computes the semi-characteristic function must only
 halt for 'yes' inputs. Otherwise, it is allowed to continue computing
 forever.
 
+A predicate $U \subseteq \mathbb{N}$ is __semi-decidable__ just if its
+semi-characteristic function $\xi_U$ is computable.
+
 ## Examples
 
 2.  The predicate
