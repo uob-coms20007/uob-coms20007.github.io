@@ -52,14 +52,14 @@ $$
 $$
 
 This function is a bijection. They key to writing down the inverse is to
-notice that all operations are reversible. We define $\phi_\ast^{-1} :
-\mathbb{N} \to \mathbb{N}^\ast$ by
+notice that all operations used in its definition ($\phi$, $+1$) are
+invertible. We define $\phi_\ast^{-1} : \mathbb{N} \to \mathbb{N}^\ast$ by
 
 $$
   \begin{aligned}
     \phi_\ast^{-1}(n) = \begin{cases}
       []                     & \text{ if $n = 0$} \\
-      x : \phi_\ast^{-1}(m) & \text{ if $n > 0$ and $(x, m) = \phi^{-1}(n)$}
+      x : \phi_\ast^{-1}(m) & \text{ if $n > 0$ and $(x, m) = \phi^{-1}(n - 1)$}
     \end{cases}
   \end{aligned}
 $$
