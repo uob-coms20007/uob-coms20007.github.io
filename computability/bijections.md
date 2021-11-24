@@ -60,7 +60,7 @@ $$
 \end{aligned}
 $$
 
-$\beta$ maps 
+$\beta$ is a __bijection between naturals and integers__. It maps 
 * positive numbers to even numbers
 * negative numbers to odd numbers
 
