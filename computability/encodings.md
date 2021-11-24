@@ -46,20 +46,21 @@ as natural numbers. To encode we define a function $\phi_ast :
 $$
   \begin{aligned}
     \phi_\ast([])   &= 0 \\
-    \phi_\ast(n:ns) &= 1 + \phi(n, \phi_ast(ns))
+    \phi_\ast(n:ns) &= 1 + \phi(n, \phi_\ast(ns))
   \end{aligned}
 $$
 
 This function is a bijection. They key to writing down the inverse is to
-notice that all operations are reversible. We define $\phil_\ast^{-1} :
+notice that all operations are reversible. We define $\phi_\ast^{-1} :
 \mathbb{N} \to \mathbb{N}^\ast$ by
 
 $$
   \begin{aligned}
     \phi_\ast^{-1}(n) = \begin{cases}
       []                     & \text{ if $n = 0$} \\
-      x : \phi_\ast^{-1}(xs) & \text{ if $n > 0$ and (x, xs) = \phi^{-1}(n)$}
+      x : \phi_\ast^{-1}(xs) & \text{ if $n > 0$ and $(x, xs) = \phi^{-1}(n)$}
   \end{aligned}
+$$
 
 # Encoding binary trees
 
