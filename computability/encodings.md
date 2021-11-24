@@ -59,7 +59,7 @@ $$
   \begin{aligned}
     \phi_\ast^{-1}(n) = \begin{cases}
       []                     & \text{ if $n = 0$} \\
-      x : \phi_\ast^{-1}(xs) & \text{ if $n > 0$ and $(x, xs) = \phi^{-1}(n)$}
+      x : \phi_\ast^{-1}(m) & \text{ if $n > 0$ and $(x, m) = \phi^{-1}(n)$}
     \end{cases}
   \end{aligned}
 $$
@@ -82,6 +82,52 @@ $\phi^{-1}$ twice:
 $$
   \begin{aligned}
   & \phi_3^{-1} : \mathbb{N} \to \mathbb{N} \times \mathbb{N} \times \mathbb{N} \\
-  & \phi_3(n) = (n_1, n_2, n_3) \text{ where $(n_1, x) = \phi^{-1}(n)$ and $(n_2, n_3) = \phi^{-1}(x)$}
+  & \phi_3(n) = (n_1, n_2, n_3) \\
+  & \quad\quad\quad \text{ where $(n_1, x) = \phi^{-1}(n)$ and $(n_2, n_3) = \phi^{-1}(x)$}
   \end{aligned}
 $$
+
+# Gödel numbering
+
+We have now shown how to put the following things in bijection with the
+natural numbers:
+[integers](https://uob-coms20007.github.io/reference/computability/bijections.html#bijection-between-naturals-and-integers),
+[pairs of
+naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#pairing-function),
+[lists of
+naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-lists),
+and [binary trees of
+naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-binary-trees).
+
+But in the previous part of the course we saw that While programs themselves
+may be represented as an [Abstract Syntax Tree
+(AST)](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
+So it is not a stretch of the imagination to imagine that we may encode While
+ASTs as natural numbers.
+
+As While's chief data type is that of integers, an encoding of this sort
+means that _we will be able to compute functions on While programs within
+While itself_. This sounds somewhat paradoxical, but it isn't. You will
+explore the way this is done in next week's Haskell-based problem sheet.
+
+Encodings of "systems" (logical systems, programming languages, etc.) in
+themselves is known as a __Gödel numbering__. It was first proposed by the
+great logician [Kurt Gödel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) to
+prove his celebrated [incompleteness
+theorems](https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems).
+
+Gödel numberings allow us to prove various __impossibility results_ about
+logical systems and/or programming languages. All these proofs proceed
+through constructions that seem quasi-paradoxical (but, again, are not). The
+apparent paradox often implies that the programming language has some
+limitation, i.e. is unable to achieve some task (compute a function, decide a
+predicate, etc.). We will see such a result next week.
+
+There is a [significant amount of
+lore](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach) surrounding
+Gödel numberings. However, this lore somewhat overstates their importance.
+When decoded intuitively, most impossibility results amount to statements  "a
+Parliament cannot grant itself amnesty by the vote of itself: it must recruit
+some external authority larger than itself."
+
+
