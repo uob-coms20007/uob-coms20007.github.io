@@ -59,6 +59,7 @@ $$
     \phi_\ast^{-1}(n) = \begin{cases}
       []                     & \text{ if $n = 0$} \\
       x : \phi_\ast^{-1}(xs) & \text{ if $n > 0$ and $(x, xs) = \phi^{-1}(n)$}
+    \end{cases}
   \end{aligned}
 $$
 
