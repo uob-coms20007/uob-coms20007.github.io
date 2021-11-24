@@ -30,9 +30,10 @@ functions](https://en.wikipedia.org/wiki/Pairing_function) exists.
 
 # Encoding lists
 
-Once we have a pairing function $\phi : \mathbb{N} \times \mathbb{N} \to
-\mathbb{N}$ and its inverse $\phi^{-1} : \mathbb{N} \to \mathbb{N} \times
-\mathbb{N}$ then we can use them to encode all sorts of other data.
+Once we have a pairing function $\phi : \mathbb{N} \xrightarrow{\cong}
+\mathbb{N} \to \mathbb{N}$ and its inverse $\phi^{-1} : \mathbb{N}
+\xrightarrow{\cong} \mathbb{N} \times \mathbb{N}$ then we can use them to
+encode all sorts of other data.
 
 For example, we may encode lists of natural numbers, i.e. elements of the set
 
@@ -40,7 +41,7 @@ $$
   \mathbb{N}^\ast = \{ [n_1, \dots, n_k] \mid k \geq 0, \forall i. n_i \in \mathbb{N} \}
 $$
 
-as natural numbers. To encode we define a function $\phi_ast :
+as natural numbers. To encode we define a function $\phi_\ast :
 \mathbb{N}^\ast \to \mathbb{N}$ by induction:
 
 $$
@@ -65,3 +66,22 @@ $$
 
 # Encoding binary trees
 
+The bijection $\phi : \mathbb{N} \times \mathbb{N} \xrightarrow{\cong}
+\mathbb{N}$ is unbelievably convenient. For example, using it twice allows us to package three natural numbers together. That is, we can construct a bijection
+
+$$
+  \begin{aligned}
+  & \phi_3 : \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N} \\
+  & \phi_3(n_1, n_2, n_3) = \phi(n_1, \phi(n_2, n_3))
+  \end{aligned}
+$$
+
+by applying $\phi$ twice. Naturally, the inverse consists of applying
+$\phi^{-1}$ twice:
+
+$$
+  \begin{aligned}
+  & \phi_3^{-1} : \mathbb{N} \to \mathbb{N} \times \mathbb{N} \times \mathbb{N} \\
+  & \phi_3(n) = (n_1, n_2, n_3) \text{ where $(n_1, x) = \phi^{-1}(n)$ and $(n_2, n_3) = \phi^{-1}(x)$}
+  \end{aligned}
+$$
