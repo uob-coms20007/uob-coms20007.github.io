@@ -127,7 +127,7 @@ There is a [significant amount of
 lore](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach) surrounding
 Gödel numberings. However, this lore somewhat overstates their importance.
 When decoded intuitively, most impossibility results amount to statements  "a
-Parliament cannot grant itself amnesty by the vote of itself: it must recruit
-some external authority larger than itself."
+Parliament cannot grant itself amnesty by its own vote: it must recruit some
+external authority larger than itself."
 
 
