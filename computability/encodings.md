@@ -30,8 +30,8 @@ functions](https://en.wikipedia.org/wiki/Pairing_function) exists.
 
 # Encoding lists
 
-Once we have a pairing function $\phi : \mathbb{N} \xrightarrow{\cong}
-\mathbb{N} \to \mathbb{N}$ and its inverse $\phi^{-1} : \mathbb{N}
+Once we have a pairing function $\phi : \mathbb{N} \times \mathbb{N}
+\xrightarrow{\cong} \mathbb{N}$ and its inverse $\phi^{-1} : \mathbb{N}
 \xrightarrow{\cong} \mathbb{N} \times \mathbb{N}$ then we can use them to
 encode all sorts of other data.
 
