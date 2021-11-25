@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Encodings
+title: Gödel numbering
 nav_order: 7
 mathjax: true
 parent: Computability
@@ -28,8 +28,7 @@ ASTs as natural numbers.
 As While's chief data type is that of integers, an encoding of this sort
 means that _we will be able to compute functions that modify or act on While
 programs within While itself_. This sounds somewhat paradoxical, but it
-isn't. You will explore the way this is done in next week's Haskell-based
-problem sheet.
+isn't.
 
 Encodings of "systems" (logical systems, programming languages, etc.) in
 themselves are often called __Gödel numberings__. They were first proposed by
@@ -37,6 +36,18 @@ the great logician [Kurt
 Gödel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) in the proof of his celebrated
 [incompleteness
 theorems](https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems).
+
+Let $\textbf{Stmt}$ be the set of [ASTs of
+While](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
+For the rest of this unit we assume that we have a Gödel numbering
+
+$$
+  \gamma : \textbf{Stmt} \xrightarrow{\cong} \mathbb{N}
+$$
+
+which encodes While programs as natural numbers.
+
+# Uses and abuses of Gödel numberings
 
 Gödel numberings allow us to prove various __impossibility results__ about
 logical systems and/or programming languages. All these proofs proceed
@@ -51,5 +62,3 @@ Gödel numberings. However, this lore somewhat overstates their importance.
 When decoded intuitively, most impossibility results amount to statements  "a
 Parliament cannot grant itself amnesty by its own vote: it must recruit some
 external authority larger than itself."
-
-

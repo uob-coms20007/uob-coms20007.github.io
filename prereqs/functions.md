@@ -19,7 +19,6 @@ $$
 A __relation__ from $A$ to $B$ is a subset $R \subseteq A \times B$ of the
 cartesian product.
 
-
 # Functions
 
 A __function__ $f : A \to B$ from $A$ to $B$ is a relation $f$ from $A$ to $B$ that
@@ -31,7 +30,13 @@ Putting these together, $f$ is a function just if for every possible input $a
 \in A$ there exists a _unique_ output $b \in B$ such that $(a, b) \in f$. We
 write $f(a)$ for this unique $b \in B$.
 
+The __set of all functions__ from $A$ to $B$ is defined to be the set
 
+$$
+  A \to B = \{ f \subseteq A \times B \mid f : A \to B \}
+$$
+
+of relations from $A$ to $B$ which are total and single-valued.
 # Partial functions
 
 Computer programs sometimes fail to halt. In order to model that possibility
