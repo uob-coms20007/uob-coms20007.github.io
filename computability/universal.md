@@ -20,4 +20,15 @@ $$
 
 That is: upon receiving $n$, $\eta$ treats it as a program and decodes it
 using the Gödel numbering $\gamma$. Then, it returns the function that it
-computes. 
+computes.
+
+We often write $\eta_n$ instead of $\eta(n)$.
+
+The __universal function__ is the function $U : \mathbb{N} \times \mathbb{N}
+\to \mathbb{N}$ defined by
+
+$$
+  U(e, x) = \eta_e(x)
+$$
+
+**Theorem**. The universal function is computable.
