@@ -80,18 +80,17 @@ In lieu of a proof, let us sketch what this function does.
 3. It simulates the effect of the program $S$ on input $n$.
 
 This last step consists of constructing the configuration $\langle S,
-[\texttt{x} \mapsto n] \rangle$, followed by computing the next configuration
-of the operational semantics of While. This is repeated until we reach the
-simulation reaches a halting configuration $\langle \texttt{skip},
+[\texttt{x} \mapsto n] \rangle$, followed by computing the (unique) next
+configuration of the operational semantics of While. This is repeated until
+the simulation reaches a halting configuration $\langle \texttt{skip},
 [\texttt{x} \mapsto m] \rangle$. At this point the program halts, returning
 $m$ in its output.
 
-That last bit may seem familiar: it is what we call an __interpreter__ for a
-programming language. An interpreter is a program that loads the source code
-of another program, and computes the intended behaviour of that program. One
-way to write an interpreter is to follow the operational semantics of a
-language, as described above: we construct the initial configuration, and
-perform one step of computation at a time, until we are done. Usually
+That description may seem familiar: it corresponds to what we would nowadays
+call an __interpreter__ for a programming language. An interpreter is a
+program that loads the source code of another program, and computes the
+intended behaviour of that program. One way to write an interpreter is to
+follow the operational semantics of a language, as described above. Usually
 interpreters do not translate the source code, but merely produce the desired
 behaviour directly. The most famous language that is interpreted (and not
 compiled) is perhaps
@@ -99,15 +98,16 @@ compiled) is perhaps
 
 This theorem of Stephen Kleene states that it is possible to write an
 interpreter. Curiously, it was proven long before any actual computers
-existed.
+existed!
 
-The proof of the theorem is by constructing the interpreter itself as a While
-program. We will not do so, because the exact construction awfully tedious:
+The proof of the theorem proceeds by actually constructing the interpreter
+itself as a While program. We will not do so, because it is awfully tedious:
 it involves unpairing a number of inputs, and pattern-matching on the next
 instruction (if the program is of the form $S_1; S_2$, then do the first
-instruction of $S_1$, and so on). Using the very limited expressive features
-of While - where everything has to be encoded as a natural number - means
-that it would be a challenge to fully write out such an interpreter. However,
-it should not be very hard for you to see how to write such an interpreter in
-Haskell! Hence, we are willing to accept Kleene's theorem at face value,
-without extensive proof.
+instruction of $S_1$, and so on). As While only supports natural numbers, all
+this needs to be done numerically, by computing the reflections these
+functions! Evidently, that is a formidable task. However, it should not be
+very hard for you to see how to write such an interpreter in Haskell, using
+the powerful features of algebraic data types and pattern-matching. But for
+the purposes of this unit, e are willing to accept Kleene's theorem at face
+value, without an explicit construction.
