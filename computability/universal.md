@@ -20,8 +20,12 @@ $$
 
 We often call $U$ the __universal function__, in the sense that it is able to
 produce the behaviour of every computable function. If a function $f :
-\mathbb{N} ⇀ \mathbb{N}$ is computable, then by definition it is $⟦ P ⟧_{\texttt{x}}$. It follows that $f(n) \simeq ⟦ P ⟧_\texttt{x}(n) \simeq U(P,
-n)$.
+\mathbb{N} ⇀ \mathbb{N}$ is computable, then by definition it is $⟦ P
+⟧_{\texttt{x}}$. It follows that 
+
+$$
+  f(n) \simeq ⟦ P ⟧_\texttt{x}(n) \simeq U(P,n)
+$$
 
 The following is a celebrated result in computability theory:
 
