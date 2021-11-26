@@ -106,8 +106,15 @@ it involves unpairing a number of inputs, and pattern-matching on the next
 instruction (if the program is of the form $S_1; S_2$, then do the first
 instruction of $S_1$, and so on). As While only supports natural numbers, all
 this needs to be done numerically, by computing the reflections these
-functions! Evidently, that is a formidable task. However, it should not be
-very hard for you to see how to write such an interpreter in Haskell, using
-the powerful features of algebraic data types and pattern-matching. But for
-the purposes of this unit, e are willing to accept Kleene's theorem at face
-value, without an explicit construction.
+functions! Evidently, that is a formidable task. 
+
+However, it should not be very hard for you to see how to write such an
+interpreter in Haskell, using the powerful features of algebraic data types
+and pattern-matching. 
+
+For the purposes of this unit we are willing to accept Kleene's theorem at
+face value, without an explicit construction. We will also be reasonably
+relaxed about the explicit construction of such programs from this point
+onwards, and accept
+[handwaving](https://en.wikipedia.org/wiki/Hand-waving#In_mathematics_(and_formal_logic,_philosophy,_theoretical_science))
+instead.
