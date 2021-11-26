@@ -74,7 +74,7 @@ computable!
 
 In lieu of a proof, let us sketch what this function does.
 
-1. Upon receiving $n$ as an argument, it decodes it as a pair $n = \phi(e, n)$.
+1. Upon receiving $i$ as an argument, it decodes it as a pair $i = \phi(e, n)$.
 2. It decodes the first component $e \in \mathbb{N}$ into (the AST of) a While program $S = \gamma^{-1}(e)$.
 3. It simulates the effect of the program $S$ on input $n$.
 
