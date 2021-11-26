@@ -27,6 +27,9 @@ $$
   f(n) \simeq ⟦ P ⟧_\texttt{x}(n) \simeq U(P,n)
 $$
 
+$U$ is partial because these computable functions $⟦ P ⟧_\texttt{x}$ are
+partial themselves.
+
 The following is a celebrated result in computability theory:
 
 **Theorem (Kleene)**. The universal function is computable.
