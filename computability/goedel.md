@@ -74,7 +74,7 @@ Let $\textbf{Stmt}$ be the set of all While statements represented as ASTs
 (i.e. the mathematical counterpart of the relevant Haskell data type used to
 represent While ASTs).
 
-Definition: A __code transformation__ is a function $f : \textbf{Stmt} \to \textbf{Stmt}$.
+A __code transformation__ is a function $f : \textbf{Stmt} \to \textbf{Stmt}$.
 
 Code transformations may seem close to Haskell's higher-order functions, in
 that they take programs as arguments, and return programs (cf.
@@ -90,7 +90,7 @@ is defined by
 
 $$
   h(S) = \begin{cases}
-    S; x := 0 & \text{ if $x$ occurs in $S$}
+    S; x := 0 & \text{ if $x$ occurs in $S$} \\
     S         & \text{ otherwise}
   \end{cases}
 $$
@@ -99,7 +99,7 @@ Or we can even define $h' : \textbf{Stmt} \to \textbf{Stmt}$ by
 
 $$
   h(S) = \begin{cases}
-    S                 & \text{ if there is a while loop in $S$ }
+    S                 & \text{ if there is a while loop in $S$ } \\
     \textbf{skip}     & \text{ otherwise}
   \end{cases}
 $$
