@@ -94,7 +94,7 @@ perform one step of computation at a time, until we are done. Usually
 interpreters do not translate the source code, but merely produce the desired
 behaviour directly. The most famous language that is interpreted (and not
 compiled) is perhaps
-[Python](https://en.wikipedia.org/wiki/Python_(programming_language).
+[Python](https://en.wikipedia.org/wiki/Python_(programming_language)).
 
 This theorem of Stephen Kleene states that it is possible to write an
 interpreter. Curiously, it was proven long before any actual computers
@@ -103,7 +103,7 @@ existed.
 The proof of the theorem is by constructing the interpreter itself as a While
 program. We will not do so, because the exact construction awfully tedious:
 it involves unpairing a number of inputs, and pattern-matching on the next
-instruction ("if the program is of the form $S_1; S_2$, then do the first
+instruction (if the program is of the form $S_1; S_2$, then do the first
 instruction of $S_1$, and so on). Using the very limited expressive features
 of While - where everything has to be encoded as a natural number - means
 that it would be a challenge to fully write out such an interpreter. However,
