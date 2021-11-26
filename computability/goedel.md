@@ -108,7 +108,7 @@ This program transformation depends on the particular _syntactic_
 characteristics of $S$ (i.e. whether or not it ever uses the variable $x$).
 Modulo the different programming paradigms (functional vs. imperative), no
 Haskell code can "examine" its higher-order inputs and tell whether they are
-using some character or another.
+using some character/construct or not.
 
 The raison d'être of Gödel numberings is so that we can discuss the
 computability of such code transformations. That is, we want to

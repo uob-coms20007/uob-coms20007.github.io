@@ -14,15 +14,15 @@ is stated.
 We define a function
 
 $$
-  \eta : \mathbb{N} \to (\mathbb{N} ⇀ \mathbb{N})
-  \eta(n) = ⟦ \gamma^{-1}(n) ⟧_\texttt{x}
+  \eta : \mathbb{N} \to (\mathbb{N} ⇀ \mathbb{N}) \\
+  \eta(i) = ⟦ \gamma^{-1}(i) ⟧_\texttt{x}
 $$
 
 That is: upon receiving $n$, $\eta$ treats it as a program and decodes it
 using the Gödel numbering $\gamma$. Then, it returns the function that it
 computes.
 
-We often write $\eta_n$ instead of $\eta(n)$.
+We often write $\eta_i$ instead of $\eta(i)$.
 
 The __universal function__ is the function $U : \mathbb{N} \times \mathbb{N}
 \to \mathbb{N}$ defined by
@@ -31,4 +31,4 @@ $$
   U(e, x) = \eta_e(x)
 $$
 
-**Theorem**. The universal function is computable.
+**Theorem (Kleene)**. The universal function is computable.
