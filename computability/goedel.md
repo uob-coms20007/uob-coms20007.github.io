@@ -62,3 +62,58 @@ Gödel numberings. However, this lore somewhat overstates their importance.
 When decoded intuitively, most impossibility results amount to statements  "a
 Parliament cannot grant itself amnesty by its own vote: it must recruit some
 external authority larger than itself."
+
+# Code transformations
+
+
+It may not be entirely clear for what sort of thing one might use a Gödel
+numbering. The answer is that they can be used to compute _code
+transformations_.
+
+Let $\textbf{Stmt}$ be the set of all While statements represented as ASTs
+(i.e. the mathematical counterpart of the relevant Haskell data type used to
+represent While ASTs).
+
+Definition: A __code transformation__ is a function $f : \textbf{Stmt} \to \textbf{Stmt}$.
+
+Code transformations may seem close to Haskell's higher-order functions, in
+that they take programs as arguments, and return programs (cf.
+functions-as-data). However, they are strictly more powerful than that.
+Essentially, the only thing a Haskell program with a higher-order argument 
+`f :: a -> b` can do is call it at some inputs (see e.g. the definition of
+`map`, which calls `f` on every element of a list).
+
+Instead, code transformations are significantly more powerful, as they are
+able to arbitrarily construct and deconstruct pieces of syntax. For example,
+we can have a code transformation $h : \textbf{Stmt} \to \textbf{Stmt}$ that
+is defined by
+
+$$
+  h(S) = \begin{cases}
+    S; x := 0 & \text{ if $x$ occurs in $S$}
+    S         & \text{ otherwise}
+  \end{cases}
+$$
+
+Or we can even define $h' : \textbf{Stmt} \to \textbf{Stmt}$ by
+
+$$
+  h(S) = \begin{cases}
+    S                 & \text{ if there is a while loop in $S$ }
+    \textbf{skip}     & \text{ otherwise}
+  \end{cases}
+$$
+
+This program transformation depends on the particular _syntactic_
+characteristics of $S$ (i.e. whether or not it ever uses the variable $x$).
+Modulo the different programming paradigms (functional vs. imperative), no
+Haskell code can "examine" its higher-order inputs and tell whether they are
+using some character or another.
+
+The raison d'être of Gödel numberings is so that we can discuss the
+computability of such code transformations. That is, we want to
+- write code transformations that map While programs to other While programs,
+- use the Gödel numbering to reflect them into functions $\mathbb{N} \to \mathbb{N}$, and
+- compute these reflected functions in While itself.
+
+Why we might want to do this last thing will become evident early next week.
