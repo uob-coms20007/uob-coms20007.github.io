@@ -13,9 +13,11 @@ is stated.
 
 We define a function
 
-$$
-  U : \mathbf{Stmt} \times \mathbb{N} ⇀ \mathbb{N} \\
-  U(P, n) = ⟦ P ⟧_\texttt{x}(n)
+$$ 
+  \begin{aligned}
+    & U : \mathbf{Stmt} \times \mathbb{N} ⇀ \mathbb{N} \\
+    & U(P, n) = ⟦ P ⟧_\texttt{x}(n)
+  \end{aligned}
 $$
 
 We often call $U$ the __universal function__, in the sense that it is able to
