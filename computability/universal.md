@@ -58,7 +58,7 @@ where if $f : A \to B$ and $g : C \to D$ we define
 $$
   \begin{aligned}
     & f \times g : A \times C \to B \times D \\ 
-    & (f \times g)(a, c) = (f(a), g(c))$. It is
+    & (f \times g)(a, c) = (f(a), g(c))
   \end{aligned}
 $$
 
@@ -66,7 +66,8 @@ It is not very difficult to prove that if $f$ and $g$ are bijections, then so
 is $f \times g$. Moreover, we can prove that if $h : A \to B$ and $k : B \to
 C$ is a bijection, then the composite $k \circ h$ is a bijection as well.
 Combining these two results, the composite $\phi \circ (\gamma \times
-\textsf{id}_\mathbb{N})$ is a bijection.
+\textsf{id}_\mathbb{N}) : \mathbf{Stmt} \times \mathbb{N} \to \mathbb{N}$ is
+a bijection.
 
 It follows that we can reflect this function into the natural numbers using
 the Gödel numbering and pairing. The theorem says that resultant function is
