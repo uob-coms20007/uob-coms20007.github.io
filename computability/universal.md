@@ -73,7 +73,7 @@ It follows that we can reflect this function into the natural numbers using
 the Gödel numbering and pairing. The theorem says that resultant function is
 computable!
 
-In lieu of a proof, let us sketch what this function does.
+In lieu of a proof, let us sketch what the program that computes this does.
 
 1. Upon receiving $i$ as an argument, it decodes it as a pair $i = \phi(e, n)$.
 2. It decodes the first component $e \in \mathbb{N}$ into (the AST of) a While program $S = \gamma^{-1}(e)$.
