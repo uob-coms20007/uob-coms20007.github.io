@@ -12,9 +12,9 @@ We have defined the notion of computability of functions $\mathbb{N} ⇀
 That very act of definition included an implicit assumptions. In short, We
 assumed that While is a _reasonable model of computation_. This assumption
 has two parts:
-1. It assumes that While is "good enough." That is, it assumes that While can
+1. It assumes that While is _good enough._ That is, it assumes that While can
    do a lot of things that we expect a computer to be able to do.
-2. It assumes that While is not "too good." That is, it assumes that While
+2. It assumes that While is _not too good._ That is, it assumes that While
    does not have any abilities above those expected of a usual digital
    computing device.
 
@@ -30,26 +30,26 @@ for While. Through appropriate Gödel numbering, encoding of pairs, etc. it
 was even possible to implement this interpreter in While itself.
 
 However, this last step was not a special feature of While. We could
-implement an interpreter for While in Java (with or without encoding
-everything as a natural number). We could also implement an interpreter in
-Haskell (and if you are adventurous you may have already tried to do so).
+implement an interpreter for While in Java. We could also implement an
+interpreter in Haskell (and if you are adventurous you may have already tried
+to do so).
 
 Conversely, there is nothing special about implementing an interpreter for
 While. With enough time and tenacy we could implement an interpreter for e.g.
 Java as a While program. Or we could implement an interpreter for Haskell,
 again in While. The possibilities are endless.
 
-This is not simply a practical phenomenon, but also a theoretical
-observation. Suppose you take issue with the idea that While is a realistic
-model of computation. Suppose further that this incites you to go away and
-design your own model of computation, which is meant to embody what we mean
-by a digital computater. You will then observe that you will be able to write
-an interpreter for that model of computation in While!
+This is not only a practical phenomenon, but also a theoretical observation.
+Suppose you take issue with the idea that While is a realistic model of
+computation. Suppose further that this incites you to go away and design your
+own model of computation, which is meant to embody what we mean by a digital
+computater. You will then observe that you will be able to write an
+interpreter for that model of computation in While!
 
 It has been empirically observed that this holds for any two _realistic_
 models of computation of which we can conceive: each one can be _simulated_
 in the other. This observation was made long before the advent of modern
-programming languages (like While, C, or Java).
+programming languages (like While, C, Java, Haskell, ...).
 
 This statement is often known as the
 
@@ -59,7 +59,7 @@ respect to the computability of functions $\mathbb{N} ⇀ \mathbb{N}$.
 Thus, the act of defining computable functions to be the set
 
 $$
-  \mathcal{PR} = \{ f : \mathbb{N} ⇀ \mathbb{N} \mid \text{$f ⟦ P ⟧_{\texttt{x}}$ for some While program $P$ } \}
+  \mathcal{PR} = \{ f : \mathbb{N} ⇀ \mathbb{N} \mid \text{$f = ⟦ P ⟧_{\texttt{x}}$ for some While program $P$ } \}
 $$
 
 of functions that can be computed by a While program is in fact not so
