@@ -32,7 +32,7 @@ was even possible to implement this interpreter in While itself.
 However, this last step was not a special feature of While. We could
 implement an interpreter for While in Java (with or without encoding
 everything as a natural number). We could also implement an interpreter in
-Haskell, and if you are adventurous you may have already tried to do so!
+Haskell (and if you are adventurous you may have already tried to do so).
 
 Conversely, there is nothing special about implementing an interpreter for
 While. With enough time and tenacy we could implement an interpreter for e.g.
@@ -59,13 +59,17 @@ respect to the computability of functions $\mathbb{N} ⇀ \mathbb{N}$.
 Thus, the act of defining computable functions to be the set
 
 $$
-  \mathcal{PR} = \{ f : \mathbb{N} ⇀ \mathbb{N} \mid \text{$f ⟦ P ⟧_{\texttt{x}}$ for some While program $P$ }}
+  \mathcal{PR} = \{ f : \mathbb{N} ⇀ \mathbb{N} \mid \text{$f ⟦ P ⟧_{\texttt{x}}$ for some While program $P$ } \}
 $$
 
 of functions that can be computed by a While program is in fact not so
 arbitrary. Had we picked another option of the tens that are out there, we
 would have gotten the same set of functions. The reason is that any other
 model of computation can be simulated as a While program.
+
+The letters $\mathcal{PR}$ stand for __partial recursive functions__. This is
+the set of partial functions on $\mathbb{N}$ that is considered computable by
+any realistic model of computation.
 
 Indicatively, here is a highly incomplete list of other models of computation:
 * [Turing machines](https://www.youtube.com/watch?v=E3keLeMwfHY)
