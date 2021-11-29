@@ -84,10 +84,8 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 
    is computable. It is computed wrt `x` by the following program.
    ```
-   if (x = 0) then
+   if (x <= 1) then
      x := x + 1
-   else if (x = 1) then
-     x := x + 2
    else
-     while (true) { skip }
+     while (true) do { skip }
    ```
