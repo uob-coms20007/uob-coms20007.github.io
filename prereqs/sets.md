@@ -18,6 +18,7 @@ You should ensure you properly understand the meaning of the following notation:
 * Complement $X^c$
 * Subset inclusion $X \subseteq Y$
 * Set cardinality (number of elements) $$\lvert X \rvert$$
+* Power set $\mathcal{P}(X)$
 
 # Predicates
 
