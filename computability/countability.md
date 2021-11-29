@@ -69,10 +69,10 @@ on the set of natural numbers.
 
 We will prove the following classic result:
 
-*Theorem 1.* There is no surjection $\mathbb{N} \to \mathcal{P}(\mathbb{N})$.
+*Theorem.* There is no surjection $\mathbb{N} \to \mathcal{P}(\mathbb{N})$.
 
 As any bijection is surjective, this implies that there is no bijection
-$\mathbb{N} \xrightarrow{\xcong} \mathcal{P}(\mathbb{N})$.
+$\mathbb{N} \xrightarrow{\cong} \mathcal{P}(\mathbb{N})$.
 
 _Proof._ We prove the theorem through the method of
 [diagonalisation](https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument).
@@ -95,12 +95,13 @@ $$
 $$
 
 Thus if $i$ is in the $i$th predicate $U_i$, it is _not_ in $W$. So $W$ is
-different from every $U_i$ in the aforementioned list. In symbols, we see
-that by the definition of $W$ it is the case that, for any $k$,
+different from every $U_i$ in the aforementioned list. In symbols, if $W =
+U_j$ for some $j$, then for any number $k$ we have
 
 $$
-  k \in W 
-    ⟺ k \not\in U_k
+  j \in U_j
+  ⟺ j \in W 
+  ⟺ j \not\in U_j
 $$
 
 This is obviously nonsense.
@@ -114,7 +115,7 @@ Define a function
 
 $$
   \begin{aligned}
-    C : \mathbb{N} \to \mathcal{P}(\mathbb{N})
+    C : \mathbb{N} \to \mathcal{P}(\mathbb{N}) \\
     C(i) = \begin{cases}
       U         & \text{ if $\chi_U = ⟦ \gamma^{-1}(i) ⟧_{\texttt{x}$ for some predicate $U$ } \\
       \emptyset & \text{ otherwise }
