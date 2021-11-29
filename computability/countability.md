@@ -115,8 +115,8 @@ Define a function
 
 $$
   \begin{aligned}
-    C : \mathbb{N} \to \mathcal{P}(\mathbb{N}) \\
-    C(i) = \begin{cases}
+    & C : \mathbb{N} \to \mathcal{P}(\mathbb{N}) \\
+    & C(i) = \begin{cases}
       U         & \text{ if $\chi_U = ⟦ \gamma^{-1}(i) ⟧_{\texttt{x}$ for some predicate $U$ } \\
       \emptyset & \text{ otherwise }
     \end{cases}
