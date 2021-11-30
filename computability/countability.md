@@ -1,7 +1,7 @@
 ---
 layout: math
 title: Countability
-nav_order: 10
+nav_order: 9
 mathjax: true
 parent: Computability
 ---
