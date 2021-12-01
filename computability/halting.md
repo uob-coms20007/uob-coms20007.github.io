@@ -80,23 +80,23 @@ The first line, namely `x := ϕ(n, n)`, is a piece of code that sets the
 variable `x` to the pairing of `n` and `n`. It is one of our implicit
 assumptions here that this is possible.
 
-By the structure of $\texttt{D}$, we have for any While program $S$ that
+By the structure of $\texttt{D}$, we have for any While program $\texttt{S}$ that
 
 $$
   \begin{aligned}
-    ⟦ D ⟧_\texttt{n}(\gamma(S)) \uparrow
-      &⟺\  ⟦ H ⟧_\texttt{x}(ϕ(\gamma(S), \gamma(S))) \simeq 1 \\
-      &⟺\  ϕ(\gamma(S), \gamma(S) \in \textsf{HALT} \\
-      &⟺\ ⟦ S ⟧_\texttt{n}(\gamma(S)) \downarrow
+    ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{S})) \uparrow
+      &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))) \simeq 1 \\
+      &⟺\  ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))\in \textsf{HALT} \\
+      &⟺\ ⟦ \texttt{S} ⟧_\texttt{n}(\gamma(\texttt{S})) \downarrow
   \end{aligned}
 $$
 
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
-  ⟦ D ⟧_\texttt{n}(\gamma(D)) \uparrow
+  ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{D})) \uparrow
     ⟺
-  ⟦ D ⟧_\texttt{n}(\gamma(D)) \downarrow
+  ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{D})) \downarrow
 $$
 
 which is an evident contradiction. 
