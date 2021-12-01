@@ -11,7 +11,9 @@ We will now prove a theorem due to Alan Turing.
 Suppose that we want to solve the following problem. Given
 1. the source code of a program
 2. an input for the program
-determine
+
+we seek to determine
+
 - whether the program will terminate on that input, or go into an infinite loop.
 
 An infinite loop might arise in many circumstances. For example, an
