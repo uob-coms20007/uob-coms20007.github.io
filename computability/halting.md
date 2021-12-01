@@ -6,7 +6,9 @@ mathjax: true
 parent: Computability
 ---
 
-We will now prove a theorem due to Alan Turing.
+# The Halting Problem
+
+We will now prove a theorem due to [Alan Turing](https://en.wikipedia.org/wiki/Alan_Turing).
 
 Suppose that we want to solve the following problem. Given
 1. the source code of a program
@@ -100,5 +102,5 @@ $$
 
 which is an evident contradiction. 
 
-We reached this contradiction by assuming that $\textsf{HALT} was decidable.
+We reached this contradiction by assuming that $\textsf{HALT}$ was decidable.
 So that cannot be. ▣
