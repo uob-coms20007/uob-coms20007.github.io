@@ -24,8 +24,7 @@ cause a while loop to fail to terminate. Alternatively confusing a $\leq$
 with a $\ge$ might lead to wrong code that runs forever. We would ideally
 like a tool - a debugger, or perhaps a fancier [static
 analyzer](https://en.wikipedia.org/wiki/Static_program_analysis) - that can
-tell us at compile-term that we have made a serious mistake of the sort in
-our program.
+tell us at compile-time that we have made a serious mistake of the sort.
 
 Turing proved that this is impossible.
 
@@ -43,9 +42,10 @@ can decide whether a particular number belongs to this set or not. By the
 [Church-Turing thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html#Church-Turing-thesis),
 no algorithm written in any language can decide it either.
 
-The 'good' numbers in this set arise as pairs of the form $\phi(a, b)$. $a$
-must of the form $\gamma(S)$, i.e. the encoding of a While-program $S$ under
-the Gödel numbering $\gamma$. $b$ can be any number.
+The 'good' numbers in this set arise as pairs of the form $\phi(a, b)$. The
+first component must of the form $a = \gamma(S)$, i.e. the encoding of a
+While-program $S$ under the Gödel numbering $\gamma$. The second component
+$b$ can be any number.
 
 Disregarding all encodings for a second, the theorem says that: if we are
 given the source code $S$ of a program and an input $n$, then we cannot
@@ -92,6 +92,13 @@ $$
   \end{aligned}
 $$
 
+That is to say: the program $\texttt{D}$ will loop exactly when you give it
+the source code of a program $\texttt{S}$ which is going to loop when fed its
+own source code as input. The program $\texttt{D}$ works this out by using
+the program $\texttt{H}$, which decides the Halting problem, as a subroutine.
+
+(Make sure you understand this last bit before moving on.)
+
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
@@ -104,3 +111,36 @@ which is an evident contradiction.
 
 We reached this contradiction by assuming that $\textsf{HALT}$ was decidable.
 So that cannot be. ▣
+
+
+# Semidecidability of the Halting Problem
+
+Turing's result shows that $\textsf{HALT}$ is not decidable.
+
+However, it is not very difficult to show that
+
+*Theorem.* $\textsf{HALT}$ is [semi-decidable](https://uob-coms20007.github.io/reference/computability/predicates.html#semi-decidable).
+
+_Proof._ The semi-characterstic function of $\textsf{HALT}$ is computed by a program that works as follows.
+
+On input $x$,
+1. Decode $x = \phi(\gamma(\texttt{S}), n)$.
+2. Simulate the running of program $\texttt{S}$ on input $n$.
+3. If that simulation terminates in a state of the form $[\texttt{x} \mapsto m]$, return $m$.
+
+ ▣
+
+In the above proof we do not write an explicit program for the
+semi-characteristic function. Instead, we merely describe its function. We
+argue that we could elaborate this description into an actual program due to two factors:
+
+* the fact that the [universal
+  function](https://uob-coms20007.github.io/reference/computability/universal.html)
+  is computable, so the idea of "simulating" a program on an input is not
+  unrealistic; and
+* the fact that everything else we do is vaguely realistic in terms of
+  programming, so by the [Church-Turing
+  thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html)
+  must be achievable through a While program.
+
+From now on our proofs will often be of that form.
