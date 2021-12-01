@@ -83,11 +83,12 @@ assumptions here that this is possible.
 By the structure of $\texttt{D}$, we have for any While program $S$ that
 
 $$
-  \begin{aligned*}
+  \begin{aligned}
     ⟦ D ⟧_\texttt{n}(\gamma(S)) \uparrow
       &⟺\  ⟦ H ⟧_\texttt{x}(ϕ(\gamma(S), \gamma(S))) \simeq 1 \\
       &⟺\  ϕ(\gamma(S), \gamma(S) \in \textsf{HALT} \\
       &⟺\ ⟦ S ⟧_\texttt{n}(\gamma(S)) \downarrow
+  \end{aligned}
 $$
 
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
