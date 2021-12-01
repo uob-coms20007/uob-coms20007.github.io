@@ -39,10 +39,9 @@ can decide whether a particular number belongs to this set or not. By the
 [Church-Turing thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html#Church-Turing-thesis),
 no algorithm written in any language can decide it either.
 
-The 'good' numbers contained in this set are the numbers arising as pairs:
-they all are of the form $\phi(a, b)$. $a$ must of the form $\gamma(S)$, i.e.
-the encoding of a While-program $S$ under the Gödel numbering $\gamma$. $b$
-can be any number.
+The 'good' numbers in this set arise as pairs of the form $\phi(a, b)$. $a$
+must of the form $\gamma(S)$, i.e. the encoding of a While-program $S$ under
+the Gödel numbering $\gamma$. $b$ can be any number.
 
 Disregarding all encodings for a second, the theorem says that: if we are
 given the source code $S$ of a program and an input $n$, then we cannot
@@ -54,18 +53,18 @@ of infinite loops) just by looking at its source code and input!
 This is known as the **Halting Problem.** No digital computer can ever solve
 it. (And neither can quantum computers.)
 
-We will prove that the set $\textbf{HALT}$ is undecidable. The proof method
-will be diagonalisation again.
+We will prove that the set $\textsf{HALT}$ is undecidable. The proof method
+will be diagonalisation once more.
 
-*Proof.* Suppose that we can decide $\textsf{HALT}$; we will derive a
+*Proof.* Suppose that we can decide $\textsf{HALT}$. We will derive a
 contradiction from this assumption.
 
 That we can decide $\textsf{HALT}$ means that its characteristic function is
 computable; suppose that it is computed by a While program $\texttt{H}$ wrt
-$\texttt{x}$.
+`x`.
 
-We then write the following 'diagonal' program $\texttt{D}$, which inputs and
-outputs in variable `n`:
+We then write the following program $\texttt{D}$, which inputs and outputs in
+variable `n`:
 
 ```
   x := ϕ(n, n);
@@ -82,25 +81,22 @@ assumptions here that this is possible.
 By the structure of $\texttt{D}$, we have for any While program $S$ that
 
 $$
-  ⟦ D ⟧_\texttt{n}(\gamma(S)) \uparrow
-    ⟺
-  ⟦ H ⟧_\texttt{x}(ϕ(\gamma(S), \gamma(S))) \simeq 1
-    ⟺
-  ϕ(\gamma(S), \gamma(S) \in \textsf{HALT}
-    ⟺
-  ⟦ S ⟧_\texttt{n}(\gamma(S)) \downarrow
+  \begin{aligned*}
+    ⟦ D ⟧_\texttt{n}(\gamma(S)) \uparrow
+      &⟺\  ⟦ H ⟧_\texttt{x}(ϕ(\gamma(S), \gamma(S))) \simeq 1 \\
+      &⟺\  ϕ(\gamma(S), \gamma(S) \in \textsf{HALT} \\
+      &⟺\ ⟦ S ⟧_\texttt{n}(\gamma(S)) \downarrow
 $$
 
-Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then
+Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
   ⟦ D ⟧_\texttt{n}(\gamma(D)) \uparrow
     ⟺
-  ⟦ H ⟧_\texttt{x}(ϕ(\gamma(D), \gamma(D))) \simeq 1
-    ⟺
-  ϕ(\gamma(D), \gamma(D) \in \textsf{HALT}
-    ⟺
   ⟦ D ⟧_\texttt{n}(\gamma(D)) \downarrow
 $$
 
-which is a contradiction. ▣
+which is an evident contradiction. 
+
+We reached this contradiction by assuming that $\textsf{HALT} was decidable.
+So that cannot be. ▣
