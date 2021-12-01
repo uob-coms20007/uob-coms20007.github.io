@@ -65,38 +65,37 @@ That we can decide $\textsf{HALT}$ means that its characteristic function is
 computable; suppose that it is computed by a While program $\texttt{H}$ wrt
 `x`.
 
-We then write the following program $\texttt{D}$, which inputs and outputs in
-variable `n`:
+We then write the following program $\texttt{D}$:
 
 ```
-  x := ϕ(n, n);
+  x := ϕ(x, x);
   H;
   if (x = 1) then {
     while (true) do skip
   }
 ```
 
-The first line, namely `x := ϕ(n, n)`, is a piece of code that sets the
-variable `x` to the pairing of `n` and `n`. It is one of our implicit
-assumptions here that this is possible.
+The first line, namely `x := ϕ(x, x)`, is a piece of code that replaces the
+value of `x` with the value of the pair of `x` and `x`. It is one of our
+implicit assumptions here that this computing this 'diagonal' is possible.
 
 By the structure of $\texttt{D}$, we have for any While program $\texttt{S}$ that
 
 $$
   \begin{aligned}
-    ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{S})) \uparrow
+    ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{S})) \uparrow
       &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))) \simeq 1 \\
       &⟺\  ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))\in \textsf{HALT} \\
-      &⟺\ ⟦ \texttt{S} ⟧_\texttt{n}(\gamma(\texttt{S})) \downarrow
+      &⟺\ ⟦ \texttt{S} ⟧_\texttt{x}(\gamma(\texttt{S})) \downarrow
   \end{aligned}
 $$
 
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
-  ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{D})) \uparrow
+  ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{D})) \uparrow
     ⟺
-  ⟦ \texttt{D} ⟧_\texttt{n}(\gamma(\texttt{D})) \downarrow
+  ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{D})) \downarrow
 $$
 
 which is an evident contradiction. 
