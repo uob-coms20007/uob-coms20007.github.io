@@ -17,6 +17,8 @@ We can sometimes prove that a predicate is undecidable by another method: we
 show that _if it were decidable_, then $\textsf{HALT}$ would be decidable as
 well. This is a _proof by reduction_.
 
+## Definition
+
 Let $U, W \subseteq \mathbb{N}$ be predicates, and let $f : \mathbb{N} \to
 \mathbb{N}$. The function $f$ is a __many-one reduction__ from $U$ to $W$ just if
 it is computable, and it is also the case that
@@ -59,7 +61,7 @@ statement:
 Thus, if $U$ is difficult, then the harder, "bigger" problem $V$ is also
 difficult.
 
-# Example
+## Example
 
 The strategy is now clear: if for a predicate $V \subseteq \mathbb{N}$ I can
 find a reduction $f : \textsf{HALT} ≲ V$, then I have shown that $V$ is more
