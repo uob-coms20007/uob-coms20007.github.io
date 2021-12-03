@@ -95,15 +95,17 @@ that finishes - simply outputs its input. We know that we can write such a
 program by adapting the code of the [universal
 function](https://uob-coms20007.github.io/reference/computability/universal.html#universal-function).
 
-Now, let's reflect $g$. We define the reduction $f : \mathbb{N} \to
-\mathbb{N}$ to be the reflection of $g$. Hence, $f$ maps the encoding
-$\phi(\gamma(S), n)$ to the encoding $\gamma(G_{S, n})$.
+The reduction we seek is the reflection $\tilde{g} : \mathbb{N} \to
+\mathbb{N}$ of $g$. Hence, $\tilde{g}$ is a function maps the natural
+number/encoding $\phi(\gamma(S), n)$ to the natural number/encoding
+$\gamma(G_{S, n})$.
 
-Is this $f$ computable? It is indeed! It is not a stretch of the imagination
-to think of a bash or Python script that assembles its source code from the
-source code $S$.
+Is this $\tilde{g}$ computable? It is indeed! It is not a stretch of the
+imagination to think of a bash or Python script that assembles its source
+code from the source code $S$.
 
-Finally, $f$ is a reduction $\textsf{HALT} ≲ V$ because it is the case that
+Finally, $\tilde{g}$ is a reduction $\textsf{HALT} ≲ V$ because it is the
+case that
 
 $$
   \phi(\gamma(S), n) \in \textsf{HALT}
