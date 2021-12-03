@@ -10,8 +10,8 @@ parent: Computability
 
 Establishing that the [Halting
 Problem](https://uob-coms20007.github.io/reference/computability/halting.html)
-was a laborious task. It required an explicit proof using a diagonal method,
-and lots of careful reasoning.
+was undecidable was a laborious task. It required an explicit proof using a
+diagonal method, and lots of careful reasoning.
 
 We can sometimes prove that a predicate is undecidable by another method: we
 show that _if it were decidable_, then $\textsf{HALT}$ would be decidable as
