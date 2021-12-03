@@ -25,8 +25,7 @@ $$
   n \in U\ ⟺ f(n) \in W
 $$
 
-We may write $f : U ≲ V$ (pronounced "$f$ is a (many-one) reduction from $U$
-to $V$").
+We may write $f : U ≲ V$ (read "$f$ is a reduction from $U$ to $V$").
 
 ## Intuition
 
@@ -68,10 +67,10 @@ difficult than $\textsf{HALT}$. In other words: if I could 'solve' $V$, then
 I could also 'solve' $\textsf{HALT}$. But the latter cannot happen, so
 neither can the former.
 
-For example, we can show that the undecidability of the set
+For example, we can show the undecidability of the set
 
 $$
-  V = \{ \gamma(S) \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow }
+  V = \{ \gamma(S) \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
 $$
 
 of (the Gödel numbers of) programs which _never_ go into an infinite loop.
@@ -97,11 +96,14 @@ program by adapting the code of the [universal
 function](https://uob-coms20007.github.io/reference/computability/universal.html#universal-function).
 
 Now, let's reflect $g$. We define the reduction $f : \mathbb{N} \to
-\mathbb{N}$ to be the reflection of $g$. Is this $f$ computable? It is
-indeed! It is not a stretch of the imagination to think of a bash or Python
-script that assembles its source code from the source code $S$.
+\mathbb{N}$ to be the reflection of $g$. Hence, $f$ maps the encoding
+$\phi(\gamma(S), n)$ to the encoding $\gamma(G_{S, n})$.
 
-Finally, $f$ is a reduction because it is not hard to see that
+Is this $f$ computable? It is indeed! It is not a stretch of the imagination
+to think of a bash or Python script that assembles its source code from the
+source code $S$.
+
+Finally, $f$ is a reduction $\textsf{HALT} ≲ V$ because it is the case that
 
 $$
   \phi(\gamma(S), n) \in \textsf{HALT}
@@ -123,4 +125,4 @@ $n$ before stopping with its own input as output. Thus,
 
 These two points prove the aforementioned equivalence.
 
-Hence $V$ is not decidable.
+Thus $\textsf{HALT}$ is "easier" than $V$. Hence $V$ is not decidable.
