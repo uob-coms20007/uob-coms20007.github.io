@@ -126,9 +126,7 @@ _Proof._ The semi-characterstic function of $\textsf{HALT}$ is computed by a pro
 On input $x$,
 1. Decode $x = \phi(\gamma(\texttt{S}), n)$.
 2. Simulate the running of program $\texttt{S}$ on input $n$.
-3. If that simulation terminates in a state of the form $[\texttt{x} \mapsto m]$, return $m$.
-
- ▣
+3. If that simulation terminates in a state of the form $[\texttt{x} \mapsto m]$, return $m$. ▣
 
 In the above proof we do not write an explicit program for the
 semi-characteristic function. Instead, we merely describe its function. We
