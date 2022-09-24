@@ -6,19 +6,6 @@ nav_order: 3
 parent: Prerequisites
 ---
 
-# Relations
-
-Let $A$ and $B$ be sets.
-
-The __cartesian product__ of $A$ and $B$ is the set consisting of pairs $(a,
-b)$ of one element from $A$ and one element from $B$:
-$$
-  A \times B = \{ (a, b) \mid a \in A \land b \in B \}
-$$
-
-A __relation__ from $A$ to $B$ is a subset $R \subseteq A \times B$ of the
-cartesian product.
-
 # Functions
 
 A __function__ $f : A \to B$ from $A$ to $B$ is a relation $f$ from $A$ to $B$ that

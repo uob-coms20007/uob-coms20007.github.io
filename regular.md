@@ -1,7 +1,7 @@
 ---
 layout: math
-title: Finite State Automata
-nav_order: 3
+title: Regular Expressions
+nav_order: 2
 mathjax: true
 has_children: true
 ---

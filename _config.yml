@@ -1,6 +1,6 @@
 title: PL&C Reference
 remote_theme: pmarsceill/just-the-docs
-color_scheme: foo
+#color_scheme: foo
 compress_html:
   ignore:
     envs: all
