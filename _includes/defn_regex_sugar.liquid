@@ -1,0 +1,5 @@
+
+{:.defn}
+* We will allow $\Sigma$ as an abbreviation for the choice of any letter of the alphabet.  For example, if we are considering regular expressions over $$\{a,b,c\}$$, then when we write $\Sigma$ inside a regular expression, we really mean $(a + b + c)$.
+* We will allow $$R^+$$ as an abbreviation for the regular expression $$R\cdot{}R^*$$, intuitively matching strings that can be divided into 1-or-more pieces each of which match $R$.
+* We will allow a sequence of letters inside square brackets to abbreviate a choice between the letters.  For example, when we write $[abcdef]$ we really mean $(a + b + c + d + e + f)$.  We do this only for individual letters, to avoid ambiguity.
