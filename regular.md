@@ -6,5 +6,5 @@ mathjax: true
 has_children: true
 ---
 
-## Finite State Automata
+## Regular Expressions
 
