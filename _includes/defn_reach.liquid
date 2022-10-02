@@ -1,0 +1,4 @@
+
+
+{: .defn }
+Given two regex $R$ and $S$, and a string $w$, we write $$R \rreds{w} S$$ just if there is a finite trace $$R_0 \xrightarrow{\ell_1} R_1 \xrightarrow{\ell_2} \cdots{} \xrightarrow{\ell_n} R_n$$ that starts with $R$, i.e. $R_0 = R$, and ends with $S$, i.e. $R_n = S$ and the concatenation of the labels (each viewed as a string) is $w$, i.e. $$w = \ell_1\ell_2\cdots{}\ell_n $$.  In such cases we say "$R$ can transition to $S$" or "$R$ can reach $S$".
