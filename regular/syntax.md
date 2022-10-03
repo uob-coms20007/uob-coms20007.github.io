@@ -50,7 +50,6 @@ Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.5
 * $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ - matches words that start and end with the same symbol
 * $$((0 + 1)(0 + 1))^*$$ - matches words of even length
 
-{% comment %}
 ## Syntactic Sugar
 
 In practice, when we want to describe more complicated kinds of matching, it will be useful to allow ourselves certain abbreviations that make the regexes more succinct and readable.  
@@ -69,7 +68,7 @@ Some more examples, with the ASCII alphabet:
    $$ 
      \begin{array}{ll}&([012]R + 30)/(09 + 04 + 06 + 11)\\ &+\ ([012]R + 3[01])/(01 + 03 + 05 + 07 + 08 + 10 + 12)\\ &+\ ([012]R)/02\end{array}
    $$
-{% endcomment %}
+   
 {% comment %}
 ## Identities
 
