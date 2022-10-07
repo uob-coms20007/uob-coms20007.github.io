@@ -1,0 +1,11 @@
+<div class="defn" markdown="1">
+A __finite state automaton__ consists of 5 pieces of data:
+
+* A collection of *states*, $Q$, which can be any finite set.
+* An alphabet, $\Sigma$, (so we know what kinds of words we are willing to process)
+* A collection of transitions, $\Delta$, which is any subset of $$Q \times (\Sigma \cup \{\epsilon\}) \times Q$$.
+* An initial state, $$q_0$$, which is just a choice of any element of $Q$.
+* A collection of accepting states, $F$, which is any subset of $Q$.
+
+We will often write an automaton as a tuple of its five components for short $$(Q,\Sigma,\Delta,q_0,F)$$.
+</div>
