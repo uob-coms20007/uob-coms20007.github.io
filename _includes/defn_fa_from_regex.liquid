@@ -1,0 +1,7 @@
+<div class="defn" markdown="1">
+Given a regular expression $$R$$ over alphabet $$\Sigma$$, we can construct a finite automaton $$(Q,\Sigma,\Delta,q_0,F)$$ with:
+  * States: $$Q = \{S \mid \exists w \in \Sigma^*.\ R \rreds{w} S\}$$
+  * Transitions: $$\Delta$$ contains a transition $$(R_1,\ell,R_2)$$ just if $R_1 \rred{\ell} R_2$ is a valid computation step of $R_1$.
+  * Initial state: $$q_0 = R$$
+  * Final states: if $\epsilon \in Q$ then $$F = \{\epsilon\}$$ and otherwise $$F = \emptyset$$
+</div>
