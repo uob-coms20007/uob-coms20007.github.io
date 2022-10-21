@@ -1,0 +1,8 @@
+<div class="defn" markdown="1">
+Given a finite automaton $M = (Q,\Sigma,\Delta,q_0,F)$, we can construct a new finite automaton $\epsilon^*(M)$ with components as follows:
+* The states are just the states of $M$: $Q$.
+* The alphabet is just the alphabet of $M$: $\Sigma$.
+* The transitions are $$\{(p,\,a,\,q) \mid p,q \in Q,\, a \in \Sigma,\, p \rreds{a} q \}$$.
+* The initial state is the initial state of $M$: $q_0$.
+* The accepting states are the accepting states of $M$: $F$.
+</div>

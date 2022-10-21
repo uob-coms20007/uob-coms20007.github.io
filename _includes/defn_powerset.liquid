@@ -1,0 +1,8 @@
+<div class="defn" markdown="1">
+Given an automaton $N = (Q,\Sigma,\Delta,q_0,F)$ without $\epsilon$-transitions, we construct $$\pow(N)$$ with components:
+* The states are all sets of states of $N$, i.e. the powerset $$\pow(Q) = \{X \mid X \subseteq Q\}$$.
+* The alphabet is the same as the alphabet of $N$: $\Sigma$
+* For each set of states $X$ of $Q$, and each letter $a$, there is a transition to the union of all the sets of states reachable from any particular state in $X$ by reading in $a$: $$\{(X,a,\bigcup_{q \in X} \Delta(q,a) \mid X \subseteq Q,\,a \in \Sigma\}$$.
+* The initial state is just the initial state of $N$ as a singleton: $$\{q_0\}$$
+* The final states of $\pow(N)$ are those sets of states of $Q$ that *contain* a final state of $Q$, i.e. that have a non-empty intersection with $F$: $$\{X \mid X \subseteq Q,\,F \cap X \neq \emptyset\}$$.
+</div>
