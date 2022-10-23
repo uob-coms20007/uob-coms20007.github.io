@@ -4,6 +4,7 @@ remote_theme: pmarsceill/just-the-docs
 compress_html:
   ignore:
     envs: all
+  blanklines: true
 kramdown:
   syntax_highlighter_opts:
     block:
