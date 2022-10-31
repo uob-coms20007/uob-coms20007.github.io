@@ -211,6 +211,10 @@ expressions.
 We denote the set of boolean expressions as $\mathcal{B}$.
 </div>
 
+As before, we take the convention that binary operators are left-associative.
+Unary negation takes precedence (and so negates the smallest boolean expression
+that follows it).
+
 <div class="defn" markdown="1">
 We define the semantics of boolean expressions as a total function
 $⟦\cdot⟧^{\mathcal{B}} \in \mathcal{B} \rightarrow \mathsf{State} \rightarrow
