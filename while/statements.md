@@ -54,7 +54,7 @@ $$
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{SAss}$}
-\BinaryInfC{$\left\langle\texttt{v}\;\leftarrow\;a, \sigma\right\rangle \rightarrow \left\langle\texttt{skip}, \sigma[\texttt{v} \mapsto \left\llbracket a \right\rrbracket^{\mathcal{A}}(\sigma)] \right\rangle$}
+\UnaryInfC{$\left\langle\texttt{v}\;\leftarrow\;a, \sigma\right\rangle \rightarrow \left\langle\texttt{skip}, \sigma[\texttt{v} \mapsto \left\llbracket a \right\rrbracket^{\mathcal{A}}(\sigma)] \right\rangle$}
 \end{prooftree}
 $$
 
@@ -70,7 +70,7 @@ $$
 \begin{prooftree}
 \AxiomC{$\left\langle s_1, \sigma\right\rangle \rightarrow \left\langle s_1', \sigma'\right\rangle$}
 \LeftLabel{$\rlnm{SSeqStep}$}
-\BinaryInfC{$\left\langle s_1;\;s_2, \sigma\right\rangle \rightarrow \left\langle s_1';\;s_2, \sigma' \right\rangle$}
+\UnaryInfC{$\left\langle s_1;\;s_2, \sigma\right\rangle \rightarrow \left\langle s_1';\;s_2, \sigma' \right\rangle$}
 \end{prooftree}
 $$
 
