@@ -54,7 +54,7 @@ $$
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{SAss}$}
-\UnaryInfC{$\langle\texttt{v}\;\leftarrow\;a, \sigma\rangle \rightarrow \langle\texttt{skip}, \sigma[\texttt{v} \mapsto \llbracket a \rrbracket^{\mathcal{A}}(\sigma)] \rangle$}
+\UnaryInfC{$\langle\texttt{v}\;\leftarrow\;a, \sigma\rangle \rightarrow \langle\texttt{skip}, \sigma[\texttt{v} \mapsto ⟦ a ⟧^{\mathcal{A}}(\sigma)] \rangle$}
 \end{prooftree}
 $$
 
@@ -78,13 +78,13 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \top}
+\AxiomC{⟦ b ⟧^{\mathcal{B} = \top}
 \LeftLabel{$\rlnm{SIfTrue}$}
 \UnaryInfC{$\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\rangle \rightarrow \langle s_1, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \bot}
+\AxiomC{ ⟦b ⟧^{\mathcal{B} = \bot}
 \LeftLabel{$\rlnm{SIfFalse}$}
 \UnaryInfC{$\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\rangle \rightarrow \langle s_2, \sigma\rangle$}
 \end{prooftree}
@@ -94,13 +94,13 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \top}
+\AxiomC{ ⟦b ⟧^{\mathcal{B} = \top}
 \LeftLabel{$\rlnm{SWhileTrue}$}
 \UnaryInfC{$\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle \rightarrow \langle s;\;\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \bot}
+\AxiomC{ ⟦b ⟧^{\mathcal{B} = \bot}
 \LeftLabel{$\rlnm{SWhileFalse}$}
 \UnaryInfC{$\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle \rightarrow \langle \texttt{skip}, \sigma\rangle$}
 \end{prooftree}
