@@ -48,13 +48,13 @@ $$
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{SSkip}$}
-\UnaryInfC{$\left\langle\texttt{skip}, \sigma\right\rangle \rightarrow \left\langle\texttt{skip}, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{skip}, \sigma\rangle \rightarrow \langle\texttt{skip}, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{SAss}$}
-\UnaryInfC{$\left\langle\texttt{v}\;\leftarrow\;a, \sigma\right\rangle \rightarrow \left\langle\texttt{skip}, \sigma[\texttt{v} \mapsto \left\llbracket a \right\rrbracket^{\mathcal{A}}(\sigma)] \right\rangle$}
+\UnaryInfC{$\langle\texttt{v}\;\leftarrow\;a, \sigma\rangle \rightarrow \langle\texttt{skip}, \sigma[\texttt{v} \mapsto \llbracket a \rrbracket^{\mathcal{A}}(\sigma)] \rangle$}
 \end{prooftree}
 $$
 
@@ -64,13 +64,13 @@ $$
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{SSeqSkip}$}
-\UnaryInfC{$\left\langle\texttt{skip};\;s, \sigma\right\rangle \rightarrow \left\langle s, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{skip};\;s, \sigma\rangle \rightarrow \langle s, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{$\left\langle s_1, \sigma\right\rangle \rightarrow \left\langle s_1', \sigma'\right\rangle$}
+\AxiomC{$\langle s_1, \sigma\rangle \rightarrow \langle s_1', \sigma'\rangle$}
 \LeftLabel{$\rlnm{SSeqStep}$}
-\UnaryInfC{$\left\langle s_1;\;s_2, \sigma\right\rangle \rightarrow \left\langle s_1';\;s_2, \sigma' \right\rangle$}
+\UnaryInfC{$\langle s_1;\;s_2, \sigma\rangle \rightarrow \langle s_1';\;s_2, \sigma' \rangle$}
 \end{prooftree}
 $$
 
@@ -78,15 +78,15 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{\left\llbracket b \right\rrbracket^{\mathcal{B} = \top}
+\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \top}
 \LeftLabel{$\rlnm{SIfTrue}$}
-\UnaryInfC{$\left\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\right\rangle \rightarrow \left\langle s_1, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\rangle \rightarrow \langle s_1, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{\left\llbracket b \right\rrbracket^{\mathcal{B} = \bot}
+\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \bot}
 \LeftLabel{$\rlnm{SIfFalse}$}
-\UnaryInfC{$\left\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\right\rangle \rightarrow \left\langle s_2, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma\rangle \rightarrow \langle s_2, \sigma\rangle$}
 \end{prooftree}
 $$
 
@@ -94,15 +94,15 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{\left\llbracket b \right\rrbracket^{\mathcal{B} = \top}
+\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \top}
 \LeftLabel{$\rlnm{SWhileTrue}$}
-\UnaryInfC{$\left\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\right\rangle \rightarrow \left\langle s;\;\texttt{while}\;b\;\texttt{do}\;s, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle \rightarrow \langle s;\;\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{\left\llbracket b \right\rrbracket^{\mathcal{B} = \bot}
+\AxiomC{\llbracket b \rrbracket^{\mathcal{B} = \bot}
 \LeftLabel{$\rlnm{SWhileFalse}$}
-\UnaryInfC{$\left\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\right\rangle \rightarrow \left\langle \texttt{skip}, \sigma\right\rangle$}
+\UnaryInfC{$\langle\texttt{while}\;b\;\texttt{do}\;s, \sigma\rangle \rightarrow \langle \texttt{skip}, \sigma\rangle$}
 \end{prooftree}
 $$
 </div>
@@ -113,7 +113,7 @@ successive confiigurations are related by $\rightarrow$.
 
 We consider a set of __terminal configurations__, which help us decide when
 execution has finished. For the While language, all configurations of the form
-$\left\langle \texttt{skip}, \sigma \right\rangle$ are terminal.
+$\langle \texttt{skip}, \sigma \rangle$ are terminal.
 
 A __complete__ trace is either a finite trace that ends in a terminal
 configuration, or an infinite trace.
