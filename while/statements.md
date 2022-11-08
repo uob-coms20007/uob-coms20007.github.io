@@ -117,3 +117,42 @@ $\langle \texttt{skip}, \sigma \rangle$ are terminal.
 
 A __complete__ trace is either a finite trace that ends in a terminal
 configuration, or an infinite trace.
+
+# Syntactic Sugar
+
+The While language—in the abstract syntax we introduced—is very limited. This
+is good when proving things about the language (less cases to consider), but is
+not ideal when trying to write complex programmes.
+
+As with regular expressions, we can define syntactic sugar—notations or
+abbreviations that allow us to express very simply some common programming
+patterns _without_ extending the abstract syntax. We'll tend to introduce such
+abbreviations with an $\equiv$ symbol, which we'll use regardless of the object
+we're defining an abbreviation for (arithmetic or boolean expression, or
+statement).
+
+For example, we could use syntactic sugar to define (true) for loops, which
+iterate through a piece of code a fixed number of time.
+
+$$
+\begin{aligned}
+  \begin{aligned}
+  &\texttt{for}\;\texttt{v}\;\texttt{from}\;\texttt{n}_1\;\texttt{upto}\;\texttt{n}_2\;\texttt{by}\;\texttt{n}_3\;\texttt{do}\;s
+  \end{aligned}
+&
+  \equiv
+&
+  \begin{aligned}
+  &\texttt{v} \leftarrow \texttt{n}_1;\\
+  &\texttt{while}\;(\texttt{v} < \texttt{n}_2 + 1)\;\{\\
+  &\quad s\\
+  &\quad\texttt{v} \leftarrow \texttt{v} + \texttt{n}_3\\
+  &\}
+  \end{aligned}
+\end{aligned}
+$$
+
+In general, we'll be expecting programmes in the abstract syntax above, and
+will explicitly relax requirements when we expect something else.
+(In general, we'll also have more sleep before writing exercise sheets and use
+the abstract syntax above when giving you programmes to look at.)
