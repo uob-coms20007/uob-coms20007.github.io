@@ -61,14 +61,14 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{$⟦b⟧^{\mathcal{B}} = \top$}
+\AxiomC{$⟦b⟧^{\mathcal{B}}(\sigma) = \top$}
 \AxiomC{$\langle s_1, \sigma  \rangle \Downarrow \sigma'$}
 \LeftLabel{$\rlnm{BIf_{\top}}$}
 \BinaryInfC{$\langle \texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma \rangle \Downarrow \sigma'$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{$⟦b⟧^{\mathcal{B}} = \bot$}
+\AxiomC{$⟦b⟧^{\mathcal{B}}(\sigma) = \bot$}
 \AxiomC{$\langle s_2, \sigma \rangle \Downarrow \sigma'$}
 \LeftLabel{$\rlnm{BIf_{\bot}}$}
 \BinaryInfC{$\langle \texttt{if}\;b\;\texttt{then}\;s_1\;\texttt{else}\;s_2, \sigma \rangle \Downarrow \sigma'$}
@@ -79,7 +79,7 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{$⟦b ⟧^{\mathcal{B}} = \top$}
+\AxiomC{$⟦b ⟧^{\mathcal{B}}(\sigma) = \top$}
 \AxiomC{$\langle s, \sigma \rangle \Downarrow \sigma'$}
 \AxiomC{$\langle \texttt{while}\;b\;\texttt{do}\;s, \sigma' \rangle \Downarrow \sigma''$}
 \LeftLabel{$\rlnm{BWhile_{\top}}$}
@@ -91,7 +91,7 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{$⟦b ⟧^{\mathcal{B}} = \bot$}
+\AxiomC{$⟦b ⟧^{\mathcal{B}}(\sigma) = \bot$}
 \LeftLabel{$\rlnm{BWhile_{\bot}}$}
 \UnaryInfC{$\langle \texttt{while}\;b\;\texttt{do}\;s, \sigma \rangle \Downarrow \sigma$}
 \end{prooftree}
