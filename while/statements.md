@@ -41,7 +41,7 @@ The set of semantic configurations for the While language is $\mathcal{S} \times
 
 <div class="defn" markdown="1">
 We define the small step semantics of the While language as a relation
-$\rightarrow \in (\mathcal{S} \times \mathsf{State}) \times (\mathcal{S} \times \mathsf{State})$,
+$\rightarrow \subseteq (\mathcal{S} \times \mathsf{State}) \times (\mathcal{S} \times \mathsf{State})$,
 using the following rules.
 
 $$
