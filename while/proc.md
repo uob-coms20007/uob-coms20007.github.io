@@ -1,5 +1,4 @@
 ---
-layout: math
 title: Procedures
 nav_order: 5
 mathjax: true
@@ -224,7 +223,7 @@ $$
 \begin{prooftree}
 \AxiomC{$\langle d_v, (\mathit{env}_v, \mathit{sto}) \rangle \Downarrow_{\mathcal{D}} (\mathit{env}'_v, \mathit{sto}')$}
 \AxiomC{$\langle d_p, \mathit{env}'_v, \mathit{env}_p \rangle \Downarrow_{\mathcal{P}} \mathit{env}'_p$}
-\AxiomC{$\langle s, (\mathit{env}'_v, \mathit{sto}), \mathit{env}'_p \rangle \Downarrow \mathit{sto}''$}
+\AxiomC{$\langle s, (\mathit{env}'_v, \mathit{sto}'), \mathit{env}'_p \rangle \Downarrow \mathit{sto}''$}
 \LeftLabel{$\rlnm{BBlock}$}
 \TrinaryInfC{$\langle \texttt{begin}\;d_v\texttt{;}\;d_p\texttt{;}\;s\;\texttt{end}, (\mathit{env}_v, \mathit{sto}), \mathit{env}_p \rangle \Downarrow \mathit{sto}''$}
 \end{prooftree}
