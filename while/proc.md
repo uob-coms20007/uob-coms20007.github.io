@@ -1,4 +1,5 @@
 ---
+layout: math
 title: Procedures
 nav_order: 5
 mathjax: true
