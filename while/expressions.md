@@ -110,7 +110,7 @@ write $⟦a⟧^{\mathcal{A}^{-}} = n$.
 
 By structral induction, we prove that, for any $a \in \mathcal{A}^{-}$ there
 exists a unique $v \in \mathbb{Z}$ such that $a \Downarrow_{\mathcal{A}^{-}}
-n$.
+v$.
 
 - Case $a = \texttt{n}$.
   Then we have $a \Downarrow_{\mathcal{A}^{-}} ⟦\texttt{n}⟧^{\mathbb{Z}}$ (and
