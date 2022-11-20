@@ -51,8 +51,8 @@ will use $d_v$ as a variable that stands for sets of variable declarations, and
 $d_p$ as a variable that stands for sets of procedure definitions.
 
 We denote the set of Procs statements as $\mathcal{S}$, the set of
-variable declarations as $\mathcal{D}_{v}$, and the set of procedure
-definitions as $\mathcal{D}_{p}$.
+variable declarations as $\mathcal{D}^{v}$, and the set of procedure
+definitions as $\mathcal{D}^{p}$.
 </div>
 
 We use the same conventions as for the simple While statements, and often use
@@ -135,14 +135,14 @@ state variables when we exit a block), and adding rules for building procedure
 environments, and handling procedure calls.
 
 We also redefine big-step semantics for variable declarations
-$\Downarrow_{\mathcal{D}} \subseteq (\mathcal{D}_v \times (\mathsf{Env}^{v}
+$\Downarrow_{\mathcal{D}} \subseteq (\mathcal{D}^v \times (\mathsf{Env}^{v}
 \times \mathsf{Store})) \times (\mathsf{Env}^{v} \times \mathsf{Store})$—we
 essentially interpret variable declarations as creating new locations in the
 store for each declared variable, ensuring that the environment is updated to
 make use of these new locations for declared variables.
 
 We finally also define big-step semantics for procedure definitions
-$\Downarrow_{\mathcal{P}} \subseteq (\mathcal{D}_p \times \mathsf{Env}^{v} \times \mathsf{Env}^{p}) \times \mathsf{Env}^{p}$.
+$\Downarrow_{\mathcal{P}} \subseteq (\mathcal{D}^p \times \mathsf{Env}^{v} \times \mathsf{Env}^{p}) \times \mathsf{Env}^{p}$.
 
 <div class="defn" markdown="1">
 $$
