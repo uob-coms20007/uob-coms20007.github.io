@@ -16,7 +16,7 @@ variable $\texttt{x}$ to the number $n \in \mathbb{N}$, and every other variable
 A `while` program $\texttt{S}$ **computes** a partial function  
 $f : \mathbb{N} ⇀ \mathbb{N}$ (with respect to $\texttt{x}$) just if $f(m)
 \simeq n$ exactly when $\langle S, [\texttt{x} \mapsto m] \rangle
-\Rightarrow^\ast \langle \texttt{skip}, [\texttt{x} \mapsto n] \rangle$.
+\Downarrow [\texttt{x} \mapsto n]$.
 
 The function computed by a while program $\texttt{S}$ must be partial, because
 $\texttt{S}$ might decide to loop on certain inputs.
