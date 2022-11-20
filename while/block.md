@@ -30,7 +30,7 @@ A __statement__ is either:
 
 A set of __variable declarations__ is either:
 * empty; or
-* $\texttt{var x}\leftarrow a\texttt{;}\; d_v$, where \texttt{x} is a variable,
+* $\texttt{var x}\leftarrow a\texttt{;}\; d_v$, where $\texttt{x}$ is a variable,
   $a$ is an arithmetic expression, and $d_v$ is already a set of variable
   declarations.
 
