@@ -44,30 +44,30 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
   
    is computable. We have that $f = ⟦ S ⟧_{\texttt{x}}$, where $S$ is the program
    ```
-     x := x + 1
+     x <- x + 1
    ```
 
 2. The factorial function $(\cdot)! : \mathbb{N} \to \mathbb{N}$ is
    computable. We have that $(\cdot)! = ⟦ Q ⟧_{\texttt{n}}$, where $Q$ is the
    program
    ```
-   r := 1;
+   r <- 1;
    while (1 <= n) {
-     r := r * n;
-     n := n - 1
+     r <- r * n;
+     n <- n - 1
    }
-   n := r
+   n <- r
    ```
 
 3. The integer-division-by-2 function $\textbf{div2} : \mathbb{N} ⇀
    \mathbb{N}$, which performs Euclidean division by 2 and returns the
    quotient, is computable. It is computed wrt `n` by the program
    ```
-   q := 0; r := n;
+   q <- 0; r <- n;
    while (2 <= r) {
-     q := q + 1; r := r - 2   // Loop invariant: n = q * 2 + r & r >= 0
+     q <- q + 1; r <- r - 2   // Loop invariant: n = q * 2 + r & r >= 0
    }
-   q := 0; r := 0; n := q
+   q <- 0; r <- 0; n <- q
    ```
 
 4. The partial function 
@@ -85,7 +85,7 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    is computable. It is computed wrt `x` by the following program.
    ```
    if (x <= 1) then
-     x := x + 1
+     x <- x + 1
    else
      while (true) do { skip }
    ```
