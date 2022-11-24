@@ -110,8 +110,8 @@ semi-characteristic function $\xi_U$ is computable.
     conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a
     famously unsolved problem of mathematics. It states that the Collatz
     sequence $a_0, a_1, \dots$ starting at any $a_0 \in \mathbb{N}^+$ will
-    eventually reach the number $1$. As a matter of convention we suppose $0
-    \not\in E$.
+    eventually reach the number $1$. As a matter of convention we define $0
+    \not\in U$.
 
     If the Collatz conjecture is true, then every number is in the predicate
     $U$, i.e. $U = \mathbb{N}$. Thus, if $U$ were proven to be decidable,
@@ -132,6 +132,8 @@ semi-characteristic function $\xi_U$ is computable.
       // Depending on the parity compute the next element in the sequence.
       if (r = 0) then n <- q else n <- 3 * n + 1
     }
+    // If we get here it must be that n = 1, so zero out all other variables.
+    q <- 0; r <- 0
     ```
     If when starting from $n$ the sequence eventually reaches $1$, the
     `while` loop will terminate (with the value $1$ in `n`). Otherwise, the
