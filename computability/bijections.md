@@ -10,7 +10,7 @@ parent: Computability
 
 Bijections can be used to put sets into exact correspondence with each other.
 
-##
+## Definitions
 
 * A function $f : A \to B$ is __injective__ (or 1-1) just if for any $a_1, a_2
   \in A$ we have that $f(a_1) = f(a_2)$ implies $a_1 = a_2$. We sometimes write
