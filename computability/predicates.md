@@ -17,7 +17,7 @@ $$
   &\chi_U : \mathbb{N} \to \mathbb{N} \\
   &\chi_U(n) =
     \begin{cases}
-      1 & \text{ if $n \in X$} \\
+      1 & \text{ if $n \in U$} \\
       0 & \text{ otherwise}
     \end{cases}
   \end{aligned}
@@ -48,8 +48,8 @@ __undecidable__.
    the program
    ```
     while (! x <= 0) do
-      x := x - 2
-    if (x = 0) then x := 1 else x := 0 
+      x <- x - 2
+    if (x = 0) then x <- 1 else x <- 0 
    ```
 
 # Semi-decidable predicates
@@ -98,8 +98,8 @@ semi-characteristic function $\xi_U$ is computable.
 
     $$
     \begin{aligned}
-      a_0 &:= k \\
-      a_{n+1} &:= \begin{cases}
+      a_0 &<- k \\
+      a_{n+1} &<- \begin{cases}
         a_n/2      & \text{ if $a_n$ is even} \\
         (3a_n+1)/2 & \text{ if $a_n$ is odd}
       \end{cases}
@@ -124,13 +124,13 @@ semi-characteristic function $\xi_U$ is computable.
     ```
     while (! (n = 1)) {
       // Divide n by 2, putting the quotient in q and the remainder in r.
-      q := 0; r := n;
+      q <- 0; r <- n;
       while (2 <= r) {
-        q := q + 1; r := r - 2      // Loop invariant: n = q * 2 + r & r > 0
+        q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r > 0
       }
 
       // Depending on the parity compute the next element in the sequence.
-      if (r = 0) then n := q else n := 3 * n + 1
+      if (r = 0) then n <- q else n <- 3 * n + 1
     }
     ```
     If when starting from $n$ the sequence eventually reaches $1$, the
