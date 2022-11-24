@@ -1,12 +1,33 @@
 ---
 layout: math
-title: Sections and retractions
+title: Encoding finite data
 nav_order: 5
 mathjax: true
 parent: Computability
 ---
+# Encoding finite data
 
-# Sections and retractions
+For some sets of data $S$ it is impossible to find a bijection $S
+\xrightarrow{\cong} \mathbb{N}$ that encodes $S$ as natural numbers.
+
+This may happen for two reasons:
+* _$S$ is too big._ For example, it is a [well-known
+  theorem](https://en.wikipedia.org/wiki/Cantor's_theorem) that there cannot be
+  a surjection $\mathcal{P}(\mathbb{N}) \twoheadrightarrow \mathbb{N}$ from the
+  set of all subsets of natural numbers to the set of natural numbers.
+
+* _$S$ is too small_. For example, it is easy to show that there cannot be a
+  bijection $\mathbb{B} \xrightarrow{\cong} \mathbb{N}$.
+  
+In the first case there is little we can do (though some researchers disagree,
+and [have worked out many interesting methods](https://en.wikipedia.org/wiki/Computable_number), 
+some of them [even involving Haskell](https://math.andrej.com/2008/11/21/a-haskell-monad-for-infinite-search-in-finite-time/)).
+
+In the second case, we have to use something that is _less than a bijection_.
+
+This is the notion of sections and retractions.
+
+## Sections and retractions
 
 A function $s : A \to B$ is a __section__ just when there exists a
 corresponding __retraction__, i.e. a function $r : B \to A$ such that for all
@@ -21,10 +42,12 @@ inverse.' In terms of data representation, it says that we can encode every
 $a \in A$ as an element $s(a)$ of $B$. We can then 'recover' the original $a
 \in A$ by computing the element $r(s(a)) = a$.
 
-# Booleans vs. natural numbers
+## Example: Booleans vs. natural numbers
 
 We may encode the set $\mathbb{B} = \{ \top, \bot \}$ of boolean values as
-natural numbers. We define
+natural numbers through a section-retraction pair.
+
+We define
 
 $$
   \begin{aligned}

@@ -1,10 +1,12 @@
 ---
 layout: math
 title: Reflections
-nav_order: 4
+nav_order: 6
 mathjax: true
 parent: Computability
 ---
+
+# Reflections: computing under representation
 
 Let $i : A \xrightarrow{\cong} \mathbb{N}$ be a bijection with inverse
 $i^{-1}$. We may think of $i$ as uniquely representing all the elements of

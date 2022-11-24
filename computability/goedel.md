@@ -42,7 +42,7 @@ While](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
 For the rest of this unit we assume that we have a Gödel numbering
 
 $$
-  \gamma : \textbf{Stmt} \xrightarrow{\cong} \mathbb{N}
+  \ulcorner - \urcorner : \textbf{Stmt} \xrightarrow{\cong} \mathbb{N}
 $$
 
 which encodes While programs as natural numbers.
