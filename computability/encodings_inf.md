@@ -38,21 +38,23 @@ functions](https://en.wikipedia.org/wiki/Pairing_function) exists.
 * ... and there are [many other variants](https://mathworld.wolfram.com/PairingFunction.html).
 
 From this point onwards we assume that we have a fixed pairing function
+
 $$
   \langle -, - \rangle : \mathbb{N} \times \mathbb{N} \xrightarrow{\cong} \mathbb{N}
 $$
+
 Moreover, we write
+
 $$
   \textsf{split} : \mathbb{N} \xrightarrow{\cong} \mathbb{N} \times \mathbb{N}
 $$
+
 for its inverse.
 
 ## Encoding lists
 
-Once we have a pairing function $\langle -, - \rangle : \mathbb{N} \times
-\mathbb{N} \xrightarrow{\cong} \mathbb{N}$ and its inverse $\rangle -,-
-\rangle^{-1} : \mathbb{N} \xrightarrow{\cong} \mathbb{N} \times \mathbb{N}$ then
-we can use them to encode all sorts of other data.
+Once we have a pairing function $\langle -, - \rangle$ and its inverse
+$\textsf{split}$ we can use them to encode all sorts of other data.
 
 For example, we may encode lists of natural numbers, i.e. elements of the set
 

@@ -8,16 +8,22 @@ parent: Computability
 
 # Bijections
 
+Bijections can be used to put sets into exact correspondence with each other.
+
+##
+
 * A function $f : A \to B$ is __injective__ (or 1-1) just if for any $a_1, a_2
-\in A$ we have that $f(a_1) = f(a_2)$ implies $a_1 = a_2$.
+  \in A$ we have that $f(a_1) = f(a_2)$ implies $a_1 = a_2$. We sometimes write
+  $f : A \rightarrowtail B$ whenever $f$ is an injection.
 
 * A function $f : A \to B$ is __surjective__ just if for any $b \in B$ there
-exists $a \in A$ such that $f(a) = b$.
+  exists $a \in A$ such that $f(a) = b$. We sometimes write $f : A
+  \twoheadrightarrow B$ whenever $f$ is a surjection.
 
-* A function $f : A \to B$ is a __bijection__ just if it is injective and
-surjective.
+* A function $f : A \to B$ is a __bijection__ just if it is _both_ injective and
+  surjective.
 
-# Isomorphism
+## Isomorphism
 
 Let $f : A \to B$ be a function.
 
