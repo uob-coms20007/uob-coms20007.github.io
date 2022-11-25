@@ -23,7 +23,7 @@ Let $f : A ⇀ A$ be a partial function. We cannot directly speak to $f$'s compu
 the set $A$, not on the set $\mathbb{N}$. However, the bijection $i$ allows us to _transport_ the function to the set $\mathbb{N}$!
 
 
-**Definition.** The __reflection__ of $f$ *under* $i$ is the function 
+*Definition.* The __reflection__ of $f$ *under* $i$ is the function 
 
 $$
   \begin{aligned}
@@ -34,12 +34,14 @@ $$
 
 Written in point-free style, we define $\tilde{f} = i \circ f \circ i^{-1}$.
 
-$$\require{AMScd}
+$$
+\require{amscd}
 \begin{CD}
-A @>{f}>> A\\
-@VVV @VVV \\
-\mathbb{N} @>{\tilde{f}}>> \mathbb{N};
-\end{CD}$$
+  A @>{f}>> A\\
+  @VVV @VVV \\
+  \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
+\end{CD}
+$$
 
 The reflection $\tilde{f}$ computes $f$ "under" the encoding $i$. Thus,
 instead of acting on elements of $A$, it acts on their encoded forms.
