@@ -97,7 +97,7 @@ semi-characteristic function $\xi_U$ is computable.
 
 2.  The predicate
     $$
-      U = \{ 0 \} \cup \{ k \in \mathbb{N} \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
+      U = \{ 0 \} \cup \{ k \in \mathbb{N}^+ \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
     $$
     is semi-decidable.
 
@@ -118,8 +118,8 @@ semi-characteristic function $\xi_U$ is computable.
     conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a
     famously unsolved problem of mathematics. It states that the Collatz
     sequence $a_0, a_1, \dots$ starting at any $a_0 \in \mathbb{N}^+$ will
-    eventually reach the number $1$. As a matter of convention we define $0
-    \not\in U$.
+    eventually reach the number $1$. As a matter of convention we let $0
+    \in U$.
 
     If the Collatz conjecture is true, then every number is in the predicate
     $U$, i.e. $U = \mathbb{N}$. Thus, if $U$ were proven to be decidable,
