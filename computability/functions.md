@@ -52,10 +52,13 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    program
    ```
    r <- 1;
-   while (1 <= n) {
+   while (n >= 1) {
      r <- r * n;
      n <- n - 1
    }
+   // Zero out the auxiliary variable.
+   r <- 0;
+   // Put the desired result in n.
    n <- r
    ```
 
@@ -64,10 +67,13 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    quotient, is computable. It is computed wrt `n` by the program
    ```
    q <- 0; r <- n;
-   while (2 <= r) {
-     q <- q + 1; r <- r - 2   // Loop invariant: n = q * 2 + r & r >= 0
+   while (r >= 2) {
+     q <- q + 1; r <- r - 2    // Loop invariant: n = q * 2 + r & r >= 0
    }
-   q <- 0; r <- 0; n <- q
+   // Zero out all auxiliary variables.
+   q <- 0; r <- 0;
+   // Put the result in n.
+   n <- q
    ```
 
 4. The partial function 

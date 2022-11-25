@@ -18,7 +18,7 @@ $$
   &\chi_U(n) =
     \begin{cases}
       1 & \text{ if $n \in U$} \\
-      0 & \text{ otherwise}
+      0 & \text{ if $n \not\in U$}
     \end{cases}
   \end{aligned}
 $$
@@ -44,13 +44,21 @@ __undecidable__.
    $$
      E = \{ n \in \mathbb{N} \mid n \text{ is even} \}
    $$
-   is decidable. It is decided (with respect to the variable $\texttt{x}$) by
+   is decidable. It is decided with respect to the variable $\texttt{x}$ by
    the program
    ```
-    while (! x <= 0) do
+    while (x >= 2) do {
       x <- x - 2
-    if (x = 0) then x <- 1 else x <- 0 
+    }
+    x <- 1 - x
    ```
+   The invariant maintained by this loop is that the parity of $x$ (i.e. whether
+   it is even or odd) is the same as it was before the loop started. At the end
+   of the loop the variable $\texttt{x}$ is $< 2$, which is to say either $0$ or
+   $1$. If it is $0$, the initial value had an even parity, and if it is $1$,
+   the initial value had an odd parity. We have to remember to flip this value
+   in order to return the correct result (i.e. $1$ if it is even, and $0$ if it
+   is odd).
 
 # Semi-decidable predicates
 
@@ -89,7 +97,7 @@ semi-characteristic function $\xi_U$ is computable.
 
 2.  The predicate
     $$
-      U = \{ k \in \mathbb{N} \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
+      U = \{ 0 \} \cup \{ k \in \mathbb{N} \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
     $$
     is semi-decidable.
 
@@ -123,14 +131,27 @@ semi-characteristic function $\xi_U$ is computable.
     calculates every number in the sequence until it reaches $1$.
     ```
     while (! (n = 1)) {
+
       // Divide n by 2, putting the quotient in q and the remainder in r.
       q <- 0; r <- n;
-      while (2 <= r) {
+      while (r >= 2) {
         q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r > 0
       }
 
       // Depending on the parity compute the next element in the sequence.
-      if (r = 0) then n <- q else n <- 3 * n + 1
+      if (r = 0) then {
+        // The next element is a_n / 2.
+        n <- q
+      }
+      else {
+        // The next element is (3 * a_n + 1) / 2.
+        // Compute 3 * a_n + 1, and then divide it by 2.
+        q <- 0; r <- 3 * n + 1;
+        while (r >= 2) do {
+          q <- q + 1; r <- r - 2
+        }
+        n <- q
+      }
     }
     // If we get here it must be that n = 1, so zero out all other variables.
     q <- 0; r <- 0
