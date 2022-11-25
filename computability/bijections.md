@@ -50,7 +50,7 @@ isomorphism.
 Thus, a bijection $f : A \to B$ is a device for putting the sets $A$ and $B$
 into perfect correspondence: it maps every $a \in A$ to a uniquely associated
 $b \in B$. 
-# Integers vs. natural numbers
+## Integers vs. natural numbers
 
 In light of this, the following result is a bit surprising.
 
@@ -61,7 +61,7 @@ $$
   &\beta : \mathbb{Z} \to \mathbb{N} \\
   &\beta(x) = \begin{cases}
     2x    & \text{ if $x \geq 0$} \\
-    -2x-1 & \text{ otherwise}
+    -2x-1 & \text{ if $x < 0 $}
   \end{cases}
 \end{aligned}
 $$
