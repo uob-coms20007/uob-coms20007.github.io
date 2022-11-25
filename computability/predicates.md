@@ -63,7 +63,7 @@ $$
   &\xi_U : \mathbb{N} ⇀ \mathbb{N} \\
   &\xi_U(n)
     \begin{cases}
-      \simeq 1 & \text{ if $n \in X$} \\
+      \simeq 1 & \text{ if $n \in U$} \\
       \uparrow & \text{ otherwise}
     \end{cases}
   \end{aligned}
@@ -98,8 +98,8 @@ semi-characteristic function $\xi_U$ is computable.
 
     $$
     \begin{aligned}
-      a_0 &<- k \\
-      a_{n+1} &<- \begin{cases}
+      a_0 &= k \\
+      a_{n+1} &= \begin{cases}
         a_n/2      & \text{ if $a_n$ is even} \\
         (3a_n+1)/2 & \text{ if $a_n$ is odd}
       \end{cases}

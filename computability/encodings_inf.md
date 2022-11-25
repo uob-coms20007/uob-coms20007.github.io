@@ -10,10 +10,10 @@ parent: Computability
 
 The main way to encode a set $S$ of data as natural numbers is to construct a bijection $S \xrightarrow{\cong} \mathbb{N}$.
 
-We have already seen how to construct a bijection $\beta : \mathbb{Z} \to
-\mathbb{N}$, so that any integer may be encoded as a natural number. We will now
-see how to encode other kinds of _first-order_ data (e.g. numbers, lists, trees,
-etc.) as natural numbers.
+We have already seen how to construct a bijection $\beta : \mathbb{Z}
+\xrightarrow{\cong} \mathbb{N}$, so that any integer may be encoded as a natural
+number. We will now see how to encode other kinds of _first-order_ data (e.g.
+numbers, lists, trees, etc.) as natural numbers.
 
 ## Encoding pairs of numbers
 
