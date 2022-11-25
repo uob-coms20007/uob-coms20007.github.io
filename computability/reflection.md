@@ -38,7 +38,7 @@ $$
 \require{amscd}
 \begin{CD}
   A @>{f}>> A\\
-  @VVV @VVV \\
+  @AAi^{-1}A @VViV \\
   \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
 \end{CD}
 $$
