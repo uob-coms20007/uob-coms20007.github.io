@@ -38,7 +38,7 @@ $$
 \require{amscd}
 \begin{CD}
   A @>{f}>> A\\
-  @AAi^{-1}A @VViV \\
+  @Ai^{-1}AA @VViV \\
   \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
 \end{CD}
 $$
@@ -46,8 +46,34 @@ $$
 The reflection $\tilde{f}$ computes $f$ "under" the encoding $i$. Thus,
 instead of acting on elements of $A$, it acts on their encoded forms.
 
-We can then say that, in a sense, the function $f : A ⇀ A$ is computable just
-if its reflection $\tilde{f} : \mathbb{N} ⇀ \mathbb{N}$ is.
+In a sense, the function $f : A ⇀ A$ is computable just if its reflection
+$\tilde{f} : \mathbb{N} ⇀ \mathbb{N}$ is.
 
-This obviates the need to define what it means to be computable for sets that
-are not the natural numbers (e.g. integers).
+## Reflecting under section-retraction pairs
+
+It is worth noticing that the definition of a reflection does not require the
+full power of a bijection. It is in fact sufficient to have a section-retraction
+pair $(s : A \to \mathbb{N}, r : \mathbb{N} \to A)$.
+
+*Definition.* The __reflection__ of $f$ *under* $(s, r)$ is the function 
+
+$$
+  \begin{aligned}
+  & \tilde{f} : \mathbb{N} ⇀ \mathbb{N} \\
+  & \tilde{f}(n) = s(f(r(n)))
+  \end{aligned}
+$$
+
+Written in point-free style, we define $\tilde{f} = s \circ f \circ r$.
+
+$$
+\require{amscd}
+\begin{CD}
+  A @>{f}>> A\\
+  @ArAA @VVsV \\
+  \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
+\end{CD}
+$$
+
+Unlike the case of bijections, this can be used to encode computability on
+finite data types.
