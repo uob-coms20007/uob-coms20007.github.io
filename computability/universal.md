@@ -48,7 +48,7 @@ as the composite function
 
 $$
   \mathbf{Stmt} \times \mathbb{N}
-    \xrightarrow{\urcorner - \ulcorner \times \text{id}_\mathbb{N}}
+    \xrightarrow{\ulcorner - \urcorner \times \text{id}_\mathbb{N}}
   \mathbb{N} \times \mathbb{N}
     \xrightarrow{\langle -, - \rangle}
   \mathbb{N}

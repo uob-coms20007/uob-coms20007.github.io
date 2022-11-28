@@ -99,4 +99,16 @@ $$
     \end{cases}
 $$
 
-We must then not forget to show that $\beta^{-1} \circ \beta = \text{id}_\mathbb{Z}$ and $\beta \circ \beta^{-1} = \text{id}_\mathbb{N}$.
+We must then remember to show that 
+
+$$
+  \beta^{-1} \circ \beta = \text{id}_\mathbb{Z}
+$$
+
+and
+
+$$
+
+\beta \circ \beta^{-1} = \text{id}_\mathbb{N}
+
+$$
