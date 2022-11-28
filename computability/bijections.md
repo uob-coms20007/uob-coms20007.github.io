@@ -1,12 +1,12 @@
 ---
 layout: math
-title: Bijections
+title: Bijections etc.
 nav_order: 3
 mathjax: true
 parent: Computability
 ---
 
-# Bijections
+# Bijections etc.
 
 Bijections can be used to put sets into exact correspondence with each other.
 
@@ -86,3 +86,15 @@ _Proof._
    * If $n$ is odd, write it as $n = 2n' + 1$. Then $f(-n' - 1) = -2(-n' - 1) - 1 = 2n' + 1$.
 
 Hence $\beta$ is a bijection. ▣
+
+We may also equivalently show that $\beta$ is a bijection by showing it's an
+isomorphism, i.e. by constructing an inverse $\beta^{-1} : \mathbb{N} \to
+\mathbb{Z}$. This inverse is
+$$
+  \beta^{-1}(n) =
+    \begin{cases}
+      n/2 & \text{ if $n$ is even} \\
+      -(n+1)/2 & \text{ if $n$ is odd}
+    \end{cases}
+$$
+We must then not forget to show that $\beta^{-1} \circ \beta = \text{id}_\mathbb{Z}$ and $\beta \circ \beta^{-1} = \text{id}_\mathbb{N}$.
