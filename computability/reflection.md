@@ -51,6 +51,9 @@ $\tilde{f} : \mathbb{N} ⇀ \mathbb{N}$ is.
 
 ## Reflecting under section-retraction pairs
 
+
+**This section is not examinable in 2022/23.**
+
 It is worth noticing that the definition of a reflection does not require the
 full power of a bijection. It is in fact sufficient to have a section-retraction
 pair $(s : A \to \mathbb{N}, r : \mathbb{N} \to A)$.

@@ -90,6 +90,7 @@ Hence $\beta$ is a bijection. ▣
 We may also equivalently show that $\beta$ is a bijection by showing it's an
 isomorphism, i.e. by constructing an inverse $\beta^{-1} : \mathbb{N} \to
 \mathbb{Z}$. This inverse is
+
 $$
   \beta^{-1}(n) =
     \begin{cases}
@@ -97,4 +98,5 @@ $$
       -(n+1)/2 & \text{ if $n$ is odd}
     \end{cases}
 $$
+
 We must then not forget to show that $\beta^{-1} \circ \beta = \text{id}_\mathbb{Z}$ and $\beta \circ \beta^{-1} = \text{id}_\mathbb{N}$.

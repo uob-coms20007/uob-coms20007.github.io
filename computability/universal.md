@@ -40,16 +40,17 @@ The following is a celebrated result in computability theory:
 
 Let's unpack what this means. First things first: in order to speak of
 computability, we have to encode the domain as natural numbers. The domain
-itself is the product of two sets, $\textbf{Stmt}$ and $\mathbb{N}$. The
-first can be encoded in the natural numbers through the Gödel numbering
-$\gamma : \textbf{Stmt} \to \mathbb{N}$. The second is already the natural
-numbers. We can then construct a bijection as the composite function
+itself is the product of two sets, $\textbf{Stmt}$ and $\mathbb{N}$. The first
+can be encoded in the natural numbers through the Gödel numbering $\ulcorner -
+\urcorner : \textbf{Stmt} \to \mathbb{N}$. The second is already the natural
+numbers. By an exercise in one of the sheets we can then construct a bijection
+as the composite function
 
 $$
   \mathbf{Stmt} \times \mathbb{N}
-    \xrightarrow{\gamma \times \textsf{id}_\mathbb{N}}
+    \xrightarrow{\urcorner - \ulcorner \times \text{id}_\mathbb{N}}
   \mathbb{N} \times \mathbb{N}
-    \xrightarrow{\phi}
+    \xrightarrow{\langle -, - \rangle}
   \mathbb{N}
 $$
 
@@ -62,22 +63,24 @@ $$
   \end{aligned}
 $$
 
-It is not very difficult to prove that if $f$ and $g$ are bijections, then so
-is $f \times g$. Moreover, we can prove that if $h : A \to B$ and $k : B \to
-C$ is a bijection, then the composite $k \circ h$ is a bijection as well.
-Combining these two results, the composite $\phi \circ (\gamma \times
-\textsf{id}_\mathbb{N}) : \mathbf{Stmt} \times \mathbb{N} \to \mathbb{N}$ is
-a bijection.
+It is not very difficult to prove that if $f$ and $g$ are bijections, then so is
+$f \times g$. Moreover, we have previously shown that the composite of two
+bijections is a bijection, so the composite function $\langle -, - \rangle \circ
+(\ulcorner - \urcorner \times \text{id}_\mathbb{N})$ is a bijection.
 
 It follows that we can reflect this function into the natural numbers using
-the Gödel numbering and pairing. The theorem says that resultant function is
-computable!
+the Gödel numbering and pairing. 
 
-In lieu of a proof, let us sketch what the program that computes this does.
+The theorem says that resultant function is computable!
 
-1. Upon receiving $i$ as an argument, it decodes it as a pair $i = \phi(e, n)$.
-2. It decodes the first component $e \in \mathbb{N}$ into (the AST of) a While program $S = \gamma^{-1}(e)$.
-3. It simulates the effect of the program $S$ on input $n$.
+In lieu of a proof, let us informally sketch what the program that computes this
+does.
+
+1. Upon receiving $i$ as an argument, it decodes it as a pair $(e, n) =
+   \textsf{split}(i)$.
+2. It decodes the first component $e = \ulcorner S \urcorner \in \mathbb{N}$
+   into (the AST of) a While program $S$.
+3. It simulates the running of the program $S$ on input $n$.
 
 This last step consists of constructing the configuration $\langle S,
 [\texttt{x} \mapsto n] \rangle$, followed by computing the (unique) next

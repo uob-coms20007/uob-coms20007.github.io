@@ -9,21 +9,22 @@ parent: Computability
 
 # Gödel numbering
 
-We have now shown how to put the following things in bijection with the
-natural numbers:
+We have now shown how to put the following things in bijection with the natural
+numbers:
 [integers](https://uob-coms20007.github.io/reference/computability/bijections.html#bijection-between-naturals-and-integers),
 [pairs of
 naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#pairing-function),
-[lists of
-naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-lists),
-and [binary trees of
-naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-binary-trees).
+and [lists of
+naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-lists).
 
-But in the previous part of the course we saw that While programs themselves
-may be represented as an [Abstract Syntax Tree
+In the problem sheet, you were also asked to show how to put binary trees in
+bijection with natural numbers.
+
+In previous lectures we discussed that While programs themselves may be
+represented as an [Abstract Syntax Tree
 (AST)](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
-So it is not a stretch of the imagination to imagine that we may encode While
-ASTs as natural numbers.
+**Thus, it is not a stretch of the imagination to imagine that we may encode
+While ASTs as natural numbers.**
 
 As While's chief data type is that of integers, an encoding of this sort
 means that _we will be able to compute functions that modify or act on While
@@ -37,9 +38,8 @@ Gödel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) in the proof of his celeb
 [incompleteness
 theorems](https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems).
 
-Let $\textbf{Stmt}$ be the set of [ASTs of
-While](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
-For the rest of this unit we assume that we have a Gödel numbering
+Let $\textbf{Stmt}$ be the set of Abstract Syntax Trees of While. For the rest
+of this unit we assume that we have a Gödel numbering
 
 $$
   \ulcorner - \urcorner : \textbf{Stmt} \xrightarrow{\cong} \mathbb{N}
@@ -57,14 +57,15 @@ limitation, i.e. is unable to achieve some task (compute a function, decide a
 predicate, etc.). We will see such a result next week.
 
 There is a [significant amount of
-lore](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach) surrounding
-Gödel numberings. However, this lore somewhat overstates their importance.
-When decoded intuitively, most impossibility results amount to statements  "a
-Parliament cannot grant itself amnesty by its own vote: it must recruit some
-external authority larger than itself."
+lore](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach) surrounding Gödel
+numberings. However, this lore somewhat [overstates their
+importance](https://wiki.c2.com/?JeanYvesGirardOnGoedelEscherBach). When
+understood intuitively, most impossibility results amount to a statement of the
+form  "a Parliament cannot grant itself amnesty by its own vote: it must recruit
+some external authority larger than itself." Alternatively, "you cannot fix your
+glasses while keeping them on your nose."
 
 # Code transformations
-
 
 It may not be entirely clear for what sort of thing one might use a Gödel
 numbering. The answer is that they can be used to compute _code
@@ -116,4 +117,4 @@ computability of such code transformations. That is, we want to
 - use the Gödel numbering to reflect them into functions $\mathbb{N} \to \mathbb{N}$, and
 - compute these reflected functions in While itself.
 
-Why we might want to do this last thing will become evident early next week.
+Why we might want to do this last thing will become evident soon.

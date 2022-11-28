@@ -7,6 +7,9 @@ parent: Computability
 ---
 # Encoding finite data
 
+
+**This section is not examinable in 2022/23.**
+
 For some sets of data $S$ it is impossible to find a bijection $S
 \xrightarrow{\cong} \mathbb{N}$ that encodes $S$ as natural numbers.
 
