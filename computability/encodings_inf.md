@@ -59,7 +59,7 @@ $\textsf{split}$ we can use them to encode all sorts of other data.
 For example, we may encode lists of natural numbers, i.e. elements of the set
 
 $$
-  \mathbb{N}^\ast = \{ [n_1, \dots, n_k] \mid k \geq 0, \forall i. n_i \in \mathbb{N} \}
+  \mathbb{N}^\ast = \{ [n_0, \dots, n_k] \mid k \geq 0, \forall i. n_i \in \mathbb{N} \}
 $$
 
 as natural numbers. To encode we define a function $\phi_\ast :
