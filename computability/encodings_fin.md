@@ -1,6 +1,6 @@
 ---
 layout: math
-title: [Bonus] Encoding finite data
+title: Encoding finite data (BONUS)
 nav_order: 6
 mathjax: true
 parent: Computability

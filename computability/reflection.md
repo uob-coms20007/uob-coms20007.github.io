@@ -23,12 +23,12 @@ natural numbers.
 
 Let $f : A ⇀ A$ be a partial function. We cannot directly speak to $f$'s
 computability, as it is a partial function on the set $A$. However, we only know
-what computability means for functions of type $\mathbb{N} \hookrightarrow
+what computability means for functions of type $\mathbb{N} \rightharpoonup
 \mathbb{N}$ only. Nevertheless, the bijection $i$ allows us to _transport_ the
 function to the set $\mathbb{N}$!
 
 
-*Definition.* The __reflection__ of $f : A \hookrightarrow A$ *under* $i$ is the
+*Definition.* The __reflection__ of $f : A \rightharpoonup A$ *under* $i$ is the
 function 
 
 $$
@@ -81,7 +81,7 @@ Similarly, $\psi$ enables us to encode elements $b \in B$ as numbers $\psi(b)
 We can then play the same trick as before, but now using each bijection to
 appropriately decode and then encode elements of $A$ and $B$ as natural numbers.
 
-*Definition.* The __reflection__ of $f : A \hookrightarrow B$ *under* $(\phi,
+*Definition.* The __reflection__ of $f : A \rightharpoonup B$ *under* $(\phi,
 psi)$ is the function 
 
 $$
