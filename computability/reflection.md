@@ -95,13 +95,13 @@ $$
 $$
 
 Written in point-free style, we define $\tilde{f} = \psi \circ f \circ \phi^{-1}$.
-This definition can also be expressed as a [commutative
-diagram](https://en.wikipedia.org/wiki/Commutative_diagram):
+This definition can also be expressed as a commutative
+diagram:
 
 $$
 \require{amscd}
 \begin{CD}
-  A @>{f}>> A\\
+  A @>{f}>> B\\
   @A{\phi}^{-1}AA @VV{\psi}V \\
   \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
 \end{CD}

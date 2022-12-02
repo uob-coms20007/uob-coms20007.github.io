@@ -72,7 +72,7 @@ neither can the former.
 For example, we can show the undecidability of the set
 
 $$
-  V = \{ \gamma(S) \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
+  V = \{ \ulcorner S \urcorner \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
 $$
 
 of (the Gödel numbers of) programs which _never_ go into an infinite loop.
@@ -97,10 +97,10 @@ that finishes - simply outputs its input. We know that we can write such a
 program by adapting the code of the [universal
 function](https://uob-coms20007.github.io/reference/computability/universal.html#universal-function).
 
-The reduction we seek is the reflection $\tilde{g} : \mathbb{N} \to
-\mathbb{N}$ of $g$. Hence, $\tilde{g}$ is a function maps the natural
-number/encoding $\phi(\gamma(S), n)$ to the natural number/encoding
-$\gamma(G_{S, n})$.
+The reduction we seek is the reflection $\tilde{g} : \mathbb{N} \to \mathbb{N}$
+of $g$. Hence, $\tilde{g}$ is a function maps the natural number/encoding
+$\langle \ulcorner S \urcorner, n \rangle$ to the natural number/encoding
+$\ulcorner G_{S, n} \urcorner$.
 
 Is this $\tilde{g}$ computable? It is indeed! It is not a stretch of the
 imagination to think of a bash or Python script that assembles its source
@@ -110,22 +110,23 @@ Finally, $\tilde{g}$ is a reduction $\textsf{HALT} ≲ V$ because it is the
 case that
 
 $$
-  \phi(\gamma(S), n) \in \textsf{HALT}
+  \langle \ulcorner S \urcorner, n \rangle \in \textsf{HALT}
     ⟺
-  \gamma(G_{S, n}) \in V
+  \ulcorner G_{S, n} \urcorner \in V
 $$
 
 Indeed, the program $G_{S, n}$ always simulates the running of $S$ on input
 $n$ before stopping with its own input as output. Thus, 
-* If $\phi(\gamma(S), n) \in \textsf{HALT}$, then $S$ halts on input $n$.
-  Then, the program $G_{S, n}$ always halts, returning its own input as
-  output. Consequently, the program $G_{S, n}$ is an expensive and roundabout
-  way of computing the identity function. The identity function is always
-  defined on all inputs, so $\gamma(G_{S, n}) \in V$.
-* If $\phi(\gamma(S), n) \not\in \textsf{HALT}$, then $S$ does _not_ halt on
-  input $n$. Then, the program $G_{S, n}$ also never halts: the simulation of
-  $S$ on $n$ never ends! Thus, the program $G_{S, n}$ computes a function
-  that is nowhere-defined. Hence $\gamma(G_{S, n}) \not\in V$.
+* If $\langle \ulcorner S \urcorner, n \rangle \in \textsf{HALT}$, then $S$
+  halts on input $n$. Then, the program $G_{S, n}$ always halts, returning its
+  own input as output. Consequently, the program $G_{S, n}$ is an expensive and
+  roundabout way of computing the identity function. The identity function is
+  always defined on all inputs, so $\ulcorner G_{S, n} \urcorner \in V$.
+* If $\langle \ulcorner S \urcorner, n \rangle \not\in \textsf{HALT}$, then $S$
+  does _not_ halt on input $n$. Then, the program $G_{S, n}$ also never halts:
+  the simulation of $S$ on $n$ never ends! Thus, the program $G_{S, n}$ computes
+  a function that is nowhere-defined. Hence $\ulcorner G_{S, n} \urcorner
+  \not\in V$.
 
 These two points prove the aforementioned equivalence.
 
