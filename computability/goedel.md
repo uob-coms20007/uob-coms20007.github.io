@@ -119,7 +119,7 @@ computability of such code transformations. That is, we want to
 
 Why we might want to do this last thing will become evident soon.
 
-# Use-case 2: Static analysis
+## Use-case 2: Static analysis
 
 There is a second reason why we might want to consider the use of Gödel
 numberings.
