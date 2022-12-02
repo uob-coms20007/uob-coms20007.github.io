@@ -31,7 +31,7 @@ Turing proved that this is impossible.
 *Theorem.* The predicate
 
 $$
-  \textsf{HALT} = \{ \phi(\gamma(S), n) \mid ⟦ S ⟧_\texttt{x}(n) \downarrow \}
+  \textsf{HALT} = \{ \langle \ulcorner S \urcorner, n \rangle \mid ⟦ S ⟧_\texttt{x}(n) \downarrow \}
 $$
 
 is undecidable.
@@ -42,10 +42,10 @@ can decide whether a particular number belongs to this set or not. By the
 [Church-Turing thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html#Church-Turing-thesis),
 no algorithm written in any language can decide it either.
 
-The 'good' numbers in this set arise as pairs of the form $\phi(a, b)$. The
-first component must of the form $a = \gamma(S)$, i.e. the encoding of a
-While-program $S$ under the Gödel numbering $\gamma$. The second component
-$b$ can be any number.
+The 'good' numbers in this set arise as pairs of the form $\langle e, n
+\rangle$. The first component must of the form $e = \ulcorner S \urcorner$, i.e.
+the encoding of a While-program $S$ under the Gödel numbering $\ulcorner -
+\urcorner$. The second component $n$ can be any number.
 
 Disregarding all encodings for a second, the theorem says that: if we are
 given the source code $S$ of a program and an input $n$, then we cannot
@@ -70,25 +70,26 @@ computable; suppose that it is computed by a While program $\texttt{H}$ wrt
 We then write the following program $\texttt{D}$:
 
 ```
-  x := ϕ(x, x);
+  x := ⟨x, x⟩;
   H;
   if (x = 1) then {
     while (true) do skip
   }
 ```
 
-The first line, namely `x := ϕ(x, x)`, is a piece of code that replaces the
-value of `x` with the value of the pair of `x` and `x`. It is one of our
-implicit assumptions here that this computing this 'diagonal' is possible.
+The first line, namely `x := ⟨x, x⟩`, is a shorthand for a piece of code that
+replaces the value of `x` with the value of the pair of `x` and `x`. It is one
+of our implicit assumptions here that this computing this 'diagonal' is
+possible.
 
 By the structure of $\texttt{D}$, we have for any While program $\texttt{S}$ that
 
 $$
   \begin{aligned}
-    ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{S})) \uparrow
-      &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))) \simeq 1 \\
-      &⟺\  ϕ(\gamma(\texttt{S}), \gamma(\texttt{S}))\in \textsf{HALT} \\
-      &⟺\ ⟦ \texttt{S} ⟧_\texttt{x}(\gamma(\texttt{S})) \downarrow
+    ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{S} \urcorner) \uparrow
+      &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(\langle \urcorner \texttt{S} \ulcorner, \ulcorner \texttt{S} \urcorner \rangle) \simeq 1 \\
+      &⟺\  \langle \ulcorner \texttt{S} \urcorner, \ulcorner \texttt{S} \urcorner \rangle \in \textsf{HALT} \\
+      &⟺\ ⟦ \texttt{S} ⟧_\texttt{x}(\ulcorner \texttt{S} \urcorner) \downarrow
   \end{aligned}
 $$
 
@@ -102,9 +103,9 @@ the program $\texttt{H}$, which decides the Halting problem, as a subroutine.
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
-  ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{D})) \uparrow
+  ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{D} \urcorner) \uparrow
     ⟺
-  ⟦ \texttt{D} ⟧_\texttt{x}(\gamma(\texttt{D})) \downarrow
+  ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{D} \urcorner) \downarrow
 $$
 
 which is an evident contradiction. 
@@ -124,7 +125,7 @@ However, it is not very difficult to show that
 _Proof._ The semi-characterstic function of $\textsf{HALT}$ is computed by a program that works as follows.
 
 On input $x$,
-1. Decode $x = \phi(\gamma(\texttt{S}), n)$.
+1. Decode $x = \langle \ulcorner \texttt{S} \urcorner, n \rangle$.
 2. Simulate the running of program $\texttt{S}$ on input $n$.
 3. If that simulation terminates in a state of the form $[\texttt{x} \mapsto m]$, return $m$. ▣
 
