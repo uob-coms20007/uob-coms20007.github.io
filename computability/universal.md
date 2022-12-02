@@ -6,6 +6,8 @@ mathjax: true
 parent: Computability
 ---
 
+# The Universal Function
+
 From this point onwards let us fix a particular variable `x` wrt which our
 [definition of
 computability](https://uob-coms20007.github.io/reference/computability/functions.html#computes)

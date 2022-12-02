@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Encoding infinite data
+title: Encoding data
 nav_order: 4
 mathjax: true
 parent: Computability

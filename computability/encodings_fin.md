@@ -1,14 +1,14 @@
 ---
 layout: math
-title: Encoding finite data
-nav_order: 5
+title: [Bonus] Encoding finite data
+nav_order: 6
 mathjax: true
 parent: Computability
 ---
 # Encoding finite data
 
 
-**This section is not examinable in 2022/23.**
+**This section is not to be taught or examined in 2022/23.**
 
 For some sets of data $S$ it is impossible to find a bijection $S
 \xrightarrow{\cong} \mathbb{N}$ that encodes $S$ as natural numbers.
@@ -92,3 +92,34 @@ perfect correspondence) between them.
 
 However, the section-retraction pair given above shows that we can encode
 Boolean values as natural numbers in a 'lossless' way.
+
+## Reflecting under section-retraction pairs
+
+**This section is not to be taught or examined in 2022/23.**
+
+It is worth noticing that the definition of a reflection does not require the
+full power of a bijection. It is in fact sufficient to have a section-retraction
+pair $(s : A \to \mathbb{N}, r : \mathbb{N} \to A)$.
+
+*Definition.* The __reflection__ of $f$ *under* $(s, r)$ is the function 
+
+$$
+  \begin{aligned}
+  & \tilde{f} : \mathbb{N} ⇀ \mathbb{N} \\
+  & \tilde{f}(n) = s(f(r(n)))
+  \end{aligned}
+$$
+
+Written in point-free style, we define $\tilde{f} = s \circ f \circ r$.
+
+$$
+\require{amscd}
+\begin{CD}
+  A @>{f}>> A\\
+  @ArAA @VVsV \\
+  \mathbb{N} @>{\tilde{f}}>> \mathbb{N}
+\end{CD}
+$$
+
+Unlike the case of bijections, this can be used to encode computability on
+finite data types.
