@@ -11,7 +11,7 @@ parent: Computability
 The technology of bijectionsa allow us to define computability for sets $S$
 other than $\mathbb{N}$.
 
-## Functions on a single set
+## Reflecting functions on a single set
 
 First, let us suppose we are able to represent a set $A$ through the natural
 numbers. In other words, let us suppose we have a bijection $i : A
@@ -57,7 +57,7 @@ instead of acting on elements of $A$, it acts on their encoded forms.
 In a sense, the function $f : A ⇀ A$ is computable just if its reflection
 $\tilde{f} : \mathbb{N} ⇀ \mathbb{N}$ is.
 
-## Functions on multiple sets
+## Reflection general functions
 
 In the previous section we dealt with the computability of functions that had a
 set $A$ as both domain and codomain. How can this be generalised to cover any
