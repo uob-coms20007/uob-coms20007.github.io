@@ -7,7 +7,7 @@ parent: Computability
 ---
 
 
-# Gödel numbering
+# Gödel numberings
 
 We have now shown how to put the following things in bijection with the natural
 numbers:
@@ -47,7 +47,7 @@ $$
 
 which encodes While programs as natural numbers.
 
-# Uses and abuses of Gödel numberings
+## Uses and abuses of Gödel numberings
 
 Gödel numberings allow us to prove various __impossibility results__ about
 logical systems and/or programming languages. All these proofs proceed
@@ -65,7 +65,7 @@ form  "a Parliament cannot grant itself amnesty by its own vote: it must recruit
 some external authority larger than itself." Alternatively, "you cannot fix your
 glasses while keeping them on your nose."
 
-# Code transformations
+## Code transformations
 
 It may not be entirely clear for what sort of thing one might use a Gödel
 numbering. The answer is that they can be used to compute _code
