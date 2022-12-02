@@ -65,11 +65,11 @@ form  "a Parliament cannot grant itself amnesty by its own vote: it must recruit
 some external authority larger than itself." Alternatively, "you cannot fix your
 glasses while keeping them on your nose."
 
-## Code transformations
+## Use-case 1: Code transformations
 
 It may not be entirely clear for what sort of thing one might use a Gödel
-numbering. The answer is that they can be used to compute _code
-transformations_.
+numbering. The answer is that they can be used to determine the computability of
+_code transformations_.
 
 Let $\textbf{Stmt}$ be the set of all While statements represented as ASTs
 (i.e. the mathematical counterpart of the relevant Haskell data type used to
@@ -111,10 +111,59 @@ Modulo the different programming paradigms (functional vs. imperative), no
 Haskell code can "examine" its higher-order inputs and tell whether they are
 using some character/construct or not.
 
-The raison d'être of Gödel numberings is so that we can discuss the
+Thus, a first _raison d'être_ of Gödel numberings is so that we can discuss the
 computability of such code transformations. That is, we want to
 - write code transformations that map While programs to other While programs,
 - use the Gödel numbering to reflect them into functions $\mathbb{N} \to \mathbb{N}$, and
 - compute these reflected functions in While itself.
 
 Why we might want to do this last thing will become evident soon.
+
+# Use-case 2: Static analysis
+
+There is a second reason why we might want to consider the use of Gödel
+numberings.
+
+If you have been using modern IDEs (e.g. Visual Studio Code, or IntelliJ IDEA)
+then you will have noticed that they know an awful lot about the program you are
+writing, _even before you run it_.
+
+The art of determining various things about programs without even running them
+is called **static analysis**. [Static
+analyses](https://en.wikipedia.org/wiki/Static_program_analysis) may be used to
+estimate the run-time behaviour of any aspect of a program fragment, including:
+* the type of data it will output
+* whether it will terminate
+* how much time it will take to run
+* how much memory it might use
+* whether it has any obvious bugs (e.g. dereferencing that causes a Segmentation Fault)
+* whether it is correct, according to some given specification of its behaviour
+and so on.
+
+Modern IDEs are bundled with built-in program analysers that try to work out
+many such features.
+
+Let us think about the program analyser for a minute. What sort of function is it?
+In our context, a program analyser can be seen as a function
+
+$$
+  A : \textbf{Stmt} \to \mathbb{N}
+$$
+
+which takes as input a While program, and outputs e.g. $0$ if it is 'bad' (say,
+contains a bug), or $1$ if it is 'good' (does not contain a bug).
+
+As you see, a program analyser is a program that accepts another program as input.
+
+Thus, Gödel numberings can be used to approach the question of whether a program
+analysis is computable or not.
+
+
+Thus, a second _raison d'être_ of Gödel numberings is so that we can discuss the
+computability of such code transformations. That is, we want to
+- write program analysers that examine While programs
+- use the Gödel numbering to reflect them into functions $\mathbb{N} \to \mathbb{N}$, and
+- compute these reflected functions in While itself.
+
+Perhaps unsurprisingly, we might soon find out that [we can't always get what we
+want](https://www.youtube.com/watch?v=Ef9QnZVpVd8).
