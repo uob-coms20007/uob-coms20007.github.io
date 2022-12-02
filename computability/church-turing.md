@@ -6,6 +6,8 @@ mathjax: true
 parent: Computability
 ---
 
+# The Church-Turing Thesis
+
 We have defined the notion of computability of functions $\mathbb{N} ⇀
 \mathbb{N}$ through the language While. 
 
