@@ -47,18 +47,19 @@ The 'good' numbers in this set arise as pairs of the form $\langle e, n
 the encoding of a While-program $S$ under the Gödel numbering $\ulcorner -
 \urcorner$. The second component $n$ can be any number.
 
-Disregarding all encodings for a second, the theorem says that: if we are
-given the source code $S$ of a program and an input $n$, then we cannot
-algorithmically tell if running $S$ with initial store $[\texttt{x} \mapsto
-n]$ will ever terminate with $\langle \texttt{skip}, \sigma' \rangle$. Thus,
-it is impossible to decide the _termination_ of a program (i.e. the absence
-of infinite loops) just by looking at its source code and input!
+Disregarding all encodings for a second, the theorem says that: if we are given
+the source code $S$ of a program and an input $n$, then we cannot
+algorithmically tell if running $S$ with initial store $[\texttt{x} \mapsto n]$
+will ever terminate with $\langle \texttt{skip}, [\texttt{x} \mapsto m] \rangle$
+for some $m \in \mathbb{N}$. Thus, it is impossible to decide the _termination_
+of a program (i.e. the absence of infinite loops) just by looking at its
+source code and input!
 
 This is known as the **Halting Problem.** No digital computer can ever solve
-it. (And neither can quantum computers.)
+it. (And neither can quantum computers, by the way.)
 
 We will prove that the set $\textsf{HALT}$ is undecidable. The proof method
-will be diagonalisation once more.
+will be through a technique known as _diagonalisation_.
 
 *Proof.* Suppose that we can decide $\textsf{HALT}$. We will derive a
 contradiction from this assumption.
@@ -93,25 +94,26 @@ $$
   \end{aligned}
 $$
 
-That is to say: the program $\texttt{D}$ will loop exactly when you give it
-the source code of a program $\texttt{S}$ which is going to loop when fed its
-own source code as input. The program $\texttt{D}$ works this out by using
-the program $\texttt{H}$, which decides the Halting problem, as a subroutine.
+That is to say: the program $\texttt{D}$ will _loop forever_ exactly when you
+give it the source code of a program $\texttt{S}$ which is going to _terminate_
+when fed its own source code as input. The program $\texttt{D}$ works this out
+by using the program $\texttt{H}$, which we have assumed decides the Halting
+Problem, as a subroutine.
 
-(Make sure you understand this last bit before moving on.)
+[Make sure you understand this last paragraph well before moving on!]
 
 Consider running the program $\texttt{D}$, giving it its own source code as input (!). Then the above equivalence becomes
 
 $$
-  ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{D} \urcorner) \uparrow
-    ⟺
+  ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{D} \urcorner) \uparrow\
+    ⟺\
   ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{D} \urcorner) \downarrow
 $$
 
 which is an evident contradiction. 
 
 We reached this contradiction by assuming that $\textsf{HALT}$ was decidable.
-So that cannot be. ▣
+So it cannot be. ▣
 
 
 # Semidecidability of the Halting Problem
