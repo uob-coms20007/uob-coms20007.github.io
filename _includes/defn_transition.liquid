@@ -1,25 +1,46 @@
 
 
 <div class="defn" markdown="1">
-A __transition__ consists of two regular expressions $R$ and $S$ and a label $\ell$, which is either a letter $a \in \Sigma$ or $\epsilon$.  If such a transition is valid, we write $$R \xrightarrow{\ell} S$$.  The valid transitions are exactly those that can be deduced using the following rules:
+The relation "$$R \matches w$$" is defined inductively using the following rules:
 
 $$
 \begin{prooftree}
 \AxiomC{}
-\LeftLabel{$\rlnm{R1}$}
-\UnaryInfC{$a \xrightarrow{a} \epsilon$}
+\LeftLabel{$\rlnm{MEmpty}$}
+\UnaryInfC{$\epsilon \matches \epsilon$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
 \AxiomC{}
-\LeftLabel{$\rlnm{R2}$}
-\UnaryInfC{$(R + S) \xrightarrow{\epsilon} R$}
+\LeftLabel{$\rlnm{MChar}$}
+\UnaryInfC{$a \matches a$}
+\end{prooftree}
+$$
+
+<br/>
+
+$$
+\begin{prooftree}
+\AxiomC{$R \matches v$}
+\AxiomC{$S \matches w$}
+\LeftLabel{$\rlnm{Concat}$}
+\BinaryInfC{$R \cdot S \matches vw$}
+\end{prooftree}
+$$
+
+<br/>
+
+$$
+\begin{prooftree}
+\AxiomC{$R \matches w$}
+\LeftLabel{$\rlnm{ChoiceL}$}
+\UnaryInfC{$R + S \matches w$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{}
-\LeftLabel{$\rlnm{R3}$}
-\UnaryInfC{$(R + S) \xrightarrow{\epsilon} S$}
+\AxiomC{$S \matches w$}
+\LeftLabel{$\rlnm{ChoiceR}$}
+\UnaryInfC{$R + S \matches w$}
 \end{prooftree}
 $$
 
@@ -28,37 +49,15 @@ $$
 $$
 \begin{prooftree}
 \AxiomC{}
-\LeftLabel{$\rlnm{R4}$}
-\UnaryInfC{$(\epsilon \cdot{}S) \xrightarrow{\epsilon} S$}
-\end{prooftree}
-\begin{prooftree}
-\qquad\qquad
-\AxiomC{$R \xrightarrow{\ell} \epsilon$}
-\LeftLabel{$\rlnm{R5}$}
-\UnaryInfC{$(R\cdot{}S) \xrightarrow{\ell} S$}
+\LeftLabel{$\rlnm{StarB}$}
+\UnaryInfC{$R^* \matches \epsilon$}
 \end{prooftree}
 \qquad\qquad
 \begin{prooftree}
-\AxiomC{$R \xrightarrow{\ell} R'$}
-\LeftLabel{$\rlnm{R6}$}
-\RightLabel{$R' \neq \epsilon$}
-\UnaryInfC{$(R\cdot{}S) \xrightarrow{\ell} R'\cdot{}S$}
-\end{prooftree}
-$$
-
-<br/>
-
-$$
-\begin{prooftree}
-\AxiomC{}
-\LeftLabel{$\rlnm{R7}$}
-\UnaryInfC{$R^* \xrightarrow{\epsilon} \epsilon$}
-\end{prooftree}
-\qquad\qquad
-\begin{prooftree}
-\AxiomC{}
-\LeftLabel{$\rlnm{R8}$}
-\UnaryInfC{$R^* \xrightarrow{\epsilon} R \cdot{} R^*$}
+\AxiomC{$R \matches v$}
+\AxiomC{$R^* \matches w$}
+\LeftLabel{$\rlnm{StarS}$}
+\BinaryInfC{$R^* \matches vw$}
 \end{prooftree}
 $$
 

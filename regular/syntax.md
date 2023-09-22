@@ -1,8 +1,8 @@
 ---
 layout: math
 title: Regex Syntax
-nav_order: 2
 mathjax: true
+nav_order: 2
 parent: Regular Expressions
 ---
 
@@ -16,32 +16,37 @@ You are already familiar with *arithmetic expressions* which are expressions bui
 
 {% include defn_regex_syntax.liquid %}
 
-The idea is that $\emptyset$ is a regular expression that matches nothing, $\epsilon$ is a regular expression that matches just the empty string and $a$ is a regular expression that matches the single character $a$.  
-Then we can combine regular expressions $R$ and $S$ using *concatenation* $(R \cdot{} S)$ to form a new regular expression that will match strings $w$ that can be broken into two pieces $uv$ with $u$ matched by $R$ and $v$ matched by $S$; or, using *choice* to form a new regular expression $(R + S)$ that will match strings $w$ that are matched either by $R$ or by $S$.  Finally, with a regular expression $R$ already in your hand, you may construct the *Kleene star* $(R^*)$, which will match any word that can be divided into finitely many (possibly 0) consecutive pieces, each of which match $R$.
+The idea is that each regular expression is a device for matching certain shapes of strings.  Informally, the semantics of the language is as follows -- we will make this precise later.
+  * $\emptyset$ is a regular expression that matches no strings at all.
+  * $\epsilon$ is a regular expression that matches just the empty string.
+  * Each letter $a$ is a regular expression that matches the single character $a$.
+  * Whenever $$R$$ and $$S$$ are regular expressions, then $$R \cdot S$$ is a regular expression that matches the strings $$uv$$ that can be broken into two consecutive pieces, $$u$$ followed by $$v$$, and $$R$$ matches $$u$$ and $$S$$ matches $$v$$.
+  * Whenever $$R$$ and $$S$$ are regular expressions, then $$R + S$$ is a regular expression that matches strings $w$ that are either matched by $$R$$ or are matched by $S$.
+  * Whenever $$R$$ is a regular expression, $$R^*$$, pronounced *R star* matches all strings that can be divided into finitely many (possibly 0) consecutive pieces, each of which are matched by $$R$$.
 
-Some examples of regular expressions over the alphabet $$\{0,1\}$$ are:
-* $$((0+1) \cdot{} (0^*))$$ - matches all non-empty strings whose tail consists entirely of zeroes
-* $$((0+1)^*)$$ - matches all words over $$\{0,1\}$$
-* $$(((0^*) \cdot{} 1) \cdot{} (0^*))$$ - matches all strings that contain exactly one 1
-* $$((\epsilon + 1) \cdot{} ((((0 \cdot{} 1) \cdot{} 0) \cdot{} 1))$$ - matches $0101$ or $10101$
+We'll see some examples shortly, but first it's important to be absolutely clear on the syntax.  The following are examples of regular expressions, written in full as abstract syntax trees:
 
-This vast quantities of parentheses are needed in order to ensure that our simple description of the syntax of regular expressions above is *unambiguous*.  Informally, this means that there is only one way to understand an expression involving $\emptyset$, $\epsilon$, $+$, $\cdot{}$, $$*$$ and so on as a *regular expression*.  This would not be the case if we simply omitted some of the parentheses.  For example consider the expression $$0 + 1 \cdot{} 0^*$$.  Is this supposed to mean:
-* $$((0 + 1) \cdot{} (0^*))$$ - a choice between 0 and 1 followed by any number of zeros?
-* Or, $$(0 + (1 \cdot{} (0^*)))$$ - a choice between 0 and the word consisting of 1 followed by any number of zeros?
-* Or, $$(((0 + 1) \cdot{} 0)^*)$$ - a choice between 0 and 1, followed by zero, which is all repeated any finite number of times?
-* Or, something else, there are other possibilities...
+<img src="../assets/regex/regex-tree1.png" style="max-width:200px;"/>
+<img src="../assets/regex/regex-tree2.png" style="max-width:200px;"/>
+<img src="../assets/regex/regex-tree3.png" style="max-width:300px;"/>
+<img src="../assets/regex/regex-tree4.png" style="max-width:200px;"/>
 
-However, to alleviate some of the terrible toil involved in writing quite so many parens, let us allow ourselves to omit some of them and resolve any ambiguities by agreeing a convention:
+And, informally, what they mean:
+* $$(0+1) \cdot{} (0^*)$$ - matches all non-empty strings whose tail consists entirely of zeroes
+* $$(0+1)^*$$ - matches all words over $$\{0,1\}$$
+* $$((0^*) \cdot{} 1) \cdot{} (0^*)$$ - matches all strings that contain exactly one 1
+* $$(\epsilon + 1) \cdot{} (\epsilon + 0)$$ - matches the empty string $\epsilon$, $0$, $1$ or $01$.
+
+However, there are rather too many parentheses involved when we write these syntax trees inline.  To alleviate some pain, let us allow ourselves to omit some of them and resolve any ambiguities by agreeing some conventions:
 {% include conv_regex_parens.liquid %}
 
 Finally, let us borrow a trick from arithmetic and agree to suppress the concatenation operator in favour of juxtaposition:
 {% include conv_regex_concat.liquid %}
 
-With your agreement then, we will understand the (formerly) problematic $$0 + 1 \cdot{} 0^*$$ unambiguously as $$(0 + (1 \cdot{} (0^*)))$$.  The agreement allows us to write our previous examples more compactly:
-* $$(0+1)0^*$$ instead of $$((0+1) \cdot{} (0^*))$$
-* $$(0+1)^*$$ instead of $$((0+1)^*)$$
-* $$0^*10^*$$ instead of $$(((0^*) \cdot{} 1) \cdot{} (0^*))$$
-* $$(\epsilon + 1)0101$$ instead of $$((\epsilon + 1) \cdot{} ((((0 \cdot{} 1) \cdot{} 0) \cdot{} 1))$$
+With your agreement then we will start omitting some of the parentheses and concatenation operators when writing the syntax trees inline.  The agreement allows us to write our previous examples more compactly:
+* $$(0+1)0^*$$ instead of $$(0+1) \cdot{} (0^*)$$
+* $$(0+1)^*$$ instead of $$(0+1)^*$$
+* $$0^*10^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
 
 Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.53):
 * $$(0+1)^*1(0+1)^*$$ - matches words containing at least one 1
@@ -50,41 +55,26 @@ Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.5
 * $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ - matches words that start and end with the same symbol
 * $$((0 + 1)(0 + 1))^*$$ - matches words of even length
 
-## Syntactic Sugar
+Remember! By following the conventions we can always unambiguously recover the genuine abstract syntax tree that lies behind these inline expressions. $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ is, by our agreed convention, a short-hand for $$((0 + 1) + ((0 \cdot ((0+1)^*)) \cdot 0)) + ((1 \cdot ((0+1)^*)) \cdot 1)$$ which is the inlining of the following abstract syntax tree:
 
-In practice, when we want to describe more complicated kinds of matching, it will be useful to allow ourselves certain abbreviations that make the regexes more succinct and readable.  
-{% include defn_regex_sugar.liquid %}
+<img src="../assets/regex/regex-tree-big.png" style="max-width:400px;"/>
 
-We will also typically introduce abbreviations as we go, by temporarily defining variables, e.g.
-> $$(RR)^*$$ where $R = [abcdef]$
+## Syntax Abuse
 
-Note: we are *not* extending the language of regular expressions, it will still be the case that every regular expression is a combination of letters of the alphabet, $\emptyset$, $\epsilon$, $+$, $\cdot{}$ and $$*$$, exactly  as we have defined originally.  The abbreviations are simply to make our lives easier as humans when we construct examples of regular expressions.  When we come to analyse them, we can rely on the fact they can all be written using the simple syntax given in the definition at the top.
+There are one or two tricky things about the syntax we presented, which can lead us to situations in which we are using the same symbol to mean more than one thing.  This is traditionally called *an abuse of syntax*.  In our case:
+  * We are using $$\emptyset$$ both as a node in a regex syntax tree, and as the symbol we use to write the empty set.  For example, both of the following statements make sense:
+    - The regex $$\emptyset + 0^*$$ matches all words that consist entirely of zeroes
+    - The set $$\{1, 2\} \cup \emptyset$$ is the same set as $$\{1,2\}$$
 
-Some more examples, with the ASCII alphabet:
- * $$(R(R + \epsilon)SR + R(R+\epsilon)S(S+\epsilon))\ SRR$$ where $$R = [ABCD\ldots{}XYZ]$$ and $$S = [0123456789]$$.  This is a description of the UK postcode format (from [ideal-postcodes.co.uk](http://ideal-postcodes.co.uk)).  It could be more precise because it matches strings that are not currently legitimate UK postcodes, such as ZZ1 9UX (there is no such outward code starting ZZ in the UK at present).
- * $$\{\} + \{(R,)^*R\}$$ where $$R = [0123456789]^+$$. A comma separated list of integers, wrapped in braces.
- * With $$R = [0123456789]$$, we have all possible dates in dd/mm format.:
+  * We are using each letter of the alphabet $$a$$ both as a node in a regex syntax tree, and as a character in an alphabet, and as a string consisting of a single letter.  For example:
+    - The regex $$a(a+b+c)^*$$ matches all strings over $$\{a,b,c\}$$ that start with an $$a$$
+    - The letters of the alphabet $$\{a,b,c\}$$ are $a$, $b$ and $c$.
+    - The strings over the alphabet $$\{a,b,c\}$$ whose length is at most 1 are $\epsilon$, $a$, $b$ and $c$
+  
+  * We are using $\epsilon$ both as a node in a regex syntax tree and as the symbol we use to write the empty string.  For example:
+    - The regex $$\epsilon + 1$$ matches the empty string or the string 1.
+    - The string $$\epsilon$$ is the only string of length 0.
 
-   $$ 
-     \begin{array}{ll}&([012]R + 30)/(09 + 04 + 06 + 11)\\ &+\ ([012]R + 3[01])/(01 + 03 + 05 + 07 + 08 + 10 + 12)\\ &+\ ([012]R)/02\end{array}
-   $$
-   
-{% comment %}
-## Identities
+Such abuses can make life a bit difficult for you when you are first learning a new language, since you must think twice every time you see one of the overloaded symbols.  However, we will always be sure to use them in a context in which the meaning is clear, and they are worth it in the long-run because carefully chosen syntactic abuses make working with syntax easier once you are used to them.
 
-Let us write $R \equiv S$ just if $R$ and $S$ match exactly the same set of strings.  We *don't* think of them as the same regular expression however: they are different programs that happen to do the same thing.
-
-Some identities concerning regular expressions:
-* $$R + \emptyset \equiv R$$
-* $$R + S \equiv S + R$$
-* $$R + R \equiv R$$
-* $$(RS)T \equiv R(ST)$$
-* $$R(S + T) \equiv (RS + RT)$$
-* $$(S + T)R \equiv (SR + ST)$$
-* $$RR^* \equiv R^*R$$
-* $$R \emptyset \equiv \emptyset$$
-* $$\emptyset R \equiv \emptyset$$
-* $$\emptyset^* \equiv \epsilon$$
-{% endcomment %}
-
-
+We're not going to be too pedantic about it, but a useful thing to remember is that the string $aa \cdot \epsilon$ is the very same string as $aa$, i.e. $aa \cdot \epsilon = aa$ as strings.  However, the regular expression $aa \cdot \epsilon$ is *not* the same regular expression as $aa$.  The former is a tree that contains a node labelled $\epsilon$ whereas the second is a tree without any node labelled $\epsilon$.  However, although they are *not the same piece of syntax* (i.e. the same tree), they have the same semantics, in the sense that they match exactly the same strings, namely just the string $aa$.

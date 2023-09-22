@@ -1,7 +1,7 @@
 ---
 layout: math
 title: Prerequisites
-nav_order: 1
+nav_order: 0
 mathjax: true
 has_children: true
 ---
