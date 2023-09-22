@@ -1,15 +1,93 @@
+// Make the flash of unstyled dark-theme less noticible
+// This sets element's colours to the same variables as
+// in the default dark theme: https://github.com/just-the-docs/just-the-docs/blob/main/_sass/color_schemes/dark.scss
+@media (prefers-color-scheme: dark) {
+
+  body,
+  .side-bar,
+  .main-header,
+  .search-input {
+    background: $grey-dk-300;
+    color: $grey-lt-300;
+  }
+
+  .site-title,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  #toctitle {
+    color: $grey-lt-300;
+  }
+
+  .side-bar,
+  .site-header,
+  .main-header {
+    border-color: $grey-dk-200;
+  }
+
+  a:not([class]) {
+    text-decoration-color: $grey-dk-200;
+  }
+
+  .nav-list .nav-list-item .nav-list-link:hover,
+  .nav-list .nav-list-item .nav-list-link.active {
+    background-image: linear-gradient(-90deg,
+        rgba(darken($grey-dk-300, 3%), 1) 0%,
+        rgba(darken($grey-dk-300, 3%), 0.8) 80%,
+        rgba(darken($grey-dk-300, 3%), 0) 100%);
+  }
+}
+
 .table-wrapper {
-  box-shadow:none;
+  box-shadow: none;
 }
 
 .schedule {
   border: 1px solid $grey-dk-000;
   border-collapse: collapse;
+
+  // fix colours in dark mode
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid $grey-lt-000;
+  }
 }
 
-table.schedule tr:nth-child(even) td {background: rgb(224, 224, 224); border: 1px solid $grey-dk-000;}
-table.schedule tr:nth-child(odd) td {background: #FFF; border: 1px solid $grey-dk-000; }
-table.schedule th { border: 1px solid $grey-dk-000; color:#FFF; background: rgb(63, 63, 63); }
+table.schedule tr:nth-child(even) td {
+  background: rgb(224, 224, 224);
+  border: 1px solid $grey-dk-000;
+
+  // fix colours in dark mode
+  @media (prefers-color-scheme: dark) {
+    background: invert(rgb(224, 224, 224));
+    border: 1px solid $grey-lt-000;
+  }
+}
+
+table.schedule tr:nth-child(odd) td {
+  background: #FFF;
+  border: 1px solid $grey-dk-000;
+
+  // fix colours in dark mode
+  @media (prefers-color-scheme: dark) {
+    background: invert(#FFF);
+    border: 1px solid $grey-lt-000;
+  }
+}
+
+table.schedule th {
+  border: 1px solid $grey-dk-000;
+  color: #FFF;
+  background: rgb(63, 63, 63);
+
+  // fix colours in dark mode
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid $grey-lt-000;
+    background: invert(rgb(63, 63, 63));
+  }
+}
 
 html {
   font-size: 16pt
