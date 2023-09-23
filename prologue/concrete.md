@@ -153,8 +153,8 @@ A program $P$ in this language is just a sequence of commands $C$ for drawing a 
 
 $$
   \begin{array}{r|l}
-    \kw{up}(n) & \text{take the pen off the page (stop drawing when moving)}\\
-    \kw{down}(n) & \text{put the pen on the page (start drawing when moving)}\\
+    \kw{up} & \text{take the pen off the page (stop drawing when moving)}\\
+    \kw{down} & \text{put the pen on the page (start drawing when moving)}\\
     \kw{fd}(n) & \text{move forward $n$ units}\\
     \kw{left}(n) & \text{turn left (anticlockwise) $n$ degrees}\\
     \kw{right}(n) & \text{turn right (clockwise) $n$ degrees}\\
