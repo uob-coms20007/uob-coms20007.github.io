@@ -102,7 +102,7 @@ For example:
 In a string grammar, such as those we saw in the lecture on concrete syntax, in each production rule we replaced a non-terminal symbol by its right-hand-side, which was some string.  In a tree grammar, each production will replace a non-terminal by a tree.
 
 <div class="defn" markdown="1">
-A __tree grammar__ consists of three pieces of data:
+A __tree grammar__ consists of four pieces of data:
   * A finite set of non-terminal symbols
   * A set of *ranked* terminal symbols
   * A finite set of production rules.
@@ -137,9 +137,30 @@ One disadvantage to the tree representation is that it is rather unwieldy to wri
 
 Hence, whenever we introduce some new kinds of AST we will agree some conventions for writing down the trees "inline".  In fact, we will nearly always write the trees this way.  For a start we will use parentheses to describe which subexpressions correspond to subtrees.  So we will write $$3 + (4 * 6)$$ to describe the tree:
 
-and we will write $$(3 + (6 * 6)) - (2 + 2)$$ for the tree:
+and we will write $$(3 + (6 * 6)) - 2$$ for the tree:
+```text
+        -
+      /   \
+     +     2
+   /   \   
+  3     *
+       / \
+      6   6
+```
 
 and maybe write $$\mathsf{while}\ (x > 0)\ \mathsf{do}\ (x := x - 1; y := y + 1)$$ for:
+```text
+          while
+        /       \
+       >        seq
+      / \      /   \
+     x   0   assn   assn 
+             / \     / \
+            x   -   y   + 
+               / \     / \
+              x   1   y   1
+```
+(we will be more specific when we introduce While programs later).
 
 But then also we will get pretty tired of writing so many parentheses, so we will agree some conventions that allow us to drop some of them whilst remaining unambiguous.
 
