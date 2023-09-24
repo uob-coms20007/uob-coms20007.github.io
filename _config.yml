@@ -11,7 +11,7 @@ kramdown:
       line_numbers: true
 aux_links:
   "Unit Webpage":
-    - "https://www.ole.bris.ac.uk/webapps/blackboard/execute/content/blankPage?cmd=view&content_id=_7088752_1&course_id=_252986_1&mode=reset#"
+    - "https://www.ole.bris.ac.uk/ultra/courses/_257216_1/cl/outline"
 domain: uob-coms20007.github.io       # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 url: https://uob-coms20007.github.io  # the base hostname and protocol for your site, e.g. http://example.com
 baseurl: /reference/      # place folder name if the site is served in a subfolder
