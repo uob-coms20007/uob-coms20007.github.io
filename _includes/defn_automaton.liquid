@@ -1,9 +1,9 @@
 <div class="defn" markdown="1">
-A __finite state automaton__ consists of 5 pieces of data:
+A __deterministic finite state automaton__ (DFA) consists of 5 pieces of data:
 
 * A collection of *states*, $Q$, which can be any finite set.
-* An alphabet, $\Sigma$, (so we know what kinds of words we are willing to process)
-* A collection of transitions, $\Delta$, which is any subset of $$Q \times (\Sigma \cup \{\epsilon\}) \times Q$$.
+* A finite alphabet, $\Sigma$, (so we know what kinds of words we are willing to process)
+* A transition function, $\delta$, of type $$Q \times \Sigma \to Q$$.
 * An initial state, $$q_0$$, which is just a choice of any element of $Q$.
 * A collection of accepting states, $F$, which is any subset of $Q$.
 

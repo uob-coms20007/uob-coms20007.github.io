@@ -20,12 +20,13 @@ A consequence of this is that, if your computing machine has some kind of discer
 
 Now, if , as we are used to, we require that an input to such a machine is first fully consumed by the machine before processing begins - for example - is first written to the machine's memory before any actions are taken - then the restriction to a fixed amount of memory is very severe.  We simply wouldn't be able to process any inputs that are larger than the available memory.
 
-So, instead, our machines - our *finite automata* - will taken their input bit by bit and process it on the fly.  In particular, since automata are a kind of specialised class of machines that only perform string classification computations, the input will be a string and the automaton will examine it character by character.  Once they have processed the string, they output a classification which is just a Boolean YES the string belongs to the class or NO it doesn't.
+So, instead, our machines - our *finite automata* - will take in their input bit by bit and process it on the fly.  In particular, since automata are a kind of specialised class of machines that only perform string classification computations, the input will be a string and the automaton will examine it character by character.  Once they have processed the string, they output a classification which is just a Boolean: YES the string belongs to the class or NO it doesn't.
 
 So in summary, these finite automata:
-	* Have some notion of internal state, but abstract and limited to a fixed number
-	* Process their input, a string, letter-by-letter
-	* Classify the string as either being in some class or not.
+
+* Have some notion of internal state, but abstract and limited to a fixed number
+* Process their input, a string, letter-by-letter
+* Classify the string as either being in some class or not.
 
 ## Even/Odd Example
 
@@ -64,7 +65,7 @@ $$
 
 In automata theory, complete traces are sometimes called *runs*, and so we call this an *accepting run* on the word $aababa$.
 
-On the other hand, there is no computation in this automaton that leads the string $bba$ to be accepted because, although the whole word is consumed, the automaton ends its processing in state "odd", which is not an accepting state (not double circled).  The trace of the computation looks like:
+On the other hand, this automaton does not accept the string $bba$ because through consuming the whole string, the automaton ends its processing in state "odd", which is not an accepting state (not double circled).  The trace of the computation looks like:
 
 $$
 \begin{array}{rcl}
@@ -74,7 +75,7 @@ $$
 \end{array}
 $$
 
-Since this automaton has no accepting runs on $bba$, we will say that $bba$ is *rejected*, or just: *not accepted*.
+Since the run of this automaton on input $bba$ ends in a non-accepting state, we will say that $bba$ is *rejected*, or just: *not accepted*.
 
 The set of all strings that are accepted by an automaton is called the language *recognised* by the automaton.  I hope that you can start to see that the only strings that will cause this automaton to end processing in state "even" are those strings that contain an even number of 1s.  Hence, the language recognised by this automaton is the set of all strings that contain an even number of 1s.
 
@@ -82,29 +83,29 @@ The set of all strings that are accepted by an automaton is called the language 
 
 Let's consider another example:
 
-<img src="../assets/automata/aa.png" style="max-width:200px;"/>
+<img src="../assets/automata/aa-deterministic.png" style="max-width:500px;"/>
 
-This automaton has three states: $$\_\,\_$$, $$a\,\_$$ and $$a\,a$$.  The initial state is $$\_\,\_$$ and there is one accepting state, which is $$a\,a$$.  The self-loop on state $$\_\,\_$$ is labelled by $$a,b$$ which is an abbreviation for two separate transitions with the same start and end point, one labelled $$a$$ and the other labelled $$b$$.  
+This automaton has three states: $$\_\,\_$$, $$a\,\_$$ and $$a\,a$$.  The initial state is $$\_\,\_$$ and there is one accepting state, which is $$a\,a$$.  The self-loop on state $$a\,a$$ is labelled by $$a,b$$ which is an abbreviation for two separate transitions with the same start and end point, one labelled $$a$$ and the other labelled $$b$$.  
 
 Suppose we feed $$baaab$$ into this machine, what will happen?  Well, the machine begins in state $$\_\,\_$$ by reading in the first letter, which is $b$.  According to the available transitions, its only option is to consume this $b$ and remain in state $$\_\,\_$$.  
 
-Next, it reads the second letter, which is $a$.  Now it is faced with a choice, there are two transitions on letter $a$, it could remain in the same state or change state to $$a\,\_$$.  Let's suppose it remains in the same state.  Then when it reads the next letter, which is also $a$, it is faced with the same choice again.  Let's suppose that this time it consumes the $a$ and changes to state $$a\,\_$$.
+Next, it reads the second letter, which is $a$, according to the transitions, it consumes the $a$ and changes to state $$a\,\_$$.
 
-In state $$a\,\_$$, the next letter is another $a$, and this time is has no choice but to change state again to state $a\,a$.  Finally, it will read the last letter, which is $$b$$ and remain in state $a\,a$.  Since $a\,a$ is an accepting state, $baaab$ is accepted by the automaton.  
+In state $$a\,\_$$, the next letter is another $a$, and it transitions to state $a\,a$.  In state $a\,a$ it reads the next letter, which is the third $a$, and the transition tells it to remain in the same state after reading this letter.  Finally, it will read the last letter, which is $$b$$ and remain in state $a\,a$.  Since $a\,a$ is an accepting state, $baaab$ is accepted by the automaton.  
 
 This accepting run (complete trace that ends in an accepting state) is:
 
 $$
   \begin{array}{rcl}
 	  \_\,\_ &\rred{b}& \_\,\_\\
-		       &\rred{a}& \_\,\_\\
-					 &\rred{a}& a\,\_\\
+		       &\rred{a}& a\,\_\\
+					 &\rred{a}& a\,a\\
 					 &\rred{a}& a\,a\\
 					 &\rred{b}& a\,a
 	\end{array}
 $$
 
-Now, in this automaton, there are other runs on the same word $$baaab$$ and not all of them are accepting.  For example, after consuming the second $a$ we could instead choose again to remain in state $$\_\,\_$$:
+<!-- Now, in this automaton, there are other runs on the same word $$baaab$$ and not all of them are accepting.  For example, after consuming the second $a$ we could instead choose again to remain in state $$\_\,\_$$:
 
 $$
   \begin{array}{rcl}
@@ -116,9 +117,23 @@ $$
 	\end{array}
 $$
 
-This is not an accepting run since, although the whole word was consumed, the machine did not end in an accepting state.  So, in the case of the word $$baaab$$ there are some runs that are accepting and some runs that are not.  However, because there is *at least one* accepting run, we will say that the automaton accepts the word.  So $baaab$ is in the language of this automaton.  
+This is not an accepting run since, although the whole word was consumed, the machine did not end in an accepting state.  So, in the case of the word $$baaab$$ there are some runs that are accepting and some runs that are not.  However, because there is *at least one* accepting run, we will say that the automaton accepts the word.  So $baaab$ is in the language of this automaton.   -->
 
-On the other hand, $$ababa$$ is *not* in the language of this automaton since there are no accepting runs of this automaton on this word.  By inspection, for the machine to reach the only accepting state $$a\,a$$, it must have consumed two $a$ letters consecutively.  Hence, the language of this automaton only contains words that contain the substring $$aa$$.  Indeed, the language of this automaton is all such words.
+On the other hand, $$ababa$$ is *not* in the language of this automaton since the run of the automaton on this input looks like:
+
+$$
+  \begin{array}{rcl}
+	  \_\,\_ &\rred{a}& a\,\_\\
+		       &\rred{b}& \_\,\_\\
+					 &\rred{a}& a\,\_\\
+					 &\rred{b}& \_\,\_\\
+					 &\rred{a}& a\,\_
+	\end{array}
+$$
+
+This run ends in state $$a\,\_$$, which is not an accepting state, and so the word $ababa$ is rejected, it is not in the language of this automaton.
+
+By inspection, for the machine to reach the only accepting state $$a\,a$$, it must have consumed two $a$ letters consecutively.  Hence, the language of this automaton only contains words that contain the substring $$aa$$.  Indeed, the language of this automaton is all such words.
 
 ## Definitions
 
@@ -128,22 +143,24 @@ The pictures we have drawn are essentially a kind of (labelled) directed graph w
 
 {% include defn_automaton.liquid %}
 
-Recall from basic set theory that $$A \times B \times C$$ is just the set of all triples $(a,b,c)$ where the first component is from $A$, the second from $B$ and the third from $C$.  So to say that the transitions are "any subset of $$Q \times (\Sigma \cup \{\epsilon\}) \times Q$$" is just to say that they are some set of triples $(q_1,\ell,q_2)$ where $q_1$ and $q_2$ are from $Q$ and $\ell$ is either $\epsilon$ or is a letter of $\Sigma$.
+Recall from basic set theory that a function $f$ of type $$A \times B \to C$$ is a mapping from pairs $(a,b)$, with $a \in A$ and $b \in B$, to elements $f(a,b)$ of $C$.  Every possible pair $(a,b)$ has to be mapped to an element $f(a,b)$ of $C$ and no pair can be mapped to two different elements of $C$.
 
 Hence, the even/odd automaton consists of:
 * states: $$\{\mathsf{even},\mathsf{odd}\}$$
 * alphabet: $$\{a,b\}$$
 * transitions: 
     $$
-		  \{ \begin{array}{c}
-			  (\mathsf{even}, a, \mathsf{odd}),
-				(\mathsf{even}, b, \mathsf{odd}),
-				(\mathsf{odd}, a, \mathsf{even}),
-				(\mathsf{odd}, b, \mathsf{odd})
+		  \{ \begin{array}{rcl}
+			  (\mathsf{even}, a) \mapsto \mathsf{odd},
+				(\mathsf{even}, b) \mapsto \mathsf{odd},
+				(\mathsf{odd}, a) \mapsto \mathsf{even},
+				(\mathsf{odd}, b) \mapsto \mathsf{odd}
 			\end{array} \}
 		$$
 * initial state: $$\mathsf{even}$$
 * accepting states: $$\{\mathsf{even}\}$$
+
+The requirement that the transitions of the automaton form a function from $Q \times \Sigma$ to $Q$ amounts to requiring, in the diagram of the automaton, that there is exactly one transition edge out of each node for each letter in $\Sigma$.
 
 <div class="defn" markdown="1">
 Suppose $$M$$ is a finite automaton with components $$(Q,\Sigma,\Delta,q_0,F)$$ and $w$ is a string.  A __run__ of $M$ on a word $w$ is a finite sequence of transitions:
@@ -152,57 +169,66 @@ $$
   q_0 \rred{\ell_1} q_1 \rred{\ell_2} \cdots{} \rred{\ell_n} q_n
 $$
 
-such that: each transition $$q_i \rred{\ell_{i+1}} q_{i+1}$$ is a transition in $\Delta$ and the concatenation of the labels $$\ell_1 \ell_2 \cdots{} \ell_n$$ is $w$.  The run is said to be __accepting__ just if $q_n$ is an accepting state (in $F$).
+such that: 
+
+  * The passage from one state to the next $$q_i \rred{\ell_{i+1}} q_{i+1}$$ is according to the transition function $\delta$, i.e. $\delta(q_i,\,\ell_{i+1}) = q_{i+1}$.  
+	* The concatenation of the labels $$\ell_1 \ell_2 \cdots{} \ell_n$$ is $w$.  
+	
+The run is said to be __accepting__ just if $q_n$ is an accepting state (in $F$).
 </div>
 
-Note that we don't count traces that get stuck somewhere whilst processing a word $w$ as a run on $w$.  For example, consider the $aa$-substring automaton again.  Then we can trace out a computation on $babaa$:
+<!-- Note that we don't count traces that get stuck somewhere whilst processing a word $w$ as a run on $w$.  For example, consider the $aa$-substring automaton again.  Then we can trace out a computation on $babaa$:
 
 $$
   \_\,\_ \rred{b} \_\,\_ \rred{a} a\,\_ 
 $$
 
-However, at this point we are stuck, since the next letter is $b$, but there are no $b$-labelled transitions out of state $$a\,\_$$.  So, this is a not a run on $babaa$, although it is a run on $ba$.
+However, at this point we are stuck, since the next letter is $b$, but there are no $b$-labelled transitions out of state $$a\,\_$$.  So, this is a not a run on $babaa$, although it is a run on $ba$. -->
 
 <div class="defn" markdown="1">
 A string $w$ is said to be __accepted__ by a finite automaton $M$ just if there is an accepting run of $M$ on $w$.  The language __recognised__ by $M$, written $L(M)$, is the set of all strings accepted by $M$.
 </div>
 
-Notice the implicit existential quantification in the definition of acceptance - just if *there is* an accepting run - the machine may have choices to make when it processes the word, and we just need the choices to "work out" (lead to an accept state) one time to be able to declare the word accepted.  
+<!-- Notice the implicit existential quantification in the definition of acceptance - just if *there is* an accepting run - the machine may have choices to make when it processes the word, and we just need the choices to "work out" (lead to an accept state) one time to be able to declare the word accepted.  
 
 It leads to a real asymmetry between accepting words and rejecting words (not accepting them).  Given an automaton $M$ and a word $w$, for you to convince me that $w$ is accepted by $M$, you just need to show me one accepting run on $w$; but for you to convince me that it is not accepted, you need to argue about all possible runs over $w$ - namely that none of them can ever end in an accepting state.
 
-This is the essence of *nondeterministic* computation, which we will return to discuss more abstractly in later lectures.
+This is the essence of *nondeterministic* computation, which we will return to discuss more abstractly in later lectures. -->
 
-## Further examples
+## Further example
 
-For now, let's consider some more concrete examples, with a view to getting some intuition about how to design an automaton that recognises a certain language.
+Let's consider another example, with a view to getting some intuition about how to design an automaton that recognises a certain language.
 
-We saw in the definition that automata may have transitions that are labelled by $\epsilon$.  $\epsilon$-transitions represent a kind of *internal* move by the automaton in which no letters are consumed.  In practice, $\epsilon$-transitions can be useful to offer choices.  For example, the following automaton recognises the language of all strings that *either* contain $aa$ as a substring *or* contain an even number of $a$.
+<!-- We saw in the definition that automata may have transitions that are labelled by $\epsilon$.  $\epsilon$-transitions represent a kind of *internal* move by the automaton in which no letters are consumed.  In practice, $\epsilon$-transitions can be useful to offer choices.  For example, the following automaton recognises the language of all strings that *either* contain $aa$ as a substring *or* contain an even number of $a$.
 
 <img src="../assets/automata/substrings.png" style="max-width:500px;">
 
-We can think that, when presented with a word that either contains $aa$ or that contains an even number of $a$, the automaton first guesses which it believes is the case, and then it continues by verifying that it's guess was correct.  Formally, to see that e.g. $abaa$ is accepted we only need to exhibit a single accepting run, and we can find the run by following the left-hand choice at the first $\epsilon$-transition.
+We can think that, when presented with a word that either contains $aa$ or that contains an even number of $a$, the automaton first guesses which it believes is the case, and then it continues by verifying that it's guess was correct.  Formally, to see that e.g. $abaa$ is accepted we only need to exhibit a single accepting run, and we can find the run by following the left-hand choice at the first $\epsilon$-transition. -->
 
-In this next example, we want to recognise all strings that *both* contain $aa$ as a substring *and* have an even number of $a$.
+Suppose, we want to recognise all strings that *both* contain $aa$ as a substring *and* have an even number of $a$.
 
 Whenever you are tasked with designing an automaton to recognise a given language, you should first ask yourself: what should the states of the automaton be?  And, to answer this question, you need to ask yourself further: if I wanted to design an algorithm that checks if a word is in this language, and my algorithm is restricted to looking at just one letter at a time (it cannot write the whole input into memory), then what does the algorithm need to remember as it executes?  This will correspond to the states of the automaton.  
 
 In this case, an algorithm for checking if a string contains both $aa$ as a substring and an even number of $a$ and which proceeds one letter at a time would be as follows:
 
+```ocaml
     even := true
     consecutive_as := 0
-    while there is another letter to read
+
+    while there is another letter to read do
          read the next letter x
          if x = a then
            even := not even
-           consecutive_as := max(consecutive_as + 1, 2)
+           consecutive_as := min(consecutive_as + 1, 2)
          else
            if consecutive_as = 1 then
-             consecutive_as = 0
-      if even = true && consecutive_aa = 2 then
-        ACCEPT
-      else
-        REJECT
+             consecutive_as := 0
+
+    if even = true && consecutive_aa = 2 then
+      ACCEPT
+    else
+      REJECT
+```
 
 In other words, it would need to remember two things in between finishing reading in one letter and reading in the next: the parity of the number of $a$ and how far through finding the substring $aa$ it is.  In the above algorithm, these were represented concretely by a Boolean variable "even" and an integer variable "consecutive_a", but this number variable will only take on 3 values: 0, 1 and 2.  In our automaton, we will have one state for each of the possible combinations of values of these variables (but we will label them with our more intuitive names from before).
 

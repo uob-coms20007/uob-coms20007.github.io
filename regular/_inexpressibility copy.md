@@ -8,7 +8,9 @@ parent: Regular Expressions
 
 # Inexpressibility of Matched Parentheses
 
-I started our study of regular expressions by showing you [this](https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454) StackOverflow post, in which a well-educated computer scientist descends into despair at the prospect of telling yet another hacker that what they are trying to do is a mathematical impossibility.  We are now in a position to understand this poor fellow's predicament.  We will do some theory to show that it not possible to parse arbitrary HTML using only regular expressions.  
+<!-- I started our study of regular expressions by showing you [this](https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454) StackOverflow post, in which a well-educated computer scientist descends into despair at the prospect of telling yet another hacker that what they are trying to do is a mathematical impossibility.  We are now in a position to understand this poor fellow's predicament.   -->
+
+We will do some theory to show that it not possible to parse arbitrary HTML using only regular expressions.  
 
 Exploring the limitations of a concept, deriving negative results, is one place where theory really shines.
 

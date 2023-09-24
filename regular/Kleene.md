@@ -10,6 +10,8 @@ parent: Regular Expressions
 
 In this lecture we are going to see an important result due to Stephen Cole Kleene, which shows that regular expressions and finite automata are essentially the same.
 
+*You will not be assessed on the correspondence described in this lecture.  You may be asked to create a regular expression equivalent to a finite automaton or vice versa, but the intention is that you do this from first principles, i.e. without using the constructions described here.*
+
 We want to compare regular expressions and finite automata.  They look kind of different - one is a programming language and the other is a machine model, but there is clearly some kind of comparison that can be made since they are both somehow about describing patterns in  strings.  
 
 One way to do it is to view them both as finite representations of languages (sets of strings).  In the case of a finite automaton, we already said that there is such a thing as *the language recognised by a finite automaton* which consists precisely of the strings that the automaton accepts.  We can also associate a language with a regular expression:
@@ -28,29 +30,84 @@ However, if there is some language $$X$$ that can be expressed by a regular expr
 
 {% include thm_kleene.liquid %}
 
-We will show this by illustrating how you can transform a given regular expression into a (language-) equivalent finite automaton and vice versa.
+We will show this by illustrating how you can transform a given regular expression into a (language-) equivalent finite automaton and vice versa.  If you want to, you can read the details in Sipser's book *Introduction to the Theory of Computation* (Lemma 1.60 in the third edition), but note that Sipser uses an alternative method to obtain the first side of the equivalence (from regex to DFA).
 
 ## From Regular Expressions to Finite Automata
 
-Perhaps you can already guess how to obtain a finite automaton from a regular expression, it is just what you did in the Week 2 problem sheet, Q5.
+To transform a regular expression $R$ into an equivalent finite automaton, the idea will be to build an automaton that, in some sense, implements the matching computation described by $R$.
 
-{% include defn_fa_from_regex.liquid %}
+The states of the automaton will be regular expressions that describe the state of the computation when matching some input against $R$.  When the automaton is in state $S$, this means that the remainder of the input needs to be matched by $S$.  
 
-In other words, the states of the automaton are just all regular expressions that can be reached by executing the operational semantics of $R$.  The transitions of the automaton correspond exactly to the transitions that these regular expressions can make.  The initial state is the original expression $R$ and there is at most one final state, which is the regular expression $\epsilon$ if that is reachable by some computation.
+For example, suppose that the regular expression is $ab^\*ab^\*$ over the alphabet $$\{a,b\}$$ and the next letter of the input is $a$.  Then after matching this next letter, the remainder of the input string must be matched by $b^\*ab^\*$.  This gives rise to an automaton transition like:
 
-Now, this construction only makes sense if we know that there are only finitely many regular expressions that can be reached from $R$ by making computation steps, because the key restriction on a finite state automata is that, well, it has only finitely many states.  This is not too difficult to prove, but formulating a nice invariant really requires a couple of additional tools that we don't have time to cover, so for now you will just have to take my word for it (but I am very trustworthy on these matters).
+<img src="../assets/automata/derivs1.png" style="max-width:500px;"/>
 
-The easiest way to actually carry out the construction for some regex $R$ is just to explore the graph of all computations of $R$ and then mark up the initial and final state (if any).  This is what it looks like for $$b^*ab^*ab^*$$ (exactly two $a$):
+If, on the other hand, the next letter of the input was instead a $b$, then this can't be matched by the regular expression $ab^\*ab^\*$.  This corresponds to requiring the rest of the string to be matched by $\emptyset$, (which is impossible).
+
+<img src="../assets/automata/derivs2.png" style="max-width:500px;"/>
+
+When the rest of the string has to be matched by $b^\*ab^\*$, we consider the two possibilities: if the next letter is an $a$ or if the next letter is a $b$.
+
+If the next letter is a $b$, then we add a transition back to the same state, to represent the fact that the remainder of the input string may still contain $b$s, since we are matching a regex starting with $b^\*$.  On the other hand, if the next letter is an $a$, then we transition to a state labelled $b^\*$, which corresponds to viewing $a = \epsilon \cdot a$ and matching $\epsilon$ with the first part of the regex, $b^\*$, and $a$ with the second part of the regex, $a$, thus leaving only the final $b^\*$.
+
+<img src="../assets/automata/derivs3.png" style="max-width:500px;"/>
+
+Now, we consider matching with $b^\*$.  If the next letter of the input is $a$, then the input cannot be matched, so the automaton should transition to the "junk" state labelled $\emptyset$.  On the other, hand, if the next letter of the input is a $b$, then the automaton should remain in state $b^\*$ because there is the potential to match more $b$s afterwards.
+
+<img src="../assets/automata/derivs4.png" style="max-width:500px;"/>
+
+A state of the automaton is declared as an accepting state just if the regular expression labelling the state can match $\epsilon$.  This makes sense because, after consuming the whole word, all that is left is the empty string.  We say that a regular expression is *nullable* if it can match the empty string.
+
+In the case of this example, the only nullable expression involved is $b^\*$, so this is the only accepting state.
+
+By constructing the automaton we ensure the following property.  The language recognised by this automaton when starting in state $S$ is exactly the words matched by the regular expression $S$.  For example, suppose we said that $b^\*$ was the starting state of this automaton.  Then we can easily verify that the words accepted are exactly those matched by $b^\*$.  In our case, we want the automaton to be equivalent to the regex $ab^\*ab^\*$, so we set this as the initial state.
+
+The whole construction can be specified quite neatly using the notion of Brzozowski derivatives.  We write $a^{-1}\,R$ for the derivative of the regular expression $R$ with respect to letter $a$.  Brzozowski derivatives have nothing to do with the derivatives of functions over the real numbers that you studied at school, rather the derivative of a regular expression $R$ with respect to letter $a$, is a new regular expression that describes the set of strings $w$ such that $aw$ can be matched by $R$.  It can be defined recursively on the structure of $R$:
+
+$$
+  \begin{array}{rcll}
+    a^{-1}\,a &=& \epsilon &\\
+    a^{-1}\,b &=& \emptyset & \text{when $a \neq b$}\\
+    a^{-1}\,\epsilon &=& \emptyset & \\
+    a^{-1}\,\emptyset &=& \emptyset & \\
+    a^{-1}\,(R \cdot S) &=& a^{-1}\,R \cdot S & \text{when $R$ is not nullable}\\
+    a^{-1}\,(R \cdot S) &=& a^{-1}\,R \cdot S + a^{-1}\,S & \text{when $R$ is nullable}\\
+    a^{-1}\,(R + S) &=& a^{-1}\,R + a^{-1}\,S &\\
+    a^{-1}\,(R^*) &=& a^{-1}\,R  \cdot R^* &
+  \end{array}
+$$
+
+Here we are assuming that, in our notation, $a^{-1}$ binds tightest.  We can extend the concept to speak of the derivative of a regular expression $R$ with respect to a word $w$ (and not just a letter):
+
+$$
+  w^{-1}\,R = 
+    \begin{cases}
+      R & \text{if $w = \epsilon$} \\
+      v^{-1}\, (a^{-1}\,R) & \text{if $w = av$ for some word $v$}
+    \end{cases}
+$$
+
+Then the automaton corresponding to a regular expression $R$ can be described as $(Q,\,\Sigma,\,\delta,\,q_0,\,F)$ where:
+
+* $Q$ is the set of all derivatives of $R$ with respect to all words $w$
+* $\Sigma$ is just the alphabet as usual
+* $\delta(S,a) = a^{-1}\,S$
+* $q_0 = R$
+* $F$ is the subset of $Q$ that are nullable
+
+Now, this construction only makes sense if we know that there are only finitely many derivatives of $R$, because the key restriction on a finite state automata is that, well, it has only finitely many states.  In fact, it is *not* true in general for the construction as I have given it.  Brzozowski showed in his original paper on the subject, that the derivatives are only finite up to certain simple equivalences, such as $\emptyset \cdot S \equiv \emptyset$ and $\epsilon \cdot S \equiv S$.  So, in general for the construction to work (i.e. produce a finite automaton), one has to simplify the regular expressions involved with respect to these equivalences.  This can be seen in the example above, because the derivative of $b^\*$ with respect to $a$, i.e. $a^{-1}\,b^\*$ is actually $\emptyset \cdot b^\*$, but the transition is from $b^\*$ to $\emptyset$.  Similarly, the derivative of $b^\*$ with respect to $b$ is actually $\epsilon \cdot b^\*$, but I simplified this to give a transition to $b^\*$.
+
+<!-- The easiest way to actually carry out the construction for some regex $R$ is just to explore the graph of all computations of $R$ and then mark up the initial and final state (if any).  This is what it looks like for $$b^*ab^*ab^*$$ (exactly two $a$):
 
 <img src="../assets/automata/two-as.png" style="max-width:40vw">
 
-Of course, the whole point of this construction is that the language recognised by this automaton is exactly the same as the language denoted by the original regular expression.  Again, we will not prove that here but, intuitively, one can see that the accepting runs of the automaton are exactly the complete traces of the regular expression that end in $\epsilon$ (and hence witness a match).
+Of course, the whole point of this construction is that the language recognised by this automaton is exactly the same as the language denoted by the original regular expression.  Again, we will not prove that here but, intuitively, one can see that the accepting runs of the automaton are exactly the complete traces of the regular expression that end in $\epsilon$ (and hence witness a match). -->
 
 ## From Finite Automata to Regular Expressions
 
 The previous construction shows that every regular expression has a corresponding finite automaton, but how about in the other direction?  On the face of it, it seems like there are are lots of automata that are not derived from regular expressions - we can choose any set as the set of states in a finite automaton, but the previous construction shows that every regular expression gives rise to a finite automaton with states being regular expressions.  What about all the other automata, the ones with states that are numbers or smileys or pairs of regular expressions or combinations of the above.  Well, it turns out, no matter what we use as our states, we can always find an equivalent regular expression, and the key to the construction is really the transitions of the automaton.
 
-Since this construction is a little bit more involved and we won't really rely on it later, I am just going to illustrate it with an example.  You won't be assessed on it (you may be asked to give a regular expression equivalent to a given automata, but you can do that on a case-by-case basis by first working out what language the automaton recognises and then designing a regular expression accordingly).  If you want to, you can read the details in Sipser's book *Introduction to the Theory of Computation* (Lemma 1.60 in the third edition).
+Since this construction is a little bit more involved and we won't really rely on it later, I am just going to illustrate it with an example.  You won't be assessed on it (you may be asked to give a regular expression equivalent to a given automata, but you can do that on a case-by-case basis by first working out what language the automaton recognises and then designing a regular expression accordingly).  
 
 The procedure I'm going to show you uses a generalised kind of finite automaton called a GNFA.  In our finite automata each transition is labelled either by a letter of the alphabet or by epsilon.  But, in a GNFA, each transition is labelled by a regular expression.  So, we will have transitions like:
 

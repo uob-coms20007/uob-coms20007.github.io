@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Regularity
+title: Pumping Lemma
 nav_order: 7
 mathjax: true
 parent: Regular Expressions
