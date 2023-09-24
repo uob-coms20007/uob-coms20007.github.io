@@ -46,7 +46,7 @@ Finally, let us borrow a trick from arithmetic and agree to suppress the concate
 With your agreement then we will start omitting some of the parentheses and concatenation operators when writing the syntax trees inline.  The agreement allows us to write our previous examples more compactly:
 * $$(0+1)0^*$$ instead of $$(0+1) \cdot{} (0^*)$$
 * $$(0+1)^*$$ instead of $$(0+1)^*$$
-* $$0^*10^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
+* $$(0^*1)0^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
 
 Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.53):
 * $$(0+1)^*1(0+1)^*$$ - matches words containing at least one 1
@@ -55,9 +55,43 @@ Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.5
 * $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ - matches words that start and end with the same symbol
 * $$((0 + 1)(0 + 1))^*$$ - matches words of even length
 
-Remember! By following the conventions we can always unambiguously recover the genuine abstract syntax tree that lies behind these inline expressions. $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ is, by our agreed convention, a short-hand for $$((0 + 1) + ((0 \cdot ((0+1)^*)) \cdot 0)) + ((1 \cdot ((0+1)^*)) \cdot 1)$$ which is the inlining of the following abstract syntax tree:
+Remember! By following the conventions we can always unambiguously recover the genuine abstract syntax tree that lies behind these inline expressions. $$0 + 1 + (0(0+1)^*0) + (1(0+1)^*1)$$ is, by our agreed convention, a short-hand for $$((0 + 1) + (0 \cdot (((0+1)^*) \cdot 0))) + (1 \cdot (((0+1)^*) \cdot 1))$$ which is the inlining of the following abstract syntax tree:
 
-<img src="../assets/regex/regex-tree-big.png" style="max-width:400px;"/>
+  <script type="text/tikz">
+  \begin{tikzpicture}[level 1/.style={sibling distance=64mm}, level 2/.style={sibling distance=32mm}, level 3/.style={sibling distance=16mm}]
+    \node(0){+}
+      child{node{+}
+        child{node{+}
+          child{node{0}}
+          child{node{1}}
+        }
+        child{node{.}
+          child{node{0}}
+          child{node{.}
+            child{node{*}
+              child{node{+}
+                child{node{0}}
+                child{node{1}}
+              }
+            }
+            child{node{0}}
+          }
+        }
+      }
+      child{node{.}
+        child{node{1}}
+        child{node{.}
+          child{node{*}
+            child{node{+}
+              child{node{0}}
+              child{node{1}}
+            }
+          }
+          child{node{1}}
+        }
+      };
+  \end{tikzpicture}
+  </script>
 
 ## Syntax Abuse
 
