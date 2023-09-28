@@ -22,25 +22,9 @@ For example, $aab$ is a substring of $aaabbb$ but it's not a substring of $abab$
 
 ## Concrete Syntax
 
-When we speak of the *(concrete) syntax of a language* (e.g. a programming language) we typically mean a description of which strings constitute a valid sentence in the language, or more specifically for us, a valid program.  For example, the syntax of the C programming language tells us that the following string is a valid C program:
+When we speak of the *(concrete) syntax of a language* (e.g. a programming language) we typically mean a description of which strings constitute a valid sentence in the language, or more specifically for us, a valid program.  For example, the syntax of the C programming language tells us that the only the first of these two strings is a valid C program:
 
-```C
-  #include <stdio.h>
-  int main() {
-    int x = 3;
-    return x;
-  }
-```
-
-but that the following string is not a valid C program:
-
-```C
-  #include <stdio.h>
-  int main() {
-    int x = 3,
-    return x;
-  }
-```
+{% include ex_c_programs.liquid %}
 
 By the way, we will typically consider blocks of text like those above to be strings - we won't usually care about "whitespace", that is: space characters or newlines.
 
@@ -50,17 +34,7 @@ The way that syntax is usually described is using a *context-free grammar*.  Suc
 
 Let's forget about C programs now and look to something simpler.  The following grammar defines a set of simple arithmetic expressions, built out of natural numbers, addition ($+$), subtraction ($-$), multiplication ($*$) and parentheses:
 
-$$
-  \begin{array}{rrcl}
-  (1) & A &::=& F \\
-  (2) & A &::=& F + A \\ 
-  (3) & A &::=& F - A \\
-  (4) & F &::=& L \\
-  (5) & F &::=& L * F\\
-  (6) & L &::=& n \\ 
-  (7) & L &::=& (A)
-  \end{array}
-$$
+{% include ex_s_grammar_arith.liquid %}
 
 where $n$ stands for any natural number $0, 1, 2, ...$ and so on.  Each line of the grammar is called a *production rule* (or just *rule* or *production* for short).  This grammar has 7 productions.  I have labelled each with a number from 1 to 7, but this is purely to make it easier to explain what is going on, these labels are not formally part of the grammar.  The $$::=$$ symbol divides the rule into two parts, the *left-hand side* or *head* of the rule and the *right-hand side* or *body* of the rule.  The left-hand side of each rule comprises a single symbol, here either $A$, $F$ or $L$ which are called the *non-terminal* symbols.  If a rule has a non-terminal $$X$$ as its left-hand side, then we say the rule is a $$X$$-rule.  All the other symbols occurring on right-hand side apart from the non-terminal symbols are called the *terminal* symbols.  Here, the terminal symbols are $$+$$, $$-$$, $$*$$, the left and right parentheses and every natural number $$n$$.  The idea of the grammar is that it is a collection of rules for generating strings built over the terminal symbols - i.e. the set of terminal symbols is exactly the alphabet of the strings we are considering.
 
@@ -142,12 +116,7 @@ Whenever you are presented with a grammar, you should try to understand the role
 
 Part of the exercises for weeks 2, 3 and 4 involves implementing a parser, interpreter and compiler for a very simple graphics language.  This language is described by the following grammar, in which $n$ stands for any natural number:
 
-$$
-  \begin{array}{rcl}
-    P &::=& C \mid C \mathrel{;} P\\
-    C &::=& \kw{up} \mid \kw{down} \mid \kw{fd}(n) \mid \kw{left}(n) \mid \kw{right}(n)
-  \end{array}
-$$
+{% include defn_turtle_s_grammar.liquid %}
 
 A program $P$ in this language is just a sequence of commands $C$ for drawing a picture.  The basic commands are:
 
@@ -164,9 +133,8 @@ $$
 The idea is to imagine a little creature standing on a blank page of size 500x500 units, holding a pen.  A program is a sequence of commands which are instructions to the creature on how to move about the page and when to lower and raise the pen.  When the pen is lowered, the creature drags it along the page, which results in drawn lines.  The creature is traditionally a turtle.
 
 The turtle initially starts in the lower left corner of the paper facing due East.  Consequently, the following program will draw a square of side 200 units, anchored at the bottom left corner of the page:
-$$
-  \kw{down};\; \kw{fd}(200);\; \kw{left}(90);\; \kw{fd}(200);\; \kw{left}(90);\; \kw{fd}(200);\; \kw{left}(90);\; \kw{fd}(200);\; \kw{up}
-$$
+
+{% include ex_turtle_square.liquid %}
 
 We know that this is a program in the turtle graphics language because we can carry out the following derivation:
 

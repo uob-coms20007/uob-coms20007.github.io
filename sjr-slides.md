@@ -1,7 +1,7 @@
 ---
 layout: math
 mathjax: true
-title: "Steven's Slides"
+title: "Slides"
 has_children:  true
 nav_order: 11
 ---

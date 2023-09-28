@@ -12,32 +12,7 @@ In this unit, programs are the objects of study, as integers are the basic objec
 
 We could represent programs using their concrete syntax, i.e. as a string, as in the previous lecture.  However, the concrete syntax contains a lot of information which is not essential to understanding the fundamental structure of the program.  For example, consider the same while loop expressed in the concrete syntax of various programming languages.  The first is C, do you know any of the others?
 
-  ```c
-    while (x > 0) { 
-      x = x-1; 
-      y = y+1; 
-    } 
-  ```
-
-  ```python
-    while x > 0:
-      x = x - 1
-      y = y + 1
-  ```
-
-  ```ocaml
-    while !x > 0 do 
-      x := !x - 1
-      y := !y + 1
-    done 
-  ```
-
-  ```ada
-    while x > 0 loop
-      x := x - 1;
-      y := y - 1;
-    end loop
-  ```
+{% include ex_concrete_loops.liquid %}
 
   Each has its own syntactic peculiarities, some use braces, some parentheses, some use the keyword "do" and some don't.  However, the essential information is the same:
 
@@ -85,12 +60,7 @@ I hope that you can guess that the first is the AST of a Boolean expression (i.e
 
 We can use grammars to describe languages of abstract syntax trees, in which case they are called *tree grammars*.  For this to work, we just need to remember to say what kind of *tree constructors* the terminal symbols correspond to, by giving their arity.
 
-{: .defn }
-The __arity__ of a symbol is a natural number specifying how many arguments (inputs) it requires.  This corresponds to the number of children required by a node labelled by this symbol in an abstract syntax tree.  
-  * A symbol with arity 0 is sometimes said to be *nullary*.
-  * A symbol with arity 1 is sometimes said to be a *unary* operator.
-  * A symbol with arity 2 is sometimes said to be a *binary* operator.
-If a set of symbols is given alongside their arities, they are said to be *ranked*.
+{% include defn_arity.liquid %}
 
 For example: 
   * The arity of each arithmetic operators $\*$, $+$ and $-$ is 2.  
@@ -101,15 +71,7 @@ For example:
 
 In a string grammar, such as those we saw in the lecture on concrete syntax, in each production rule we replaced a non-terminal symbol by its right-hand-side, which was some string.  In a tree grammar, each production will replace a non-terminal by a tree.
 
-<div class="defn" markdown="1">
-A __tree grammar__ consists of four pieces of data:
-  * A finite set of non-terminal symbols
-  * A set of *ranked* terminal symbols
-  * A finite set of production rules.
-  * A designated starting non-terminal symbol.
-
-A tree $t$ is said to be valid according to the grammar, just if it can be derived from the starting non-terminal symbol by a finite sequence of replacements.
-</div>
+{% include defn_tree_grammar.liquid %}
 
 For example, abstract syntax trees for arithmetic expressions can be described by the following grammar, with single non-terminal $A$ and where $n$ stands for any integer:
 
@@ -136,6 +98,14 @@ For example, the arithmetic expression AST from above can be derived and therefo
 One disadvantage to the tree representation is that it is rather unwieldy to write on lined paper or in ASCII.
 
 Hence, whenever we introduce some new kinds of AST we will agree some conventions for writing down the trees "inline".  In fact, we will nearly always write the trees this way.  For a start we will use parentheses to describe which subexpressions correspond to subtrees.  So we will write $$3 + (4 * 6)$$ to describe the tree:
+
+```text
+      +
+     / \
+    3   *
+       / \
+      4   6
+```
 
 and we will write $$(3 + (6 * 6)) - 2$$ for the tree:
 ```text
@@ -226,29 +196,13 @@ For this reason, most languages adopt conventions regarding the *association* of
 
 If an operator, or a family of operators (of the same precedence) *associate to the left*, then this means that we should disambiguate by placing parentheses to the left.  The usually agreed convention for arithmetic is that all the operators associate to the left:
 
-$$
-  \begin{array}{l|l}
-  \text{when we write...} & \text{we mean the tree...} \\\hline
-  5 - 4 + 1 & (5 - 4) + 1 \\
-  1 + 3 - 6 & (1 + 3) - 6\\
-  6 * 7 * 8 & (6 * 7) * 8\\
-  1 + 1 + 2 & (1 + 1) + 2\\
-  8 - 4 - 1 & (8 - 4) - 1
-  \end{array}
-$$
+{% include ex_left_assoc.liquid %}
 
 In fact, left-association is so common, that we will assume that all operators we use in this unit associate to the left, unless we say otherwise.
 
 If an operator, or a family of operators (of the same precedence) *associate to the right*, then this means that we should disambiguate by placing parentheses to the right.  An example of a right associative operator is the function type constructor ->, as found in e.g. Haskell.
 
-$$
-  \begin{array}{l|l}
-  \text{when we write...} & \text{we mean the tree...} \\\hline
-    \text{map :: (a -> b) -> [a] -> [b]} & \text{map :: (a -> b) -> ([a] -> [b]) }\\
-    \text{min :: Int -> Int -> Int} & \text{min :: Int -> (Int -> Int)}\\
-    \text{compose :: (a -> b) -> (b -> c) -> a -> c} & \text{compose :: (a -> b) -> ((b -> c) -> (a -> c))}
-  \end{array}
-$$
+{% include ex_right_assoc.liquid %}
 
 To understand why it makes sense for the function type constructor to associate right, consider that all functions in haskell take exactly one input and return exactly one output.  Although we sometimes think of `map` as taking two inputs, namely a function and a list over which to apply the function, technically this is incorrect.  The `map` function takes a single input of type `a -> b` and returns a single output, which happens to itself be a function of type `[a] -> [b]`.   When we partially apply `map` to some function, e.g. `not :: Bool -> Bool`, this is a perfectly good value `map not` and it has type `map not :: [Bool] -> [Bool]`.  Writing the AST for the type of `map` makes it even clearer that it is a function expecting exactly one function as input and returning exactly one function as output:
 
@@ -275,9 +229,7 @@ Sometimes language designers want to force you to be explicit about which tree y
 
 With our notation for writing trees inline, we can rewrite the tree grammar above as:
 
-$$
-  A ::= n \mid A + A \mid A - A \mid A * A
-$$
+{% include defn_t_grammar_arith.liquid %}
 
 Here are some derivations.  
 
