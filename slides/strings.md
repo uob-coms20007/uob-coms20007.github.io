@@ -10,6 +10,8 @@ nav_order: 1
 
 {% include defn-strings.liquid %}
 
+{% include defn_language.liquid %}
+
 {% include defn_substring.liquid %}
 
 {% include defn_concat.liquid %}

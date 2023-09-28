@@ -12,6 +12,10 @@ parent: Prologue
 
 For example, $\mathsf{hello}$ is a string over the alphabet $$\{\mathsf{a},\mathsf{b},\mathsf{c},\ldots,\mathsf{y},\mathsf{z}\}$$, but $\mathsf{Hello}$ is not.  Another string over the same alphabet is $\mathsf{abbbbb}$ and another is $\epsilon$.  Strings over the alphabet $$\{▽,△\}$$ include $\mathord{\bigtriangleup}\mathord{\bigtriangleup}\mathord{▽}$ and $\bigtriangledown$.  Strings over the alphabet $$\{\mathsf{oh},\mathsf{really}\}$$ in which each letter is one of these two strings, include $\mathsf{oh}\mathsf{really}$ and $\mathsf{really}\mathsf{oh}\mathsf{really}$, but not $\mathsf{ohr}$.
 
+{% include defn_language.liquid %}
+
+Now we consider some operations on strings.
+
 {% include defn_substring.liquid %}
 
 For example, $aab$ is a substring of $aaabbb$ but it's not a substring of $abab$.  On the other hand $a$ is a substring of both (typically, we are not too concerned about distinguishing between $a$ the letter and $a$ the string consisting of a single letter).  We also have that $\epsilon$ is a substring of any string (over any alphabet).
