@@ -35,7 +35,7 @@ And, informally, what they mean:
 * $$(0+1) \cdot{} (0^*)$$ - matches all non-empty strings whose tail consists entirely of zeroes
 * $$(0+1)^*$$ - matches all words over $$\{0,1\}$$
 * $$((0^*) \cdot{} 1) \cdot{} (0^*)$$ - matches all strings that contain exactly one 1
-* $$(\epsilon + 1) \cdot{} (\epsilon + 0)$$ - matches the empty string $\epsilon$, $0$, $1$ or $01$.
+* $$(\epsilon + 1) \cdot{} (\epsilon + 0)$$ - matches the empty string $\epsilon$, $0$, $1$ or $10$.
 
 However, there are rather too many parentheses involved when we write these syntax trees inline.  To alleviate some pain, let us allow ourselves to omit some of them and resolve any ambiguities by agreeing some conventions:
 {% include conv_regex_parens.liquid %}
