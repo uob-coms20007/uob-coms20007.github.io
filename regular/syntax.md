@@ -12,7 +12,7 @@ Regular expressions are a language for describing strings using patterns.
 
 ## Formal Syntax
 
-You are already familiar with *arithmetic expressions* which are expressions built from numbers and the operators $+$, $-$, $*$ and $÷$.
+You are already familiar with *arithmetic expressions* which are expressions built from numbers and the operators $+$, $-$, and $*$.
 
 {% include defn_regex_syntax.liquid %}
 
@@ -46,7 +46,7 @@ Finally, let us borrow a trick from arithmetic and agree to suppress the concate
 With your agreement then we will start omitting some of the parentheses and concatenation operators when writing the syntax trees inline.  The agreement allows us to write our previous examples more compactly:
 * $$(0+1)0^*$$ instead of $$(0+1) \cdot{} (0^*)$$
 * $$(0+1)^*$$ instead of $$(0+1)^*$$
-* $$(0^*1)0^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
+* $$0^*10^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
 
 Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.53):
 * $$(0+1)^*1(0+1)^*$$ - matches words containing at least one 1
@@ -111,4 +111,4 @@ There are one or two tricky things about the syntax we presented, which can lead
 
 Such abuses can make life a bit difficult for you when you are first learning a new language, since you must think twice every time you see one of the overloaded symbols.  However, we will always be sure to use them in a context in which the meaning is clear, and they are worth it in the long-run because carefully chosen syntactic abuses make working with syntax easier once you are used to them.
 
-We're not going to be too pedantic about it, but a useful thing to remember is that the string $aa \cdot \epsilon$ is the very same string as $aa$, i.e. $aa \cdot \epsilon = aa$ as strings.  However, the regular expression $aa \cdot \epsilon$ is *not* the same regular expression as $aa$.  The former is a tree that contains a node labelled $\epsilon$ whereas the second is a tree without any node labelled $\epsilon$.  However, although they are *not the same piece of syntax* (i.e. the same tree), they have the same semantics, in the sense that they match exactly the same strings, namely just the string $aa$.
+We're not going to be too pedantic about it, but a useful thing to remember is that the string $aa\epsilon$ is the very same string as $aa$, i.e. $aa\epsilon = aa$ as strings.  However, the regular expression $aa\epsilon$ is *not* the same regular expression as $aa$.  The former is a tree that contains a node labelled $\epsilon$ whereas the second is a tree without any node labelled $\epsilon$.  However, although they are *not the same piece of syntax* (i.e. the same tree), they have the same semantics, in the sense that they match exactly the same strings, namely just the string $aa$.

@@ -1,9 +1,9 @@
 ---
 layout: math
 mathjax: true
-parent: "Steven's Slides"
-title: Regex
-nav_order: 6
+parent: "Slides"
+title: 11. Regular Expressions
+nav_order: 11
 ---
 
 ## Regex

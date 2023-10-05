@@ -1,9 +1,9 @@
 ---
 layout: math
 mathjax: true
-parent: "Steven's Slides"
-title: Conventions
-nav_order: 7
+parent: "Slides"
+title: 12. Notational Conventions
+nav_order: 12
 ---
 
 ## Conventions
