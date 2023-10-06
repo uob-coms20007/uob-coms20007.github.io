@@ -94,19 +94,7 @@ Note: in rule (Char) there is only one variable $a$ which, if you recall correct
 
 A super cool thing about this rule format is that it is very uniform.  What I mean by this is that, when you have a rule with premises, the premises are themselves the very same kind of statement (namely of shape "<regex> matches <string>") as the rules allow you to conclude.  This allows us to stick the rules together to make *proof trees*.
 
-<div class="defn" markdown="1">
-A **proof tree** or **derivation** for the statement "$$R \matches w$$" is a finite tree whose nodes are labelled by matches statements, in such a way that:
-  1. The root is labelled "$$R \matches w$$".
-  2. and, for each node in the tree, labelled by say $S \matches v$, has parents labelled $S_1 \matches w_1,\ldots,S_k \matches w_k$, then there must be some rule (X) from our set of rules for which the following is an instance:
-    
-      $$
-        \begin{prooftree}
-        \AxiomC{$S_1 \matches w_1 \qquad \cdots{} \qquad S_k \matches w_k$}
-        \LeftLabel{(X)}
-        \UnaryInfC{$S \matches v$}
-        \end{prooftree}
-      $$
-</div>
+{% include defn_proof_trees.liquid %}
 
 In fact, we will usually write whichever rule (X) is appropriate on the tree itself.
 Note, this means that the leaves of the tree are necessarily labelled by instances of rules that have 0 premises i.e (Empty), (Char) and (StarB).

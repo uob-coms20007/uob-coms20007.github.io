@@ -1,0 +1,14 @@
+
+<div class="defn" markdown="1">
+A **proof tree** or **derivation** for the statement "$$R \matches w$$" is a finite tree whose nodes are labelled by matches statements, in such a way that:
+  1. The root is labelled "$$R \matches w$$".
+  2. and, for each node in the tree, labelled by say $S \matches v$, has parents labelled $S_1 \matches w_1,\ldots,S_k \matches w_k$, then there must be some rule (X) from our set of rules for which the following is an instance:
+    
+      $$
+        \begin{prooftree}
+        \AxiomC{$S_1 \matches w_1 \qquad \cdots{} \qquad S_k \matches w_k$}
+        \LeftLabel{(X)}
+        \UnaryInfC{$S \matches v$}
+        \end{prooftree}
+      $$
+</div>
