@@ -66,7 +66,7 @@ $$\begin{prooftree}\AxiomC{$a+b \matches b$}\AxiomC{$a+b \matches a$}\LeftLabel{
 
 --- here we instantiated regex variable $R$ by $a+b$, $S$ by $a+b$ and string variables $u$ and $v$ by strings $b$ and $a$ respectively.
 
-$$\begin{prooftree}\AxiomC{$abc \matches abc$}\AxiomC{$(b + \epsilon) \matches \epsilon$}\LeftLabel{$\rlnm{Concat}$}\BinaryInfC{$(abc)(b + \epsilon) \matches abcb$}\end{prooftree}$$ 
+$$\begin{prooftree}\AxiomC{$abc \matches abc$}\AxiomC{$(b + \epsilon) \matches b$}\LeftLabel{$\rlnm{Concat}$}\BinaryInfC{$(abc)(b + \epsilon) \matches abcb$}\end{prooftree}$$ 
   
 --- here we instantiated $R$ by $abc$, $S$ by $b + \epsilon$, $u$ by $abc$ and $v$ by $\epsilon$.
  

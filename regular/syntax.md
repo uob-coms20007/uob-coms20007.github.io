@@ -46,7 +46,7 @@ Finally, let us borrow a trick from arithmetic and agree to suppress the concate
 With your agreement then we will start omitting some of the parentheses and concatenation operators when writing the syntax trees inline.  The agreement allows us to write our previous examples more compactly:
 * $$(0+1)0^*$$ instead of $$(0+1) \cdot{} (0^*)$$
 * $$(0+1)^*$$ instead of $$(0+1)^*$$
-* $$0^*10^*$$ instead of $$((0^*) \cdot{} 1) \cdot{} (0^*)$$
+* $$0^*10^*$$ instead of $$(0^*) \cdot{} (1 \cdot{} (0^*))$$
 
 Some other examples of regular expressions over $$\{0,1\}$$ (based on Sipser 1.53):
 * $$(0+1)^*1(0+1)^*$$ - matches words containing at least one 1
