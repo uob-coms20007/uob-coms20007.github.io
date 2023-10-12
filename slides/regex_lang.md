@@ -1,9 +1,9 @@
 ---
 layout: math
 mathjax: true
-parent: "Steven's Slides"
-title: Language Expressed
-nav_order: 19
+parent: "Slides"
+title: 20. Regex Language
+nav_order: 20
 ---
 
 {: .defn } 

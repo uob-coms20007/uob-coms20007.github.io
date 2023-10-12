@@ -64,18 +64,7 @@ By constructing the automaton we ensure the following property.  The language re
 
 The whole construction can be specified quite neatly using the notion of Brzozowski derivatives.  We write $a^{-1}\,R$ for the derivative of the regular expression $R$ with respect to letter $a$.  Brzozowski derivatives have nothing to do with the derivatives of functions over the real numbers that you studied at school, rather the derivative of a regular expression $R$ with respect to letter $a$, is a new regular expression that describes the set of strings $w$ such that $aw$ can be matched by $R$.  It can be defined recursively on the structure of $R$:
 
-$$
-  \begin{array}{rcll}
-    a^{-1}\,a &=& \epsilon &\\
-    a^{-1}\,b &=& \emptyset & \text{when $a \neq b$}\\
-    a^{-1}\,\epsilon &=& \emptyset & \\
-    a^{-1}\,\emptyset &=& \emptyset & \\
-    a^{-1}\,(R \cdot S) &=& a^{-1}\,R \cdot S & \text{when $R$ is not nullable}\\
-    a^{-1}\,(R \cdot S) &=& a^{-1}\,R \cdot S + a^{-1}\,S & \text{when $R$ is nullable}\\
-    a^{-1}\,(R + S) &=& a^{-1}\,R + a^{-1}\,S &\\
-    a^{-1}\,(R^*) &=& a^{-1}\,R  \cdot R^* &
-  \end{array}
-$$
+{% include defn_derivatives.liquid %}
 
 Here we are assuming that, in our notation, $a^{-1}$ binds tightest.  We can extend the concept to speak of the derivative of a regular expression $R$ with respect to a word $w$ (and not just a letter):
 

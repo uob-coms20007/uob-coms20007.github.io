@@ -2,7 +2,7 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 19. Language
+title: 19. Automaton Language
 nav_order: 19
 ---
 
