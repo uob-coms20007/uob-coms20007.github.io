@@ -162,20 +162,7 @@ Hence, the even/odd automaton consists of:
 
 The requirement that the transitions of the automaton form a function from $Q \times \Sigma$ to $Q$ amounts to requiring, in the diagram of the automaton, that there is exactly one transition edge out of each node for each letter in $\Sigma$.
 
-<div class="defn" markdown="1">
-Suppose $$M$$ is a finite automaton with components $$(Q,\Sigma,\Delta,q_0,F)$$ and $w$ is a string.  A __run__ of $M$ on a word $w$ is a finite sequence of transitions:
-
-$$
-  q_0 \rred{\ell_1} q_1 \rred{\ell_2} \cdots{} \rred{\ell_n} q_n
-$$
-
-such that: 
-
-  * The passage from one state to the next $$q_i \rred{\ell_{i+1}} q_{i+1}$$ is according to the transition function $\delta$, i.e. $\delta(q_i,\,\ell_{i+1}) = q_{i+1}$.  
-	* The concatenation of the labels $$\ell_1 \ell_2 \cdots{} \ell_n$$ is $w$.  
-	
-The run is said to be __accepting__ just if $q_n$ is an accepting state (in $F$).
-</div>
+{% include defn_run.liquid %}
 
 <!-- Note that we don't count traces that get stuck somewhere whilst processing a word $w$ as a run on $w$.  For example, consider the $aa$-substring automaton again.  Then we can trace out a computation on $babaa$:
 
@@ -185,10 +172,7 @@ $$
 
 However, at this point we are stuck, since the next letter is $b$, but there are no $b$-labelled transitions out of state $$a\,\_$$.  So, this is a not a run on $babaa$, although it is a run on $ba$. -->
 
-<div class="defn" markdown="1">
-A string $w$ is said to be __accepted__ by a finite automaton $M$ just if there is an accepting run of $M$ on $w$.  The language __recognised__ by $M$, written $L(M)$, is the set of all strings accepted by $M$.
-</div>
-
+{% include defn_accept_recog.liquid %}
 <!-- Notice the implicit existential quantification in the definition of acceptance - just if *there is* an accepting run - the machine may have choices to make when it processes the word, and we just need the choices to "work out" (lead to an accept state) one time to be able to declare the word accepted.  
 
 It leads to a real asymmetry between accepting words and rejecting words (not accepting them).  Given an automaton $M$ and a word $w$, for you to convince me that $w$ is accepted by $M$, you just need to show me one accepting run on $w$; but for you to convince me that it is not accepted, you need to argue about all possible runs over $w$ - namely that none of them can ever end in an accepting state.

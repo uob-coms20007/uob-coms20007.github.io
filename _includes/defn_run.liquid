@@ -1,0 +1,14 @@
+<div class="defn" markdown="1">
+Suppose $$M$$ is a finite automaton with components $$(Q,\Sigma,\Delta,q_0,F)$$ and $w$ is a string.  A __run__ of $M$ on a word $w$ is a finite sequence of transitions:
+
+$$
+  q_0 \rred{\ell_1} q_1 \rred{\ell_2} \cdots{} \rred{\ell_n} q_n
+$$
+
+such that: 
+
+* The passage from one state to the next $$q_i \rred{\ell_{i+1}} q_{i+1}$$ is according to the transition function $\delta$, i.e. $\delta(q_i,\,\ell_{i+1}) = q_{i+1}$.  
+* The concatenation of the labels $$\ell_1 \ell_2 \cdots{} \ell_n$$ is $w$.  
+	
+The run is said to be __accepting__ just if $q_n$ is an accepting state (in $F$).
+</div>
