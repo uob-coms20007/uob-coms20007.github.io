@@ -1,9 +1,9 @@
 ---
 layout: math
 mathjax: true
-parent: "Steven's Slides"
-title: Regular Languages
-nav_order: 25
+parent: "Slides"
+title: 23. Regular Language
+nav_order: 23
 ---
 
 {% include defn_regular.liquid %}

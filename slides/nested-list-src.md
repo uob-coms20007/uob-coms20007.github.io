@@ -1,9 +1,9 @@
 ---
 layout: math
 mathjax: true
-parent: "Steven's Slides"
-title: HTML Nested List Src
-nav_order: 23
+parent: "Slides"
+title: 25. Nested List Src
+nav_order: 25
 ---
 
     <ul>
