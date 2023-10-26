@@ -145,6 +145,7 @@ just if
 $$
   A \Downarrow_{\mathcal{A}^{-}} v.
 $$
+
 </div>
 
 **Proof**
@@ -176,10 +177,10 @@ saw last year...
 
 $$
 \begin{align}
-⟦\texttt{n}⟧^{\mathcal{A}}(\sigma)           & = ⟦\texttt{n}⟧^{\mathbb{Z}}\\
-⟦A_1\;\texttt{+}\;A_2⟧^{\mathcal{A}}(\sigma) & = ⟦A_1⟧^{\mathcal{A}}(\sigma) + ⟦A_2⟧^{\mathcal{A}}(\sigma)\\
-⟦A_1\;\texttt{-}\;A_2⟧^{\mathcal{A}}(\sigma) & = ⟦A_1⟧^{\mathcal{A}}(\sigma) - ⟦A_2⟧^{\mathcal{A}}(\sigma)\\
-⟦A_1\;\texttt{*}\;A_2⟧^{\mathcal{A}}(\sigma) & = ⟦A_1⟧^{\mathcal{A}}(\sigma) \cdot ⟦A_2⟧^{\mathcal{A}}(\sigma)
+⟦\texttt{n}⟧^{\mathcal{A}}           & = ⟦\texttt{n}⟧^{\mathbb{Z}}\\
+⟦A_1\;\texttt{+}\;A_2⟧^{\mathcal{A}} & = ⟦A_1⟧^{\mathcal{A}} + ⟦A_2⟧^{\mathcal{A}}\\
+⟦A_1\;\texttt{-}\;A_2⟧^{\mathcal{A}} & = ⟦A_1⟧^{\mathcal{A}} - ⟦A_2⟧^{\mathcal{A}}\\
+⟦A_1\;\texttt{*}\;A_2⟧^{\mathcal{A}} & = ⟦A_1⟧^{\mathcal{A}} \cdot ⟦A_2⟧^{\mathcal{A}}
 \end{align}
 $$
 
@@ -198,7 +199,8 @@ arithmetic expressions with _variables_.
 <div class="defn" markdown="1">
 An __arithmetic expression__ is a tree described by the following grammar,
 where $\texttt{n}$ stands for integer literals, and $\texttt{x}$ stands for a
-variable name (a string in $\texttt{[a-z]}^{+}$; we will later remove some).
+variable name (a string in $\mathsf{Var} =
+\texttt{[a-z]}\texttt{[a-z0-9]}^{*}$; we will later remove some).
 
 $$
   A_1, A_2 ::= \texttt{n} \mid \texttt{x} \mid A_1\;\texttt{+}\;A_2 \mid A_1\;\texttt{-}\;A_2 \mid A_1\;\texttt{*}\;A_2
@@ -231,7 +233,7 @@ mapping from variables to values in $\mathbb{Z}$.
 
 <div class="defn" markdown="1">
 A __state__ is a total function in
-$\mathsf{State} = \texttt{[a-z]}^{+} \rightarrow \mathbb{Z}$.
+$\mathsf{State} = \mathsf{Var} \rightarrow \mathbb{Z}$.
 
 Given a state $\sigma$, a variable $\texttt{x}$ and an integer value $v$, we
 denote with $[\texttt{x} \mapsto v]\sigma$ the function that maps $\texttt{x}$
