@@ -62,7 +62,7 @@ $$
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{$\rlnm{BAss}$}
-\UnaryInfC{$\langle \texttt{x}\;\leftarrow\;a, \sigma\rangle \Downarrow \sigma[\texttt{x} \mapsto ⟦a⟧^{\mathcal{A}}(\sigma)]$}
+\UnaryInfC{$\langle \texttt{x}\;\leftarrow\;A, \sigma\rangle \Downarrow \sigma[\texttt{x} \mapsto ⟦A⟧^{\mathcal{A}}(\sigma)]$}
 \end{prooftree}
 $$
 
@@ -99,7 +99,7 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{$⟦b ⟧^{\mathcal{B}}(\sigma) = \top$}
+\AxiomC{$⟦B⟧^{\mathcal{B}}(\sigma) = \top$}
 \AxiomC{$\langle S, \sigma \rangle \Downarrow \sigma'$}
 \AxiomC{$\langle \texttt{while}\;B\;S, \sigma' \rangle \Downarrow \sigma''$}
 \LeftLabel{$\rlnm{BWhile_{\top}}$}
@@ -111,7 +111,7 @@ $$
 
 $$
 \begin{prooftree}
-\AxiomC{$⟦b ⟧^{\mathcal{B}}(\sigma) = \bot$}
+\AxiomC{$⟦B⟧^{\mathcal{B}}(\sigma) = \bot$}
 \LeftLabel{$\rlnm{BWhile_{\bot}}$}
 \UnaryInfC{$\langle \texttt{while}\;B\;S, \sigma \rangle \Downarrow \sigma$}
 \end{prooftree}
