@@ -36,7 +36,7 @@ $$
 \begin{aligned}
 & \texttt{q \(\leftarrow\) 0;}\\
 & \texttt{r \(\leftarrow\) a;}\\
-& \texttt{while (r <= b)}\\
+& \texttt{while (b <= r)}\\
 & \left\lfloor~~\begin{aligned}
   & \texttt{r \(\leftarrow\) r - b;}\\
   & \texttt{q \(\leftarrow\) q + 1}
