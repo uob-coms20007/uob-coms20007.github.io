@@ -23,7 +23,7 @@ $\texttt{S}$ might decide to loop on certain inputs.
 
 A function $f : \mathbb{N} ⇀ \mathbb{N}$ is __computable__ just if there is a
 program $S$ that computes $f$ with respect to the variable $\texttt{x}$. We
-often abbreviate "with respect to" to _wrt_.
+often abbreviate the phrase "with respect to" to "_wrt_."
 
 Given a `while` program $S$ we write
 $$
@@ -80,7 +80,7 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
 
    $$
    \begin{aligned}
-   & g : \mathbb{N} \to \mathbb{N} \\
+   & g : \mathbb{N} ⇀ \mathbb{N} \\
    & g(x) \begin{cases}
       \simeq x + 1 & \text{ if $x < 2$} \\
       \uparrow     & \text{ otherwise}
