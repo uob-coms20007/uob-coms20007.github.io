@@ -97,7 +97,7 @@ semi-characteristic function $\xi_U$ is computable.
 
 2.  The predicate
     $$
-      U = \{ 0 \} \cup \{ k \in \mathbb{N}^+ \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
+      U = \{ k \in \mathbb{N}^+ \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
     $$
     is semi-decidable.
 
@@ -118,8 +118,7 @@ semi-characteristic function $\xi_U$ is computable.
     conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a
     famously unsolved problem of mathematics. It states that the Collatz
     sequence $a_0, a_1, \dots$ starting at any $a_0 \in \mathbb{N}^+$ will
-    eventually reach the number $1$. As a matter of convention we let $0
-    \in U$.
+    eventually reach the number $1$. 
 
     If the Collatz conjecture is true, then every number is in the predicate
     $U$, i.e. $U = \mathbb{N}$. Thus, if $U$ were proven to be decidable,
@@ -130,39 +129,32 @@ semi-characteristic function $\xi_U$ is computable.
     function $\xi_U$ is computed by the following program (wrt `n`), which
     calculates every number in the sequence until it reaches $1$.
     ```
-    if (n = 0) then 
-      skip
-    else
-      while (! (n = 1)) {
+    while (! (n = 1)) {
 
-        // Divide n by 2, putting the quotient in q and the remainder in r.
-        q <- 0; r <- n;
-        while (r >= 2) {
-          q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r > 0
-        }
+      // Divide n by 2, putting the quotient in q and the remainder in r.
+      q <- 0; r <- n;
+      while (r >= 2) {
+        q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r > 0
+      }
 
-        // Depending on the parity compute the next element in the sequence.
-        if (r = 0) then {
-          // The next element is a_n / 2.
-          n <- q
+      // Depending on the parity compute the next element in the sequence.
+      if (r = 0) then {
+        // The next element is a_n / 2.
+        n <- q
+      }
+      else {
+        // The next element is (3 * a_n + 1) / 2.
+        // Compute 3 * a_n + 1, and then divide it by 2.
+        q <- 0; r <- 3 * n + 1;
+        while (r >= 2) do {
+          q <- q + 1; r <- r - 2
         }
-        else {
-          // The next element is (3 * a_n + 1) / 2.
-          // Compute 3 * a_n + 1, and then divide it by 2.
-          q <- 0; r <- 3 * n + 1;
-          while (r >= 2) do {
-            q <- q + 1; r <- r - 2
-          }
-          n <- q
-        }
+        n <- q
       }
     }
-    // If we get here it must be that either n = 0 or n = 1.
-    // Zero out all other variables.
+    // If we get here it must be that n = 1. Zero out all other variables.
     q <- 0; r <- 0
-    // Return 1.
-    n <- 1
     ```
-    If when starting from $n$ the sequence eventually reaches $1$, the
-    `while` loop will terminate (with the value $1$ in `n`). Otherwise, the
-    loop will run forever.
+    Suppose we run this program starting with $n > 0$. If the Collatz sequence eventually reaches $1$, the `while` loop will terminate (with the value $1$ in `n`). Otherwise, the loop will run forever.
+
+    What will happen if we start with $n = 0$?
