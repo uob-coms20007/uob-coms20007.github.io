@@ -388,7 +388,7 @@ of the state whose value is both:
 + strictly decreased by the loop's body; and
 + lower-bounded by some constant integer.
 
-The existence of a valid loop variant implies termination: it is possible to
+The existence of a valid loop variant implies termination: it is impossible to
 continue decreasing any integer value indefinitely while also staying
 lower-bounded.
 
