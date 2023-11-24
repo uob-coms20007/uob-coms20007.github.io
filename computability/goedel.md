@@ -99,7 +99,7 @@ $$
 Or we can even define $h' : \textbf{Stmt} \to \textbf{Stmt}$ by
 
 $$
-  h(S) = \begin{cases}
+  h'(S) = \begin{cases}
     S                 & \text{ if there is a while loop in $S$ } \\
     \textbf{skip}     & \text{ otherwise}
   \end{cases}
