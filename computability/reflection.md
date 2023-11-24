@@ -8,7 +8,7 @@ parent: Computability
 
 # Reflections: computing under representation
 
-The technology of bijectionsa allow us to define computability for sets $S$
+The technology of bijections allow us to define computability for sets $S$
 other than $\mathbb{N}$.
 
 ## Reflecting functions on a single set
