@@ -155,7 +155,10 @@ reasoning. Here is an intuitive explanation of what is going on:
    by a computer.
    
 3. This shows that every question about halting can be transformed to a question
-   about $\textsf{ALL}$.
+   about $\textsf{ALL}$. Moreover, this transformation did not require thinking
+   or ingenuity, and could be done automatically by a computer program
+   ("metaprogramming", i.e. writing programs that input and output other
+   programs).
 
 4. Hence, if we could solve $\textsf{ALL}$, we could solve $\textsf{HALT}$.
 
