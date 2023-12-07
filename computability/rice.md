@@ -15,13 +15,17 @@ Rice's theorem says that **telling what a computer program does from looking
 at its source code is either trivial or impossible**.
 
 We can state this in a more mathematical way. Let 
+
 $$
 \mathcal{F} \subseteq \mathcal{PR}
 $$
+
 be some set of computable functions. Recall that
+
 $$
   \mathcal{PR} = \{ f : \mathbb{N} ⇀ \mathbb{N} \mid \text{$f = ⟦ P ⟧_{\texttt{x}}$ for some While program $P$ } \}
 $$
+
 is the set of _all_ computable functions. $\mathcal{F}$ picks out only some of
 them, which we will regard as the "good" computable functions.
 
@@ -31,35 +35,45 @@ i.e. in $\mathcal{F}$, just by looking at its source code.
 *Example 1.* Suppose that we want to decide whether a program returns $0$ when
 given input $0$. This amounts to asking whether the function it computes is
 in the set
+
 $$
   \mathcal{F}_0 = \{\ f : \mathbb{N} ⇀ \mathbb{N} \in \mathcal{PR} \mid f(0) \simeq 0 \}
 $$
+
 of computable functions that return $0$ on input $0$. ▣
 
 *Example 2.* Suppose that we want to decide whether a program terminates on all
 inputs. This amounts to asking whether the function it computes is in the set
+
 $$
   \mathcal{T} = \{\ f : \mathbb{N} ⇀ \mathbb{N} \in \mathcal{PR} \mid \text{$f$ is total, i.e. } $\forall n. f(n) \downarrow \}
 $$
+
 of computable functions that are also total. ▣
 
 Given any predicate $\mathcal{F} \subseteq \mathbb{N} ⇀ \mathbb{N}$ on
 functions, we can _reflect_ it on the natural numbers under the Gödel numbering.
 That is, we can define the set
+
 $$
   F = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x} \in \mathcal{F} \}
 $$
+
 of (Gödel numbers of) programs which compute only "good" functions.
 
 *Example 1.* Reflecting $\mathcal{F}_0$, we obtain the set
+
 $$
   F_0 = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \simeq 0 \}
 $$
+
 which contains the (Gödel numbers of) programs which output $0$ on input $0$. ▣
 
 *Example 2.* Reflecting $\mathcal{T}$, we obtain the set
+
 $$
   T = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \text{ is a total function } \}
+
 $$
 which contains the (Gödel numbers of) programs which terminate on any input. ▣
 
