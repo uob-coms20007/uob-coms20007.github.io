@@ -147,11 +147,12 @@ reasoning. Here is an intuitive explanation of what is going on:
    \urcorner, n \rangle \in \textsf{HALT}$.)
 
 2. Given those two pieces of data (encoded as numbers), we were able to write a
-   program $G_{S, n}$ whose encoding was in $\textsf{ALL}$ exactly when $\langle
-   \ulcorner S \urcorner, n \rangle$ was in $\mathsf{HALT}$. This program $G_{S,
-   n}$ had $S$ and $n$ hard-coded into its source code (in the data section of
-   the binary, as a constant, etc.) Morever, writing down this program $G_{S,
-   n}$ was quite mechanical, and could be done by a computer.
+   program $G_{S, n}$ whose encoding $\ulcorner G_{S, n} \urcorner$ was in
+   $\textsf{ALL}$ exactly when $\langle \ulcorner S \urcorner, n \rangle$ was in
+   $\mathsf{HALT}$. This program $G_{S, n}$ had $S$ and $n$ hard-coded into its
+   source code (in the data section of the binary, as a constant, etc.) Morever,
+   writing down this program $G_{S, n}$ was quite mechanical, and could be done
+   by a computer.
    
 3. This shows that every question about halting can be transformed to a question
    about $\textsf{ALL}$.
