@@ -144,7 +144,7 @@ reasoning. Here is an intuitive explanation of what is going on:
 1. Suppose that someone challenges you to solve the halting problem: they
    provide a particular $S$ and $n$ (encoded as natural numbers), and ask you if
    they are an instance of the halting problem (i.e. if $\langle \ulcorner S
-   \urcorner, n \rangle$ \in \textsf{HALT}$.)
+   \urcorner, n \rangle \in \textsf{HALT}$.)
 
 2. Given those two pieces of data (encoded as numbers), we were able to write a
    program $G_{S, n}$ whose encoding was in $\textsf{ALL}$ exactly when $\langle
