@@ -83,8 +83,8 @@ Reflecting $\mathcal{T}$, we obtain the set
 
 $$
   T = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \text{ is a total function } \}
-
 $$
+
 which contains the (Gödel numbers of) programs which terminate on any input. ▣
 
 ## Statement of the theorem
