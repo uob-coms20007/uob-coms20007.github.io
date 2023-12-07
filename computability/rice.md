@@ -92,8 +92,8 @@ which contains the (GÃ¶del numbers of) programs which terminate on any input. â–
 We then have the
 
 **Theorem (Rice).** For any $\mathcal{F}$ of computable functions that is not
-trivial (either the empty set, or the set of all computable functions), the set
-$F$ is undecidable.
+trivial (either the empty set, or the set of all computable functions), the
+reflected set $F$ is undecidable.
 
 We will not prove Rice's theorem, but rest assured that it is just another reduction.
 
