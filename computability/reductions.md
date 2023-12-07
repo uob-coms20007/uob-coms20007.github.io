@@ -63,12 +63,12 @@ statement:
 Thus, if $U$ is difficult, then the harder, "bigger" problem $V$ is also
 difficult.
 
-## Example
-
 The strategy is now clear: if for a predicate $V \subseteq \mathbb{N}$ I can
 find a reduction $f : \textsf{HALT} ≲ V$, then I have shown that $V$ is more
 difficult than $\textsf{HALT}$. In other words: if I could 'solve' $V$, then
 I could also 'solve' $\textsf{HALT}$. But the latter cannot happen, so
+
+## Example
 neither can the former.
 
 For example, we can show the undecidability of the set
@@ -135,3 +135,27 @@ $n$ before stopping with its own input as output. Thus,
 These two points prove the aforementioned equivalence.
 
 Thus $\textsf{HALT}$ is "easier" than $\textsf{ALL}$. Hence $\textsf{ALL}$ is not decidable.
+
+### Intuition
+
+Showing the reduction above required some heavy symbols and some non-trivial
+reasoning. Here is an intuitive explanation of what is going on:
+
+1. Suppose that someone challenges you to solve the halting problem: they
+   provide a particular $S$ and $n$ (encoded as natural numbers), and ask you if
+   they are an instance of the halting problem (i.e. if $\langle \ulcorner S
+   \urcorner, n \rangle$ \in \textsf{HALT}$.)
+
+2. Given those two pieces of data (encoded as numbers), we were able to write a
+   program $G_{S, n}$ whose encoding was in $\textsf{ALL}$ exactly when $\langle
+   \ulcorner S \urcorner, n \rangle$ was in $\mathsf{HALT}$. Morever, writing
+   down this program was quite mechanical, and could be done by a computer.
+   
+3. This shows that every question about halting can be transformed to a question
+   about $\textsf{ALL}$.
+
+4. Hence, if we could solve $\textsf{ALL}$, we could solve $\textsf{HALT}$.
+
+5. We cannot solve $\textsf{HALT}$.
+
+6. Therefore we cannot solve $\textsf{ALL}$ either.
