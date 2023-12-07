@@ -88,7 +88,7 @@ By the structure of $\texttt{D}$, we have for any While program $\texttt{S}$ tha
 $$
   \begin{aligned}
     ⟦ \texttt{D} ⟧_\texttt{x}(\ulcorner \texttt{S} \urcorner) \uparrow
-      &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(\langle \urcorner \texttt{S} \ulcorner, \ulcorner \texttt{S} \urcorner \rangle) \simeq 1 \\
+      &⟺\ ⟦ \texttt{H} ⟧_\texttt{x}(\langle \ulcorner \texttt{S} \urcorner, \ulcorner \texttt{S} \urcorner \rangle) \simeq 1 \\
       &⟺\  \langle \ulcorner \texttt{S} \urcorner, \ulcorner \texttt{S} \urcorner \rangle \in \textsf{HALT} \\
       &⟺\ ⟦ \texttt{S} ⟧_\texttt{x}(\ulcorner \texttt{S} \urcorner) \downarrow
   \end{aligned}
