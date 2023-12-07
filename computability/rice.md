@@ -50,7 +50,7 @@ Suppose that we want to decide whether a program terminates on all
 inputs. This amounts to asking whether the function it computes is in the set
 
 $$
-  \mathcal{T} = \{\ f : \mathbb{N} ⇀ \mathbb{N} \in \mathcal{PR} \mid \text{$f$ is total, i.e. } $\forall n. f(n) \downarrow \}
+  \mathcal{T} = \{\ f : \mathbb{N} ⇀ \mathbb{N} \in \mathcal{PR} \mid \text{$f$ is total, i.e. } \forall n. f(n) \downarrow \}
 $$
 
 of computable functions that are also total. ▣
