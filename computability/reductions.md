@@ -72,27 +72,28 @@ neither can the former.
 For example, we can show the undecidability of the set
 
 $$
-  V = \{ \ulcorner S \urcorner \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
+  \textsf{ALL} = \{ \ulcorner S \urcorner \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
 $$
 
 of (the Gödel numbers of) programs which _never_ go into an infinite loop.
 
-To construct the reduction $g : \textsf{HALT} ≲ V$, recall the notion of a
-[code
-transformation](https://uob-coms20007.github.io/reference/computability/goedel.html#code-transformation). Define a function
+To construct the reduction $g : \textsf{HALT} ≲ \textsf{ALL}$, recall the notion
+of a [code
+transformation](https://uob-coms20007.github.io/reference/computability/goedel.html#code-transformation).
+Define a function
 
 $$
   g : \textbf{Stmt} \times \mathbb{N} \to \textbf{Stmt}
 $$
 
-where $g(S, n)$ outputs a While program $G_{S, n}$ that performs the
+where $g(S, n)$ is a While program $G_{S, n}$ that performs the
 following steps: on input $m$,
 1. Ignore the input.
-2. Simulate $S$ on input $n$ (i.e. run the interpreter/universal function).
+2. Simulate $S$ on input $n$ (i.e. run the interpreter/universal function, giving it both $S$ and $n$, which are now hardcoded).
 3. If that simulation ever finishes, set `x <- 0` to output $0$.
 
-All that $g$ does is take some source code ($S$) and a number ($n$) as input,
-and then write another program as output. The program $g(S, n)$ it outputs is a
+$g$ is a function that takes some source code ($S$) and a number ($n$) as input,
+and returns another program as output. The program $g(S, n)$ it outputs is a
 program that first simulates the running of $S$ on $n$, and - if and when that
 finishes - simply returns 0 as its final result. We know that we can write such
 a program by adapting the code of the [universal
@@ -107,13 +108,13 @@ Is this $\tilde{g}$ computable? It is indeed! It is not a stretch of the
 imagination to think of a bash or Python script that assembles the source code
 $G_{S, n}$ from the source code $S$ and the number $n$.
 
-Finally, $\tilde{g}$ is a reduction $\textsf{HALT} ≲ V$ because it is the
+Finally, $\tilde{g}$ is a reduction $\textsf{HALT} ≲ \textsf{ALL}$ because it is the
 case that
 
 $$
   \langle \ulcorner S \urcorner, n \rangle \in \textsf{HALT}
     ⟺
-  \ulcorner G_{S, n} \urcorner \in V
+  \ulcorner G_{S, n} \urcorner \in \textsf{ALL}
 $$
 
 Indeed, the program $G_{S, n}$ always simulates the running of $S$ on input
@@ -122,13 +123,13 @@ $n$ before stopping with its own input as output. Thus,
   halts on input $n$. Then, the program $G_{S, n}$ always halts, returning $0$.
   Consequently, the program $G_{S, n}$ is an expensive and roundabout way of
   computing the identity function. The identity function is always defined on
-  all inputs, so $\ulcorner G_{S, n} \urcorner \in V$.
+  all inputs, so $\ulcorner G_{S, n} \urcorner \in \textsf{ALL}$.
 * If $\langle \ulcorner S \urcorner, n \rangle \not\in \textsf{HALT}$, then $S$
   does _not_ halt on input $n$. Then, the program $G_{S, n}$ also never halts:
   the simulation of $S$ on $n$ runs forever! Hence, $G_{S, n}$ computes a
   function that is undefined for any input. Hence $\ulcorner G_{S, n} \urcorner
-  \not\in V$.
+  \not\in \textsf{ALL}$.
 
 These two points prove the aforementioned equivalence.
 
-Thus $\textsf{HALT}$ is "easier" than $V$. Hence $V$ is not decidable.
+Thus $\textsf{HALT}$ is "easier" than $\textsf{ALL}$. Hence $\textsf{ALL}$ is not decidable.
