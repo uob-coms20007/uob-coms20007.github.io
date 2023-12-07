@@ -32,7 +32,9 @@ them, which we will regard as the "good" computable functions.
 We would like to be able to tell whether a computable function $f$ is "good",
 i.e. in $\mathcal{F}$, just by looking at its source code. 
 
-*Example 1.* Suppose that we want to decide whether a program returns $0$ when
+### Example 1
+
+Suppose that we want to decide whether a program returns $0$ when
 given input $0$. This amounts to asking whether the function it computes is
 in the set
 
@@ -42,7 +44,9 @@ $$
 
 of computable functions that return $0$ on input $0$. ▣
 
-*Example 2.* Suppose that we want to decide whether a program terminates on all
+### Example 2
+
+Suppose that we want to decide whether a program terminates on all
 inputs. This amounts to asking whether the function it computes is in the set
 
 $$
@@ -50,6 +54,8 @@ $$
 $$
 
 of computable functions that are also total. ▣
+
+### Reflecting into the natural numbers
 
 Given any predicate $\mathcal{F} \subseteq \mathbb{N} ⇀ \mathbb{N}$ on
 functions, we can _reflect_ it on the natural numbers under the Gödel numbering.
@@ -61,7 +67,9 @@ $$
 
 of (Gödel numbers of) programs which compute only "good" functions.
 
-*Example 1.* Reflecting $\mathcal{F}_0$, we obtain the set
+### Example 1
+
+Reflecting $\mathcal{F}_0$, we obtain the set
 
 $$
   F_0 = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \simeq 0 \}
@@ -69,13 +77,17 @@ $$
 
 which contains the (Gödel numbers of) programs which output $0$ on input $0$. ▣
 
-*Example 2.* Reflecting $\mathcal{T}$, we obtain the set
+### Example 2
+
+Reflecting $\mathcal{T}$, we obtain the set
 
 $$
   T = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \text{ is a total function } \}
 
 $$
 which contains the (Gödel numbers of) programs which terminate on any input. ▣
+
+## Statement of the theorem
 
 We then have the
 

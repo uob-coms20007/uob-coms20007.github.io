@@ -19,23 +19,25 @@ well. This is a _proof by reduction_.
 
 ## Definition
 
-Let $U, W \subseteq \mathbb{N}$ be predicates, and let $f : \mathbb{N} \to
-\mathbb{N}$. The function $f$ is a __many-one reduction__ from $U$ to $W$ just if
-it is computable, and it is also the case that
+Let $U, V \subseteq \mathbb{N}$ be predicates, and let $f : \mathbb{N} \to
+\mathbb{N}$. The function $f$ is a __many-one reduction__ from $U$ to $V$ just if
+
+1. it is computable, and 
+2. it is also the case that
 
 $$
-  n \in U\ ⟺ f(n) \in W
+  n \in U\ ⟺ f(n) \in V
 $$
 
-We may write $f : U ≲ V$ (read "$f$ is a reduction from $U$ to $V$").
+We may sometimes write $f : U ≲ V$ to mean that $f$ is a reduction from $U$ to $V$.
 
 ## Intuition
 
-A many-one reduction $f : U ≲ V$ _transforms_ the problem of deciding $U$ to
-the problem of deciding $V$.
+A many-one reduction $f : U ≲ V$ _reduces_ the problem of deciding $U$ to the
+problem of deciding $V$.
 
 Suppose I have a number $n$, and I want to determine whether $n \in U$.
-Instead of doing that, I can compute $f(n)$; this is always defined because
+Instead of doing that, I can compute $f(n)$. this is always defined because
 $f$ is total, and it's always possible to compute because $f$ is a computable
 function. Then, I can ask whether $f(n) \in V$ instead. Because the definition of $f$ involves a logical equivalence, I can deduce the following facts:
 * if $f(n) \in V$, then I can tell that $n \in U$
