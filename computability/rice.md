@@ -95,7 +95,7 @@ We then have the
 trivial (either the empty set, or the set of all computable functions), the
 reflected set $F$ is undecidable.
 
-We will not prove Rice's theorem, but rest assured that it is just another reduction.
+The proof of Rice's theorem is by reduction.
 
 ## Intuition
 
