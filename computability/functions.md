@@ -56,10 +56,10 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
      r <- r * n;
      n <- n - 1
    }
-   // Zero out the auxiliary variable.
-   r <- 0;
    // Put the desired result in n.
    n <- r
+   // Zero out the auxiliary variable.
+   r <- 0;
    ```
 
 3. The integer-division-by-2 function $\textbf{div2} : \mathbb{N} ⇀
@@ -70,10 +70,10 @@ for the function computed by $S$ with respect to variable $\texttt{x}$.
    while (r >= 2) {
      q <- q + 1; r <- r - 2    // Loop invariant: n = q * 2 + r & r >= 0
    }
-   // Zero out all auxiliary variables.
-   q <- 0; r <- 0;
    // Put the result in n.
    n <- q
+   // Zero out all auxiliary variables.
+   q <- 0; r <- 0;
    ```
 
 4. The partial function 
