@@ -1,0 +1,21 @@
+
+Example to show that LL(1) does not necessarily encode
+the correct choices for any given input string, due to the 
+fact that follow is essentially an overapproximation
+(different occurrences of the non-terminal are confused).
+
+S -> aXa.
+S -> bXb.
+X -> .
+
+follow(X) = { a, b }
+
+     a         b
+S  S -> aXa   S -> bXb
+
+X  S -> .     S -> .
+
+ab
+
+S -> aXa -> aa
+

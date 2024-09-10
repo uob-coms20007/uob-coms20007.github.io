@@ -1,10 +1,9 @@
 ---
 layout: math
-title: Semantics
-nav_order: 3
+title: Syntax
+nav_order: 2
 mathjax: true
 has_children: true
 ---
 
-## Semantics
-
+# Syntax
