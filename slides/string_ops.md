@@ -2,7 +2,7 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 5. String Operations
+title: 5. String Ops
 nav_order: 5
 ---
 
