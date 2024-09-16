@@ -12,6 +12,7 @@ nav_order: 3
 * 100% written exam (3 hours) in _December_
 * 2 Lectures per week
 * 2hr Lab each week (_pen&paper/programming 4-8 hours_)
+    - New material this year
 * Unit page on Blackboard
 * Complete notes at https://uob-coms20007.github.io/reference/
 
