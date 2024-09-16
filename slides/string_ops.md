@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 4. 
-nav_order: 4
+title: 5. String Operations
+nav_order: 5
 ---
 
 ## String Operations
