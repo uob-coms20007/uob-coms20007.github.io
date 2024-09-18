@@ -55,6 +55,6 @@ We will often use this in combination with set notation, to describe languages o
 
 Note! Do not confuse, e.g. $$\{w_1 a w_2 a w_3 \mid w_1, w_2, w_3 \in \{a,b\}^* \}$$ with $$\{w_1 a w_2 a w_3\}$$: the latter is a singleton set, it contains the string $$w_1 a w_2 a w_2$$ as its only element (and for that to make sense we must have introduced $w_1$, $w_2$ and $w_3$ already).  E.g.
 
-> Suppose, $w_1 = a$, $w_2 =aa$ and $w_3 = aaa$.  Then my FAVOURITE set is $$\{w_1aw_2aw_3\}$$, which I just ADORE because its ONE AND ONLY element is $aaaaaa$.
+> Suppose, $w_1 = a$, $w_2 =aa$ and $w_3 = aaa$.  Then my FAVOURITE set is $$\{w_1aw_2aw_3\}$$, which I just ADORE because its ONE AND ONLY element is $aaaaaaaa$.
 
 <!-- You may rightly ask why we bother with these descriptions: isn't "the set of all strings over $$\{a,b\}$$ containing at least two $a$" already clear enough?  Well, you are right, it is, and I will often simply write an English language description like that when it is clear enough.  However, (a) sometimes English on its own is not clear enough (see the last bullet point example above) and (b) the idea of decomposing a string with respect to concatenation is a key idea in formal languages, so it is good to see it more generally here first. -->
