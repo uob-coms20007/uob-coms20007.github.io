@@ -172,10 +172,14 @@ $$
   \end{align*}
 $$
 
-Since it is possible to derive $x = 2;$ and $x = 3;$ from the nonterminal *statement*, skipping some more steps gives us the valid C program statement:
+Since it is possible to derive $x = 2;$ and $x = 3;$ from the nonterminal *statement*, skipping some more steps gives us the valid C program statement (recall that we don't care about whitespace at this time - space characters, carriage returns and newlines):
 
 ```c
-  switch (0) if (0) case 0: x=2; else case 1: x=3;
+  switch (0) 
+    if (0) 
+      case 0: x=2; 
+    else 
+      case 1: x=3;
 ```
 
 The semantics of this statement, how it executes, is a little counterintuitive, because we naturally expect that a conditional statement whose guard is constantly false should be equivalent to just executing it's else branch.   However, this ability to interlace switch statements with other statements (like the conditional statement in this case) can be useful, cf. Duff's Device.
