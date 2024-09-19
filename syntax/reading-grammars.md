@@ -22,7 +22,17 @@ The way that syntax is usually described is using a *context-free grammar*.  Suc
 
 Let's forget about C programs for now and look to something simpler.  The following grammar defines a set of simple Boolean expressions, built out of true, false, conjunction ($\andop$), disjunction ($\orop$), and parentheses:
 
-{% include ex_s_grammar_arith.liquid %}
+$$
+  \begin{array}{rrcl}
+  (1) & B &\longrightarrow& F \\
+  (2) & B &\longrightarrow& F \orop B \\ 
+  (3) & F &\longrightarrow& L \\
+  (4) & F &\longrightarrow& L \andop F\\
+  (5) & L &\longrightarrow& \tt \\ 
+  (6) & L &\longrightarrow& \ff\\
+  (7) & L &\longrightarrow& (B)
+  \end{array}
+$$
 
 Each line of the grammar is called a *production rule* (or just *rule* or *production* for short).  This grammar has 7 productions.  I have labelled each with a number from 1 to 7, but this is purely to make it easier to explain what is going on, these labels are not formally part of the grammar.  The long right arrow, $$\longrightarrow$$, divides the rule into two parts, the *left-hand side* or *head* of the rule and the *right-hand side* or *body* of the rule.  The left-hand side of each rule comprises a single symbol, here either $A$, $F$ or $L$ which are called the *non-terminal* symbols.  If a rule has a non-terminal $$X$$ as its left-hand side, then we say the rule is a $$X$$-rule.  All the other symbols occurring on right-hand side apart from the non-terminal symbols are called the *terminal* symbols.  Here, the terminal symbols are $$\tt$$, $$\ff$$, $$\andop$$, $\orop$, and the left and right parentheses.  The idea of the grammar is that it is a collection of rules for generating strings built over the terminal symbols - i.e. the set of terminal symbols is exactly the alphabet of the strings we are considering.
 
