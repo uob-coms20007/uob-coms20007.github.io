@@ -1,5 +1,10 @@
-
-
+---
+layout: math
+mathjax: true
+parent: "Slides"
+title: 11. Hask Appl
+nav_order: 11
+---
 
 $$
   \begin{align*}  
