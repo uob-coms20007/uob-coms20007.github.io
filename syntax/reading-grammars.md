@@ -218,7 +218,7 @@ in which the nonterminal symbol *expression* is considered optional.  It can be 
 
 $$
   \begin{array}{rcl}
-    \textit{expression-statement} : \textit{expression}_{\text{opt}}\textbf{;}\\
+    \textit{expression-statement} &:& \textit{expression}_{\text{opt}}\textbf{;}\\
     \textit{expression-opt} &:& \textit{expression} \mid \epsilon
   \end{array}
 $$
