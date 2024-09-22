@@ -22,7 +22,17 @@ The way that syntax is usually described is using a *context-free grammar*.  Suc
 
 Let's forget about C programs for now and look to something simpler.  The following grammar defines a set of simple Boolean expressions, built out of true, false, conjunction ($\andop$), disjunction ($\orop$), and parentheses:
 
-{% include ex_s_grammar_arith.liquid %}
+$$
+  \begin{array}{rrcl}
+  (1) & B &\longrightarrow& F \\
+  (2) & B &\longrightarrow& F \orop B \\ 
+  (3) & F &\longrightarrow& L \\
+  (4) & F &\longrightarrow& L \andop F\\
+  (5) & L &\longrightarrow& \tt \\ 
+  (6) & L &\longrightarrow& \ff\\
+  (7) & L &\longrightarrow& (B)
+  \end{array}
+$$
 
 Each line of the grammar is called a *production rule* (or just *rule* or *production* for short).  This grammar has 7 productions.  I have labelled each with a number from 1 to 7, but this is purely to make it easier to explain what is going on, these labels are not formally part of the grammar.  The long right arrow, $$\longrightarrow$$, divides the rule into two parts, the *left-hand side* or *head* of the rule and the *right-hand side* or *body* of the rule.  The left-hand side of each rule comprises a single symbol, here either $A$, $F$ or $L$ which are called the *non-terminal* symbols.  If a rule has a non-terminal $$X$$ as its left-hand side, then we say the rule is a $$X$$-rule.  All the other symbols occurring on right-hand side apart from the non-terminal symbols are called the *terminal* symbols.  Here, the terminal symbols are $$\tt$$, $$\ff$$, $$\andop$$, $\orop$, and the left and right parentheses.  The idea of the grammar is that it is a collection of rules for generating strings built over the terminal symbols - i.e. the set of terminal symbols is exactly the alphabet of the strings we are considering.
 
@@ -97,7 +107,7 @@ To be clear, this is just a more compact way of writing exactly the same grammar
 Whenever you are presented with a grammar, you should try to understand the role of each of the non-terminals.  Either someone will tell you their role, or you will have to experiment with deriving strings in order to make a guess.  Since I gave you this grammar, let me tell you what I had in mind.  
 
   * The start symbol $$B$$ is meant to represent possibly trivial *disjunctions*.  What I mean by this is that any sequence of replacements starting at $$B$$ will end in a disjunction expression, but it may be a trivial disjunction of one element, such as $\tt$ (here we are viewing $tt$ as a disjunction of size one).  It is through this allowance of trivial disjunctions that we are able to generate all possible Boolean expressions over the truth values, disjunction and conjunction - if our Boolean expression is actually, say, a conjunction then it can be viewed as a trivial disjunction of one element, the element being a conjunction.
-  * The non-terminal $$L$$ is meant to represent possibly trivial *conjunctions*.  What I mean by this is that any sequence of replacements starting at $$L$$ will derive a conjunction expression, though it may be a trivial conjunction of one element.
+  * The non-terminal $$F$$ is meant to represent possibly trivial *conjunctions*.  What I mean by this is that any sequence of replacements starting at $$F$$ will derive a conjunction expression, though it may be a trivial conjunction of one element.
   * The non-terminal $$L$$ is meant to represent *atomic Boolean expressions*, *atomic* in the sense of being indivisible.  What I mean by this is that any sequence of replacements starting at $$L$$ will end in either a literal or a parenthesized Boolean expression
 
 Computer Scientists are not the only ones to use context-free grammars, they are also used by linguists to describe the phrase structure of natural language.  The following example is taken from Sipser (Section 2.1):
@@ -172,10 +182,14 @@ $$
   \end{align*}
 $$
 
-Since it is possible to derive $x = 2;$ and $x = 3;$ from the nonterminal *statement*, skipping some more steps gives us the valid C program statement:
+Since it is possible to derive $x = 2;$ and $x = 3;$ from the nonterminal *statement*, skipping some more steps gives us the valid C program statement (recall that we don't care about whitespace at this time - space characters, carriage returns and newlines):
 
 ```c
-  switch (0) if (0) case 0: x=2; else case 1: x=3;
+  switch (0) 
+    if (0) 
+      case 0: x=2; 
+    else 
+      case 1: x=3;
 ```
 
 The semantics of this statement, how it executes, is a little counterintuitive, because we naturally expect that a conditional statement whose guard is constantly false should be equivalent to just executing it's else branch.   However, this ability to interlace switch statements with other statements (like the conditional statement in this case) can be useful, cf. Duff's Device.
@@ -204,7 +218,7 @@ in which the nonterminal symbol *expression* is considered optional.  It can be 
 
 $$
   \begin{array}{rcl}
-    \textit{expression-statement} : \textit{expression}_{\text{opt}}\textbf{;}\\
+    \textit{expression-statement} &:& \textit{expression}_{\text{opt}}\textbf{;}\\
     \textit{expression-opt} &:& \textit{expression} \mid \epsilon
   \end{array}
 $$
