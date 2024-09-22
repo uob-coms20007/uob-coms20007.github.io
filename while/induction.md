@@ -225,7 +225,7 @@ To avoid getting lost in a fog of symbols, we will leave our property as $P(e)$ 
       \begin{array}{rll}
         \llbracket e_1 + e_2 \rrbracket_A(\sigma) &= \llbracket e_1 \rrbracket_A(\sigma) + \llbracket e_2 \rrbracket_A(\sigma)                & \textrm{Expand} \\
                             &= \llbracket e_1 \rrbracket_A(\sigma') + \llbracket e_2 \rrbracket_A(\sigma')   & \textrm{Induction Hypotheses} \\
-                            &= \llbracket e_1 e_2 \rrbracket_A(\sigma') & \textrm{Simplify}
+                            &= \llbracket e_1 + e_2 \rrbracket_A(\sigma') & \textrm{Simplify}
       \end{array}
     $$
 
