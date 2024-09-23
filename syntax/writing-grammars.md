@@ -20,7 +20,10 @@ A __Context Free Grammar (CFG)__ consists of four components:
 
 We will adopt the following conventions.  We will use lowercase letters from the start of the alphabet, $a$, $b$, $c$ and so on, as metavariables for terminal symbols.  We will use uppercase letters as metavariables for non-terminal symbols.  
 
-If you think back to the previous example, you will notice that a key part of the grammar is manipulating sequences of terminals and non-terminals, like $$\ff \andop (L \orop L)$$.  One could think of these as strings over the alphabet $\Sigma \cup \mathcal{N}$, but I would rather reserve the word "string" for the objects (over $\Sigma$ only) that the grammar derives.  So instead, we shall refer to these kind of sequences as __sentenial forms__.
+If you think back to the previous example, you will notice that a key part of the grammar is manipulating sequences of terminals and non-terminals, like $$\ff \andop (L \orop L)$$.  One could think of these as strings over the alphabet $\Sigma \cup \mathcal{N}$, but I would rather reserve the word "string" for the objects (over $\Sigma$ only) that the grammar derives.  So instead, we shall refer to these kind of sequences as _sentenial forms_.
+
+{: .defn }
+A __sentential form__ is just a sequence of terminals (from $\Sigma$) and nonterminals (from $\mathcal{N}$).
 
 According to this view, we will reserve metavariables $u$, $v$, $w$ and so on for strings (as we have done so far), and introduce metavariables $\alpha$, $\beta$, $\gamma$ and so on to stand for arbitrary sentential forms.
 
@@ -44,7 +47,7 @@ Here's another example of a context free grammar which is particularly important
 <div class="defn" markdown="1">
 The syntax of the __While Programming Language__ is given by the CFG with:
 - Terminal symbols: $0,1,\ldots{},9$, $'$, $a,b,\ldots,z,A,B,\ldots,Z$, $\andop$, $\orop$, $!$, $+$, $*$, $-$, $\leq$, $=$, $\leftarrow$, $;$.  
-- Nonterminal symbols: $S$, $A$, $V$, $B$, $D$, $E$, $L$, $U$, $M$, $N$
+- Nonterminal symbols: $S$, $B$, $A$, $D$, $E$, $L$, $U$, $M$, $V$, $N$
 - Production rules:
 
     $$
@@ -54,7 +57,7 @@ The syntax of the __While Programming Language__ is given by the CFG with:
         A &\longrightarrow& V \mid N \mid A + A \mid A - A \mid A * A \mid (A)\\
         D &\longrightarrow& 0 \mid 1 \mid \cdots{} \mid 9\\
         E &\longrightarrow& D\ E \mid \epsilon\\
-        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid \_ \\
+        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid ' \\
         U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \\
         M &\longrightarrow& L\ M \mid U\ M \mid \epsilon\\
         V &\longrightarrow& L\ M\\
@@ -70,7 +73,7 @@ Informally the "meaning" of the different nonterminals (sometimes called the syn
 * $A$: arithmetic expressions, i.e. code that, when executed, will return a numerical value
 * $D$: single digits
 * $E$: possibly empty sequences of digits
-* $L$: single lowercase letters, or the underscore
+* $L$: single lowercase letters, or the prime (apostrophe) symbol '
 * $U$: single uppercase letters
 * $M$: possibly empty sequences of letters and underscores
 * $V$: variable names (identifiers)
@@ -79,6 +82,12 @@ Informally the "meaning" of the different nonterminals (sometimes called the syn
 There are quite a number of nonterminals, but there is a sense (which we will make more precise later) that the first three are really doing all the heavy lifting in the description of this language.  The latter seven non-terminals are just describing two things: the shape of numbers and the shape of variable names (also known as identifiers).
 
 Note: there is nothing special about the particular letters used for the nonterminals, we could have used alternative names and we would still consider it essentially the same description of the While programming language.  For example, if we replaced everywhere in the rules the letter N by the letter P.
+
+Some remarks on the notation:
+  * $\mathsf{skip}$ is the "do nothing" statement, it has no effect when executed
+  * $V \leftarrow A$ is an assignment statement: assign the value described by the arithmetic expression derived from $A$ to the variable whose name derives from $V$.
+  * { $S$ } are just brackets for statements (as parentheses are to expressions)
+  * We use $;$ to combine two statements by executing them in sequence, rather than as a terminator for every (atomic) statement, so e.g. $x \leftarrow 2; y \leftarrow 3$ is a perfectly good statement derivable from $S$.
 
 ### Derivation
 
@@ -150,10 +159,6 @@ $$
 
 $$
   \{ w \mid \text{$w$ is a palindrome (i.e. the same word when reversed)}\}
-$$
-
-$$
-  \emptyset
 $$
 
 $$
