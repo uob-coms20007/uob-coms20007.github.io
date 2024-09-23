@@ -67,8 +67,8 @@ Giving definitions by structural recursion in this manner is very common in sema
 That is, every expression has a unique denotation according to our equations.
 
 The definition can be seen as interpreting (i.e. giving meaning to) underlined syntactic constructs as their usual mathematical definitions.
-For example, by applying these equations, we can see that the denotation $\llbracket \underline{1} \mathbin{\underline{+}} \underline{1} \rrbracket_S$ equates to $\llbracket \underline{1}\rrbracket_S + \llbracket \underline{1} \rrbracket_{S}$, which equates to $1 + 1$ (and of course $2$). 
-We now have a formal sense in which the expression $\underline{1} \mathbin{\underline{+}} \underline{1}$ and the expression $\underline{2}$ can be said to be _equivalent_ (but not identical).
+For example, by applying these equations, we can see that the denotation $\llbracket \underline{1} \mathbin{\underline{+}} \underline{1} \rrbracket_S$ equates to $\llbracket \underline{1}\rrbracket_S + \llbracket \underline{1} \rrbracket_{S}$, which equates to $1 + 1$ (and of course $2$).
+This gives us a formal sense in which the expression $\underline{1} \mathbin{\underline{+}} \underline{1}$ and the expression $\underline{2}$ can be said to be _equivalent_ (but not identical).
 
 <img src="../assets/semantics/simple-denotation.png" style="max-width:300px"/>
 
@@ -178,8 +178,8 @@ $$
   \llbracket \mathop{!}b \rrbracket_B(\sigma) & = \neg \llbracket b \rrbracket_B(\sigma)\\
   \llbracket b_1 \andop b_2 \rrbracket_B(\sigma) & = \llbracket b_1 \rrbracket_B(\sigma) \wedge \llbracket b_2\rrbracket_B(\sigma)\\
   \llbracket b_1 \orop b_2\rrbracket_B(\sigma) & = \llbracket b_1 \rrbracket_B(\sigma) \vee \llbracket b_2 \rrbracket_B(\sigma)\\
-  \llbracket a_1 = a_2 \rrbracket_B(\sigma) & = \llbracket a_1 \rrbracket_A(\sigma) = \llbracket a_2 \rrbracket_A(\sigma)\\
-  \llbracket a_1 \leq a_2 \rrbracket_B(\sigma) & = \llbracket a_1 \rrbracket_A(\sigma) \leq \llbracket a_2 \rrbracket_A(\sigma)
+  \llbracket e_1 = e_2 \rrbracket_B(\sigma) & = \llbracket e_1 \rrbracket_A(\sigma) = \llbracket e_2 \rrbracket_A(\sigma)\\
+  \llbracket e_1 \leq e_2 \rrbracket_B(\sigma) & = \llbracket e_1 \rrbracket_A(\sigma) \leq \llbracket e_2 \rrbracket_A(\sigma)
 \end{array}
 $$
 
