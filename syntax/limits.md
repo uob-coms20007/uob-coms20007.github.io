@@ -12,7 +12,7 @@ $$
 \newcommand{\orop}{\mathrel{\|}}
 $$
 
-# Limits in the Expressive Power of CFGs
+# Limits to the Expressive Power of CFGs
 
 In this lecture, I want to look briefly at the limitations of context-free grammars.  I told you, in the first week, that grammars alone are not enough to describe the valid programs in a particular programming language.  They cannot, for example, enforce that variables are declared before they are used, or (in general) ensure that programs are well-typed.  In this lecture I aim to convince you of the first of these.
 
