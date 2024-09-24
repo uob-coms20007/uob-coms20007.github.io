@@ -201,6 +201,7 @@ $$
   \begin{array}{rcl}
     S &\longrightarrow& X\ S\ X \mid 0\\
     X &\longrightarrow& 0 \mid 1
+  \end{array}
 $$
 
 When we use the first production rule for $S$ we always add two terminal symbols onto our sentential form (we replace $S$ by $XSX$ and each $X$ derives exactly one terminal symbol).  Thus, using this first rule preserves the parity (even or odd) of the length of our sentential form.  In the base case we allow for $S$ being replaced by $0$ which is a length 1 string - i.e. odd.  So, $S$ must derive odd length strings.  In each sentential form derivable from $S$, except for the last, there will be exactly one occurrence of $S$ and it will be the exact middle of the string.  Hence, when we finally replace this $S$ by 0 we guarantee that $0$ must be the middle letter of the derived string.
