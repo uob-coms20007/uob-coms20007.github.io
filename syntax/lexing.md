@@ -75,7 +75,7 @@ My implementation will be in the functional programming language OCaml.  In the 
 
 I'm going to assume you are familiar with general functional programming concepts like recursive functions and algebraic data types from your experience with Haskell.  Of course these things look a little different in OCaml, but I'll point them out to you.
 
-You may wonder why I don't just present my examples in Haskell.  One reason is that I simply want you to see another perspective on functional programming, and give you a second chance if you never got it the first time.  Another reason is that OCaml is less of an extreme language than Haskell and it makes some more sane choices (in my opinion). First and foremost, OCaml is call-by-value, which makes execution much easier to predict and reason about.  Second, it has much more straightforward support for mutable state and IO, which makes writing complete and useful programs more accessible to beginners than in Haskell.
+You may wonder why I don't just present my examples in Haskell.  One reason is that I simply want you to see another perspective on functional programming, and give you a second chance if you never got it the first time.  Another reason is that OCaml is less of an extreme language than Haskell and it makes some more practical choices (in my opinion). First and foremost of these, OCaml is call-by-value, which makes execution much easier to predict and reason about.  Second, it has much more straightforward support for mutable state and IO, which makes writing complete and useful programs more accessible to beginners than in Haskell.
 
 ### The type of tokens
 
@@ -153,7 +153,7 @@ let eat (c:char) =
     raise (LexFailure (Printf.sprintf "Expected '%c' but found '%c'!" c (peek ())))
 ```
 
-The code also assumes that we have helper functions `islower : char -> bool`, `is_uscore : char -> bool` and `is_wspace : char -> bool` that test whether a given character is lowercase or an underscore or whitespace (spaces and newlines) respectively.
+The code also assumes that we have helper functions `is_lower : char -> bool`, `is_prime : char -> bool`, `is_upper : char -> bool` and `is_wspace : char -> bool` that test whether a given character is lowercase or a prime or uppercase or whitespace (spaces and newlines) respectively.
 
 ```ocaml
 let lex (s:string) : token list =
@@ -175,7 +175,7 @@ let lex (s:string) : token list =
         eat '|';
         eat '|';
         tokens := TkOr :: !tokens
-    | c when is_lower c || is_uscore c -> 
+    | c when is_lower c -> 
         tokens := lex_kw_or_id () :: !tokens
     | c when is_wspace c -> eat c
     | c ->
@@ -201,7 +201,7 @@ let lex_kw_or_id () : token =
   let lexeme = ref "" in
   let 
     is_id_char c = 
-      is_lower c || is_upper c || is_uscore c || is_prime c
+      is_lower c || is_upper c || is_prime c
   in 
     while is_more () && is_id_char (peek ()) do
       let c = peek () in
