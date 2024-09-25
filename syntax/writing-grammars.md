@@ -20,7 +20,10 @@ A __Context Free Grammar (CFG)__ consists of four components:
 
 We will adopt the following conventions.  We will use lowercase letters from the start of the alphabet, $a$, $b$, $c$ and so on, as metavariables for terminal symbols.  We will use uppercase letters as metavariables for non-terminal symbols.  
 
-If you think back to the previous example, you will notice that a key part of the grammar is manipulating sequences of terminals and non-terminals, like $$\ff \andop (L \orop L)$$.  One could think of these as strings over the alphabet $\Sigma \cup \mathcal{N}$, but I would rather reserve the word "string" for the objects (over $\Sigma$ only) that the grammar derives.  So instead, we shall refer to these kind of sequences as __sentenial forms__.
+If you think back to the previous example, you will notice that a key part of the grammar is manipulating sequences of terminals and non-terminals, like $$\ff \andop (L \orop L)$$.  One could think of these as strings over the alphabet $\Sigma \cup \mathcal{N}$, but I would rather reserve the word "string" for the objects (over $\Sigma$ only) that the grammar derives.  So instead, we shall refer to these kind of sequences as _sentenial forms_.
+
+{: .defn }
+A __sentential form__ is just a sequence of terminals (from $\Sigma$) and nonterminals (from $\mathcal{N}$).
 
 According to this view, we will reserve metavariables $u$, $v$, $w$ and so on for strings (as we have done so far), and introduce metavariables $\alpha$, $\beta$, $\gamma$ and so on to stand for arbitrary sentential forms.
 
@@ -44,7 +47,7 @@ Here's another example of a context free grammar which is particularly important
 <div class="defn" markdown="1">
 The syntax of the __While Programming Language__ is given by the CFG with:
 - Terminal symbols: $0,1,\ldots{},9$, $'$, $a,b,\ldots,z,A,B,\ldots,Z$, $\andop$, $\orop$, $!$, $+$, $*$, $-$, $\leq$, $=$, $\leftarrow$, $;$.  
-- Nonterminal symbols: $S$, $A$, $V$, $B$, $D$, $E$, $L$, $U$, $M$, $N$
+- Nonterminal symbols: $S$, $B$, $A$, $D$, $E$, $L$, $U$, $M$, $V$, $N$
 - Production rules:
 
     $$
@@ -54,7 +57,7 @@ The syntax of the __While Programming Language__ is given by the CFG with:
         A &\longrightarrow& V \mid N \mid A + A \mid A - A \mid A * A \mid (A)\\
         D &\longrightarrow& 0 \mid 1 \mid \cdots{} \mid 9\\
         E &\longrightarrow& D\ E \mid \epsilon\\
-        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid \_ \\
+        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid ' \\
         U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \\
         M &\longrightarrow& L\ M \mid U\ M \mid \epsilon\\
         V &\longrightarrow& L\ M\\
@@ -70,7 +73,7 @@ Informally the "meaning" of the different nonterminals (sometimes called the syn
 * $A$: arithmetic expressions, i.e. code that, when executed, will return a numerical value
 * $D$: single digits
 * $E$: possibly empty sequences of digits
-* $L$: single lowercase letters, or the underscore
+* $L$: single lowercase letters, or the prime (apostrophe) symbol '
 * $U$: single uppercase letters
 * $M$: possibly empty sequences of letters and underscores
 * $V$: variable names (identifiers)
@@ -79,6 +82,12 @@ Informally the "meaning" of the different nonterminals (sometimes called the syn
 There are quite a number of nonterminals, but there is a sense (which we will make more precise later) that the first three are really doing all the heavy lifting in the description of this language.  The latter seven non-terminals are just describing two things: the shape of numbers and the shape of variable names (also known as identifiers).
 
 Note: there is nothing special about the particular letters used for the nonterminals, we could have used alternative names and we would still consider it essentially the same description of the While programming language.  For example, if we replaced everywhere in the rules the letter N by the letter P.
+
+Some remarks on the notation:
+  * $\mathsf{skip}$ is the "do nothing" statement, it has no effect when executed
+  * $V \leftarrow A$ is an assignment statement: assign the value described by the arithmetic expression derived from $A$ to the variable whose name derives from $V$.
+  * { $S$ } are just brackets for statements (as parentheses are to expressions)
+  * We use $;$ to combine two statements by executing them in sequence, rather than as a terminator for every (atomic) statement, so e.g. $x \leftarrow 2; y \leftarrow 3$ is a perfectly good statement derivable from $S$.
 
 ### Derivation
 
@@ -130,32 +139,103 @@ and this justifies us to claim that $\mathsf{while}\ \tt\ \mathsf{do}\ \mathsf{s
 
 ## Design of Context-Free Grammars
 
-We discuss the following examples over alphabet $$\{0,1\}$$ (most are from Sipser Ex. 2.4), which shows some of the common patterns when formulating a CFG:
+We discuss the following examples over alphabet $$\{0,1\}$$ (most are from Sipser Ex. 2.4), which shows some of the common patterns when formulating a CFG.
+
+***
 
 $$
   \{ w \mid \text{$w$ is any word over $\{0,1\}$}\}
 $$
 
+A grammar for this language is:
+
+$$
+  S \longrightarrow 0\ S \mid 1\ S \mid \epsilon
+$$
+
+Each derivation step consists of either extending the sentential form by any choice of digit 0 or 1, or ending the string with epsilon.  Thus, any possible word can be derived.
+
+***
+
 $$
   \{ w \mid \text{$w$ contains at least three letter 1} \}
 $$
+
+A grammar for this language is:
+
+$$
+  \begin{array}{rcl}
+    S &\longrightarrow& A\ 1\ A\ 1\ A\ 1\ A\\
+    A &\longrightarrow& 0\ A \mid 1\ A \mid \epsilon
+  \end{array}
+$$
+
+A word derivable from S must include 3 1s, because there is only one rule possible which introduces them.  Around the 1s you may put any words you like because we only require "at least" 3, so the rules for $A$ are exactly the same as in the previous example.  If you wanted to express the language of words with _exactly_ 3 1s, then you can remove the $A \longrightarrow 1\ A$ production, so that the words allowed between the 1s cannot contain 1.
+
+***
 
 $$
   \{ w \mid \text{$w$ starts and ends with the same symbol} \}
 $$
 
+A grammar for this language is:
+
+$$
+  \begin{array}{rcl}
+    S &\longrightarrow& 0 A 0 \mid 1 A 1 \mid 0 \mid 1 \mid \epsilon
+    A &\longrightarrow& 0\ A \mid 1\ A \mid \epsilon
+  \end{array}
+$$
+
+If you look at the shape of words derivable from $S$, they are forced to start and end with the same letter.  For words of length 2 or more, between the first and last letter we allow any substring.
+
+***
+
 $$
   \{ w \mid \text{the length of $w$ is odd and its middle letter is $0$}\}
 $$
+
+A grammar for this language is:
+
+$$
+  \begin{array}{rcl}
+    S &\longrightarrow& X\ S\ X \mid 0\\
+    X &\longrightarrow& 0 \mid 1
+  \end{array}
+$$
+
+When we use the first production rule for $S$ we always add two terminal symbols onto our sentential form (we replace $S$ by $XSX$ and each $X$ derives exactly one terminal symbol).  Thus, using this first rule preserves the parity (even or odd) of the length of our sentential form.  In the base case we allow for $S$ being replaced by $0$ which is a length 1 string - i.e. odd.  So, $S$ must derive odd length strings.  In each sentential form derivable from $S$, except for the last, there will be exactly one occurrence of $S$ and it will be the exact middle of the string.  Hence, when we finally replace this $S$ by 0 we guarantee that $0$ must be the middle letter of the derived string.
+
+***
 
 $$
   \{ w \mid \text{$w$ is a palindrome (i.e. the same word when reversed)}\}
 $$
 
-$$
-  \emptyset
-$$
+A grammar for this string is:
 
 $$
-  \{uv \mid |u| = |v| \text{ and } u \neq v\}
+  S \longrightarrow 0\ S\ 0 \mid 1\ S\ 1 \mid 0 \mid 1 \mid \epsilon
 $$
+
+Here again, the middle of each sentential form (of length > 1) will be $S$ and using the first two rules ensures that the letter $k$ positions to the left of this mid-point will be the same as the letter $k$ positions to the right (for any $k$ appropriate to the length of the sentential form).  Hence, a derivable string is certain to be a palindrome.
+
+***
+
+$$
+  \{uv \mid |u| = |v| \text{ and } u \neq v^R\}
+$$
+
+Here $v^R$ is the reverse of $v$.  A grammar for this language is:
+
+$$
+  \begin{array}{rcl}  
+    S &\longrightarrow& X\ S\ X \mid T\\
+    T &\longrightarrow& 0\ U\ 1 \mid 1\ U\ 0\\
+    U &\longrightarrow& X\ U\ X \mid \epsilon
+  \end{array}
+$$
+
+A word in this language can be cut down the middle, and the substring on the left is different from the reverse of the substring on the right.  In other words, there is some letter, say $k$ places to the left of the midpoint which is different from the letter $k$ places to the right of the midpoint.  
+
+The grammar encodes this in the following way.  Starting from $S$, using the first rule, we derive an odd length sentential form with $S$ at the midpoint and we allow free choice over the letters to the left and right of the midpoint.  They may match or not.  At some point the derivation must choose to exit this process by replacing $S$ by $T$.  Starting from $T$ we are forced to add a mismatching pair of letters to the sentential form.  After applying either the first or second rule for $T$, we will have an odd length sentential form with $U$ at its midpoint and we are sure that the letters one place to the left and right of the midpoint are different (all the other letters may or may not be the same).  Finally, we return to the original process of adding two letters at a time which are free to match or not match and finally we terminate the string by replacing $U$ with the empty string to obtain an even length string which is guaranteed to have a mismatching pair of letters $k$ places to the left and right of the midpoint for some value of $k$.
