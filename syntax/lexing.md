@@ -24,34 +24,39 @@ For example, given the assignment statement:
   delta := dx + 3
 ```
 
-we would expect the lexer to identify "delta" as a lexeme - it has meaning as an _identifier_ - a variable name - but, if it were broken up at all, say into two pieces "del" and "ta", neither of these on its own corresponds to a meaningful part of the syntax of this assignment statement. 
+we would expect the lexer to identify "delta" as a lexeme - it has meaning as an _identifier_ - a variable name - but, if it were broken up at all, say into two pieces "del" and "ta", neither of these on its own corresponds to a meaningful part of the syntax of this particular assignment statement. 
 
-In fact, there are no hard and fast rules about what should count as a meaningful part of the syntax, it is up to the designer of the language to decide what makes sense for them, but most of the time a good rule of thumb is that lexing is about breaking up the string into words.  
+In fact, there are no hard and fast rules about what should count as a meaningful part of the syntax, it is up to the designer of the language to decide what makes sense for them, but most of the time a good rule of thumb is that lexing is about breaking up the string according to whitespace and punctuation.  
 
 ### Tokens
 
-The lexer packages up the lexeme with a terminal symbol that describes what kind of an entity it is with respect to the syntax of the programming language, this combination is called a _token_.  For example, we might have a terminal symbol for identifiers, $\mathsf{id}$, and then a token corresponding to the situation described above would be:
+The lexer packages up the lexeme with a terminal symbol that describes what kind of an entity it is with respect to the syntax of the programming language, this combination is called a _token_.  For example, we might have a terminal symbol for all identifiers, $\mathsf{id}$, and then a token corresponding to the situation described above would be:
 
 > (id, "delta")
 
+i.e. the terminal $\mathsf{id}$ says it is an identifier, and the lexeme records which one - specifically "delta".
+
 We will typically just use natural language to define which strings constitute lexemes and what their type is, but we could just as easily use a formal construction such as a context free grammar or a regular expression (we no longer study regular expressions in this unit, but if you wish to look deeper into the theory of lexical analysis, then you will see that it is underpinned on regular languages, which are the languages describable by regular expressions).
 
-For example:
+For example, we identify the following lexemes for the While language:
 
-* An identifier $\mathsf{id}$ consists of a lowercase letter or an underscore, which is followed by any number of upper or lowercase letters, digits, underscores or the prime character '.
-* A number $\mathsf{num}$ consists of a non-empty sequence of digits.
-* The while keyword $\mathsf{while}$ consists of the string "while".
-* A left parenthesis consists of the single character ')'. 
+* An identifier, terminal $\mathsf{id}$, consists of a lowercase letter or prime (apostrophe), which is followed by any number of upper or lowercase letters, digits or the prime character.
+* A number, terminal $\mathsf{num}$, consists of a non-empty sequence of digits.
+* The while keyword, terminal $\mathsf{while}$, consists of the string "while".
+* A left parenthesis, terminal $\mathsf{lparen}$, consists of the single character ')'.
+* The assignment symbol, terminal $\mathsf{assn}$, consists of the string "<-".
+* The plus symbol, terminal $\mathsf{plus}$, consists of the character '+'.
+* and so on
 
 ### Lexing
 
 Lexical analysis consists of a transformation from a given input string, i.e. a sequence of characters, into a sequence of tokens.  
 
-> "delta := dx + 3" --> (id, "delta")(assn, ":=")(id, "dx")(plus, "+")(num, "3")
+> "delta := dx + 3" --> (id, "delta")(assn, "<-")(id, "dx")(plus, "+")(num, "3")
 
 Typically, a lexer will just read the input string, character by character, trying to match substrings as lexemes and classify them with a terminal symbol, whilst throwing away irrelevant whitespace and comments.
 
-Then the parser operates on tokens, looking at the first part of each token - the terminal symbol - in order to check if the input is valid and the second part when it constructs the internal representation, which we will see in a later lecture.  For example, the token sequence above will be recognised as a valid statement by a parser for a grammar with rule:
+Then the parser operates on tokens, looking at the first part of each token - the terminal symbol - in order to check if the input is valid, and looking at the second part when it constructs the internal representation, which we will see in a later lecture.  For example, the token sequence above will be recognised as a valid statement by a parser for a grammar with rules:
 
 $$
   \begin{array}{rcl}
@@ -59,6 +64,8 @@ $$
   \mathit{Exp} &\longrightarrow& \mathsf{id} \mid \mathsf{num} \mid \mathit{Exp}\ \mathsf{plus}\ \mathit{Exp} \mid \cdots{}
   \end{array}
 $$
+
+So, when we incorporate lexing, we will usually use more abstract grammars that do not specify what individual lexemes may actually look like.  For example the grammar above does not specify what an identifier is allowed to look like, instead all possible identifiers are represented in the grammar by a single terminal symbol, say $\mathsf{id}$.  The specification of what an identifier looks like will be given elsewhere, not cluttering up this grammar.  For example, in Microsoft's specification of the C programming language, there is a separate "lexical grammar" which specifies e.g. what an identifier can look like.
 
 ## A Lexer for Boolean Expressions
 
@@ -68,7 +75,7 @@ My implementation will be in the functional programming language OCaml.  In the 
 
 I'm going to assume you are familiar with general functional programming concepts like recursive functions and algebraic data types from your experience with Haskell.  Of course these things look a little different in OCaml, but I'll point them out to you.
 
-You may wonder why I don't just present my examples in Haskell.  One reason is that I simply want you to see another perspective on functional programming, and give you a second chance if you never got it the first time.  Another reason is that OCaml is less of an extreme language than Haskell and it makes some more sane choices (in my opinion). First and foremost, OCaml is call-by-value, which makes execution much easier to predict and reason about.  Second, it has much more straightforward support for mutable state and IO, which makes writing complete programs more accessible to beginners than in Haskell.
+You may wonder why I don't just present my examples in Haskell.  One reason is that I simply want you to see another perspective on functional programming, and give you a second chance if you never got it the first time.  Another reason is that OCaml is less of an extreme language than Haskell and it makes some more sane choices (in my opinion). First and foremost, OCaml is call-by-value, which makes execution much easier to predict and reason about.  Second, it has much more straightforward support for mutable state and IO, which makes writing complete and useful programs more accessible to beginners than in Haskell.
 
 ### The type of tokens
 
@@ -94,7 +101,7 @@ We use an algebraic data type to represent tokens in OCaml with one constructor 
     | TkId of string
 ```
 
-This introduces a new type called `token` which has 5 constructors, `TkTrue`, `TkFalse` etc.  The first 4 constructors don't take any arguments, they simply are 4 different kinds of token - that is each has type token `TkTrue : token`.  The last take a single argument of type `string`.  Thus `TkId` is _not_ a token, but for any string `s`, `TkId s` is a token, e.g. `TkId "foo" : token`.
+This introduces a new type called `token` which has 5 constructors, `TkTrue`, `TkFalse` etc.  The first 4 constructors don't take any arguments, they simply are 4 different kinds of token - that is each has type token `TkTrue : token`.  The latter take a single argument of type `string`.  Thus `TkId` is _not_ a token, but for any string `s`, `TkId s` is a token, e.g. `TkId "foo" : token`.
 
 So, the goal of this lexer is to take some input of type `string` and return an output of type `token list`.  In contrast to Haskell, when we have a type constructor like `list`, we write it's argument _before_ it, instead of after it.  Moreover, there is no special syntactic sugar for the list type in OCaml.  Compare the following, in which `option` is the equivalent OCaml type constructor to Haskell's `Maybe`:
 
@@ -115,11 +122,36 @@ The following code assumes that we have two mutable variables in scope, `input` 
 
 Reading the value stored at the piece of memory referenced can be done with the dereferencing operator `!`.  Thus `!input : string` is the string currently occupying the memory referenced by `input : string ref`.  To overwrite the contents of a reference, we use the assignment operator `:=`.  Thus, `idx := !idx + 1` overwrites the value stored in reference `idx` by one more than its old value.
 
+```ocaml
+  let idx = ref 0
+  let input = ref ""
+  let input_len = ref 0
+```
+
 Rather than interacting with these references directly, we will introduce a little API:
 
 * `init s` - will load the string `s` into `input`, set `input_len` accordingly and set `idx` to `0`.
+* `is_more ()` - returns true if the input is not yet fully consumed and false o/w
 * `peek ()` - will return the next unmatched character without consuming it
 * `eat c` - attempts to match the next unmatched character to its argument, if it matches then it advances the index and otherwise raises an exception.
+
+```ocaml
+  let init (s:string) =
+  input := s;
+  input_len := String.length s;
+  idx := 0
+
+let is_more () : bool = !idx < !input_len
+
+let peek () : char =
+  !input.[!idx]
+
+let eat (c:char) =
+  if peek () = c then
+    idx := !idx + 1
+  else
+    raise (LexFailure (Printf.sprintf "Expected '%c' but found '%c'!" c (peek ())))
+```
 
 The code also assumes that we have helper functions `islower : char -> bool`, `is_uscore : char -> bool` and `is_wspace : char -> bool` that test whether a given character is lowercase or an underscore or whitespace (spaces and newlines) respectively.
 
