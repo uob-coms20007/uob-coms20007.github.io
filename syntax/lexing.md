@@ -82,7 +82,7 @@ You may wonder why I don't just present my examples in Haskell.  One reason is t
 The kinds of token/terminal for our Boolean expressions are:
 
 * The keywords "true" and "false"
-* The operators "&&" and "||"
+* The operators "&&" and "\|\|"
 * Left "(" and right ")" parentheses
 * Identifiers, which are non-empty sequences of lowercase and uppercase letters, the prime (apostrophe), that _must_ start with a lowercase letter.
 * An end-of-input token
@@ -103,7 +103,7 @@ We use an algebraic data type to represent tokens in OCaml with one constructor 
     | TkEnd
 ```
 
-This introduces a new type called `token` which has 5 constructors, `TkTrue`, `TkFalse` etc.  The first 4 constructors don't take any arguments, they simply are 4 different kinds of token - that is each has type token `TkTrue : token`.  The latter take a single argument of type `string`.  Thus `TkId` is _not_ a token, but for any string `s`, `TkId s` is a token, e.g. `TkId "foo" : token`.
+This introduces a new type called `token` which has 8 constructors, `TkTrue`, `TkFalse` etc.  The first 6 constructors and the last one don't take any arguments, they simply are 7 different kinds of token - that is each has type token, e.g. `TkTrue : token`.  The other one takes a single argument of type `string`.  Thus `TkId` is _not_ a token, but for any string `s`, `TkId s` is a token, e.g. `TkId "foo" : token`.
 
 So, the goal of this lexer is to take some input of type `string` and return an output of type `token list`.  In contrast to Haskell, when we have a type constructor like `list`, we write it's argument _before_ it, instead of after it.  Moreover, there is no special syntactic sugar for the list type in OCaml.  Compare the following, in which `option` is the equivalent OCaml type constructor to Haskell's `Maybe`:
 
