@@ -52,7 +52,7 @@ By consulting our grammar for the While language, we can identify the following 
 
 Lexical analysis consists of a transformation from a given input string, i.e. a sequence of characters, into a sequence of tokens.  
 
-> "delta := dx + 3" --> (id, "delta")(assn, "<-")(id, "dx")(plus, "+")(num, "3")
+> "delta <- dx + 3" --lexing--> (id, "delta")(assn, "<-")(id, "dx")(plus, "+")(num, "3")
 
 Typically, a lexer will just read the input string, character by character, trying to match substrings as lexemes and classify them with a terminal symbol, whilst throwing away irrelevant whitespace and comments.
 
