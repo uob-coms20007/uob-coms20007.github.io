@@ -20,8 +20,8 @@ This preprocessing step is called lexical analysis, or _lexing_ for short (also 
 
 For example, given the assignment statement:
 
-```ada
-  delta := dx + 3
+```c
+  delta = dx + 3
 ```
 
 we would expect the lexer to identify "delta" as a lexeme - it has meaning as an _identifier_ - a variable name - but, if it were broken up at all, say into two pieces "del" and "ta", neither of these on its own corresponds to a meaningful part of the syntax of this particular assignment statement. 
@@ -36,11 +36,11 @@ The lexer packages up the lexeme with a terminal symbol that describes what kind
 
 i.e. the terminal $\mathsf{id}$ says it is an identifier, and the lexeme records which one - specifically "delta".
 
-We will typically just use natural language to define which strings constitute lexemes and what their type is, but we could just as easily use a formal construction such as a context free grammar or a regular expression (we no longer study regular expressions in this unit, but if you wish to look deeper into the theory of lexical analysis, then you will see that it is underpinned on regular languages, which are the languages describable by regular expressions).
+We can use a grammar to also specify the possible shape of lexemes but, since lexemes are usually simpler to recognize, it would also suffice to use a regular expression (we no longer study regular expressions in this unit, but if you wish to look deeper into the theory of lexical analysis, then you will see that it is underpinned on regular languages, which are the languages describable by regular expressions).
 
-For example, we identify the following lexemes for the While language:
+By consulting our grammar for the While language, we can identify the following lexemes:
 
-* An identifier, terminal $\mathsf{id}$, consists of a lowercase letter or prime (apostrophe), which is followed by any number of upper or lowercase letters, digits or the prime character.
+* An identifier, terminal $\mathsf{id}$, consists of a lowercase letter, which is followed by any number of upper or lowercase letters or the prime character.
 * A number, terminal $\mathsf{num}$, consists of a non-empty sequence of digits.
 * The while keyword, terminal $\mathsf{while}$, consists of the string "while".
 * A left parenthesis, terminal $\mathsf{lparen}$, consists of the single character ')'.
@@ -79,14 +79,15 @@ You may wonder why I don't just present my examples in Haskell.  One reason is t
 
 ### The type of tokens
 
-The kinds of token for our Boolean expressions are:
+The kinds of token/terminal for our Boolean expressions are:
 
 * The keywords "true" and "false"
 * The operators "&&" and "||"
 * Left "(" and right ")" parentheses
-* Identifiers, which are non-empty sequences of lowercase and uppercase letters, underscores and the prime (apostrophe), that _must_ start with either a lowercase letter or an underscore.
+* Identifiers, which are non-empty sequences of lowercase and uppercase letters, the prime (apostrophe), that _must_ start with a lowercase letter.
+* An end-of-input token
 
-Of those, we are only really interested in keeping the lexemes associated with identifiers.  For example, there is no need to actually keep the lexeme "&&" associated with the conjunction operator, since it is always "&&", we won't lose any information by simply discarding it.
+Of those, we are only really interested in keeping the lexemes associated with identifiers.  For example, there is no need to actually keep the lexeme "&&" associated with the conjunction operator, since it is always "&&", we won't lose any information by simply discarding it (if we know the token is the and-operator, then we already know the lexeme is "&&").
 
 We use an algebraic data type to represent tokens in OCaml with one constructor for each kind of token.  Note, in contrast to Haskell, in OCaml types are written starting with a lowercase letter.  Also in contrast to Haskell, when we write that a certain expression `e` has a certain type `t`, this is written `e:t` rather than `e::t`.
 
@@ -99,6 +100,7 @@ We use an algebraic data type to represent tokens in OCaml with one constructor 
     | TkLParen
     | TkRParen
     | TkId of string
+    | TkEnd
 ```
 
 This introduces a new type called `token` which has 5 constructors, `TkTrue`, `TkFalse` etc.  The first 4 constructors don't take any arguments, they simply are 4 different kinds of token - that is each has type token `TkTrue : token`.  The latter take a single argument of type `string`.  Thus `TkId` is _not_ a token, but for any string `s`, `TkId s` is a token, e.g. `TkId "foo" : token`.
@@ -107,20 +109,20 @@ So, the goal of this lexer is to take some input of type `string` and return an 
 
 | Haskell       | OCaml        |
 | ---           | ---          |
-| Maybe Int     | int option   |
-| [Int]         | int list     |
-| (Int, String) | int * string |
-| [a]           | 'a list      |
+| `Maybe Int`     | `int option`   |
+| `[Int]`         | `int list`     |
+| `(Int, String)` | `int * string` |
+| `[a]`           | `'a list`      |
 
 The overall approach to converting the input string into a token list is straightforward, we simply look at each character of the input in turn, starting from the left-hand side of the string and decide which kind of token it probably belongs to depending on what character it is.
 
 The following code assumes that we have two mutable variables in scope, `input` of type `string`, `input_len` of type `int` and `idx` of type `int`.  In OCaml, mutable variables are called references and a reference to a piece of memory that holds something of type `t` has type `t ref`.   
 
 * `input : string ref` - a reference to the whole input string
-* `input_len : int ref` - the length of the input string
-* `idx : int ref` - the index of the next unmatched character in the input string
+* `input_len : int ref` - a reference to the length of the input string
+* `idx : int ref` - a reference to the index of the next unmatched character in the input string
 
-Reading the value stored at the piece of memory referenced can be done with the dereferencing operator `!`.  Thus `!input : string` is the string currently occupying the memory referenced by `input : string ref`.  To overwrite the contents of a reference, we use the assignment operator `:=`.  Thus, `idx := !idx + 1` overwrites the value stored in reference `idx` by one more than its old value.
+Reading the value stored at the piece of memory referenced can be done with the dereferencing operator `!`.  Thus `!input : string` is the string currently occupying the memory referenced by `input : string ref`.  To overwrite the contents of a reference, we use the assignment operator `:=`.  Thus, `idx := !idx + 1` overwrites the value stored in reference `idx` by one more than its old value.  Notice that on the LHS you have a reference, the name of a piece of memory, and on the RHS you have an ordinary value, namely the value you want to store at that piece of memory.  You can't add a piece of memory to the number 1, `idx + 1`, but you can add the number stored at a piece of memory to the number 1, `!idx + 1`.
 
 ```ocaml
   let idx = ref 0
@@ -136,12 +138,13 @@ Rather than interacting with these references directly, we will introduce a litt
 * `eat c` - attempts to match the next unmatched character to its argument, if it matches then it advances the index and otherwise raises an exception.
 
 ```ocaml
-  let init (s:string) =
+let init (s:string) =
   input := s;
   input_len := String.length s;
   idx := 0
 
-let is_more () : bool = !idx < !input_len
+let is_more () : bool = 
+  !idx < !input_len
 
 let peek () : char =
   !input.[!idx]
