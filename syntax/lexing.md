@@ -134,7 +134,7 @@ Rather than interacting with these references directly, we will introduce a litt
 
 * `init s` - will load the string `s` into `input`, set `input_len` accordingly and set `idx` to `0`.
 * `is_more ()` - returns true if the input is not yet fully consumed and false o/w
-* `peek ()` - will return the next unmatched character without consuming it
+* `peek ()` - will return the next unmatched character without consuming it (i.e. without advancing the index)
 * `eat c` - attempts to match the next unmatched character to its argument, if it matches then it advances the index and otherwise raises an exception.
 
 ```ocaml
