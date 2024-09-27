@@ -184,7 +184,7 @@ let lex (s:string) : token list =
     | c ->
         let error_msg = 
               Printf.sprintf "Did not expect to find '%c'!" c
-        in raise (LexFailure ())
+        in raise (LexFailure error_msg)
   done;
   List.rev (TkEnd :: !tokens)
 ```
