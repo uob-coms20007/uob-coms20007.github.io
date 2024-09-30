@@ -145,8 +145,8 @@ For example, in the grammar above whose only non-terminal is $$B$$, $$\follow(B)
 $$
   \begin{align*}
     B &\to^* (B) \quad \text{with $\alpha=($ and $\beta=\epsilon$}\\
-    B &\to^* B \andop B \quad \text{with $\alpha=\epsilon$ and $\beta=\epsilon$}\\
-    B &\to^* B \orop B \quad \text{with $\alpha=\epsilon$ and $\beta=\epsilon$}
+    B &\to^* B \andop B \quad \text{with $\alpha=\epsilon$ and $\beta=B$}\\
+    B &\to^* B \orop B \quad \text{with $\alpha=\epsilon$ and $\beta=B$}
   \end{align*}
 $$
 
