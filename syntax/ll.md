@@ -51,7 +51,7 @@ $$
 
 We'll get into how one can come up with a grammar like this in the next lecture, but for now I hope you can simply accept it is an alternative way to describe this language of simple Boolean expressions.  
 
-Although it is arguably less readable, this grammar has the advantage that it is LL(1), i.e. we can construct a derivation of an input string in which the choice of production at each step is completely determined by the leftmost non-terminal in the sentential form and the first character of the remaining input.  Let's try to derive $\tt \orop \ff \andop \tt\ $$.
+Although it is arguably less readable, this grammar has the advantage that it is LL(1), i.e. for any input string in the language, we can construct a derivation in which the choice of production at each step is completely determined by the leftmost non-terminal in the sentential form and the first character of the remaining input.  Let's try to derive $\tt \orop \ff \andop \tt\ $$.
 
 We start from the start symbol $D$ and immediately we have no choice, we must derive:
 
