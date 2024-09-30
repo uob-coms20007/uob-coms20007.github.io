@@ -250,7 +250,7 @@ In each case, the idea will be to iteratively compute approximations $\nullable[
 
 ### Calculating Nullable
 
-Start by initialising the approximation $\nullable[X]$ to false for each non-terminal $X$.
+<!-- Start by initialising the approximation $\nullable[X]$ to false for each non-terminal $X$. -->
 
 <!-- Next, it is useful to define a helper function $\nullable_s(\alpha)$ which is true if a given sentential form is nullable according to the current approximation: -->
 
@@ -266,14 +266,14 @@ To calculate $\nullable(B)$ for the grammar above we start by setting $\nullable
 
 ### Calculating First
 
-Start by initialising $\first[X]$ to the empty set for each non-terminal $X$.
+<!-- Start by initialising $\first[X]$ to the empty set for each non-terminal $X$. -->
 
 <!-- Next, it is useful to define a helper function $\first_s(\alpha)$ which gives the set of terminals that can start a sentential form derivable from $\alpha$, according to the current approximation: -->
 
 To calculate $\first(X)$ for each non-terminal $X$, first set $\first(X)$ to the empty set $\emptyset$ for each $X$.  Then repeatedly perform the following iteration:
 
 * For each production $X \longrightarrow \alpha$: 
-    * $\first[X] := \first[X] \cup \first(\alpha)$
+    * $\first[X] := \first[X] \cup \first_s(\alpha)$
 
 until a complete iteration produces no change to $\first[X]$ for any $X$, i.e. we have reached a fixed point.  Then $\first[X]$ will be exactly $\first(X)$.
 
