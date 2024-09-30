@@ -6,14 +6,6 @@ nav_order: 5
 parent: Syntax
 ---
 
-$$
-\newcommand{\andop}{\mathrel{\&\!\&}}
-\newcommand{\orop}{\mathrel{\|}}
-\newcommand{\ff}{\mathsf{false}}
-\newcommand{\tt}{\mathsf{true}}
-\newcommand{\tm}[1]{\mathsf{#1}}
-$$
-
 
 # LL(1) Grammars for Predictive Parsing
 
@@ -103,12 +95,6 @@ This is something we can turn into an algorithm, and a very efficient and simple
 
 ## Structure of an LL(1) Grammar
 
-$$
-\newcommand{\first}{\mathsf{First}}
-\newcommand{\nullable}{\mathsf{Nullable}}
-\newcommand{\follow}{\mathsf{Follow}}
-$$
-
 We'll see a nice way to implement this algorithm in the next lecture, but for now I want to get a better (i.e. more precise) handle on what makes a grammar LL(1).  To do this we have to consider three key properties of non-terminals $X$ in a given grammar, say with terminal symbols drawn from $\Sigma$ and start symbol $S$, called $\nullable(X)$, $\first(X)$ and $\follow(X)$. 
 
 <div class="defn" markdown=1>
@@ -190,10 +176,10 @@ Recall that the key idea of a predictive parser (with lookahead 1) is that it tr
 Therefore, to check if a grammar is appropriate for predictive parsing, we build a table $T$ that describes the possible meaningful choices $T[X,a]$ of grammar rule for each combination of non-terminal $X$ (representing the left-most non-terminal in the current sentential form) and terminal $a$ (representing the next letter of the input).
 
 <div class="defn" markdown="1">
-We define the __parsing table__, usually $T$, for a given grammar as a 2d array in which each entry $T[X,a]$ is a set of production rules from the grammar, such that some rule $X \longrightarrow \alpha$ is in the set $T[X,a]$ just if, either:
+We define the __parsing table__, usually $T$, for a given grammar as a 2d array in which each entry $T[X,a]$ is a set of production rules from the grammar, such that some rule $X \longrightarrow \beta$ is in the set $T[X,a]$ just if, either:
   
-  1. $a \in \first_s(\alpha)$
-  2. or, $\nullable(\alpha)$ and $a \in \follow(X)$
+  1. $a \in \first_s(\beta)$
+  2. or, $\nullable_s(\beta)$ and $a \in \follow(X)$
 </div>
 
 To see why this makes sense, suppose we are in the middle of building a derivation for some string $s$ and the next unconsumed/unmatched character is $a$ and the leftmost non-terminal symbol is $X$.  
@@ -221,14 +207,14 @@ So, intuitively, there are two possible ways of continuing our derivation in ord
 
 A grammar is suitable for predictive parsing if the associated parsing table $T$ contains _at most one_ rule in each cell.  This way, there is no choice about which rule to pick at any given point either there is no possible rule to apply, or the rule is uniquely determined.
 
-{ : .defn }
+{: .defn }
 A grammar whose parsing table contains at most one rule in each cell is called LL(1).
 
 For example, the parsing table for the $B$ grammar above is:
 
 |     | $($ | $)$ | $\andop$ | $\orop$ | $\tt$ | $\ff$ | $\tm{id}$ |
 | --- | --- | --- | --- | --- | ---| --- | --- |
-| $B$ | $B \longrightarrow (B) \mid B \andop B \mid B \orop B$ | | | | $B \longrightarrow \tt \mid B \andop B \mid B \andop B$ | $B \longrightarrow \ff \mid B \andop B \mid B \andop B$ | $B \longrightarrow \tm{id} \mid B \andop B \mid B \andop B$
+| $B$ | $B \longrightarrow (B)$ $B \longrightarrow B \andop B$ $B \longrightarrow B \orop B$ | | | | $B \longrightarrow \tt$ $B \longrightarrow B \andop B$ $B \longrightarrow B \orop B$ | $B \longrightarrow \ff$ $B \longrightarrow B \andop B$ $B \longrightarrow B \orop B$ | $B \longrightarrow \tm{id}$ $B \longrightarrow B \andop B$ $B \longrightarrow B \orop B$
 
 The parsing table for this grammar illustrates it's problems for predictive parsing quite directly.  If the leftmost non-terminal is say, $B$ and the next unmatched character of the input is $($, then we don't know whether to use:
   * $B \longrightarrow (B)$, which would make sense if e.g. the rest of the string is $(\tt \andop \ff)$
