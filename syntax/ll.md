@@ -221,6 +221,7 @@ So, intuitively, there are two possible ways of continuing our derivation in ord
 
 A grammar is suitable for predictive parsing if the associated parsing table $T$ contains _at most one_ rule in each cell.  This way, there is no choice about which rule to pick at any given point either there is no possible rule to apply, or the rule is uniquely determined.
 
+{ : .defn }
 A grammar whose parsing table contains at most one rule in each cell is called LL(1).
 
 For example, the parsing table for the $B$ grammar above is:
