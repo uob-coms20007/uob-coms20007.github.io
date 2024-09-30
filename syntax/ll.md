@@ -29,11 +29,12 @@ The idea of predictive parsing is that we limit ourselves to parsing grammars fo
 
 _LL(1)_ grammars have the property that, at every step of the derivation, which rule we choose is completely determined by a combination of the leftmost non-terminal in the current sentential form (this is the first L in "LL(1)"), and a fixed size prefix of the remaining input string, say the single leftmost character (this is the second L and the 1).
 
-The following grammar may look strange, but it is actually equivalent to the previous one, in the sense that they generate the same languages, except that this one makes the end-of-input symbol explicit as a terminal symbol.  It is traditional to use \\$ for this - so the first rule of the grammar says that a string derivable from $D$ consists of a prefix derivable from $C$, a suffix derivable from $D'$ and that's it, i.e. we next meet the end-of-input marker.  The start symbol of the new grammar is $D$:
+The following grammar may look strange, but it is actually equivalent to the previous one, in the sense that they generate the same languages, except that this one makes the end-of-input symbol explicit as a terminal symbol.  It is traditional to use \\$ for this - so the first rule of the grammar says that a string derivable from $D$ consists of a prefix derivable from $C$, a suffix derivable from $D'$ and that's it, i.e. we next meet the end-of-input marker.  The start symbol of the new grammar is $S$:
 
 $$
   \begin{array}{lcl}
-    D &\longrightarrow& C\ D'\ $ \\
+    S &\longrightarrow& D\ $\\
+    D &\longrightarrow& C\ D'\\
     D' &\longrightarrow& \orop C\ D' \mid \epsilon \\
     C &\longrightarrow& A\ C' \\
     C' &\longrightarrow& \andop A\ C' \mid \epsilon \\
@@ -43,21 +44,27 @@ $$
 
 We'll get into how one can come up with a grammar like this in the next lecture, but for now I hope you can simply accept it is an alternative way to describe this language of simple Boolean expressions.  
 
-Although it is arguably less readable, this grammar has the advantage that it is LL(1), i.e. for any input string in the language, we can construct a derivation in which the choice of production at each step is completely determined by the leftmost non-terminal in the sentential form and the first character of the remaining input.  Let's try to derive $\tt \orop \ff \andop \tt\ $$.
+Although it is arguably less readable, this grammar has the advantage that it is LL(1), i.e. for any input string in the language, we can construct a derivation in which the choice of production at each step is completely determined by the leftmost non-terminal in the sentential form and the first character of the remaining input.  Let's try to derive $\tt \orop \ff \andop \tt\ \$$.
 
-We start from the start symbol $D$ and immediately we have no choice, we must derive:
+We start from the start symbol $S$ and immediately we have no choice, we must derive:
 
 $$
-  D \to C\ D' \$
+  S \to D\ \$
 $$
 
-Next, we consider the leftmost non-terminal in the sentential form we have reached.  Again we have no choice since there is only one rule, so we must derive:
+Again, we have no choice about which rule to use, since there is only one nonterminal and only one applicable rule:
+
+$$
+  D\ \$ \to C\ D' \$
+$$
+
+Next, we consider the leftmost non-terminal in the sentential form we have now reached, which is $C$.  Again we have no choice since there is only one rule with $C$ on the LHS, so we must derive:
 
 $$
   C\ D'\ $ \to A\ C'\ D'\ $
 $$
 
-Next, we consider the leftmost non-terminal again, which is now $A$.  Here there are three productions to choose from so we also consider the first letter of the remaining input.  The first letter of the input is $\tt$ so there is really only one applicable choice, namely the production $A \longrightarrow \tt$:
+Next, we consider the leftmost non-terminal again, which is now $A$.  Here there are four productions to choose from so we also consider the first letter of the remaining input.  The first letter of the input is $\tt$ so there is really only one applicable choice, namely the production $A \longrightarrow \tt$:
 
 $$
   A\ C'\ D'\ $ \to \tt\ C'\ D'\ $
@@ -224,6 +231,7 @@ The parsing table for this grammar illustrates it's problems for predictive pars
 On the other hand, I can tell you that the nullable, first and follow properties of the LL(1) version of the grammar above are as follows (I will use a table to display these maps concisely, but don't confuse this presentation with the parsing table):
 
 | Nonterminal | Nullable | First | Follow |
+| S | | true, false, id, ( | | 
 | D | | true, false, id, ( | \$, ) | 
 | D' | $\checkmark{}$ | $\orop$ | \$, ) |
 | C | | true, false, id, ( | $\orop$, \$, ) |
@@ -234,7 +242,8 @@ On the other hand, I can tell you that the nullable, first and follow properties
 Then we can calculate the associated parsing table as:
 
 | | ( | ) | $\andop$ | $\orop$ | $\tt$ | $\ff$ | $\tm{id}$ | \\$ |
-| $D$ | $D \longrightarrow CD'\$$ | | | | $D \longrightarrow CD'\$$ | $D \longrightarrow CD'\$$ | $D \longrightarrow CD'\$$ | |
+| $S$ | $S \longrightarrow D\$$ | | | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | |
+| $D$ | $D \longrightarrow CD'$ | | | | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | |
 | $D'$ | | $D' \longrightarrow \epsilon$ | | $D' \longrightarrow \mathord{\orop}\,C\,D'$ | | | | $D' \longrightarrow \epsilon$ |
 | $C$ | $C \longrightarrow A\,C'$ | | | | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | |
 | $C'$ | | $C' \longrightarrow \epsilon$ | $C' \longrightarrow \mathord{\andop}\,A\,C'$ | $C' \longrightarrow \epsilon$ | | | | $C' \longrightarrow \epsilon$ |

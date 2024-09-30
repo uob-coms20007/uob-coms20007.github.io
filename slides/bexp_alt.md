@@ -8,7 +8,8 @@ nav_order: 22
 
 $$
   \begin{array}{lcl}
-    D &\longrightarrow& C\ D'\ $ \\
+    S &\longrightarrow& D\ $\\
+    D &\longrightarrow& C\ D'\\
     D' &\longrightarrow& \orop C\ D' \mid \epsilon \\
     C &\longrightarrow& A\ C' \\
     C' &\longrightarrow& \andop A\ C' \mid \epsilon \\

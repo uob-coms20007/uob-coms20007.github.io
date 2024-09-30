@@ -7,6 +7,7 @@ nav_order: 25
 ---
 
 | Nonterminal | Nullable | First | Follow |
+| S | | true, false, id, ( | | 
 | D | | true, false, id, ( | \$, ) | 
 | D' | $\checkmark{}$ | $\orop$ | \$, ) |
 | C | | true, false, id, ( | $\orop$, \$, ) |
