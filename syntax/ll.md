@@ -189,6 +189,8 @@ We define the __parsing table__, usually $T$, for a given grammar as a 2d array 
   2. or, $\nullable_s(\beta)$ and $a \in \follow(X)$
 </div>
 
+Thus, to fill out the parse table, one just needs to consider each cell $T[X,a]$, and, for each, iterate through every $X$-rule $X \longrightarrow \beta$ of the grammar checking if conditions 1 or 2 are satisfied.  Rule $X \longrightarrow \beta$ should be written in cell $T[X,a]$ iff at least one of the conditions is satisfied.
+
 To see why this makes sense, suppose we are in the middle of building a derivation for some string $s$ and the next unconsumed/unmatched character is $a$ and the leftmost non-terminal symbol is $X$.  
 
 In other words, we have done some derivation like:
