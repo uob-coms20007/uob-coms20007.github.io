@@ -53,10 +53,13 @@ I'm going to assume you know how to implement a tree data structure in your favo
     | EAnd of exp * exp
 ```
 
-The values of this data structure are, of course, those terms that can be formed from the constructors (and their arguments).  For example:
+The values of this data structure are, of course, those terms that can be formed from the constructors (and their arguments).  Here are four such values:
 
 ```ocaml
-  ETrue, EOr (ETrue, EFalse), EAnd (EOr (ETrue, EVar "foo"), EVar "bar"), EVar "isOk"
+  ETrue 
+  EOr (ETrue, EFalse) 
+  EAnd (EOr (ETrue, EVar "foo"), EVar "bar") 
+  EVar "isOk"
 ```
 
 but generally it is a good idea to think of these terms really as describing trees in which the recursive arguments to a constructor form its children:
