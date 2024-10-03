@@ -8,7 +8,7 @@ parent: Syntax
 
 # Abstract Syntax Trees and Parsing
 
-However, it is a bit generous to call the implementation of the previous lecture a parser. Usually we expect that a parser does not only recognise whether a string is in the language or not, but in the former case, it constructs some abstract, internal representation of the piece of syntax in memory.  This is then used in other parts of the language translator (interpreter, compiler etc) to actually effect the translation (e.g. generate code).
+However, it is a bit generous to call the implementation of the previous chapter a parser. Usually we expect that a parser does not only recognise whether a string is in the language or not, but in the former case, it constructs some abstract, internal representation of the piece of syntax in memory.  This is then used in other parts of the language translator (interpreter, compiler etc) to actually effect the translation (e.g. generate code).
 
 Of course, we could just use the string itself as out internal representation.  However, since most of the languages for which we want to parse are more structured, it is convenient to use a representation that makes this structure explicit.  Moreover, the concrete syntax (the string) contains a lot of information which is not essential to understanding the fundamental structure.  A standard approach is to instead use *abstract syntax trees* or ASTs for short.
 
