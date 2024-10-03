@@ -244,7 +244,7 @@ On the other hand, I can tell you that the nullable, first and follow properties
 Then we can calculate the associated parsing table as:
 
 | | ( | ) | $\andop$ | $\orop$ | $\tt$ | $\ff$ | $\tm{id}$ | \\$ |
-| $S$ | $S \longrightarrow D\$$ | | | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | |
+| $S$ | $S \longrightarrow D\$$ | | | | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | |
 | $D$ | $D \longrightarrow CD'$ | | | | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | |
 | $D'$ | | $D' \longrightarrow \epsilon$ | | $D' \longrightarrow \mathord{\orop}\,C\,D'$ | | | | $D' \longrightarrow \epsilon$ |
 | $C$ | $C \longrightarrow A\,C'$ | | | | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | |
