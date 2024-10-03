@@ -210,11 +210,11 @@ ending with a sentential form that has some prefix of terminal symbols $b_1\ b_2
 
 So, intuitively, there are two possible ways of continuing our derivation in order to derive this next $a$.  
 
-  * We could try to derive a string starting with $a$ using this leftmost non-terminal $X$.  This only makes sense as a strategy if there is a rule $X \longrightarrow \alpha$ that is capable of deriving a string starting with $a$, in other words, if $a \in \first_s(\alpha)$.  This then corresponds to condition 1 above. 
+  * We could try to derive a string starting with $a$ using this leftmost non-terminal $X$.  This only makes sense as a strategy if there is a rule $X \longrightarrow \beta$ that is capable of deriving a string starting with $a$, in other words, if $a \in \first_s(\beta)$.  This then corresponds to condition 1 above. 
 
-  * Alternatively, we could derive $\epsilon$ using this leftmost non-terminal $X$ and postpone deriving a string starting with $a$ to the remainder of the sentential form $\beta$.  This only makes sense as a strategy if (a) $X$ can derive $\epsilon$ (i.e. $\nullable(X)$) and (b) it is possible to derive a string starting from $a$ using the sentential form following $X$ (i.e. $a \in \follow(X)$).  This corresponds to condition 2 above.
+  * Alternatively, we could derive $\epsilon$ using this leftmost non-terminal $X$ and postpone deriving a string starting with $a$ to the remainder of the sentential form $\beta$.  This only makes sense as a strategy if (a) there is an $X$-rule $X \longrightarrow \beta$ that can derive $\epsilon$ (i.e. $\nullable_s(\beta)$) and (b) it is possible to derive a string starting $a$ by using the sentential form following $X$ (i.e. $a \in \follow(X)$).  This corresponds to condition 2 above.
 
-A grammar is suitable for predictive parsing if the associated parsing table $T$ contains _at most one_ rule in each cell.  This way, there is no choice about which rule to pick at any given point either there is no possible rule to apply, or the rule is uniquely determined.
+A grammar is suitable for predictive parsing if the associated parsing table $T$ contains _at most one_ rule in each cell.  This way, there is no choice about which rule to pick at any given point: either there is no possible rule to apply, or the rule is uniquely determined.
 
 {: .defn }
 A grammar whose parsing table contains at most one rule in each cell is called LL(1).
