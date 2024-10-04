@@ -7,7 +7,7 @@ nav_order: 26
 ---
 
 | | ( | ) | $\andop$ | $\orop$ | $\tt$ | $\ff$ | $\tm{id}$ | \\$ |
-| $S$ | $S \longrightarrow D\$$ | | | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | |
+| $S$ | $S \longrightarrow D\$$ | | | | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | $S \longrightarrow D\$$ | |
 | $D$ | $D \longrightarrow CD'$ | | | | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | $D \longrightarrow CD'$ | |
 | $D'$ | | $D' \longrightarrow \epsilon$ | | $D' \longrightarrow \mathord{\orop}\,C\,D'$ | | | | $D' \longrightarrow \epsilon$ |
 | $C$ | $C \longrightarrow A\,C'$ | | | | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | $C \longrightarrow A\,C'$ | |
