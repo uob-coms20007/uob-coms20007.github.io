@@ -28,7 +28,32 @@ In other words, this piece of syntax is a while loop, which has two components, 
 
 There are no hard and fast rules about how to design your abstract syntax tree data structure, to some extent it will depend on what you want to do with your syntax in the rest of the translator after parsing.  However, a good rule of thumb is that the abstract syntax tree should capture just the essential structure of the piece of syntax you are interested in.  To see what I mean by this, consider the same while loop expressed in the concrete syntax of various programming languages.
 
-{% include ex_concrete_loops.liquid %}
+```c
+    while (true) { 
+      x = x * n; 
+      y = y - 1; 
+    } 
+  ```
+
+  ```python
+    while true:
+      x = x * n
+      y = y - 1
+  ```
+
+  ```ocaml
+    while true do 
+      x := !x * n
+      y := !y - 1
+    done 
+  ```
+
+  ```ada
+    while true loop
+      x := x * n;
+      y := y - 1;
+    end loop
+  ```
 
 Each has its own syntactic peculiarities, some use braces, some parentheses, some use the keyword "do" and some don't.  However, the *essential* information is the same:
 

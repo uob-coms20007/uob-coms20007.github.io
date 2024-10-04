@@ -74,7 +74,7 @@ $$
     D' &\longrightarrow& \orop C\ D' \mid \epsilon \\
     C &\longrightarrow& A\ C' \\
     C' &\longrightarrow& \andop A\ C' \mid \epsilon \\
-    A &\longrightarrow& \tt \mid \ff \mid (D)
+    A &\longrightarrow& \tt \mid \ff \mid \mathsf{id} \mid (D)
   \end{array}
 $$
 
