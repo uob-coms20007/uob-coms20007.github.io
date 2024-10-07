@@ -183,7 +183,7 @@ Recall that the key idea of a predictive parser (with lookahead 1) is that it tr
 Therefore, to check if a grammar is appropriate for predictive parsing, we build a table $T$ that describes the possible meaningful choices $T[X,a]$ of grammar rule for each combination of non-terminal $X$ (representing the left-most non-terminal in the current sentential form) and terminal $a$ (representing the next letter of the input).
 
 <div class="defn" markdown="1">
-We define the __parsing table__, usually $T$, for a given grammar as a 2d array in which each entry $T[X,a]$ is a set of production rules from the grammar, such that some rule $X \longrightarrow \beta$ is in the set $T[X,a]$ just if, either:
+We define the __parse table__, usually $T$, for a given grammar as a 2d array in which each entry $T[X,a]$ is a set of production rules from the grammar, such that some rule $X \longrightarrow \beta$ is in the set $T[X,a]$ just if, either:
   
   1. $a \in \first_s(\beta)$
   2. or, $\nullable_s(\beta)$ and $a \in \follow(X)$

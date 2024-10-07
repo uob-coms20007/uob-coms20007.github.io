@@ -34,13 +34,13 @@ $$
   S \longrightarrow \tm{id} \leftarrow \tm{exp} \mid S \mathrel{;} S \mid \epsilon
 $$
 
-Here I use a terminal symbol to represent expressions because their structure is not important to the example.  Now suppose I am trying to generate a given string starting from $S$, is the rule I should use uniquely determined by the first letter of the input?  The first four rules all start with a different terminal symbol, so it looks promising, no matter what the first letter of the string is, at most one of those will be appropriate.  However, the fifth rule is a problem, because the right-hand side of this rule starts with the nonterminal $S$ again, it is \emph{always} eligible as a possible rule to use to derive the input string.
+Here I use a terminal symbol to represent expressions because their structure is not important to the example.  Now suppose I am trying to generate a given string starting from $S$, is the rule I should use uniquely determined by the first letter of the input?  The first rule starts with a specific terminal symbol, so it looks promising.  However, the second rule is a problem, because the right-hand side of this rule starts with the nonterminal $S$ again.  Consequently, it will _always_ be eligible as a choice whenever the next terminal symbol is in $\first(S)$.
 
-For example, suppose the input string starts $\tm{id}\ \ldots$, we can't be sure that the production $S \longrightarrow \tm{id} \leftarrow \tm{exp}$ is the correct rule to use, because perhaps the input continues as $\tm{id} \leftarrow \tm{exp}; \tm{id} \leftarrow \tm{exp}$.  If this was the case, we should have chosen the last rule instead.
+For example, suppose the input string starts $\tm{id}\ \ldots$.   At first sight it might seem like the production $S \longrightarrow \tm{id} \leftarrow \tm{exp}$ is the correct rule to use, and if the complete input string was $\tm{id} \leftarrow \tm{exp}$, then it would be.  However, the input may instead continue as $\tm{id} \leftarrow \tm{exp}; \tm{id} \leftarrow \tm{exp}$.  If this was the case, we should have chosen the rule $S \longrightarrow S;S$ instead.  
 
-This phenomenon, where some nonterminal $X$ has a production in which $X$ is again the first symbol on the right-hand side, is called \emph{left recursion} and it is always a problem for obtaining an LL(1) grammar.  The left-recursive rule for $X$ will always be eligible to be used whenever any other $X$-rule is eligible, because the first set of the left recursive rule will always contain that of any other $X$-rule.
+This phenomenon, where some nonterminal $X$ has a production in which $X$ is again the first symbol on the right-hand side, is called _left recursion_ and it is typically a problem for obtaining an LL(1) grammar.  That's because the first set of (the RHS of) a left recursive rule for $X$ always contains all of $\first(X)$.
 
-The resolution is to rewrite the relevant productions using only \emph{right recursion}, that is, where the nonterminal $X$ occurs at the end of the right-hand side instead of the start.
+The resolution is to rewrite the relevant productions using only _right recursion_, that is, where the nonterminal $X$ occurs at the end of the right-hand side instead of the start.
 
 Clearly, the grammar above derives strings that are finite sequences of assignment statements punctuated by semicolons:
 
@@ -48,7 +48,7 @@ $$
   \tm{id} \leftarrow \tm{exp}; \tm{id} \leftarrow \tm{exp}; \cdots{} \tm{id} \leftarrow \tm{exp}
 $$
 
-We can also derive these sequences as follows:
+We can also derive these sequences using the following productions:
 
 $$
   \begin{array}{rcl}
@@ -56,7 +56,7 @@ $$
   \end{array}
 $$
 
-A useful way to think about the two possible formulations of the grammar is that the former is a description of sequences (in this case, sequences of assignment statements) given in terms of \emph{concatenate}: the rule $S \longrightarrow S\mathrel{;}S$ of the first grammar allows to build a larger sequence by taking two existing sequences and gluing them together (concatenating) using the semicolon.  The second grammar instead describes sequences in terms of \emph{cons}, the rule $S \longrightarrow \tm{id} \leftarrow \tm{exp} \mathrel{;} S$ allows to build a larger sequence by taking one existing sequence and adding a new head element.
+A useful way to think about the two possible formulations of the grammar is that the former is a description of sequences (in this case, sequences of assignment statements) given in terms of concatenate: the rule $S \longrightarrow S\mathrel{;}S$ of the first grammar allows to build a larger sequence by taking two existing sequences and gluing them together (concatenating) using the semicolon.  The second grammar instead describes sequences in terms of \emph{cons}, the rule $S \longrightarrow \tm{id} \leftarrow \tm{exp} \mathrel{;} S$ allows to build a larger sequence by taking one existing sequence and adding a new head element.
 
 Here's a slightly more complicated example.  Consider again the grammar of Boolean expressions above, which involves two left recursive productions, $B \longrightarrow B \andop B$ and $B \longrightarrow B \orop B$.  These two rules allow us to build longer sequences by _concatenating_ two given sequences using either $\andop$ or $\orop$ respectively.  So, we can reformulate the grammar to instead build the same sequences using an approach based on _consing_ a single element to the head.  Let's start by first factoring out the different kinds of elements that make up these sequences so that the sequence structure is clearer:
 
