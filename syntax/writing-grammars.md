@@ -232,7 +232,8 @@ $$
   \begin{array}{rcl}  
     S &\longrightarrow& X\ S\ X \mid T\\
     T &\longrightarrow& 0\ U\ 1 \mid 1\ U\ 0\\
-    U &\longrightarrow& X\ U\ X \mid \epsilon
+    U &\longrightarrow& X\ U\ X \mid \epsilon\\
+    X &\longrightarrow& 0 \mid 1
   \end{array}
 $$
 
