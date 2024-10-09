@@ -74,6 +74,7 @@ $$
 $$
 
 Moreover, you can observe they are _non-empty_ sequences, there is no $\epsilon$-production available with which to create an empty sequence.  We can reformulate the rules to avoid left recursion as follows:
+
 $$
   \begin{array}{rcl}
     B &\longrightarrow& A \andop B \mid A \orop B \mid A \\
@@ -92,7 +93,7 @@ Semantically, which of these is meant makes a big difference!  We expect the fir
 
 ## Left Factoring
 
-Left recursion has been eliminated from this grammar, but it is still not LL(1).  For example, suppose we want to derive from $B$ and the next letter of the input is $\tt$.  Is the rule to use uniquely determined?  No.  Both of $B \longrightarrow A \andop B'$ and $B \longrightarrow A \orop B'$ are eligible, and you need to see more of the input to decide which to use.  If the input runs on as, say, $\tt \andop \ff$ then we should use the first, but if the input runs on as, say, $\tt \orop \ff$ then we should use the second.
+Left recursion has been eliminated from this grammar, but it is still not LL(1).  For example, suppose we want to derive from $B$ and the next letter of the input is $\tt$.  Is the rule to use uniquely determined?  No.  Both of $B \longrightarrow A \andop B$ and $B \longrightarrow A \orop B$ are eligible, and you need to see more of the input to decide which to use.  If the input runs on as, say, $\tt \andop \ff$ then we should use the first, but if the input runs on as, say, $\tt \orop \ff$ then we should use the second.
 
 Fortunately, there is a very simple fix to this problem, which is to factor out the common prefix from these rules.  In both cases we want to derive the first part of the string using $A$, so we reformulate the rules to factor that part out:
 
