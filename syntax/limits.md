@@ -13,8 +13,11 @@ $$
 $$
 
 # Limits to the Expressive Power of CFGs
+## (NOT ASSESSED)
 
-In this lecture, I want to look briefly at the limitations of context-free grammars.  I told you, in the first week, that grammars alone are not enough to describe the valid programs in a particular programming language.  They cannot, for example, enforce that variables are declared before they are used, or (in general) ensure that programs are well-typed.  In this lecture I aim to convince you of the first of these.
+_This material is not assessed, look at it only because it is interesting._
+
+In this part, I want to look briefly at the limitations of context-free grammars.  Grammars alone are not usually enough to describe the valid programs in a particular programming language.  They cannot, for example, enforce that variables are declared before they are used, or (in general) ensure that programs are well-typed.  In this chapter I aim to convince you of the first of these.
 
 To do this, it will be helpful to introduce a new view on grammar derivations.  If you recall, derivations justify whether a string is in the language described by a certain grammar.
 
