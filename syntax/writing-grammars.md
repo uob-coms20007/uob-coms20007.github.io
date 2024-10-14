@@ -23,7 +23,7 @@ We will adopt the following conventions.  We will use lowercase letters from the
 If you think back to the previous example, you will notice that a key part of the grammar is manipulating sequences of terminals and non-terminals, like $$\ff \andop (L \orop L)$$.  One could think of these as strings over the alphabet $\Sigma \cup \mathcal{N}$, but I would rather reserve the word "string" for the objects (over $\Sigma$ only) that the grammar derives.  So instead, we shall refer to these kind of sequences as _sentenial forms_.
 
 {: .defn }
-A __sentential form__ is just a sequence of terminals (from $\Sigma$) and nonterminals (from $\mathcal{N}$).
+A __sentential form__ is just a finite sequence of terminals (from $\Sigma$) and nonterminals (from $\mathcal{N}$).
 
 According to this view, we will reserve metavariables $u$, $v$, $w$ and so on for strings (as we have done so far), and introduce metavariables $\alpha$, $\beta$, $\gamma$ and so on to stand for arbitrary sentential forms.
 
@@ -57,8 +57,8 @@ The syntax of the __While Programming Language__ is given by the CFG with:
         A &\longrightarrow& V \mid N \mid A + A \mid A - A \mid A * A \mid (A)\\
         D &\longrightarrow& 0 \mid 1 \mid \cdots{} \mid 9\\
         E &\longrightarrow& D\ E \mid \epsilon\\
-        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid ' \\
-        U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \\
+        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \\
+        U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \mid ' \\
         M &\longrightarrow& L\ M \mid U\ M \mid \epsilon\\
         V &\longrightarrow& L\ M\\
         N &\longrightarrow& D\ E
@@ -98,7 +98,7 @@ The __one-step derivation relation__ is a binary relation on sentential forms wi
 
 We write $\alpha \to^* \beta$, and say __$\beta$ is derivable from $\alpha$__ (or __$\alpha$ derives $\beta$__) just if $\beta$ can be derived from $\alpha$ in any (finite) number of steps, including zero steps.
 
-Finally, we say that a word $w$ over $\Sigma$ is in the __language of a grammar__ $(\Sigma,\mathcal{N},\mathcal{R},S)$ just if $S \to^* w$.
+Finally, we say that a word $w$ is in the \emph{language of a grammar}, and write $w \in L(G)$ just if $S \to^* w$.
 </div>
 
 In other words, we write $\alpha \to \beta$ just if $\beta$ arises by replacing exactly one occurrence of a nonterminal $X$ in $\alpha$ by its right-hand side according to one of the rules of the grammar.
@@ -232,7 +232,8 @@ $$
   \begin{array}{rcl}  
     S &\longrightarrow& X\ S\ X \mid T\\
     T &\longrightarrow& 0\ U\ 1 \mid 1\ U\ 0\\
-    U &\longrightarrow& X\ U\ X \mid \epsilon
+    U &\longrightarrow& X\ U\ X \mid \epsilon\\
+    X &\longrightarrow& 0 \mid 1
   \end{array}
 $$
 

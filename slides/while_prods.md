@@ -19,8 +19,8 @@ The syntax of the __While Programming Language__ is given by the CFG with:
         A &\longrightarrow& V \mid N \mid A + A \mid A - A \mid A * A \mid (A)\\
         D &\longrightarrow& 0 \mid 1 \mid \cdots{} \mid 9\\
         E &\longrightarrow& D\ E \mid \epsilon\\
-        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \mid ' \\
-        U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \\
+        L &\longrightarrow& a \mid b \mid \cdots{} \mid z \\
+        U &\longrightarrow& A \mid B \mid \cdots{} \mid Z \mid '\\
         M &\longrightarrow& L\ M \mid U\ M \mid \epsilon\\
         V &\longrightarrow& L\ M\\
         N &\longrightarrow& D\ E

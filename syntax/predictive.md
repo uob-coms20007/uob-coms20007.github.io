@@ -74,11 +74,11 @@ $$
     D' &\longrightarrow& \orop C\ D' \mid \epsilon \\
     C &\longrightarrow& A\ C' \\
     C' &\longrightarrow& \andop A\ C' \mid \epsilon \\
-    A &\longrightarrow& \tt \mid \ff \mid (D)
+    A &\longrightarrow& \tt \mid \ff \mid \mathsf{id} \mid (D)
   \end{array}
 $$
 
-So we will have 5 functions, `d`, `d'`, `c`, `c'` and `a`.  Each of these functions will be responsible for parsing those strings that are derivable from the corresponding non-terminal in the grammar.  So, for example, `d` will parse exactly those strings derivable from $D$.  Here's the complete set of parsing functions:
+So we will have 6 functions, `s`, `d`, `d'`, `c`, `c'` and `a`.  Each of these functions will be responsible for parsing those strings that are derivable from the corresponding non-terminal in the grammar.  So, for example, `d` will parse exactly those strings derivable from $D$.  Here's the complete set of parsing functions:
 
 ```ocaml
   let rec d () =
