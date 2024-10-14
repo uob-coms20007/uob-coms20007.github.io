@@ -39,16 +39,16 @@ Now let us turn to how the induction principle for the natural numbers is applie
 We will prove the following theorem:
 
 <div class="defn" markdown="1">
-  For all natural numbers $n \in N$, the sum $0 + \cdots + n$ is equal to $1/2 \times n \times (n + 1)$.
+  For all natural numbers $n \in \mathbb{N}$, the sum $0 + \cdots + n$ is equal to $1/2 \times n \times (n + 1)$.
 </div>
 
 First, we must check that the induction principle is applicable for this theorem.
-The induction principle allows us to prove properties of the form "for all $n \in N$, $P(n)$" (or $\forall n \in N. P(n)$ if you're feeling fancy).
+The induction principle allows us to prove properties of the form "for all $n \in \mathbb{N}$, $P(n)$" (or $\forall n \in \mathbb{N}. P(n)$ if you're feeling fancy).
 Our theorem is indeed of this form, where $P(n)$ is the statement "the sum $0 + \cdots + n$ is equal to $1/2 \times n \times (n + 1)$".
 Therefore, we can apply the induction principle for the natural numbers.
 
 Next we _instantiate_ the induction principle with our property of interest.
-This is just a fancy way of saying we replace the generic metavariable $P$ in the definition with our concrete property.
+This is just a fancy way of saying we replace the generic property $P$ in the definition with our concrete property.
 The result is the following proof obligations (i.e. things we must show to be true):
 
  1. $0 + \cdots + 0 = 1/2 \times 0 \times (0 + 1)$ holds - the base case;
@@ -87,7 +87,7 @@ For the time being, inductively defined structures will only extend to those set
 To get an idea of how we will generalise the induction principle for the natural numbers to an arbitrary grammar, let us unpack the definition of the natural numbers.
 
 For us, the natural numbers are defined by the following grammar: $N \to 0 \mid N + 1$ where our usual notation for a number such as $3$ is just shorthand for $0 + 1 + 1 + 1$.
-That is, a natural number $n \in N$ is either $0$ or $m + 1$ for some other natural number $m \in N$.
+That is, a natural number $n \in \mathbb{N}$ is either $0$ or $m + 1$ for some other natural number $m \in \mathbb{N}$.
 If we compare these two production rules to the two cases of our inductive proof, then a similarity appears: there is a base case $N \rightarrow 0$ and an inductive case $N \rightarrow N + 1$...
 
 It is precisely because the natural numbers can only have one of these forms that we can be sure that $P(n)$ is true for any particular $n$ in this set.
@@ -108,20 +108,20 @@ This derivation can be mimicked by our induction principle as follows: $P(0 + 1 
 There is nothing special about the natural numbers (despite what some philosophers might tell you).
 We can apply the strategy of structural induction to any grammar of your choosing.
 
-For example, consider arithmetic expressions:
+For example, consider the set of arithmetic expressions $\mathcal{A}$ defined by the following grammar:
 
 $$
   A \to x \mid n \mid A + A \mid A - A \mid A * A
 $$
 
-We will derive the induction principle for this grammar, i.e. the form of an inductive proof, by following the same recipe as for the natural numbers.
+We will derive the induction principle for this set, i.e. the form of an inductive proof, by following the same recipe as for the natural numbers.
 There must be a case for each production rule of the grammar and, in non-base cases, we may assume the property holds of all sub-expressions.
 
 <div class="defn" markdown="1">
 The __induction principle for arithmetic expressions__ is the following.
 
 > Suppose $P$ is some property of arithmetic expressions.
-> To prove that $P(e)$ holds for _all_ arithmetic expressions $e \in A$, you prove that:
+> To prove that $P(e)$ holds for _all_ arithmetic expressions $e \in \mathcal{A}$, you prove that:
 >
 >  1. $P(x)$ holds for all variables $x$ - a _base_ case;
 >  2. $P(n)$ holds for all numeric literals $n$ - a _base_ case;
@@ -144,7 +144,7 @@ First, consider the following definition.
 
 <div class="defn" markdown="1">
 The __free variables__ of an expression is the set of variables that appear in that expression.
-Formally, we define the function $\mathsf{FV} : A \rightarrow \mathcal{P}(\mathsf{Var})$ by recursion over the structure of expressions:
+Formally, we define the function $\mathsf{FV} : \mathcal{A} \rightarrow \mathcal{P}(\mathsf{Var})$ by recursion over the structure of expressions:
 
 $$
 \begin{array}{rl}
@@ -159,11 +159,11 @@ $$
 </div>
 
 Intuitively, the denotation of an arithmetic expression should only depend on the value its free variables are given.
-For example, $\llbracket x + 1\rrbracket_A(\sigma)$ will be unchanged regardless if $\sigma(y) = 1$ or $\sigma(y) = 2$.
+For example, $\llbracket x + 1\rrbracket_{\mathcal{A}}(\sigma)$ will be unchanged regardless if $\sigma(y) = 1$ or $\sigma(y) = 2$.
 The formal way in which we will express this property is as follows:
 
 <div class="defn" markdown="1">
-Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_A(\sigma) = \llbracket e \rrbracket_A(\sigma')$ for any two states $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
+Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e \rrbracket_{\mathcal{A}}(\sigma')$ for any two states $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
 </div>
 
 In other words, this property states that if two states agree on the value of every variable appearing in the expression, then the expression will have the same denotation under each state.
@@ -178,15 +178,15 @@ As this claim is of the form "for _all_ arithmetic expressions, ...", we can use
 
 Let us look at the proof obligations we derive for the two base cases of the induction principle:
 
- 1. (The variable case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(x)$, then $\llbracket x \rrbracket_A(\sigma) = \llbracket x \rrbracket_A(\sigma')$.
+ 1. (The variable case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(x)$, then $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \llbracket x \rrbracket_{\mathcal{A}}(\sigma')$.
 
-    In this case, $\mathsf{FV}(x)$ is simple the set $\lbrace x \rbrace$ and, by definition, $\llbracket x \rrbracket_A(\sigma) = \sigma(x)$ for any state $\sigma$.
+    In this case, $\mathsf{FV}(x)$ is simple the set $\lbrace x \rbrace$ and, by definition, $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \sigma(x)$ for any state $\sigma$.
     Therefore, our property allows us to assume that $\sigma(x) = \sigma'(x)$ and then asks us to show that $\sigma(x) = \sigma'(x)$ - which is trivial!
 
- 2. (The literal case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(n)$, then $\llbracket n \rrbracket_A(\sigma) = \llbracket n \rrbracket_A(\sigma')$.
+ 2. (The literal case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(n)$, then $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = \llbracket n \rrbracket_{\mathcal{A}}(\sigma')$.
 
     In this case, $\mathsf{FV}(n)$ is the empty set, and therefore we do not know anything about $\sigma$ or $\sigma'$.
-    However, as $\llbracket n \rrbracket_A(\sigma) = n$ and likewise for $\sigma'$, we have that $\llbracket n \rrbracket_A(\sigma) = \llbracket n \rrbracket_A(\sigma')$ for all $\sigma$ and $\sigma'$.
+    However, as $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = n$ and likewise for $\sigma'$, we have that $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = \llbracket n \rrbracket_{\mathcal{A}}(\sigma')$ for all $\sigma$ and $\sigma'$.
 
 In both of these cases, we may assume that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$ as it is only under this condition that our property is specified.
 It is important to note that this is not an induction hypothesis that we are assuming - in fact there are no induction hypotheses in the base cases.
@@ -198,12 +198,12 @@ To avoid getting lost in a fog of symbols, we will leave our property as $P(e)$ 
 
  3. (The addition case) If $P(e_1)$ and $P(e_2)$ hold, then $P(e_1 + e_2)$ holds.
 
-    By definition $P(e_1 + e_2)$ is the statement: if $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, then $\llbracket e_1 + e_2 \rrbracket_A(\sigma) = \llbracket e_1 + e_2 \rrbracket_A(\sigma')$.
-    Therefore, we assume that $\sigma$ and $\sigma'$ are two particular states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, and we must subsequently show that $\llbracket e_1 + e_2 \rrbracket_A(\sigma) = \llbracket e_1 + e_2 \rrbracket_A(\sigma')$.
+    By definition $P(e_1 + e_2)$ is the statement: if $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, then $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
+    Therefore, we assume that $\sigma$ and $\sigma'$ are two particular states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, and we must subsequently show that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
 
-    Now recall that $\llbracket e_1 + e_2 \rrbracket_A(\sigma) = \llbracket e_1 \rrbracket_A(\sigma) + \llbracket e_2 \rrbracket_A(\sigma)$ for any state $\sigma$.
-    Therefore, we can simplify our goal to the equation $\llbracket e_1 \rrbracket_A(\sigma) + \llbracket e_2 \rrbracket_A(\sigma) = \llbracket e_1 \rrbracket_A(\sigma') + \llbracket e_2 \rrbracket_A(\sigma')$.
-    To prove this equation, we will separately show that the equations $\llbracket e_1 \rrbracket_A(\sigma) = \llbracket e_1 \rrbracket_A(\sigma')$ and $\llbracket e_2 \rrbracket_A(\sigma) = \llbracket e_2 \rrbracket_A(\sigma')$ hold.
+    Now recall that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)$ for any state $\sigma$.
+    Therefore, we can simplify our goal to the equation $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma') + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
+    To prove this equation, we will separately show that the equations $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$ and $\llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$ hold.
     
     Take note: we have reduced the property of the compound expression to a property of sub-expressions.
     This is exactly what we did in the summation example (where we first highlighted that $0 + \cdots + (m + 1)$ is equal to $(0 + \cdots + m) + (m + 1)$) and is a key pattern to all induction proofs.
@@ -212,20 +212,20 @@ To avoid getting lost in a fog of symbols, we will leave our property as $P(e)$ 
     In each inductive case, we may assume that the property we are trying to prove holds for _both_ sub-expressions thanks to our induction principle.
     There are two induction hypotheses here as there are two sub-expression: one for $e_1$ and one for $e_2$.
     Therefore, we assume that both $P(e_1)$ and $P(e_2)$ hold.
-    These hypotheses state that, if $\sigma$ and $\sigma'$ are any two states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$, then $\llbracket e_1 \rrbracket_A(\sigma) = \llbracket e_1 \rrbracket_A(\sigma')$, and likewise for $e_2$.
+    These hypotheses state that, if $\sigma$ and $\sigma'$ are any two states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$, then $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$, and likewise for $e_2$.
 
     To use these hypotheses, we need to make sure their conditions are met, i.e. that our $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$.
     We already know that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$ as we made this assumption earlier on.
     And, as $\mathsf{FV}(e_1 + e_2) = \mathsf{FV}(e_1) \cup \mathsf{FV}(e_2)$, we also know $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$ and for all $y \in \mathsf{FV}(e_2)$.
-    Thus, the conditions of our induction hypothese are satisfied, and we can use the induction hypotheses to conclude that $\llbracket e_1 \rrbracket_A(\sigma) = \llbracket e_1 \rrbracket_A(\sigma')$ and $\llbracket e_1 \rrbracket_A(\sigma) = \llbracket e_2 \rrbracket_A(\sigma')$.
+    Thus, the conditions of our induction hypotheses are satisfied, and we can use the induction hypotheses to conclude that $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$ and $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
 
     Finally, we can complete this case by putting the pieces back together and proving the property follow from the properties of its sub-expressions:
 
     $$
       \begin{array}{rll}
-        \llbracket e_1 + e_2 \rrbracket_A(\sigma) &= \llbracket e_1 \rrbracket_A(\sigma) + \llbracket e_2 \rrbracket_A(\sigma)                & \textrm{Expand} \\
-                            &= \llbracket e_1 \rrbracket_A(\sigma') + \llbracket e_2 \rrbracket_A(\sigma')   & \textrm{Induction Hypotheses} \\
-                            &= \llbracket e_1 + e_2 \rrbracket_A(\sigma') & \textrm{Simplify}
+        \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) &= \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)                & \textrm{Expand} \\
+                            &= \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma') + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')   & \textrm{Induction Hypotheses} \\
+                            &= \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma') & \textrm{Simplify}
       \end{array}
     $$
 
