@@ -1,12 +1,12 @@
 ---
 layout: math
-title: Operational Semantics (I)
+title: Operational Semantics
 nav_order: 3
 mathjax: true
 parent: Semantics
 ---
 
-# Operational Semantics (I)
+# Operational Semantics
 
 Operational semantics is an alternative style of semantics that emphasis the steps taken during the execution of the program.
 We will construct an operational semantics for While programs, building on the denotational semantics for arithmetic and Boolean expressions.
@@ -180,27 +180,27 @@ Let's start with the rules for skip, assignment, and composition:
     As with the rule for skip statements, we can instantiate these metavariables with a concrete variable, a concrete arithmetic expression, and a concrete state to get concrete instances of this rule.
     For example, the rule implies that $x \leftarrow 1,\, [x \mapsto 2] \Downarrow [x \mapsto 1]$ where we have instantiated the rule with the variable $x$, the arithmetic expression $1$, and the state $[x \mapsto 2]$.
   
-  - The next example we will look at is the rule governing the operational semantics of composition $s_1 ; s_2$.
-    In this case, the behaviour of the compound statement is precisely the behaviour of $s_1$ followed by the behaviour of the statement $s_2$.
-    Therefore, the rule for this construct depends on the operational semantics of the two sub-statements $s_1$ and $s_2$.
+  - The next example we will look at is the rule governing the operational semantics of composition $S_1 ; S_2$.
+    In this case, the behaviour of the compound statement is precisely the behaviour of $S_1$ followed by the behaviour of the statement $S_2$.
+    Therefore, the rule for this construct depends on the operational semantics of the two sub-statements $S_1$ and $S_2$.
     The rule is as follows:
 
-    <!-- If $s_1,\, \sigma \Downarrow \sigma'$ and $s_2,\, \sigma' \Downarrow \sigma''$, then -->
+    <!-- If $S_1,\, \sigma \Downarrow \sigma'$ and $S_2,\, \sigma' \Downarrow \sigma''$, then -->
 
     $$
       \dfrac
-      { s_1,\, \sigma \Downarrow \sigma'
-          \quad s_2,\, \sigma' \Downarrow \sigma''
+      { S_1,\, \sigma \Downarrow \sigma'
+          \quad S_2,\, \sigma' \Downarrow \sigma''
       }
-      {s_1; s_2,\, \sigma \Downarrow \sigma''}
+      {S_1; S_2,\, \sigma \Downarrow \sigma''}
     $$
 
-    This rule says that if the relation $\Downarrow$ already includes the tuples $(s_1,\, \sigma,\, \sigma')$ and $(s_2,\, \sigma',\, \sigma'')$, then it must also include the triple $(s_1; s_2,\, \sigma,\, \sigma'')$.
+    This rule says that if the relation $\Downarrow$ already includes the tuples $(S_1,\, \sigma,\, \sigma')$ and $(S_2,\, \sigma',\, \sigma'')$, then it must also include the triple $(S_1; S_2,\, \sigma,\, \sigma'')$.
     Notice that the form of this rule is very similar to the inductive rule for natural numbers in that new instances are generated from existing instance, i.e. if $n \in N$, then $n+1 \in N$.
 
-    As with the two previous rules, the rule applies for all statements $s_1,\, s_2 \in S$ and all states $\sigma,\, \sigma',,\, \sigma'' \in \mathsf{State}$ - these are the rules metavariables.
-    In order to use this rule, however, we need not only to instantiate metavariables but to find inhabitants of the $\Downarrow$ that determine the behaviour of the statements $s_1$ and $s_2$.
-    Once we have done so, we can drive a new inhabitant describing the behaviour of the compound statement $s_1 ; s_2$.
+    As with the two previous rules, the rule applies for all statements $S_1,\, S_2 \in S$ and all states $\sigma,\, \sigma',,\, \sigma'' \in \mathsf{State}$ - these are the rules metavariables.
+    In order to use this rule, however, we need not only to instantiate metavariables but to find inhabitants of the $\Downarrow$ that determine the behaviour of the statements $S_1$ and $S_2$.
+    Once we have done so, we can drive a new inhabitant describing the behaviour of the compound statement $S_1 ; S_2$.
     For example, if we already know that $x \leftarrow 2,\, [x \mapsto 1] \Downarrow [x \mapsto 2]$ and $x \leftarrow 3,\, [x \mapsto 2] \Downarrow [x \mapsto 3]$, then we can combine these facts to conclude that:
     $
       x \leftarrow 2; x \leftarrow 3,\, [x \mapsto 1] \Downarrow [x \mapsto 3]
@@ -213,7 +213,7 @@ Other rules require us to already know the behaviour of some statements in order
 These two types of rules behave much like the base case and inductive cases of the natural numbers.
 And, as with the natural numbers or other grammars, we can apply inductive cases multiple times to derive more complex instances.
 
-## Computing with Inference Systems
+## Computing with Inference Rules
 
 <!-- How does an inference system constitute a definition for the behaviour of a program -->
 
@@ -272,86 +272,117 @@ $$
   {x \mapsto 1; y \mapsto 2,\, [] \Downarrow [x \mapsto 1,\, y \mapsto 2]}
 $$
 
-Are there any other final states $\sigma$ such that $x \mapsto 1; y \mapsto 2,\, [] \Downarrow \sigma$?
+## Conditional Statements
 
-
-<!-- <div class="defn" markdown="1">
-  An __inference rules__ is a logical statement of the form:
-
-  $$
-    \dfrac
-    {P_1 \quad \cdots \quad P_n}
-    {Q}
-  $$
-
-  That is interpreted as the statement: if $P_1$ and $P_2$ and ... and $P_n$ are all true, then $Q$ is also true.
-  We refer to each $P_1$, ..., $P_n$ as _premises_ and to $Q$ and the _conclusion_.
-
-  When undefined symbols (e.g. "$x$" or "$e$" or "$\sigma$") appear in the statements $P_1$, $P_2$, etc. or in $Q$ we assume they are _metavariables_ unless specified otherwise.
-  These are universally quantified in the sense that the rule applies for all concrete instances.
-</div> -->
-<!-- 
-Using this new notation, we can rephrase our rules for skip, assignment, and composition as follows:
+Let's now turn to the rules for conditional statements.
+The behaviour of an if statement naturally depends on the value of its branching condition.
+If the condition is true, the first statement will be executed; otherwise, the second statement will be executed.
+Correspondingly, there are two inference rules that cover each case.
 
 $$
-  \begin{array}{ccc}
+  \begin{array}{cc}
     \dfrac
-    {}
-    {\mathsf{skip},\, \sigma \Downarrow \sigma}
+    {S_1,\, \sigma \Downarrow \sigma'}
+    {\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \Downarrow \sigma'}
+    \llbracket e \rrbracket_B(\sigma) = \top
 
     &
     \dfrac
-    {}
-    {x \leftarrow e,\, \sigma \Downarrow \sigma[x \mapsto \llbracket e \rrbracket_A(\sigma)]}
-
-    &
-    \dfrac
-    {
-      s_1,\, \sigma \Downarrow \sigma' \quad
-      s_2,\, \sigma' \Downarrow \sigma''
-    }
-    {s_1; s_2,\, \sigma \Downarrow \sigma''}
+    {S_2,\, \sigma \Downarrow \sigma'}
+    {\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \Downarrow \sigma'}
+    \llbracket e \rrbracket_B(\sigma) = \bot
   \end{array}
-$$ -->
+$$
 
-<!-- Remember that we will still use metavariables when presenting inference rules in this form.
-That is, any undefined symbol appearing in an inference rule is universally quantified so that the rule applies for all appropriate instances. -->
+To the left of each of these inference rules is a condition known as the _side condition_.
+The side condition is a caveat to the rule that restricts the instances in which it applies.
+For example, the first side should be read as: for any Boolean expression $e$, statements $S_1$ and $S_2$, and states $\sigma$ and $\sigma'$ _such that_ $\llbracket e \rrbracket_B(\sigma) = \top$, if $S_1,\, \sigma \Downarrow \sigma'$ then $\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \Downarrow \sigma'$.
+This means that we can use this rule to derive the final state if the branch condition $x \leq 2$ and the initial state were $[x \mapsto 0]$ for example.
 
-<!-- Let us revisit the earlier example of the behaviour $x \mapsto 1; y \mapsto 2,\, [] \Downarrow [x \mapsto 1,\, y \mapsto 2]$.
-This fact was derived from three inferences (i.e. instances of inference rules): 
+The side conditions are treated differently from premises as they constrain the instances a metavariable may take, rather than relating to other instances of the inductively defined relation.
 
-  - Using the assignment rule: $\dfrac{}{x \mapsto 1,\, [] \Downarrow [x \mapsto 1]}$
+## While Statement
 
-  - Using the assignment rule: $\dfrac{}{y \mapsto 2,\, [x \mapsto 1] \Downarrow [x \mapsto 1,\, y \mapsto 2]}$
+Finally, let's look at while statements.
+As with conditionals, the behaviour of a while statement $\mathsf{while}\ e\ \mathsf{do}\ S$ is characterised by two cases:
 
-  - Using the composition rule: $\dfrac{x \mapsto 1,\, [] \Downarrow [x \mapsto 1] \qquad y \mapsto 2,\, [x \mapsto 1] \Downarrow [x \mapsto 1,\, y \mapsto 2]}{x \mapsto 1; y \mapsto 2,\, [] \Downarrow [x \mapsto 1,\, y \mapsto 2]}$ -->
+  - If the branch condition $e$ is not true, then the statement does nothing.
 
+  - If, on the other hand, the branch condition $e$ is true, then the statement executes the sub-statement $S$ before repeating the process.
 
-<!-- ## Derivations
+Correspondingly, there are two inference rules:
 
-Writing down the application of these rules can get tiresome, so we will now move to a more convenient notation.
-One of the nice things about our notation for inference rules, is it allows us to combine these inferences together to present a single argument.
-We do so by replacing premises with the inference used to justify them.
-This builds up a tree of inferences - referred to as a _derivation tree_.
+$$
+  \begin{array}{cc}
+    \dfrac
+    {}
+    {\mathsf{while}\ e\ \mathsf{do}\ S, \sigma \Downarrow \sigma}
+    \llbracket e \rrbracket_B(\sigma) = \bot
 
-The derivation tree for our previous example is given as follows:
+    &
+    \dfrac
+    {S,\, \sigma \Downarrow \sigma'
+      \quad \mathsf{while}\ e\ \mathsf{do},\, \sigma' \Downarrow \sigma''}
+    {\mathsf{while}\ e\ \mathsf{do}\ S,\, \sigma \Downarrow \sigma''}
+    \llbracket e \rrbracket_B(\sigma) = \top
+  \end{array}
+$$
+
+The side condition on the first rule ensures that it is only applicable when the branch condition evaluates to false in the initial state.
+Additionally, this rule does not change the program's state.
+
+Conversely, the side condition on the second rule ensures that it is only applicable when the branch condition evaluates to true in the initial state.
+In this case, the body of the $\mathsf{while}$ loop is evaluate to produce a new intermediary state, before the loop itself is reevaluated.
+This rule encodes the iterative nature of the $\mathsf{while}$ construct by defining its behaviour in a recursive manner, i.e. if the branch condition is true, the loop behaves as its body followed by the loop itself.
+
+## Computing with Conditional Inference Rules
+
+The new inference rules can be used to compute the behaviour of While programs using the same principle --- for a given initial state $\sigma \in \mathcal{State}$ and a program $S \in \mathcal{S}$, find a final state $\sigma' \in \mathcal{State}$ such that $S,\, \sigma \Downarrow \sigma'$.
+The only difference with the conditional language constructs is that the applicable inference rule depends not just on the structure of the statement but also on the value of some branching condition in the given state.
+
+For example, let's consider evaluating the program $\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2$ in the state $[x \mapsto 0]$.
+By the form of the program, we know that one of the inference rules for $\mathsf{while}$ must apply.
+In this case, as $\llbracket x \leq 1 \rrbracket_\mathcal{A}([x \mapsto 0])$ is true, the inference rule in question will be:
 
 $$
   \dfrac
-  {
-    \dfrac
+  {s,\, \sigma \Downarrow \sigma'
+    \quad \mathsf{while}\ e\ \mathsf{do},\, \sigma' \Downarrow \sigma''}
+  {\mathsf{while}\ e\ \mathsf{do}\ s,\, \sigma \Downarrow \sigma''}
+  \llbracket e \rrbracket_B(\sigma) = \top
+$$
+
+This tell us that the final state is computed in two steps: first, we must evaluate the statement $x \leftarrow x + 2$ in our initial state $[x \mapsto 0]$ to compute an intermediary state, then we evaluate the statement $\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2$ in the resulting state.
+According to the rule for assignment, the intermediary state will be $[x \mapsto 2]$.
+Thus far we have constructed the following partial derivation:
+
+$$
+  \dfrac
+  {\dfrac
     {}
-    {x \mapsto 1 [] \Downarrow [x \mapsto 1]}
+    {x \leftarrow x + 2\, [x \mapsto 1] \Downarrow [x \mapsto 2]}
+
+    \quad
+    \mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow \sigma'
+  }
+  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [x \mapsto 0] \Downarrow \sigma'}
+$$
+
+To complete our derivation, we must evaluate the same statement $\mathsf{while}\ x \leq 1\ \mathsf{do}$ in the new state $[x \mapsto 2]$.
+In this case, the branch condition is false and therefore the other rules for $\mathsf{while}$ statements applies.
+Therefore, we may determine the final state to be $[x \mapsto 2]$, and we complete our derivation as follows:
+
+$$
+  \dfrac
+  {\dfrac
+    {}
+    {x \leftarrow x + 2\, [x \mapsto 1] \Downarrow [x \mapsto 2]}
 
     \quad
 
     \dfrac
     {}
-    {y \mapsto 2,\, [x \mapsto 1] \Downarrow [x \mapsto 1,\, y \mapsto 2]}
+    {\mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow [x \mapsto 2]}
   }
-  {x \mapsto 1; y \mapsto 2,\, [] \Downarrow [x \mapsto 1,\, y \mapsto 2]}
+  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [x \mapsto 0] \Downarrow [x \mapsto 2]}
 $$
-
-Each node in the tree corresponds to a statement, in this case regarding the behaviour of programs.
-Additionally, we label nodes in the tree with the inference rules used to justify them.
-The children of a node are the premises of that particular inference. -->
