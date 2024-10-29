@@ -1,14 +1,12 @@
 ---
 layout: math
-title: Proof by Induction
+title: Structural Induction
 nav_order: 2
 mathjax: true
 parent: Semantics
 ---
 
-# Proof by Induction
-
-## Numerical Induction
+# Numerical Induction
 
 Many of you will have seen a form of proof by induction that goes something like this:
 
@@ -80,7 +78,7 @@ This is a promising sign that our induction proof is going to work out!
 Having expanded the summation, we can apply the induction hypothesis to replace the summand $0 + \cdots + m$ with the formula $1/2 \times m \times (m + 1)$.
 The rest of the proof follows from standard identities about addition and multiplication.
 
-### Structural Induction
+# Structural Induction
 
 Structural induction is a direct generalisation of numerical induction where we substitute the natural numbers for some other set of interest; in particular, an _inductively defined_ structure.
 For the time being, inductively defined structures will only extend to those sets defined by grammars.

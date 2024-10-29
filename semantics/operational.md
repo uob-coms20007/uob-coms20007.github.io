@@ -109,7 +109,7 @@ $$
   \end{array}
 $$
 
-One of the nice features of this notation is that multiple inferences can be chained together to present a consistent argument.
+One of the nice features of this notation is that multiple inferences can be glued together to present a consistent argument.
 For example, we can combine the above two inferences and the inference rule for $0 \in N$ to create the following argument:
 
 $$
@@ -198,7 +198,7 @@ Let's start with the rules for skip, assignment, and composition:
     This rule says that if the relation $\Downarrow$ already includes the tuples $(S_1,\, \sigma,\, \sigma')$ and $(S_2,\, \sigma',\, \sigma'')$, then it must also include the triple $(S_1; S_2,\, \sigma,\, \sigma'')$.
     Notice that the form of this rule is very similar to the inductive rule for natural numbers in that new instances are generated from existing instance, i.e. if $n \in N$, then $n+1 \in N$.
 
-    As with the two previous rules, the rule applies for all statements $S_1,\, S_2 \in S$ and all states $\sigma,\, \sigma',,\, \sigma'' \in \mathsf{State}$ - these are the rules metavariables.
+    As with the two previous rules, the rule applies for all statements $S_1,\, S_2 \in S$ and all states $\sigma,\, \sigma',\, \sigma'' \in \mathsf{State}$ - these are the rules metavariables.
     In order to use this rule, however, we need not only to instantiate metavariables but to find inhabitants of the $\Downarrow$ that determine the behaviour of the statements $S_1$ and $S_2$.
     Once we have done so, we can drive a new inhabitant describing the behaviour of the compound statement $S_1 ; S_2$.
     For example, if we already know that $x \leftarrow 2,\, [x \mapsto 1] \Downarrow [x \mapsto 2]$ and $x \leftarrow 3,\, [x \mapsto 2] \Downarrow [x \mapsto 3]$, then we can combine these facts to conclude that:
@@ -272,7 +272,9 @@ $$
   {x \mapsto 1; y \mapsto 2,\, [] \Downarrow [x \mapsto 1,\, y \mapsto 2]}
 $$
 
-## Conditional Statements
+# Conditional Rules
+
+### If Statement
 
 Let's now turn to the rules for conditional statements.
 The behaviour of an if statement naturally depends on the value of its branching condition.
@@ -301,7 +303,7 @@ This means that we can use this rule to derive the final state if the branch con
 
 The side conditions are treated differently from premises as they constrain the instances a metavariable may take, rather than relating to other instances of the inductively defined relation.
 
-## While Statement
+### While Statement
 
 Finally, let's look at while statements.
 As with conditionals, the behaviour of a while statement $\mathsf{while}\ e\ \mathsf{do}\ S$ is characterised by two cases:
@@ -335,9 +337,9 @@ Conversely, the side condition on the second rule ensures that it is only applic
 In this case, the body of the $\mathsf{while}$ loop is evaluate to produce a new intermediary state, before the loop itself is reevaluated.
 This rule encodes the iterative nature of the $\mathsf{while}$ construct by defining its behaviour in a recursive manner, i.e. if the branch condition is true, the loop behaves as its body followed by the loop itself.
 
-## Computing with Conditional Inference Rules
+### Computing with Conditional Inference Rules
 
-The new inference rules can be used to compute the behaviour of While programs using the same principle --- for a given initial state $\sigma \in \mathcal{State}$ and a program $S \in \mathcal{S}$, find a final state $\sigma' \in \mathcal{State}$ such that $S,\, \sigma \Downarrow \sigma'$.
+The new inference rules can be used to compute the behaviour of While programs using the same principle --- for a given initial state $\sigma \in \mathsf{State}$ and a program $S \in \mathcal{S}$, find a final state $\sigma' \in \mathcal{State}$ such that $S,\, \sigma \Downarrow \sigma'$.
 The only difference with the conditional language constructs is that the applicable inference rule depends not just on the structure of the statement but also on the value of some branching condition in the given state.
 
 For example, let's consider evaluating the program $\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2$ in the state $[x \mapsto 0]$.
@@ -363,7 +365,9 @@ $$
     {x \leftarrow x + 2\, [x \mapsto 1] \Downarrow [x \mapsto 2]}
 
     \quad
-    \mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow \sigma'
+    \dfrac
+    {\vdots}
+    {\mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow \sigma'}
   }
   {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [x \mapsto 0] \Downarrow \sigma'}
 $$
