@@ -354,7 +354,7 @@ $$
   \llbracket e \rrbracket_B(\sigma) = \top
 $$
 
-This tell us that the final state is computed in two steps: first, we must evaluate the statement $x \leftarrow x + 2$ in our initial state $[x \mapsto 0]$ to compute an intermediary state, then we evaluate the statement $\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2$ in the resulting state.
+This tell us that the final state is computed in two steps: first, we must evaluate the statement $x \leftarrow x + 2$ in our initial state $[]$ to compute an intermediary state, then we evaluate the statement $\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2$ in the resulting state.
 According to the rule for assignment, the intermediary state will be $[x \mapsto 2]$.
 Thus far we have constructed the following partial derivation:
 
@@ -362,14 +362,14 @@ $$
   \dfrac
   {\dfrac
     {}
-    {x \leftarrow x + 2\, [x \mapsto 1] \Downarrow [x \mapsto 2]}
+    {x \leftarrow x + 2\, [] \Downarrow [x \mapsto 2]}
 
     \quad
     \dfrac
     {\vdots}
     {\mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow \sigma'}
   }
-  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [x \mapsto 0] \Downarrow \sigma'}
+  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [] \Downarrow \sigma'}
 $$
 
 To complete our derivation, we must evaluate the same statement $\mathsf{while}\ x \leq 1\ \mathsf{do}$ in the new state $[x \mapsto 2]$.
@@ -380,7 +380,7 @@ $$
   \dfrac
   {\dfrac
     {}
-    {x \leftarrow x + 2\, [x \mapsto 1] \Downarrow [x \mapsto 2]}
+    {x \leftarrow x + 2\, [] \Downarrow [x \mapsto 2]}
 
     \quad
 
@@ -388,5 +388,5 @@ $$
     {}
     {\mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow [x \mapsto 2]}
   }
-  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [x \mapsto 0] \Downarrow [x \mapsto 2]}
+  {\mathsf{while}\ x \leq 1\ \mathsf{do}\ x \leftarrow x + 2,\, [] \Downarrow [x \mapsto 2]}
 $$
