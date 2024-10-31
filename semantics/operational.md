@@ -360,11 +360,12 @@ Thus far we have constructed the following partial derivation:
 
 $$
   \dfrac
-  {\dfrac
+  {
+    \dfrac
     {}
     {x \leftarrow x + 2\, [] \Downarrow [x \mapsto 2]}
-
     \quad
+    
     \dfrac
     {\vdots}
     {\mathsf{while}\ x \leq 1\ \mathsf{do},\, [x \mapsto 2] \Downarrow \sigma'}
