@@ -18,7 +18,7 @@ With a formal definition of the semantics, we can rigorously _prove_ that our pr
 There are many things you might wish to prove about your program, the first we will look at is termination, i.e. that our program eventually comes to a stop on a given set of inputs.
 
 To see how we will model this property in our operational semantics consider the object that we defined: a relation ${\Downarrow} \subseteq \mathsf{S} \times \mathsf{State} \times \mathsf{State}$.
-This object is really just a set of triple $(S,\, \sigma_1,\, \sigma_2) \in \Downarrow$ that says in the initial state $\sigma_1 \in \mathsf{State}$ the program $S \in \mathcal{S}$ will execute to the final state $\sigma_2$, which we more conveniently write as $S,\, \sigma_1 \Downarrow \sigma_2$.
+This object is really just a set of triple $(S,\, \sigma_1,\, \sigma_2) \in {\Downarrow}$ that says in the initial state $\sigma_1 \in \mathsf{State}$ the program $S \in \mathcal{S}$ will execute to the final state $\sigma_2$, which we more conveniently write as $S,\, \sigma_1 \Downarrow \sigma_2$.
 This is not a function, however, in the strict mathematical sense as there is not necessarily a final state for any given program and initial state.
 For example, the program $\mathsf{while}\ \mathsf{true}\ \mathsf{do}\ \mathsf{skip}$ will continually do nothing and never leave us with a final state.
 Non-terminating computations are precisely those that do not have a final state, and therefore we can frame the termination problem as follows:
@@ -27,7 +27,7 @@ Non-terminating computations are precisely those that do not have a final state,
   A statement $S \in \mathcal{S}$ is said to __terminate__ on some initial state $\sigma \in \mathsf{State}$ if, and only if, there exists a final state $\sigma' \in \mathsf{State}$ such that $S,\, \sigma \Downarrow \sigma'$.
 </div>
 
-Consider the following program, for example, that computes $y^x$:
+Consider the following program, for example, that computes $y^x$ (when $x \geq 0$):
 
 ```
 z <- 1;
@@ -119,7 +119,7 @@ Let us consider two cases, in each of which we must show there exists some final
 
     * Now suppose $\sigma(x) = n + 1$ for some $n \geq 0$.
       Our induction hypothesis tells us that, for any $\sigma$ such that $\sigma(x) = n$, there exists some $\sigma' \in \mathsf{State}.\, L,\, \sigma \Downarrow \sigma'$.
-      In other words, we know the loop will terminate if the initial state has $\sigma(x) = n$, and we proof that the loop will terminate if the initial state has $\sigma(x) = n + 1$.
+      In other words, we know the loop will terminate if executed in the initial state has $\sigma(x) = n$, and we must proof that the loop will terminate if executed the initial state has $\sigma(x) = n + 1$.
 
       By applying the definition of the operational semantics, the statement $z \leftarrow z * y;\; x \leftarrow x - 1$ when executed in any state $\sigma$ will terminate in the state $\sigma[z \mapsto \sigma(z) \cdot \sigma(y),\, x \mapsto \sigma(x) - 1]$ where $\sigma(x) - 1$ is simply $n$.
       In particular, after one application of the loops body, we can arrive at a state where the value of $x$ has decreased by $1$.
@@ -211,7 +211,7 @@ Intuitively, two statements are semantically equivalent if when executed in the 
 To prove two statements are semantically equivalent, therefore, we consider _all_ possible behaviour they may exhibit.
 
 Let us consider some arbitrary statements $S \in\mathcal{S}$ and another program $\mathsf{if}\ x \leq 2\ \mathsf{then}\ S\ \mathsf{else}\ S$.
-We might wish to prove that these two programs are the semantically equivalent.
+We might wish to prove that these two programs are semantically equivalent, so we can optimise away the redundant branching.
 To do so, we must prove that:
 
   * If $S,\, \sigma \Downarrow \sigma'$ for some states $\sigma,\, \sigma' \in \mathsf{State}$, then $\mathsf{if}\ x \leq 2\ \mathsf{then}\ S\ \mathsf{else}\ S,\, \sigma \Downarrow \sigma'$;
@@ -277,3 +277,24 @@ We can unpack this idea a bit further by considering the particular from a While
     * $\llbracket e \rrbracket_\mathcal{B} = \top$ and $S,\, \sigma \Downarrow \sigma''$ and $\mathsf{while}\ e\ \mathsf{do}\ S,\, \sigma'' \Downarrow \sigma'$ for some $\sigma'' \in \mathsf{State}$,
     * Or $\llbracket e \rrbracket_\mathcal{B} = \bot$ and $\sigma = \sigma'$.
 </div>
+
+Another way in which inversion gives us power beyond execution is to consider how a program may have reached a final state.
+Let us suppose that we have executed a program $y \leftarrow z;\; x \leftarrow y * 2$, and it reached some final state $\sigma$ where $\sigma(x) = 2$ and we want to know _why_ this happened.
+That is to say, suppose we are given that $y \leftarrow z;\; x \leftarrow y * 2,\, \sigma' \Downarrow \sigma$ for some states $\sigma$ and $\sigma'$ where $\sigma(x) = 2$ and we want to know what this tells us about $\sigma'$.
+The inversion principle tells us that there must exist a derivation of this fact and that derivation must be of the form:
+
+$$
+  \dfrac
+  {
+    y \leftarrow z,\, \sigma' \Downarrow \sigma''
+    \quad
+
+    x \leftarrow y * 2,\, \sigma'' \Downarrow \sigma
+  }
+  {y \leftarrow z;\; x \leftarrow y * 2,\, \sigma' \Downarrow \sigma}
+$$
+
+However, we can apply the inversion principle again to each of these premises to see that $\sigma'' = \sigma'[y \mapsto \sigma'(z)]$ and $\sigma = \sigma''[x \mapsto \sigma''(y) \cdot 2]$.
+By applying these equations we can see that $\sigma = \sigma'[y \mapsto \sigma'(z),\, x \mapsto \sigma'(z) \cdot 2]$.
+In particular, if $\sigma(x) = 2$, then $\sigma'(z) \cdot 2 = 2$ and $\sigma'(z) = 1$.
+Thus, we know that the program must have been executed in a state where $z$ was assigned the value $1$ in order to reach a final state where $\sigma(x) = 2$.
