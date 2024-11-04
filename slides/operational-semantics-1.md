@@ -8,4 +8,4 @@ nav_order: 34
 
 For the formal reference material, see [Operational Semantics](../semantics/operational.md).
 
-The handwritten lectures notes are available [here](../assets/semantics/operational-semantics-1.pdf).
+The handwritten lectures notes are available [here](../assets/semantics/operational-semantics.pdf).
