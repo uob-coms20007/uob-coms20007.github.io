@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Structural Induction
+title: Structural Induction (pt. 1)
 nav_order: 2
 mathjax: true
 parent: Semantics
@@ -161,7 +161,7 @@ For example, $\llbracket x + 1\rrbracket_{\mathcal{A}}(\sigma)$ will be unchange
 The formal way in which we will express this property is as follows:
 
 <div class="defn" markdown="1">
-Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e \rrbracket_{\mathcal{A}}(\sigma')$ for any two states $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
+  Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e \rrbracket_{\mathcal{A}}(\sigma')$ for any two states $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
 </div>
 
 In other words, this property states that if two states agree on the value of every variable appearing in the expression, then the expression will have the same denotation under each state.
