@@ -42,7 +42,7 @@ We can use this induction principle to prove that While programs are functional.
 In particular, we will show the following theorem:
 
 $$
-  \textrm{If}\ S,\, \sigma \Downarrow \sigma'\ \textrm{and}\ S,\, \sigma \Downarrow \sigma''\ \textrm{then}\ \sigma = \sigma''
+  \textrm{If}\ S,\, \sigma \Downarrow \sigma'\ \textrm{and}\ S,\, \sigma \Downarrow \sigma''\ \textrm{then}\ \sigma' = \sigma''
 $$
 
 You may notice that there are multiple ways in which the induction principle could be applied - to either of the assumptions about $S$.
@@ -141,7 +141,7 @@ This fact will be used in the next section of the course to reason about what fu
 
 ## Denotational Semantics for While
 
-## Notice: The content is _not_ assessed, so feel free to skip if you are revising.
+#### Notice: The content is _not_ assessed, so feel free to skip if you are revising.
 
 Using the functionality of our operational semantics, gives us a hint as to how we would give a denotational semantics for While programs.
 Our denotational semantics must take into account partiality as we know not all programs terminate.
