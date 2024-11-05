@@ -239,14 +239,17 @@ We can use the idea of a fixed-point to complete the definition of the denotatio
 
 $$
   \begin{array}{l}
-  \llbracket \mathsf{while}\ e \mathsf{do}\ S \rrbracket_\mathcal{S}(\sigma) = \mathsf{fix}(f)(\sigma) \\
-  \quad \textrm{where} f(g)(\sigma) = 
+  \llbracket \mathsf{while}\ e\ \mathsf{do}\ S \rrbracket_\mathcal{S}(\sigma) = \mathsf{fix}(f)(\sigma) \\
+  \quad \textrm{where} \f(g)(\sigma) = 
       \begin{cases}
-        g (\llbracket S \rrbracket_\mathcal{S}(\sigma)) & \textrm{if} \llbracket e \rrbracket_\mathcal{B} \\
+        g (\llbracket S \rrbracket_\mathcal{S}(\sigma)) & \textrm{if}\ \llbracket e \rrbracket_\mathcal{B} \\
         \sigma  &\textrm{otherwise}
     \end{cases}
   \end{array}
 $$
+
+In this case, the function $f$ can be thought of as a single execution of the loop where $g$ is the "what happens next" part.
+When we take the fixed-point of $f$, it is applied to itself recursively so that this second function actually just becomes another copy of the fixed-point of $f$.
 
 <!-- # Small-Step Semantics
 
