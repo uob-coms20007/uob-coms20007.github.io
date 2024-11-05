@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Structural Induction (pt. 1)
+title: Induction for Expressions
 nav_order: 2
 mathjax: true
 parent: Semantics

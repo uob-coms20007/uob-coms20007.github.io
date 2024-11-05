@@ -1,12 +1,12 @@
 ---
 layout: math
-title: Structural Induction (pt. 2)
+title: Functionality
 nav_order: 5
 mathjax: true
 parent: Semantics
 ---
 
-# Functionality
+# Proof of Functionality
 
 Last time we saw how some programs may or may not terminate and thus are not strictly mathematical functions.
 Although some programs might not have a final state for all inputs states, no program can produce multiple final states.
@@ -103,7 +103,7 @@ Let's perform induction on the first assumption, and derive the following proof 
     The induction principle tells us that the premise of this inference rule will satisfy our functionality property, i.e.:
 
     $$ 
-      \textrm{if}\ S_1,\, \sigma \Downarrow \sigma''\ \textrm{then}\ \sigma' = \sigma''$.
+      \textrm{If}\ S_1,\, \sigma \Downarrow \sigma''\ \textrm{then}\ \sigma' = \sigma''$.
     $$
 
     Now to conclude that $\sigma' = \sigma''$ we clearly are going to have to use our induction hypothesis.
@@ -139,19 +139,128 @@ The up-shot of this theorem is that we can consider While programs as partial fu
 As you will see in the lab, we can refine this further to consider them as partial functions from integers to integers.
 This fact will be used in the next section of the course to reason about what functions programs can express more abstractly.
 
+## Denotational Semantics for While
+
+## Notice: The content is _not_ assessed, so feel free to skip if you are revising.
+
+Using the functionality of our operational semantics, gives us a hint as to how we would give a denotational semantics for While programs.
+Our denotational semantics must take into account partiality as we know not all programs terminate.
+Therefore, our semantic domain will be the space of partial functions.
+
+<div class="defn" markdown="1">
+  Let us write $X \rightharpoonup Y$ for the set of partial functions from $X$ to $Y$.
+</div>
+
+We could define a denotation function $\llbracket S \rrbracket_\mathcal{S}(\sigma)$ for some statement $S \in \mathcal{S}$ and state $\sigma \in \mathsf{State}$ to be equal to the unique state $\sigma'$ (if one exists) such that $S,\, \sigma \Downarrow \sigma'$.
+This would indeed give us a denotation function mapping statements to a partial function on states.
+However, it is quite different to the definition we gave to the denotation function for expressions.
+
+If you recall, the denotational semantics for expression is given by recursion over the structure of the expressions.
+In this way it is _compositional_ as it maps language constructs to semantic operations independently of one another.
+The operationally derived denotational semantics instead interprets programs as monolithic entities.
+
+Instead, we would like a denotational semantic for While programs that is defined by recursion.
+The first few cases are straightforward to define:
+
+$$
+  \begin{array}{rl}
+    \llbracket \mathsf{skip} \rrbracket_\mathcal{S}(\sigma) &= \sigma \\ 
+    \llbracket x \leftarrow e \rrbracket_\mathcal{S}(\sigma) &= \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)] \\
+    \llbracket S_1;\; S_2  \rrbracket_\mathcal{S}(\sigma) &= 
+          \llbracket S_2 \rrbracket_\mathcal{S}(\llbracket S_1 \rrbracket_\mathcal{S}(\sigma)) \\
+    \llbracket \mathsf{if}\ e\ \mathsf{else}\ S_1\ \mathsf{else}\ S_2 \rrbracket_\mathcal{S}(\sigma) &= 
+          \begin{cases}
+            \llbracket S_1 \rrbracket_\mathcal{S}(\sigma) & \textrm{if}\ \llbracket e \rrbracket_\mathcal{B}(\sigma) \\
+            \llbracket S_2 \rrbracket_\mathcal{S}(\sigma) & \textrm{otherwise}
+          \end{cases}
+
+  \end{array}
+$$
+
+Each of these equations work as if we were looking at expressions, we are mapping language constructs to operations on the domain.
+For example, the composition statement is replaced by the composition of our partial functions and conditional statements are replaced by a mathematical conditional.
+
+The difficulty comes from the While rule.
+If we recall the inference rules for the While construct then we see that they're not recursive in the sense that they don't derive meaning from the meaning of sub-statements:
+
+$$
+  \begin{array}{cc}
+    \dfrac
+    {}
+    {\mathsf{while}\ e \mathsf{do}\ S,\, \sigma \Downarrow \sigma}
+    \llbracket e \rrbracket_\mathcal{B} = \bot
+
+    &
+    \dfrac
+    { S,\, \sigma_1 \Downarrow \sigma_2
+      \quad
+
+      \mathsf{while}\ e \mathsf{do}\ S,\, \sigma_2 \Downarrow \sigma_3
+    }
+    {\mathsf{while}\ e \mathsf{do}\ S,\, \sigma_1 \Downarrow \sigma_3}
+    \llbracket e \rrbracket_\mathcal{B} = \top
+  \end{array}
+$$
+
+To give a suitable denotational semantics, we need a way of transforming the denotation of the loops body into the denotation of loop itself.
+Intuitively, the semantics should capture the iterative nature of the loop and, therefore, be equivalent in some way to the infinite statement:
+
+$$
+  \mathsf{if}\ e\ \mathsf{then}\ (S;\;\mathsf{if}\ e\ \mathsf{then}\ (S;\;\dots)\ \mathsf{else}\ \mathsf{skip})\ \mathsf{else}\ \mathsf{skip}
+$$
+
+At the heart of this infinite unfolding of the loop, is the infinite application of a function.
+The function is condition on the branch condition but, when true, the function should be applied again to the output.
+We can't just say it is recursive and call it a day because maths doesn't allow for arbitrarily recursive functions in the same way that we can write arbitrarily recursive code in a programming language.
+If it did, then we could prove some very suspect results...
+
+Instead, we need to introduce a _fixed-point_ operator.
+The fixed-point operator is given the following definition:
+
+<div class="defn" markdown="1">
+  Given a partial function $f : (X \rightharpoonup X) \rightarrow (X \rightharpoonup X)$, we can define a sequence of partial functions $\mathsf{fix}_n(f) : X \rightharpoonup X$ for $n \geq 0$ where:
+
+  $$
+    \begin{array}{rl}
+      \mathsf{fix}_0(f)(x) &= \bot \\
+      \mathsf{fix}_{n+1}(f)(x) &= f(\mathsf{fix}_n(f))(x)
+    \end{array}
+  $$
+
+  Intuitively, this sequence of functions gives us the $n^\mathrm{th}$ approximation of the fixed-point, i.e. the $n^\mathrm{th}$ unfolding of a loop.
+  To derive the complete infinite unfolding, we need to take the combination of all of these.
+  We thus define $\mathsf{fix}(f)(x) = \bigcup_{n \geq 0} \mathsf{fix}_n(f)(x)$.
+</div>
+
+The reason this function is called a fixed-point is that if we take $f(\mathsf{fix}(f))$, i.e. if we applied the result to $f$ an additional time, then this would make no difference to the answer as, in some sense, we have already applied the function infinitely many times.
+Therefore, $f(\mathsf{fix}(f)) = \mathsf{fix}(f)$.
+
+We can use the idea of a fixed-point to complete the definition of the denotational semantics with the following equations:
+
+$$
+  \begin{array}{l}
+  \llbracket \mathsf{while}\ e \mathsf{do}\ S \rrbracket_\mathcal{S}(\sigma) = \mathsf{fix}(f)(\sigma) \\
+  \quad \textrm{where} f(g)(\sigma) = 
+      \begin{cases}
+        g (\llbracket S \rrbracket_\mathcal{S}(\sigma)) & \textrm{if} \llbracket e \rrbracket_\mathcal{B} \\
+        \sigma  &\textrm{otherwise}
+    \end{cases}
+$$
+
 <!-- # Small-Step Semantics
 
 ## Notice: The definition of small-step semantics is _not_ assessed, this section exists only to give more induction examples of structural induction.
 
 So far, we have been looking at _big-step_ operational semantics.
 It is referred to as big-step semantics as the judgement itself only considers the initial and final state, with the details of this computation hidden within the structure of derivation.
-With _small-step_ operational semantics, we expose each individual step in the computation.
+With _small-step_ operational semantics, we expose each individual step in the computation one at a time.
 
 <div class="defn" markdown="1">
   The small-step operational semantics relation concerns _configurations_, which are either a pair $\langle S,\, \sigma \rangle$ where $S \in \mathcal{S}$ is a While statement and $\sigma \in \mathsf{State}$ is a state or a final state $\sigma \in \mathsf{State}$.
   We write $\mathsf{Config}$ to refer to the set of configurations.
 
   We then define the relation ${\Rightarrow} \subseteq \mathsf{Config} \times \mathsf{Config}$ inductively by the following inference rules:
+
   $$
     \begin{array}{cc}
       \dfrac
@@ -162,6 +271,55 @@ With _small-step_ operational semantics, we expose each individual step in the c
       \dfrac
       {}
       {\langle x \leftarrow e,\, \sigma \rangle \Rightarrow \sigma[x \leftarrow \llbracket e \rrbracket_\mathcal{A}(\sigma)]}
+      \\[10pt]
+
+      \dfrac
+      {\langle S_1,\, \sigma \rangle \Rightarrow \langle S_1',\, \sigma' \rangle}
+      {\langle S_1;\; S_2,\, \sigma \rangle \Rightarrow \langle S_1;\; S_2,\, \sigma' \rangle}
+      
+      &
+      \dfrac
+      {\langle S_1,\, \sigma \rangle \Rightarrow \sigma'}
+      {\langle S_1;\; S_2,\, \sigma \rangle \Rightarrow \langle S_2,\, \sigma' \rangle}
+      \\[10pt]
+
+      \dfrac
+      {}
+      {\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \rangle \Rightarrow \langle S_1,\, \sigma \rangle}
+      \llbracket e \rrbracket_\mathcal{B}(\sigma) = \top
+
+      &
+      \dfrac
+      {}
+      {\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \rangle \Rightarrow \langle S_2,\, \sigma \rangle}
+      \llbracket e \rrbracket_\mathcal{B}(\sigma) = \bot
+      \\[10pt]
+
+      \multicolumn{2}{c}{
+        \dfrac
+        {}
+        {\langle \mathsf{while}\ e\ \mathsf{do}\ S,\, \sigma \rangle \Rightarrow \langle \mathsf{if}\ e\ \mathsf{then}\ S;\; \mathsf{while}\ e\ \mathsf{do}\ S\ \mathsf{else}\ \mathsf{skip},\, \sigma \rangle}
+      }
     \end{array}
   $$
-</div> -->
+
+</div>
+
+Small-step operational semantics in some sense provide more information than big-step operational semantics as we consider a sequence of execution steps rather than just the end result.
+This distinction can be useful in situations where some notion of "time" is important, e.g. non-termination, the number of execution steps, or concurrency where two programs may be interleaved.
+
+However, we would also hope that these two definitions are in some sense equivalent.
+We will prove one side of this equivalence by induction:
+
+<div class="defn" markdown="1">
+  We write $\langle S_0,\, \sigma_0 \rangle \Rightarrow^* \sigma_F$ if there is a sequence of small-steps $\langle S_0,\, \sigma_0 \rangle \Rightarrow \langle S_1,\, \sigma_1 \rangle \Rightarrow \cdots \Rightarrow \sigma_F$.
+</div>
+
+We will prove that if $S,\, \sigma \Downarrow \sigma'$, then $\langle S,\, \sigma \rangle \Rightarrow^* \sigma'$ by induction on the big-step derivation:
+
+  * (Skip Case)
+    In this case, we have that $\mathsf{skip},\, \sigma \Downarrow \sigma'$ occurs precisely because $\sigma = \sigma'$.
+    By definition, we have that $\langle \mathsf{skip},\, \sigma \rangle \Rightarrow \sigma$ and therefore $\langle \mathsf{skip},\, \sigma \rangle \Rightarrow^* \sigma'$ as required.
+
+  * (Assign Case)
+    This case is analogous to the first. -->
