@@ -222,14 +222,14 @@ The fixed-point operator is given the following definition:
 
   $$
     \begin{array}{rl}
-      \mathsf{fix}_0(f)(x) &= \bot \\
+      \mathsf{fix}_0(f)(x) &= \bot \textrm{(read: "undefined")}\\
       \mathsf{fix}_{n+1}(f)(x) &= f(\mathsf{fix}_n(f))(x)
     \end{array}
   $$
 
   Intuitively, this sequence of functions gives us the $n^\mathrm{th}$ approximation of the fixed-point, i.e. the $n^\mathrm{th}$ unfolding of a loop.
   To derive the complete infinite unfolding, we need to take the combination of all of these.
-  We thus define $\mathsf{fix}(f)(x) = \bigcup_{n \geq 0} \mathsf{fix}_n(f)(x)$.
+  We thus define $\mathsf{fix}(f)(x) = \bigsqcup_{n \geq 0} \mathsf{fix}_n(f)(x)$, i.e. the least iteration to become defined or undefined if none of them are defined.
 </div>
 
 The reason this function is called a fixed-point is that if we take $f(\mathsf{fix}(f))$, i.e. if we applied the result to $f$ an additional time, then this would make no difference to the answer as, in some sense, we have already applied the function infinitely many times.
@@ -245,6 +245,7 @@ $$
         g (\llbracket S \rrbracket_\mathcal{S}(\sigma)) & \textrm{if} \llbracket e \rrbracket_\mathcal{B} \\
         \sigma  &\textrm{otherwise}
     \end{cases}
+  \end{array}
 $$
 
 <!-- # Small-Step Semantics
