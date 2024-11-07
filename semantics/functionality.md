@@ -56,9 +56,9 @@ Let's perform induction on the first assumption, and derive the following proof 
     Therefore, $\sigma' = \sigma''$ as required.
 
   * (Assign Case)
-    For the case where $S$ is $x \leftarrow e$, we may assume that $\sigma' = \sigma[x \llbracket e \rrbracket_\mathcal{A}(\sigma)]$ and $x \leftarrow e,\, \sigma \Downarrow \sigma''$ in order to show that $\sigma' = \sigma''$.
+    For the case where $S$ is $x \leftarrow e$, we may assume that $\sigma' = \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)]$ and $x \leftarrow e,\, \sigma \Downarrow \sigma''$ in order to show that $\sigma' = \sigma''$.
     As with the previous case, the first assumption comes from the induction principle.
-    Applying inversion to the second premise tells us that $\sigma'' = \sigma[x \llbracket e \rrbracket_\mathcal{A}(\sigma)]$.
+    Applying inversion to the second premise tells us that $\sigma'' = \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)]$.
     Therefore, $\sigma' = \sigma''$ as required.
 
   * (Composition Case)
@@ -274,7 +274,7 @@ With _small-step_ operational semantics, we expose each individual step in the c
       &
       \dfrac
       {}
-      {\langle x \leftarrow e,\, \sigma \rangle \Rightarrow \sigma[x \leftarrow \llbracket e \rrbracket_\mathcal{A}(\sigma)]}
+      {\langle x \leftarrow e,\, \sigma \rangle \Rightarrow \sigma[x \rightarrow \llbracket e \rrbracket_\mathcal{A}(\sigma)]}
       \\[10pt]
 
       \dfrac
