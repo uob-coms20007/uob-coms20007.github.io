@@ -222,7 +222,7 @@ The fixed-point operator is given the following definition:
 
   $$
     \begin{array}{rl}
-      \mathsf{fix}_0(f)(x) &= \bot \textrm{(read: "undefined")}\\
+      \mathsf{fix}_0(f)(x) &= \bot\ \textrm{(read: ``undefined'')}\\
       \mathsf{fix}_{n+1}(f)(x) &= f(\mathsf{fix}_n(f))(x)
     \end{array}
   $$
