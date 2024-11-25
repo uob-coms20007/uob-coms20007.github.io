@@ -56,13 +56,20 @@ for its inverse.
 Once we have a pairing function $\langle -, - \rangle$ and its inverse
 $\textsf{split}$ we can use them to encode all sorts of other data.
 
-For example, we may encode lists of natural numbers, i.e. elements of the set
+For example, we may encode lists of natural numbers as numbers. The set of all
+lists of natural numbers, $\mathbb{N}^\ast$, is defined by the following rules.
 
 $$
-  \mathbb{N}^\ast = \{ [n_0, \dots, n_k] \mid k \geq 0, \forall i. n_i \in \mathbb{N} \}
+  \frac{}{[] \in \mathbb{N}^\ast}
+  \quad
+  \frac{
+    n \in \mathbb{N} \quad ns \in \mathbb{N}^\ast
+  }{
+    (n : ns) \in \mathbb{N}^\ast
+  }
 $$
 
-as natural numbers. To encode we define a function $\phi_\ast :
+To encode such a list as a number we define a function $\phi_\ast :
 \mathbb{N}^\ast \to \mathbb{N}$ by induction:
 
 $$
