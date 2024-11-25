@@ -3,7 +3,7 @@ layout: math
 mathjax: true
 parent: "Slides"
 title: 6. Semantic Equivalence and Hoare logic
-nav_order: 35
+nav_order: 37
 ---
 
 For the formal reference material, see [Reasoning with derivations](../semantics/inversion.md) and [Hoare Logic](../semantics/bonus.md).

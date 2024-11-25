@@ -31,7 +31,7 @@ Consider the following program, for example, that computes $y^x$ (when $x \geq 0
 
 ```
 z <- 1;
-while 0 <= x do
+while 1 <= x do
   z <- z * y;
   x <- x - 1
 ```
@@ -52,7 +52,7 @@ $$
       
       \dfrac
       {\vdots}
-      {\mathsf{while}\ 0 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma_0[z \mapsto 1] \Downarrow \sigma_F}
+      {\mathsf{while}\ 1 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma_0[z \mapsto 1] \Downarrow \sigma_F}
   }
   {S,\, \sigma_0 \Downarrow \sigma_F}
 $$
@@ -75,7 +75,7 @@ Let us consider two cases, in each of which we must show there exists some final
         
         \dfrac
         {}
-        {\mathsf{while}\ 0 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma_1 \Downarrow \sigma_1}
+        {\mathsf{while}\ 1 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma_1 \Downarrow \sigma_1}
       }
       {S,\, \sigma_0 \Downarrow \sigma_1}
     $$
@@ -112,7 +112,7 @@ Let us consider two cases, in each of which we must show there exists some final
       $$
         \dfrac
         {}
-        {\mathsf{while}\ 0 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma \Downarrow \sigma'}
+        {\mathsf{while}\ 1 \leq x\ \mathsf{do}\ z \leftarrow z * y;\; x \leftarrow x - 1,\, \sigma \Downarrow \sigma'}
       $$
 
       Giving us the final state $\sigma' = \sigma$.
