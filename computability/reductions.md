@@ -67,9 +67,9 @@ The strategy is now clear: if for a predicate $V \subseteq \mathbb{N}$ I can
 find a reduction $f : \textsf{HALT} ≲ V$, then I have shown that $V$ is more
 difficult than $\textsf{HALT}$. In other words: if I could 'solve' $V$, then
 I could also 'solve' $\textsf{HALT}$. But the latter cannot happen, so
+neither can the former.
 
 ## Example
-neither can the former.
 
 For example, we can show the undecidability of the set
 
@@ -79,7 +79,7 @@ $$
 
 of (the Gödel numbers of) programs which _never_ go into an infinite loop.
 
-To construct the reduction $g : \textsf{HALT} ≲ \textsf{ALL}$, recall the notion
+To construct the reduction $\textsf{HALT} ≲ \textsf{ALL}$, recall the notion
 of a [code
 transformation](https://uob-coms20007.github.io/reference/computability/goedel.html#code-transformation).
 Define a function
