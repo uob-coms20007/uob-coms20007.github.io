@@ -24,6 +24,11 @@
 
 }
 
+td {
+  width:auto;
+  min-width: 0px;
+}
+
 /* Fix colours for dark mode */
 @media (prefers-color-scheme: dark) {
   .defn {
