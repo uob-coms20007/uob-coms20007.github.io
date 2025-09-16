@@ -1,8 +1,8 @@
 ---
 layout: math
-title: ASTs and Parsing
+title: 8. Abstract Syntax Trees
 mathjax: true
-nav_order: 7
+nav_order: 8
 parent: Syntax
 ---
 
@@ -190,13 +190,63 @@ We want to obtain a complete, right associated syntax tree, which corresponds to
 
 To achieve this, we need to _first_ supply $e_2$ as an argument to the recursive call, so that it gets put in the missing place, and _then_ combine $e_1$ with the tree returned by the recursive call using the operator.
 
+## Precedence
 
+However, there is still one important difference between this formulation and the formulation of the grammar you have seen in the practicals for the While programming language.
 
+In Boolean algebra, a common convention is that conjunction binds tighter than disjunction.  In other words, when we have an expression $x \andop y \orop z$ in which the disjunction operator $\orop$ and the conjunction operator $\andop$ are fighting over who gets their (seemingly) common argument $y$, conjunction holds on (binds) more tightly and wins the struggle, i.e. the expression is resolved as $$(x \andop y) \orop z$$.
 
+In terms of the abstract syntax trees that we want to construct, we therefore want a string like $x \andop y \orop z$ to yield:
 
-<!-- Now the main parse function will return an AST:
+<img src="../assets/syntax/or-and-xyz.png" style="max-width:300px">
 
-```ocaml
-# parse "foo && (true || bar)";;
-- : exp = EAnd (EVar "foo", EOr (ETrue, EVar "bar"))
-``` -->
+Unfortunately, this is a bit difficult to achieve using the above grammar.  The approaches we discussed in the previous lecture allows us to force left association of parentheses for the whole sequence, or to force right association of parentheses for the whole sequence.  In this case, we will want a mixture of association, which depends on the operators involved.  For example, the string $$\tt \andop \ff \orop \tt \andop \ff$$ should, by convention, be equivalent to (yield the same AST as) $$(\tt \andop \ff) \orop (\tt \andop \ff)$$, i.e:
+
+<img src="../assets/syntax/or-and-and.png" style="max-width:500px">
+
+A standard approach to enabling this is to stratify the grammar by the precedence of operators.  The idea is to replace the single non-terminal $B$ for Boolean expressions by two separate non-terminals: say $C$ for conjunctions and $D$ for disjunctions, and then to reformulate the grammar so that conjunctions can be bare (that is, without enclosing parens) inside a disjunction but not vice versa. 
+
+$$
+  \begin{array}{rcl}
+    D &\longrightarrow& C D' \\
+    D' &\longrightarrow& \orop C D \mid \epsilon \\ 
+    C &\longrightarrow& A C' \\
+    C' &\longrightarrow& \andop A C' \mid \epsilon \\
+    A &\longrightarrow& \mathsf{true} \mid \mathsf{false} \mid (D)
+  \end{array}
+$$
+
+<!-- In this grammar, there is only one parse tree for the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$, which is:
+
+<img src="../assets/syntax/stratified-bool.png" style="max-width:400px;"/> -->
+
+If we want an expression that represents a conjunction, one of whose arguments is itself a disjunction, then we must use parentheses explicitly in the string, as in $(\mathsf{true} \orop \mathsf{true}) \andop \mathsf{false}$.
+
+Note: we didn't change the language of the grammar when we made this modification - both grammars describe the same language, which includes the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$ - we merely tightened up the internal structure so that this string can only be derived from $D$ (i.e. we consider it a disjunction) and _not_ from $C$.  This will make it easier for the implementation of the parser to produce the correct AST, because we want the top node of this AST to be an $\orop$ node (which it makes sense to return from the parsing function for $D$).
+
+In general, if you want to design a grammar for implementation by a predictive parser, then you should first organise any operators you have into a precendence order.  The precedence order is a way of stating which operators bind tighter than others.  For example, in OCaml, we can look in the manual for the following operator precedence table: 
+
+| Operators | Associativity |
+| ! ~ | none |
+| .() .[] .{} | none |
+| # | left |
+| application | left |
+| - | none |
+| ** lsl lsr asr | right |
+| * / % mod land lor lxor | left |
+| + - | left |
+| :: | right |
+| @ ^ | right |
+| = < > $ & &#124; != | left |
+| && | right |
+| &#124;&#124; | right |
+| , | none |
+| <- := | right |
+| if | none |
+| ; | right |
+
+Operators further up the table have higher precedence than those below them, that is, they bind more tightly to their arguments.  Some operators can have the same precedence - like $+$ and $-$ in OCaml.  That's fine, but binary operators with the same precedence should have the same associativity, and this will disambiguate their usage.
+
+Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level i.e. row in the table, say $i$, your grammar should have a distinct non-terminal symbol $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
+
+In our example, conjunction binds tighter than disjunction, we have a dedicated non-terminal for each, and the production rule for disjunctions $D$ creates sequences each of whose elements is a conjunction $C$.  

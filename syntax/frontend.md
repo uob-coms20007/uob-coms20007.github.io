@@ -1,6 +1,6 @@
 ---
 layout: math
-title: FrontEnd
+title: 4. Lexer Implementation
 mathjax: true
 nav_order: 4
 parent: Syntax

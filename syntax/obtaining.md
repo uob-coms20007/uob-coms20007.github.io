@@ -1,8 +1,8 @@
 ---
 layout: math
-title: Obtaining LL(1)
+title: 7. Obtaining LL(1)
 mathjax: true
-nav_order: 8
+nav_order: 7
 parent: Syntax
 ---
 
@@ -12,6 +12,7 @@ $$
 \newcommand{\ff}{\mathsf{false}}
 \newcommand{\tt}{\mathsf{true}}
 \newcommand{\tm}[1]{\mathsf{#1}}
+\newcommand{\nt}[1]{\mathit{#1}}
 $$
 
 # Obtaining Grammars Suitable for Predictive Parsing
@@ -19,159 +20,228 @@ $$
 Now we know how to identify whether or not a grammar is LL(1), and how to implement parsing.  However, typically the most straightforward descriptions of syntax by context-free grammars do not turn out to be LL(1).  Consider, for example, the simple one-line description of Boolean expressions:
 
 $$
-  B \longrightarrow B \andop B \mid B \orop B \mid \tt \mid \ff \mid \tm{id} \mid (B)
+  B \Coloneqq B \andop B \mid B \orop B \mid \tt \mid \ff \mid (B)
 $$
 
-This is a very direct description of Boolean expressions, but it is not the case that which rule we need to use when parsing a given string is determined uniquely by the combination of the left-most nonterminal in the sentential form and the next letter of the input.
+This is a very direct description of Boolean expressions, but it is not the case that which rule we need to use when parsing a given string is determined uniquely by the combination of the left-most nonterminal in the sentential form and the next letter of the input, i.e. the parsing table will have multiple rules in the same cell.
 
-There is no simple recipe to transform a given grammar such as the one above into an LL(1) grammar.  Indeed, not all context-free grammars are equivalent to some LL(1).  Nevertheless, in practice it is often possible to start with an arbitrary CFG and obtain an LL(1) by removing certain problematic features. 
+There is no simple recipe to transform a given grammar such as the one above into an LL(1) grammar.  Indeed, not all context-free grammars are can be written as an LL(1) grammar.  Nevertheless, in practice it is often possible to start with an arbitrary CFG and obtain an LL(1) grammar by rephrasing certain problematic features. 
+
+## Left Factoring
+
+The definition of the Brischeme language from the coursework sheet Appendix A is not LL(1).  Here it is:
+
+$$
+  \begin{array}{rcl}
+    \nt{Prog} &\Coloneqq& \nt{Form}^*\\[4mm]
+    \nt{Form} &\Coloneqq& \nt{SExpr}\\[2mm]
+              &\mid& (\ \tm{define}\ \tm{ident}\ \nt{SExpr}\ )\\[4mm]
+    \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
+                &\mid& \tm{ident}\\[2mm]
+                &\mid& (\ \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
+                &\mid& (\ \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
+                &\mid& (\ \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
+  \end{array}
+$$
+
+If we were to construct the parse table $T$, we would see that the cell at $T[\nt{SExpr},\,\tm{(}]$ contains several rules.  If the leftmost nonterminal is $\nt{SExpr}$ and the next letter of the input is $\tm{(}$, then clearly, there are three eligible rules:
+
+$$
+  \begin{array}{rcl}
+    \nt{SExpr} &\Coloneqq& (\ \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
+    \nt{SExpr} &\Coloneqq& (\ \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
+    \nt{SExpr} &\Coloneqq& (\ \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
+  \end{array}
+$$
+
+without knowing more about what comes after the left-parenthesis, it's not clear which rule should be chosen.
+
+Fortunately, there is a simple remedy which is to _left factor_ the rules, which involves factoring out the common prefix (in this case '(').  Whenever we have several rules, say $k>1$ in number, for the same nonterminal with a common prefix, say $\alpha$:
+
+$$
+    X \Coloneqq \alpha\ \beta_1 \mid \alpha\ \beta_2 \mid \cdots{} \mid \alpha\ \beta_k 
+$$
+
+Then we can express the same derived strings by introducing a new non-terminal, say $R$, to represent the possible "rest" of the rule that comes after the common prefix:
+
+$$
+  \begin{array}{rcl}
+    X &\Coloneqq& \alpha\ R\\
+    R &\Coloneqq& \beta_1 \mid \beta_2 \mid \cdots{} \mid \beta_k
+  \end{array}
+$$
+
+Note: it may be there are also $X$-rules that do not share the common prefix, and these can be safely ignored, they do not participate in the transformation.
+
+Thus, we can rephrase the rules for $\nt{SExpr}$ by:
+
+$$
+  \begin{array}{rcl}
+  \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
+                &\mid& \tm{ident}\\[2mm]
+                &\mid& (\ R\\[4mm]
+  \nt{R} &\Coloneqq& \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
+                &\mid& \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
+                &\mid& \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
+  \end{array}
+$$
+
+Now which of the three rules for $\nt{SExpr}$ is chosen is clearly uniquely determined by the next letter of the input, since each starts with a different terminal symbol.  Similarly, which of the three rules for $R$ is chosen is also uniquely determined because it is easy to see that $\mathsf{First}(\nt{SExpr})$ is different from $\tm{primop}$ and $\tm{lambda}$, which are clearly different from each other.  However, in general, the left factoring process may have to continue into the definition of $R$.
+
+Incidentally, if you look at the LL(1) grammar in Appendix C of the Brischeme coursework, you will see that we also factored out the common suffix of the three rules in $R$.  So that this particular rule is rather more like:
+
+$$
+  \nt{SExpr} \Coloneqq (\ R \ )
+$$
+
+This is purely an aesthetic choice, it's nice to see that there has to be a matching parenthesis.
 
 ## Left Recursion
 
-Consider the following grammar for possibly empty sequences of assignment statements.
+A second type of problematic grammar construction concerns recursive rules.  Consider the following grammar for sequences of statements.
 
 $$
-  S \longrightarrow \tm{id} \leftarrow \tm{exp} \mid S \mathrel{;} S \mid \epsilon
+  S \Coloneqq \tm{stmt} \mid S \mathrel{;} S
 $$
 
-Here I use a terminal symbol to represent expressions because their structure is not important to the example.  Now suppose I am trying to generate a given string starting from $S$, is the rule I should use uniquely determined by the first letter of the input?  The first rule starts with a specific terminal symbol, so it looks promising.  However, the second rule is a problem, because the right-hand side of this rule starts with the nonterminal $S$ again.  Consequently, it will _always_ be eligible as a choice whenever the next terminal symbol is in $\first(S)$.
+Here I use a terminal symbol to $\tm{stmt}$ to represent programming language statements because their internal structure is not important to the example.  Now suppose I am trying to generate a given string starting from $S$.  Is the rule I should use uniquely determined by the first terminal symbol of the input?  The first rule starts with a specific terminal symbol, so it looks promising.  However, the second rule is a problem, because the right-hand side of this rule starts with the nonterminal $S$ again.  Consequently, it will _always_ be eligible as a choice whenever the next terminal symbol is in $\first(S)$.
 
-For example, suppose the input string starts $\tm{id}\ \ldots$.   At first sight it might seem like the production $S \longrightarrow \tm{id} \leftarrow \tm{exp}$ is the correct rule to use, and if the complete input string was $\tm{id} \leftarrow \tm{exp}$, then it would be.  However, the input may instead continue as $\tm{id} \leftarrow \tm{exp}; \tm{id} \leftarrow \tm{exp}$.  If this was the case, we should have chosen the rule $S \longrightarrow S;S$ instead.  
+For example, suppose the input string starts with the terminal $\tm{stmt}$.   At first sight it might seem like the production $S \Coloneqq \tm{stmt}$ is the correct rule to use, and if the complete input string was just that one terminal symbol, then it would be.  However, the input may instead continue as $\tm{stmt}; \tm{stmt}$ and this case we should have chosen the rule $S \Coloneqq S;S$ instead.  
 
 This phenomenon, where some nonterminal $X$ has a production in which $X$ is again the first symbol on the right-hand side, is called _left recursion_ and it is typically a problem for obtaining an LL(1) grammar.  That's because the first set of (the RHS of) a left recursive rule for $X$ always contains all of $\first(X)$.
 
 The resolution is to rewrite the relevant productions using only _right recursion_, that is, where the nonterminal $X$ occurs at the end of the right-hand side instead of the start.
 
-Clearly, the grammar above derives strings that are finite sequences of assignment statements punctuated by semicolons:
+Clearly, the grammar above derives strings that are finite non-empty sequences of assignment statements punctuated by semicolons:
 
 $$
-  \tm{id} \leftarrow \tm{exp}; \tm{id} \leftarrow \tm{exp}; \cdots{} \tm{id} \leftarrow \tm{exp}
+  \tm{stmt}; \tm{stmt}; \cdots{} \tm{stmt}
 $$
 
-We can also derive these sequences using the following productions:
+There are other ways to generate such sequences.  In fact three different grammars come to mind for generating lists of something (think also of defining a list datatype):
+
+- The ``append'' approach: every list is either (a) a singleton list consisting of one item, or (b) obtained by appending two smaller lists together.  This is the style of definition we have above, with $\tm{;}$ playing the role of the append operator.
+
+    $$
+      S \Coloneqq \tm{stmt} \mid S \mathrel{;} S
+    $$
+
+- The ``snoc'' approach: every list is either (a) a singleton list consisting of one item, or (b) a smaller list onto the end of which we have inserted a new item.
+
+    $$
+      S \Coloneqq \tm{stmt} \mid S\ \tm{;}\ \tm{stmt}
+    $$
+
+- The ``cons'' approach: every list is either (a) a singleton list consisting of one item, or (b) a smaller list onto the _front_ of which we have inserted a new element.
+    
+    $$
+      S \Coloneqq \tm{stmt} \mid \tm{stmt}\ \tm{;}\ S
+    $$
+
+I hope you can convince yourself that each of these grammars derives exactly the same set of non-empty finite sequences of $\tm{stmt}$ separated by semicolons.  So, in principle, we could use any of them to define our language.  However, if we want the grammar to be LL(1), then only the last version will do, because it avoids left recursion.
+
+You may notice that the _right-recursive_ ("cons") approach is exactly the pattern we noted when discussing that CFGs can express sequencing, back in lecture 3.  Using the notation introduced there we can write the above grammar as:
+
+  $$
+    S \Coloneqq \tm{stmt}\ (\tm{;}\ \tm{stmt})^*
+  $$
+
+### Left Recursion Elimination
+
+Here's a slightly more complicated example.  The same principle applies, but it is less easy to see.  Consider again the grammar of Boolean expressions from above: 
 
 $$
-  \begin{array}{rcl}
-    S &\longrightarrow& \tm{id} \leftarrow \tm{exp}\tm{;}\ S \mid \epsilon \\
-  \end{array}
+  B \Coloneqq B \andop B \mid B \orop B \mid \tt \mid \ff \mid (B)
 $$
 
-A useful way to think about the two possible formulations of the grammar is that the former is a description of sequences (in this case, sequences of assignment statements) given in terms of concatenate: the rule $S \longrightarrow S\mathrel{;}S$ of the first grammar allows to build a larger sequence by taking two existing sequences and gluing them together (concatenating) using the semicolon.  The second grammar instead describes sequences in terms of \emph{cons}, the rule $S \longrightarrow \tm{id} \leftarrow \tm{exp} \mathrel{;} S$ allows to build a larger sequence by taking one existing sequence and adding a new head element.
+This involves two left recursive productions, $B \longrightarrow B \andop B$ and $B \longrightarrow B \orop B$.
 
-Here's a slightly more complicated example.  Consider again the grammar of Boolean expressions above, which involves two left recursive productions, $B \longrightarrow B \andop B$ and $B \longrightarrow B \orop B$.  These two rules allow us to build longer sequences by _concatenating_ two given sequences using either $\andop$ or $\orop$ respectively.  So, we can reformulate the grammar to instead build the same sequences using an approach based on _consing_ a single element to the head.  Let's start by first factoring out the different kinds of elements that make up these sequences so that the sequence structure is clearer:
-
-$$
-  \begin{array}{rcl}
-    B &\longrightarrow& A \mid B \andop B \mid B \orop B \\
-    A &\longrightarrow& \tt \mid \ff \mid \tm{id} \mid (B)
-  \end{array}
-$$
-
-Now, if you consider the sentential forms derivable just using $B$-rules, they are all sequences of $A$ punctuated by a mixture of $\andop$ and $\orop$ operators, e.g.
+The kinds of strings these production rules generate are all Boolean expressions, e.g.
 
 $$
-  A \andop A \andop A \orop A \andop A
+  \tt \andop (\ff \orop tt) \andop ((\ff \orop \tt) \andop \ff) 
 $$
 
-Moreover, you can observe they are _non-empty_ sequences, there is no $\epsilon$-production available with which to create an empty sequence.  We can reformulate the rules to avoid left recursion as follows:
+Personally, I find it unintuitive to think of such expressions as some kind of recursively generated sequence.  However, it is not so difficult to do just that if we introduce a couple of new nonterminals to clarify the structure a bit.  
 
-$$
-  \begin{array}{rcl}
-    B &\longrightarrow& A \andop B \mid A \orop B \mid A \\
-    A &\longrightarrow& \tt \mid \ff \mid \tm{id} \mid (B)
-  \end{array}
-$$
-
-Here we have a description of these sequences that uses a cons structure, we have two different kinds of cons - one that adds a new $A$ element in the head of the list using $\andop$ and another using $\orop$.  
-
-
-<!-- 
-
-In an approach to parsing based on syntax-directed translation, the first of these parse trees represents an interpretation of the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$ as $\mathsf{true} \orop (\mathsf{true} \andop \mathsf{false})$, i.e. with the conjunction $\mathsf{true} \andop \mathsf{false}$ being the second argument of the disjunction.  The second of the parse trees represents an interpretation of the string as $(\mathsf{true} \orop \mathsf{true}) \andop \mathsf{false}$, i.e. with the disjunction being the first argument of the conjunction.
-
-Semantically, which of these is meant makes a big difference!  We expect the first to evaluate to $\mathsf{true}$ but the second should evaluate to $\mathsf{false}$. -->
-
-## Left Factoring
-
-Left recursion has been eliminated from this grammar, but it is still not LL(1).  For example, suppose we want to derive from $B$ and the next letter of the input is $\tt$.  Is the rule to use uniquely determined?  No.  Both of $B \longrightarrow A \andop B$ and $B \longrightarrow A \orop B$ are eligible, and you need to see more of the input to decide which to use.  If the input runs on as, say, $\tt \andop \ff$ then we should use the first, but if the input runs on as, say, $\tt \orop \ff$ then we should use the second.
-
-Fortunately, there is a very simple fix to this problem, which is to factor out the common prefix from these rules.  In both cases we want to derive the first part of the string using $A$, so we reformulate the rules to factor that part out:
-
-$$
-  \begin{array}{rcl}
-    B &\longrightarrow& A B' \\ 
-    B' &\longrightarrow& \andop A B' \mid \orop A B' \mid \epsilon\\
-    A &\longrightarrow& \tt \mid \ff \mid \tm{id} \mid (B)
-  \end{array}
-$$
-
-We can read the single $B$-rule as saying "to derive a Boolean expression, first derive an $A$ then derive the rest $B'$.  In other words, we have factored out the $A$ part.  Unfortunately, this makes the description of the "rest" a bit more unintuitive.  $B'$ now derives sequences of $A$, but they are "headless" because we expect that the head of the sequence is already derived as part of deriving $B$.  For example, $B'$ derives sentential forms such as:
-
-$$
-  \orop A \andop A \andop A
-$$
-
-However, the benefit is that there is now no choice of rule when deriving from $B$ because there is only one rule.  Indeed, this grammar is now LL(1).
-
-## Precedence
-
-However, there is still one important difference between this formulation and the formulation of the grammar you have seen in the practicals for the While programming language.
-
-In Boolean algebra, a common convention is that conjunction binds tighter than disjunction.  In other words, when we have an expression $x \andop y \orop z$ in which the disjunction operator $\orop$ and the conjunction operator $\andop$ are fighting over who gets their (seemingly) common argument $y$, conjunction holds on (binds) more tightly and wins the struggle, i.e. the expression is resolved as $$(x \andop y) \orop z$$.
-
-In terms of the abstract syntax trees that we want to construct, we therefore want a string like $x \andop y \orop z$ to yield:
-
-<img src="../assets/syntax/or-and-xyz.png" style="max-width:300px">
-
-Unfortunately, this is a bit difficult to achieve using the above grammar.  The approaches we discussed in the previous lecture allows us to force left association of parentheses for the whole sequence, or to force right association of parentheses for the whole sequence.  In this case, we will want a mixture of association, which depends on the operators involved.  For example, the string $$\tt \andop \ff \orop \tt \andop \ff$$ should, by convention, be equivalent to (yield the same AST as) $$(\tt \andop \ff) \orop (\tt \andop \ff)$$, i.e:
-
-<img src="../assets/syntax/or-and-and.png" style="max-width:500px">
-
-A standard approach to enabling this is to stratify the grammar by the precedence of operators.  The idea is to replace the single non-terminal $B$ for Boolean expressions by two separate non-terminals: say $C$ for conjunctions and $D$ for disjunctions, and then to reformulate the grammar so that conjunctions can be bare (that is, without enclosing parens) inside a disjunction but not vice versa. 
+Let's start by putting all the non-left recursive rules together into a separate production, say for a new nonterminal $A$:
 
 $$
   \begin{array}{rcl}
-    D &\longrightarrow& C D' \\
-    D' &\longrightarrow& \orop C D \mid \epsilon \\ 
-    C &\longrightarrow& A C' \\
-    C' &\longrightarrow& \andop A C' \mid \epsilon \\
-    A &\longrightarrow& \mathsf{true} \mid \mathsf{false} \mid (D)
+    B &\Coloneqq& B \andop B \mid B \orop B \mid A\\
+    A &\Coloneqq& \tt \mid \ff \mid (B)
+  \end{array} 
+$$
+
+Hopefully it's clear to you that this revised grammar generates the same sequences (but also suffers from the same left-recursion problem).
+
+Next, let's left-factor the new $B$ productions, to lift out the common $B$ prefix of the first two rules:
+
+$$
+  \begin{array}{rcl}
+    B &\Coloneqq& B\ R \mid A\\
+    R &\Coloneqq& \tm{\andop}\ B \mid \tm{\orop}\ B\\
+    A &\Coloneqq& \tt \mid \ff \mid (B)\\
+  \end{array} 
+$$
+
+Again, the nonterminal B of the new grammar derives exactly the same language as in the old grammar, and still suffers from left recursion.  However, now we can see the clearly the kind of sequences that $B$ is recursively generating: each such sequence is either (a) a singleton $A$ or (b) an additional item $R$ added to the end of a smaller list.  If we only consider the rules for $B$, forgetting the other rules for a moment, then the sentential forms we can derive are sequences of $R$ starting with an $A$:
+
+$$
+  \begin{array}{l}
+    A\\
+    A\ R\\
+    A\ R\ R\\
+    A\ R\ R\ R\\
+    \quad\vdots{}
   \end{array}
 $$
 
-<!-- In this grammar, there is only one parse tree for the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$, which is:
+It is easy to generate such sequences using our notation for sequences:
 
-<img src="../assets/syntax/stratified-bool.png" style="max-width:400px;"/> -->
+$$
+  B \Coloneqq A\ R^*
+$$
 
-If we want an expression that represents a conjunction, one of whose arguments is itself a disjunction, then we must use parentheses explicitly in the string, as in $(\mathsf{true} \orop \mathsf{true}) \andop \mathsf{false}$.
+Since this generates exactly the same sentential forms as the $B$ rules $$B \Coloneqq B\ R \mid A$$ above, we can replace those two rules in the grammar by the rule $$B \Coloneqq A\ R^*$$ without changing the language defined.
 
-Note: we didn't change the language of the grammar when we made this modification - both grammars describe the same language, which includes the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$ - we merely tightened up the internal structure so that this string can only be derived from $D$ (i.e. we consider it a disjunction) and _not_ from $C$.  This will make it easier for the implementation of the parser to produce the correct AST, because we want the top node of this AST to be an $\orop$ node (which it makes sense to return from the parsing function for $D$).
+$$
+  \begin{array}{rcl}
+    B &\Coloneqq& A\ R^*\\
+    R &\Coloneqq& \tm{\andop}\ B \mid \tm{\orop}\ B\\
+    A &\Coloneqq& \tt \mid \ff \mid (B)\\
+  \end{array} 
+$$
 
-In general, if you want to design a grammar for implementation by a predictive parser, then you should first organise any operators you have into a precendence order.  The precedence order is a way of stating which operators bind tighter than others.  For example, in OCaml, we can look in the manual for the following operator precedence table: 
+and now the grammar contains no left recursion.  In fact, if we were to build the parse table, we would see that it is LL(1).
 
-| Operators | Associativity |
-| ! ~ | none |
-| .() .[] .{} | none |
-| # | left |
-| application | left |
-| - | none |
-| ** lsl lsr asr | right |
-| * / % mod land lor lxor | left |
-| + - | left |
-| :: | right |
-| @ ^ | right |
-| = < > $ & &#124; != | left |
-| && | right |
-| &#124;&#124; | right |
-| , | none |
-| <- := | right |
-| if | none |
-| ; | right |
+## No Guarantees
 
-Operators further up the table have higher precedence than those below them, that is, they bind more tightly to their arguments.  Some operators can have the same precedence - like $+$ and $-$ in OCaml.  That's fine, but binary operators with the same precedence should have the same associativity, and this will disambiguate their usage.
+Common prefixes (which can be removed by left factoring) and left recursion are two common problems that prevent grammars for programming languages from being left recursive, and reformulating a grammar with one of these problems is often enough to obtain an LL(1) grammar.  However, there are no guarantees.  The grammar we obtained for Brischeme after left factoring no longer contains any common prefixes or left recursion, but it is still not LL(1).
 
-Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level i.e. row in the table, say $i$, your grammar should have a distinct non-terminal symbol $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
+$$
+  \begin{array}{rcl}
+  \nt{Prog} &\Coloneqq& \nt{Form}^*\\[4mm]
+  \nt{Form} &\Coloneqq& \nt{SExpr}\\[2mm]
+            &\mid& (\ \tm{define}\ \tm{ident}\ \nt{SExpr}\ )\\[4mm]
+  \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
+                &\mid& \tm{ident}\\[2mm]
+                &\mid& (\ R\ )\\[4mm]
+  \nt{R} &\Coloneqq& \nt{SExpr}\ \nt{SExpr}^*\\[2mm]
+                &\mid& \tm{primop}\ \nt{SExpr}^*\\[2mm]
+                &\mid& \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}
+  \end{array}
+$$
 
-In our example, conjunction binds tighter than disjunction, we have a dedicated non-terminal for each, and the production rule for disjunctions $D$ creates sequences each of whose elements is a conjunction $C$.  
+In particular, if, during parsing, we are attempting to derive a string starting with a left parenthesis $($ from the nonterminal $\nt{Form}$, then the rule to use is not determined: both of the rules for $\nt{Form}$ can derive strings starting with $($.  This can be avoided by introducing a new nonterminal $\nt{CForm}$ and reformulating the rules for $\nt{Form}$:
 
+$$
+  \begin{array}{rcl}
+    \nt{Form} &\Coloneqq& \tm{ident}\\[2mm] 
+              &\mid& \tm{literal}\\[2mm]
+              &\mid& (\ \nt{CForm} \ )\\[4mm]
+    \nt{CForm} &\Coloneqq& \nt{R} \mid \tm{define}\ \tm{ident}\ \nt{SExpr}
+  \end{array}
+$$
 
+Essentially, we have inlined the rules for $\nt{SExpr}$ and then performed left factoring; but this required a little bit of thinking -- to understand what the problem is, as identified in the parsing table, and how to solve it -- rather than _only_ following one of the two recipes above.

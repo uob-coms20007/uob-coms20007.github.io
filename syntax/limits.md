@@ -1,8 +1,8 @@
 ---
 layout: math
-title: Limitations
+title: B. Limitations of CFG
 mathjax: true
-nav_order: 9
+nav_order: 10
 parent: Syntax
 ---
 
@@ -12,10 +12,10 @@ $$
 \newcommand{\orop}{\mathrel{\|}}
 $$
 
-# Limits to the Expressive Power of CFGs
+# Appendix B: Limits to the Expressive Power of CFGs
 ## (NOT ASSESSED)
 
-_This material is not assessed, look at it only because it is interesting._
+_This material is not assessed, look at it only for interest._
 
 In this part, I want to look briefly at the limitations of context-free grammars.  Grammars alone are not usually enough to describe the valid programs in a particular programming language.  They cannot, for example, enforce that variables are declared before they are used, or (in general) ensure that programs are well-typed.  In this chapter I aim to convince you of the first of these.
 
@@ -26,7 +26,7 @@ To do this, it will be helpful to introduce a new view on grammar derivations.  
 I want to start by looking at an alternative mechanism for defining which strings are in the language of a grammar, called a _parse tree_.  Parse trees are a bit less straightforward compared with derivations (they are trees rather than sequences), but they have an advantage in revealing more directly how a particular letter (terminal symbol) was arrived at in the derived string.
 
 {: .defn }
-A __parse tree__ is an ordered tree, whose internal vertices are non-terminals, whose leaves are terminals and in which _symbols_ $\alpha_1 \cdots \alpha_n$ are the children of a non-terminal labelled-node $X$ only if $X \longrightarrow \alpha_1\ldots\alpha_n$ is a production rule of the grammar.
+A __parse tree__ is an ordered tree, whose internal vertices are non-terminals, whose leaves are terminals and in which _symbols_ $\alpha_1 \cdots \alpha_n$ are the children of a non-terminal labelled-node $X$ only if $X \Coloneqq \alpha_1\ldots\alpha_n$ is a production rule of the grammar.
 
 Note: in the above definition I am stipulating that each $\alpha_i$ is a single symbol (either a terminal or a non-terminal).
 
@@ -36,16 +36,16 @@ __Theorem:__ A string $u$ is in the language of a grammar, just if there exists 
 Consider the following grammar for a simple kind of Boolean expressions:
 
 $$
-  B \longrightarrow B \andop B \mid B \orop B \mid (B) \mid \mathsf{true} \mid \mathsf{false}
+  B \Coloneqq B \andop B \mid B \orop B \mid (B) \mid \mathsf{true} \mid \mathsf{false}
 $$
 
 We can show that $\tt \orop \tt \andop \ff$ is derivable in this grammar, by building a parse tree satisfying the above conditions (i.e. rooted at $B$ and whose leaves spell out the word).  We start by putting down the root of the tree, which is the start symbol (and only nonterminal in this grammar) $B$.
 
-Now, we can choose any production to apply to this $B$.  Suppose we choose $B \longrightarrow B \andop B$.  Rather than making a step by replacing $B$ by its right-hand side, instead we place the right-hand side of the production as the children of $B$.  Each symbol is a child node and the tree is ordered, so the children need to be in the same left-to-right order.
+Now, we can choose any production to apply to this $B$.  Suppose we choose $B \Coloneqq B \andop B$.  Rather than making a step by replacing $B$ by its right-hand side, instead we place the right-hand side of the production as the children of $B$.  Each symbol is a child node and the tree is ordered, so the children need to be in the same left-to-right order.
 
 <img src="../assets/syntax/parse_tree1.png" width="400px">
 
-We proceed by choosing any of the nonterminals at the leaves of this tree and adding children in the same way, according to some appropriate production rule.  For example, we can choose the leftmost leaf and add child nodes labelled $B$, $\orop$ and $B$, corresponding to the production $B \longrightarrow B \orop B$.
+We proceed by choosing any of the nonterminals at the leaves of this tree and adding children in the same way, according to some appropriate production rule.  For example, we can choose the leftmost leaf and add child nodes labelled $B$, $\orop$ and $B$, corresponding to the production $B \Coloneqq B \orop B$.
 
 <img src="../assets/syntax/parse_tree2.png" width="450px">
 
@@ -73,9 +73,9 @@ To see this, consider I give you the following parse tree, but I _don't_ give yo
 
 <img src="../assets/syntax/parse_tree_repeat1.png" width="400px">
 
-In fact, I can tell you infinitely many additional words that are in the language of this (unknown) grammar.  By looking at the parse tree, I can conclude that $Y \longrightarrow b\ Y$ must be a rule of the grammar and so must $Y \longrightarrow c$. 
+In fact, I can tell you infinitely many additional words that are in the language of this (unknown) grammar.  By looking at the parse tree, I can conclude that $Y \Coloneqq b\ Y$ must be a rule of the grammar and so must $Y \Coloneqq c$. 
 
-If we imagine how the given parse tree was constructed from root to leaves, the first time that nonterminal $Y$ was encountered the rule $Y \longrightarrow b\ Y$ was used, and the second time that nonterminal $Y$ was encountered the rule $Y \longrightarrow c$ was used.  However, it needn't have been that way.  We could have used the former, recursive rule, _again_ the second time we encountered $Y$ and then afterwards used the base case $Y \longrightarrow c$.
+If we imagine how the given parse tree was constructed from root to leaves, the first time that nonterminal $Y$ was encountered the rule $Y \Coloneqq b\ Y$ was used, and the second time that nonterminal $Y$ was encountered the rule $Y \Coloneqq c$ was used.  However, it needn't have been that way.  We could have used the former, recursive rule, _again_ the second time we encountered $Y$ and then afterwards used the base case $Y \Coloneqq c$.
 
 <img src="../assets/syntax/parse_tree_repeat2.png" width="500px">
 

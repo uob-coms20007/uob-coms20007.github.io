@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Strings
+title: 1. Strings
 nav_order: 1
 mathjax: true
 parent: Syntax
@@ -50,8 +50,8 @@ We will often use this in combination with set notation, to describe languages o
   * $$\{w_1 a w_2 a w_3 \mid w_1, w_2, w_3 \in \{b\}^* \}$$ - the set of all strings over $$\{a,b\}$$ containing exactly two $a$
   * $$\{xy \mid x,y \in \{0,1\}^* \ \text{and}\ \lvert x \rvert = \lvert y \rvert \}$$ - the set of all strings over $$\{0,1\}$$ that are of even length.
   * $$\{ 0u01u10u0 \mid u \in \{0,1\}^* \}$$ - the set of all strings over $\{0,1\}$ that are formed by repeating a substring three times consecutively, with the first wrapped in 0s, the second in 1s and the third in 0s
-  * $$\{ uv \mid u,v \in \{0,1\}^* \ \text{and}\  #_0(u) = #_1(v) \}$$
-  * $$\{ 0^ku0^k \mid u \in \{0,1\}^* \ \text{and}\ k > 0 \}$$
+  * $$\{ uv \mid u,v \in \{0,1\}^* \ \text{and}\  \#_0(u) = \#_1(v) \}$$ -
+  * $$\{ 0^ku0^k \mid u \in \{0,1\}^* \ \text{and}\ k > 0 \}$$ -
 
 Note! Do not confuse, e.g. $$\{w_1 a w_2 a w_3 \mid w_1, w_2, w_3 \in \{a,b\}^* \}$$ with $$\{w_1 a w_2 a w_3\}$$: the latter is a singleton set, it contains the string $$w_1 a w_2 a w_2$$ as its only element (and for that to make sense we must have introduced $w_1$, $w_2$ and $w_3$ already).  E.g.
 

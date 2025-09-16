@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Reading Grammars
+title: 2. Reading Grammars
 mathjax: true
 nav_order: 2
 parent: Syntax
@@ -8,13 +8,11 @@ parent: Syntax
 
 # Context Free Grammars
 
-## Concrete Syntax
-
-When we speak of the *(concrete) syntax of a language* (e.g. a programming language) we typically mean a description of which strings constitute a valid sentence in the language, or more specifically for us, a valid program.  For example, the syntax of the C programming language tells us that the only the first of these two strings is a valid C program:
+When we speak of the (concrete) *syntax of a language* (e.g. a programming language) we typically mean a description of which strings constitute a valid sentence in the language, or more specifically for us, a valid program.  For example, the syntax of the C programming language tells us that the only the first of these two strings is a valid C program:
 
 {% include ex_c_programs.liquid %}
 
-By the way, we will typically consider blocks of text like those above to be strings - we won't usually care about "whitespace", that is: space characters or newlines.
+IMPORTANT: We will typically consider blocks of text like those above to be strings - we won't usually care about "whitespace", that is: space characters or newlines.
 
 ## Grammars
 
@@ -24,17 +22,18 @@ Let's forget about C programs for now and look to something simpler.  The follow
 
 $$
   \begin{array}{rrcl}
-  (1) & B &\longrightarrow& F \\
-  (2) & B &\longrightarrow& F \orop B \\ 
-  (3) & F &\longrightarrow& L \\
-  (4) & F &\longrightarrow& L \andop F\\
-  (5) & L &\longrightarrow& \tt \\ 
-  (6) & L &\longrightarrow& \ff\\
-  (7) & L &\longrightarrow& (B)
+  (1) & B &\Coloneqq& F \\
+  (2) & B &\Coloneqq& F \orop B \\ 
+  (3) & F &\Coloneqq& L \\
+  (4) & F &\Coloneqq& L \andop F\\
+  (5) & L &\Coloneqq& \tt \\ 
+  (6) & L &\Coloneqq& \ff\\
+  (7) & L &\Coloneqq& (B)
   \end{array}
 $$
 
-Each line of the grammar is called a *production rule* (or just *rule* or *production* for short).  This grammar has 7 productions.  I have labelled each with a number from 1 to 7, but this is purely to make it easier to explain what is going on, these labels are not formally part of the grammar.  The long right arrow, $$\longrightarrow$$, divides the rule into two parts, the *left-hand side* or *head* of the rule and the *right-hand side* or *body* of the rule.  The left-hand side of each rule comprises a single symbol, here either $A$, $F$ or $L$ which are called the *non-terminal* symbols.  If a rule has a non-terminal $$X$$ as its left-hand side, then we say the rule is a $$X$$-rule.  All the other symbols occurring on right-hand side apart from the non-terminal symbols are called the *terminal* symbols.  Here, the terminal symbols are $$\tt$$, $$\ff$$, $$\andop$$, $\orop$, and the left and right parentheses.  The idea of the grammar is that it is a collection of rules for generating strings built over the terminal symbols - i.e. the set of terminal symbols is exactly the alphabet of the strings we are considering.
+Each line of the grammar is called a *production rule* (or just *rule* or *production* for short).  This grammar has 7 productions.  I have labelled each with a number from 1 to 7, but this is purely to make it easier to explain what is going on, these labels are not formally part of the grammar.  The symbol
+$$\Coloneqq$$ divides the rule into two parts, the *left-hand side* or *head* of the rule and the *right-hand side* or *body* of the rule.  The left-hand side of each rule comprises a single symbol, here either $A$, $F$ or $L$ which are called the *non-terminal* symbols.  If a rule has a non-terminal $$X$$ as its left-hand side, then we say the rule is a $$X$$-rule.  All the other symbols occurring on right-hand side apart from the non-terminal symbols are called the *terminal* symbols.  Here, the terminal symbols are $$\tt$$, $$\ff$$, $$\andop$$, $\orop$, and the left and right parentheses.  The idea of the grammar is that it is a collection of rules for generating strings built over the terminal symbols - i.e. the set of terminal symbols is exactly the alphabet of the strings we are considering.
 
 The way the grammar generates strings is as follows.  First, one of the non-terminal symbols is designated as the *start symbol* which is one of the non-terminals.  I didn't mention it yet, but in this grammar we have $$B$$ as the start symbol (in general whoever specifies the grammar must tell you what is the start symbol).  We begin with the start symbol $$B$$ and replace it with any of the right-hand sides of the corresponding rules, i.e. since the start symbol is $$B$$, we are looking at $$B$$-rules.  We have free choice over which rule to use.  Then we *rewrite* the start symbol $$B$$ into a string by repeatedly replacing non-terminals by their right-hand sides.  To start with, let's replace our only non-terminal $$B$$ by the right-hand side of the rule (2), namely $$F \orop B$$.  We write this up as:
 
@@ -96,9 +95,9 @@ First, let's agree a standard convention.  Let's write all the rules with the sa
 
 $$
   \begin{array}{rcl}
-  B &\longrightarrow& F \mid F \orop B\\
-  F &\longrightarrow& L \mid L \andop F\\
-  L &\longrightarrow& \tt \mid \ff \mid (B)
+  B &\Coloneqq& F \mid F \orop B\\
+  F &\Coloneqq& L \mid L \andop F\\
+  L &\Coloneqq& \tt \mid \ff \mid (B)
   \end{array}
 $$
 
@@ -114,16 +113,16 @@ Computer Scientists are not the only ones to use context-free grammars, they are
 
 $$
   \begin{array}{rcl}
-    \bnfnt{SENTENCE} &\longrightarrow& \bnfnt{NOUN-PHRASE}\ \bnfnt{VERB-PHRASE}\\
-    \bnfnt{NOUN-PHRASE} &\longrightarrow& \bnfnt{CMPLX-NOUN} \mid \bnfnt{CMPLX-NOUN}\ \bnfnt{PREP-PHRASE}\\
-    \bnfnt{VERB-PHRASE} &\longrightarrow&  \bnfnt{CMPLX-VERB} \mid \bnfnt{CMPLX-VERB}\ \bnfnt{PREP-PHRASE}\\
-    \bnfnt{PREP-PHRASE} &\longrightarrow& \bnfnt{PREP}\ \bnfnt{CMPLX-NOUN}\\
-    \bnfnt{CMPLX-NOUN} &\longrightarrow& \bnfnt{ARTICLE}\ \bnfnt{NOUN}\\
-    \bnfnt{CMPLX-VERB} &\longrightarrow& \bnfnt{VERB} \mid \bnfnt{VERB}\ \bnfnt{NOUN-PHRASE}\\
-    \bnfnt{ARTICLE} &\longrightarrow& \textrm{a} \mid \textrm{the} \\
-    \bnfnt{NOUN} &\longrightarrow& \textrm{boy} \mid \textrm{girl} \mid \textrm{flower}\\
-    \bnfnt{VERB} &\longrightarrow& \textrm{touches} \mid \textrm{likes} \mid \textrm{sees}\\
-    \bnfnt{PREP} &\longrightarrow& \textrm{with}
+    \bnfnt{SENTENCE} &\Coloneqq& \bnfnt{NOUN-PHRASE}\ \bnfnt{VERB-PHRASE}\\
+    \bnfnt{NOUN-PHRASE} &\Coloneqq& \bnfnt{CMPLX-NOUN} \mid \bnfnt{CMPLX-NOUN}\ \bnfnt{PREP-PHRASE}\\
+    \bnfnt{VERB-PHRASE} &\Coloneqq&  \bnfnt{CMPLX-VERB} \mid \bnfnt{CMPLX-VERB}\ \bnfnt{PREP-PHRASE}\\
+    \bnfnt{PREP-PHRASE} &\Coloneqq& \bnfnt{PREP}\ \bnfnt{CMPLX-NOUN}\\
+    \bnfnt{CMPLX-NOUN} &\Coloneqq& \bnfnt{ARTICLE}\ \bnfnt{NOUN}\\
+    \bnfnt{CMPLX-VERB} &\Coloneqq& \bnfnt{VERB} \mid \bnfnt{VERB}\ \bnfnt{NOUN-PHRASE}\\
+    \bnfnt{ARTICLE} &\Coloneqq& \textrm{a} \mid \textrm{the} \\
+    \bnfnt{NOUN} &\Coloneqq& \textrm{boy} \mid \textrm{girl} \mid \textrm{flower}\\
+    \bnfnt{VERB} &\Coloneqq& \textrm{touches} \mid \textrm{likes} \mid \textrm{sees}\\
+    \bnfnt{PREP} &\Coloneqq& \textrm{with}
   \end{array} 
 $$
 
