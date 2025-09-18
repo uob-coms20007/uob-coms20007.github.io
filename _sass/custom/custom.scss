@@ -6,7 +6,6 @@
 .schedule {
   border: 1px solid $grey-dk-000;
   border-collapse: collapse;
-
 }
 
 table.schedule tr:nth-child(even) td {
@@ -26,6 +25,21 @@ table.schedule th {
   color: #FFF;
   background: rgb(63, 63, 63);
 
+}
+
+.invisitable {
+  border: none;
+}
+
+.invisitable td {
+  text-align: center;
+}
+
+.invisitable img {
+
+  border:none; 
+  background:#959396;
+  width:150px;
 }
 
 html {
