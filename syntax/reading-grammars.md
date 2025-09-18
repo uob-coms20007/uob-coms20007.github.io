@@ -160,7 +160,7 @@ If you look up your favourite programming language, you can probably find a gram
 
 By the way, in practice it is a good idea to use words for nonterminals like this (rather than just a single capital letter as we do) because then you can use the word to describe the kind of syntax that the nonterminal derives.  However, it is a bit less convenient for mathematical reasoning.
 
-For example, assuming that $0$ is an expression (can be derived from the nonterminal *expression*) we can derive the following valid C statement form:
+For example, assuming that $x$ and $0$ are both expressions (can be derived from the nonterminal *expression*) we can derive the following valid C statement form:
 
 $$
   \begin{align*}
@@ -168,34 +168,60 @@ $$
     &\to \textit{selection-statement} \\
     &\to \textbf{switch (}\textit{expression}\ \textbf{)}\ \textit{statement}\\
     &\;\;\vdots{}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}\textit{expression}\textbf{)}\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}\textit{expression}\textbf{)}\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
     &\;\;\vdots{}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textit{labeled-statement}\ \textbf{else}\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ \textit{constant-expression}:\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textit{labeled-statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textbf{case}\ \textit{constant-expression}:\ \textit{statement}\\
-    &\to \textbf{switch (}0\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textbf{case}\ 1:\ \textit{statement}
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textit{labeled-statement}\ \textbf{else}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ \textit{constant-expression}:\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textit{labeled-statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textbf{case}\ \textit{constant-expression}:\ \textit{statement}\\
+    &\to \textbf{switch (}x\textbf{)}\ \textbf{if (}0\textbf{)}\ \textbf{case}\ 0:\ \textit{statement}\ \textbf{else}\ \textbf{case}\ 1:\ \textit{statement}
   \end{align*}
 $$
 
 Since it is possible to derive $x = 2;$ and $x = 3;$ from the nonterminal *statement*, skipping some more steps gives us the valid C program statement (recall that we don't care about whitespace at this time - space characters, carriage returns and newlines):
 
 ```c
-  switch (0) 
+  switch (x) 
     if (0) 
       case 0: x=2; 
     else 
       case 1: x=3;
 ```
 
-The semantics of this statement, how it executes, is a little counterintuitive, because we naturally expect that a conditional statement whose guard is constantly false should be equivalent to just executing it's else branch.   However, this ability to interlace switch statements with other statements (like the conditional statement in this case) can be useful, cf. Duff's Device.
+The semantics of this statement, how it executes, is a little counterintuitive, because we naturally expect that a conditional statement whose guard is constantly false should be equivalent to just executing it's else branch.   However, this ability to interlace switch statements with other statements (like the conditional statement in this case) makes that untrue.  Moreover, it can be useful, cf. [Duff's Device](https://en.wikipedia.org/wiki/Duff%27s_device).
 
 It's possible in C because every *statement* can be a *labeled-statement*, which can be one of the cases in the switch.  This is not allowed in, for example, Java.  
 
 Consider the grammar for Java programs hosted at [oracle.com](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html). According to this grammar, the statement part of a switch is not just any old statement but a *SwitchBlockStatementGroups*, and it is only through this particular non-terminal that we can ultimately derive something equivalent to C's *labeled-statement*.
+
+Java does have a different concept of labelling of statements though, just not for use with a switch.  According to the Java grammar we can derive:
+
+$$
+  \begin{align*}
+    & \nt{Statement}\\
+    &\to \nt{Identifier} : \nt{Statement}\\
+    &\to \nt{Identifier} : \nt{Identifier} : \nt{Statement}\\
+    &\to \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Statement}\\
+    &\to \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Statement}\\
+    &\to \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Identifier} : \nt{Statement}\\
+    &\;\;\vdots\\
+    &\to \tm{a : completely : normal : java : statement :}\ ;
+  \end{align*}
+$$
+
+Through the production rules:
+
+$$
+  \begin{array}{rcl}
+    \nt{Statement} &\Coloneqq& ;\\
+    \nt{Statement} &\Coloneqq& \nt{Identifier}\ :\ \nt{Statement}
+  \end{array}
+$$
+
+(and I assume you remember what is allowed in a Java identifiers).
 
 Something that both the C and Java syntax is an assignment statement (actually, in both of these languages assignment to (mutation of) variables is considered an expression, but this is bad form).  In C we have:
   
