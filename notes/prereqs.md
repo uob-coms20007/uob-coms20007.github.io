@@ -3,7 +3,7 @@ layout: math
 title: Prerequisites
 nav_order: 0
 mathjax: true
-has_children: true
+parent: Course Notes
 ---
 
 ## Prerequisites

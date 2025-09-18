@@ -28,11 +28,3 @@ td {
   width:auto;
   min-width: 0px;
 }
-
-/* Fix colours for dark mode */
-@media (prefers-color-scheme: dark) {
-  .defn {
-    border-color: rgb(26, 26, 14);
-    background-color: rgb(7, 7, 7);
-  }
-}
