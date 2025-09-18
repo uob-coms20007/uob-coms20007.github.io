@@ -1,19 +1,1 @@
 <link rel="stylesheet" href="{{ '/assets/css/styling.css' | relative_url }}">
-
-<!-- Switch to preferred colour theme -->
-<script>
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (event.matches) {
-            jtd.setTheme('dark');
-        } else {
-            jtd.setTheme('light');
-        }
-    });
-
-    // running after load prevents flash of unstyled text
-    addEventListener("load", () => {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            jtd.setTheme('dark');
-        }
-    });
-</script>
