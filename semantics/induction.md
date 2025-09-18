@@ -109,7 +109,7 @@ We can apply the strategy of structural induction to any grammar of your choosin
 For example, consider the set of arithmetic expressions $\mathcal{A}$ defined by the following grammar:
 
 $$
-  A \to x \mid n \mid A + A \mid A - A \mid A * A
+  A \Coloneqq x \mid n \mid A + A \mid A - A \mid A * A
 $$
 
 We will derive the induction principle for this set, i.e. the form of an inductive proof, by following the same recipe as for the natural numbers.

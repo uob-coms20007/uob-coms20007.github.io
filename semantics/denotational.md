@@ -20,7 +20,7 @@ First, however, let us look at a simple subset of arithmetic expressions without
 A __simple arithmetic expression__ is an element of the following grammar:
 
 $$
-  A^- \to \underline{n} \mid A^- \mathbin{\underline{+}} A^- \mid A^- \mathbin{\underline{-}} A^- \mid A^- \mathbin{\underline{*}} A^-
+  A^- \Coloneqq \underline{n} \mid A^- \mathbin{\underline{+}} A^- \mid A^- \mathbin{\underline{-}} A^- \mid A^- \mathbin{\underline{*}} A^-
 $$
 
 where $\underline{n}$ stands for any integer literals (used as terminals).
@@ -93,7 +93,7 @@ Therefore, we will consider the following grammar of arithmetic expressions:
 An __arithmetic expression__ is an element of the following grammar:
 
 $$
-  A \to x \mid n \mid A + A \mid A - A \mid A * A
+  A \Coloneqq x \mid n \mid A + A \mid A - A \mid A * A
 $$
 
 where the new construct $x$ represents a set of program variables $\mathsf{Var}$ treated as terminals.
@@ -164,7 +164,7 @@ This will follow the same pattern as for arithmetic expressions, except it will 
 The set of __Boolean expressions__ $\mathcal{B}$ is defined as the elements of the following grammar:
 
 $$
-  B \to \tt \mid \ff \mid \mathop{!}B \mid B \andop B \mid B \orop B \mid A = A \mid A \leq A
+  B \Coloneqq \tt \mid \ff \mid \mathop{!}B \mid B \andop B \mid B \orop B \mid A = A \mid A \leq A
 $$
 
 </div>
