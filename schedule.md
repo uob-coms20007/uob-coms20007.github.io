@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Detailed Schedule
+title: Course Materials
 nav_order: 2
 ---
 
@@ -18,7 +18,9 @@ nav_order: 2
 
 ## :date: Week by Week
 
-Links to the lecture synopsis, problem sheets and their solutions will appear here as the unit progresses.
+Links to the problem sheets and their solutions will appear here as the unit progresses.
+
+Each week there will be exactly one theory problem sheet and at most one practical problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
 
 <table class="schedule">
   <thead>
