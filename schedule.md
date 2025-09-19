@@ -135,10 +135,10 @@ Each week there will be exactly one theory problem sheet and at most one practic
     {% endif %}
     <br/>
     {% if lab_qns %}
-        Practice: <a href="{{ lab_qns_name | remove_first: "/" }}" target="_blank">lab</a>
+        Practice: <a href="{{ lab_qns_name | remove_first: "/" }}" target="_blank">qns</a>
     {% endif %}
     {% if lab_ans %}
-        / <a href="{{ lab_ans_name | remove_first: "/" }}" target="_blank">lab</a>
+        / <a href="{{ lab_ans_name | remove_first: "/" }}" target="_blank">ans</a>
     {% endif %}
       </td>
     </tr>
