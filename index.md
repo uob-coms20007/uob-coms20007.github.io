@@ -3,7 +3,7 @@ layout: default
 title: Home
 nav_order: 1
 ---
-## Welcome
+## :wave: Welcome
 
 Welcome to the home of COMS20007: Programming Languages and Computation.  
 
@@ -19,7 +19,7 @@ This unit gives you a taster of several important topics in theoretical computer
 The unit is run by Eddie Jones, Alex Kavvos and Steven Ramsay (UD).
 
 {: .invisitable }
-|![Eddie](assets/admin/Eddie.png) |![Alex](assets/admin/Alex.jpg) |![Steven](assets/admin/wbc.jpg)  |
+|![Eddie](assets/admin/Eddie.png) |![Alex](assets/admin/Alex.jpg) |![Steven](assets/admin/Steven.jpg)  |
 | [Eddie Jones][1] | [Alex Kavvos][2] | [Steven Ramsay][3] |
 
 [1]: https://ec-jones.github.io/
@@ -31,7 +31,7 @@ Outside of lectures and labs, please reach out to us via the unit [Team](https:/
 
 ## :date: Schedule
 
-*See [detailed schedule](schedule.html) for a comprehensive week-by-week synopsis.*
+*See [Course Materials](schedule.html) for a more detailed schedule.*
 
 The unit is divided into three parts, each of which is run by one of the three lecturers.
 
@@ -44,7 +44,9 @@ The unit is divided into three parts, each of which is run by one of the three l
 
 <br/>
 
-You should expect to spend around *12 hours per week* working on this unit.  There are 5 main activities (approximate time in parentheses, overall there is some slack):
+You should expect to spend around *12 hours per week* working on this unit.  *Most of this time should be spent giving a serious attempt to each problem sheet and getting help when you are stuck.*
+
+<!-- There are 5 main activities (approximate time in parentheses, overall there is some slack):
 
   * __Lectures (2 hr).__ There are two lectures each week, *Mondays at 3pm* and *Tuesdays at 10am*, both in Physics G42 Powell*. 
 
@@ -54,8 +56,7 @@ You should expect to spend around *12 hours per week* working on this unit.  The
 
   * __Problem sheets / programming tasks in your own time (2-6 hr).__ You will only learn on this unit by completing the problem sheets and programming tasks.  You will spend time working in labs, but you will likely need longer to complete them fully in your own time.
 
-  <!-- * __Office hours (<1 hr).__ Each week there will be office hours with the lecturer, either online or in their office in MVB.  These will be irregular and advertised separately in each week. -->
+  <!-- * __Office hours (<1 hr).__ Each week there will be office hours with the lecturer, either online or in their office in MVB.  These will be irregular and advertised separately in each week.
 
-  * __Reading (2 hr).__  You will often benefit from alternative explanations of the same concepts, which would not fit into the time available for lectures.  You will need to spend time revising and rethinking topics before you can solve the associated problems.
+  * __Reading (2 hr).__  You will often benefit from alternative explanations of the same concepts, which would not fit into the time available for lectures.  You will need to spend time revising and rethinking topics before you can solve the associated problems. -->
 
-*The most important activity is to give a serious attempt (at least 3-4 hours) to each problem sheet and get help when you are stuck. The easiest way to do this is to attend the weekly lab.  If you do not, you will likely fail this unit.*
