@@ -6,7 +6,7 @@ mathjax: true
 parent: Semantics
 ---
 
-# Numerical Induction
+# Arithmetic Induction
 
 Many of you will have seen a form of proof by induction that goes something like this:
 
@@ -161,10 +161,10 @@ For example, $\llbracket x + 1\rrbracket_{\mathcal{A}}(\sigma)$ will be unchange
 The formal way in which we will express this property is as follows:
 
 <div class="defn" markdown="1">
-  Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e \rrbracket_{\mathcal{A}}(\sigma')$ for any two states $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
+  Let $P$ be the property of arithmetic expressions where $P(e)$ holds if, and only if, $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e \rrbracket_{\mathcal{A}}(\sigma')$ for any two stores $\sigma$ and $\sigma'$ such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e)$.
 </div>
 
-In other words, this property states that if two states agree on the value of every variable appearing in the expression, then the expression will have the same denotation under each state.
+In other words, this property states that if two stores agree on the value of every variable appearing in the expression, then the expression will have the same denotation under each store.
 
 We will prove that this property is in fact true of _all_ arithmetic expressions.
 As this claim is of the form "for _all_ arithmetic expressions, ...", we can use the induction principle for arithmetic expressions.
@@ -176,12 +176,12 @@ As this claim is of the form "for _all_ arithmetic expressions, ...", we can use
 
 Let us look at the proof obligations we derive for the two base cases of the induction principle:
 
- 1. (The variable case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(x)$, then $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \llbracket x \rrbracket_{\mathcal{A}}(\sigma')$.
+ 1. (The variable case) If $\sigma$ and $\sigma'$ are stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(x)$, then $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \llbracket x \rrbracket_{\mathcal{A}}(\sigma')$.
 
-    In this case, $\mathsf{FV}(x)$ is simple the set $\lbrace x \rbrace$ and, by definition, $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \sigma(x)$ for any state $\sigma$.
+    In this case, $\mathsf{FV}(x)$ is simple the set $\lbrace x \rbrace$ and, by definition, $\llbracket x \rrbracket_{\mathcal{A}}(\sigma) = \sigma(x)$ for any store $\sigma$.
     Therefore, our property allows us to assume that $\sigma(x) = \sigma'(x)$ and then asks us to show that $\sigma(x) = \sigma'(x)$ - which is trivial!
 
- 2. (The literal case) If $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(n)$, then $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = \llbracket n \rrbracket_{\mathcal{A}}(\sigma')$.
+ 2. (The literal case) If $\sigma$ and $\sigma'$ are stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(n)$, then $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = \llbracket n \rrbracket_{\mathcal{A}}(\sigma')$.
 
     In this case, $\mathsf{FV}(n)$ is the empty set, and therefore we do not know anything about $\sigma$ or $\sigma'$.
     However, as $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = n$ and likewise for $\sigma'$, we have that $\llbracket n \rrbracket_{\mathcal{A}}(\sigma) = \llbracket n \rrbracket_{\mathcal{A}}(\sigma')$ for all $\sigma$ and $\sigma'$.
@@ -196,10 +196,10 @@ To avoid getting lost in a fog of symbols, we will leave our property as $P(e)$ 
 
  3. (The addition case) If $P(e_1)$ and $P(e_2)$ hold, then $P(e_1 + e_2)$ holds.
 
-    By definition $P(e_1 + e_2)$ is the statement: if $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, then $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
-    Therefore, we assume that $\sigma$ and $\sigma'$ are two particular states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, and we must subsequently show that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
+    By definition $P(e_1 + e_2)$ is the statement: if $\sigma$ and $\sigma'$ are stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, then $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
+    Therefore, we assume that $\sigma$ and $\sigma'$ are two particular stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$, and we must subsequently show that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
 
-    Now recall that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)$ for any state $\sigma$.
+    Now recall that $\llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)$ for any store $\sigma$.
     Therefore, we can simplify our goal to the equation $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma') + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
     To prove this equation, we will separately show that the equations $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$ and $\llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$ hold.
     
@@ -210,9 +210,9 @@ To avoid getting lost in a fog of symbols, we will leave our property as $P(e)$ 
     In each inductive case, we may assume that the property we are trying to prove holds for _both_ sub-expressions thanks to our induction principle.
     There are two induction hypotheses here as there are two sub-expression: one for $e_1$ and one for $e_2$.
     Therefore, we assume that both $P(e_1)$ and $P(e_2)$ hold.
-    These hypotheses state that, if $\sigma$ and $\sigma'$ are any two states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$, then $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$, and likewise for $e_2$.
+    These hypotheses state that, if $\sigma$ and $\sigma'$ are any two stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$, then $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$, and likewise for $e_2$.
 
-    To use these hypotheses, we need to make sure their conditions are met, i.e. that our $\sigma$ and $\sigma'$ are states such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$.
+    To use these hypotheses, we need to make sure their conditions are met, i.e. that our $\sigma$ and $\sigma'$ are stores such that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$.
     We already know that $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1 + e_2)$ as we made this assumption earlier on.
     And, as $\mathsf{FV}(e_1 + e_2) = \mathsf{FV}(e_1) \cup \mathsf{FV}(e_2)$, we also know $\sigma(y) = \sigma'(y)$ for all $y \in \mathsf{FV}(e_1)$ and for all $y \in \mathsf{FV}(e_2)$.
     Thus, the conditions of our induction hypotheses are satisfied, and we can use the induction hypotheses to conclude that $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma')$ and $\llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) = \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma')$.
