@@ -6,4 +6,4 @@ has_children:  true
 nav_exclude: true
 ---
 
-## Slides for Weeks 1-4
+## Slides
