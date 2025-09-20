@@ -81,7 +81,7 @@ Let's start with the rules for skip, assignment, and composition: -->
     These have to be instantiated with a concrete variable, a concrete arithmetic expression, and a concrete store to get concrete instances of this rule.
     
     For example, the rule implies that $\langle x \leftarrow (x + 1),\, [x \mapsto 2] \rangle \rightarrow [x \mapsto 3]$ where we have instantiated the rule with the variable $x$, the arithmetic expression $x + 1$, and the store $[x \mapsto 2]$.
-    The store $[x \mapsto 3]$ is determined as $[x \mapsto 2]$ updated such that $x \mapsto \llbracket x + 1 \rrangle_\mathcal{A}([x \mapsto 2])$; hence, $[x \mapsto 3]$.
+    The store $[x \mapsto 3]$ is determined as $[x \mapsto 2]$ updated such that $x \mapsto \llbracket x + 1 \rangle_\mathcal{A}([x \mapsto 2])$; hence, $[x \mapsto 3]$.
     Note that the evaluation of the arithmetic expression doesn't constitute an execution step in its own right - our operational semantics only cares about the evolution of statements.
   
 ## Composition
@@ -93,13 +93,13 @@ As we are considering small-step semantics, however, it may be the case that $S_
 So there are two rules for composition - one for when $S_1$ steps to another non-terminal configuration and one for when it steps to a terminal configuration:
 
  - $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \langle S_1';\; S_2,\, \sigma' \rangle$ whenever 
-    $\langle S_1,\, \sigma \rangle$ \rightarrow \langle S_1',\, \sigma' \rangle
+    $\langle S_1,\, \sigma \rangle$ \rightarrow \langle S_1',\, \sigma' \rangle$
 
     This rule says that if the relation $\rightarrow$ includes the pair $(\langle S_1,\, \sigma \rangle,\, \langle S_1',\, \sigma' \rangle)$ then it will also include the pair $(\langle S_1; S_2,\, \sigma \rangle,\, \langle S_1';\; S_2,\, \sigma' \rangle)$.
     Intuitively, if $S_1$ makes a step to $S_1'$ with the store $\sigma$ evolving to $\sigma'$ across this step, then the compound statement $S_1;\; S_2$ will step to $S_1';\; S_2$ with the store $\sigma$ evolving to $\sigma'$.
 
   - $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \langle S_2,\, \sigma' \rangle$ whenever 
-    $\langle S_1,\, \sigma \rangle$ \rightarrow \sigma'
+    $\langle S_1,\, \sigma \rangle$ \rightarrow \sigma'$
 
     The second rule applies when the first statement $S_1$ steps to a terminal configuration.
     Its execution has been completed, and the program moves onto $S_2$ with the updated store $\sigma'$. 
@@ -121,7 +121,6 @@ But programs don't just take one step - they take many, and so capture the notio
 <div class="defn" markdown="1">
 A __trace__ is a sequence of configurations $\gamma_1,\, \gamma_2 \cdots$ such that $\gamma_i \rightarrow \gamma_{i+1}$ for all $i \geq 0$.
 A trace may be finite or infinite.
-
 We typically write a trace as $\gamma_1 \rightarrow \gamma_2 \rightarrow \cdots$.
 </div>
 
@@ -154,7 +153,7 @@ So, for instance, we may write $\langle x \leftarrow 2; x \leftarrow 3,\, [x \ma
 
 ## If and While
 
-The behaviour of the \textsf{if}-\textsf{then} construct is naturally conditional on whether the branch condition (i.e.\ the Boolean expression) evaluates to true or false under the current store.
+The behaviour of the if-then construct is naturally conditional on whether the branch condition (i.e.\ the Boolean expression) evaluates to true or false under the current store.
 Therefore, there are two rules for such statements:
 
  - $\langle \mathsf{if}\ b\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \rangle \rightarrow \langle S_1,\, \sigma \rangle$ if $\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$.
@@ -166,12 +165,12 @@ Therefore, there are two rules for such statements:
 
   Conversely, when the branch condition $b$ evaluates to false, we transition in a single step to the second branch $S_2$.
 
-Similarly, the behaviour of the \textsf{while}-\textsf{do} construct depends on whether the branch condition is met or not, and thus there are two rules:
+Similarly, the behaviour of the while-do construct depends on whether the branch condition is met or not, and thus there are two rules:
 
  - $\langle \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \sigma$ if $\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$.
 
   Under the first rule, when the branch condition is not met, we transition to a terminal configuration with the same store.
-  Compare this rule to that of \textsf{skip} - if the branch condition is not met, the \textsf{while}-\textsf{do} construct does nothing.
+  Compare this rule to that of skip - if the branch condition is not met, the while-do construct does nothing.
 
 - $\langle \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \langle S;\; \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle$ if $\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$.
 
@@ -182,14 +181,20 @@ Let's consider an example program $\mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \l
 Initially, the branch condition is met and so the program will execute by unfolding the loop:
 
 $$
-  \langle \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle \rightarrow \langle x \leftarrow x + 1;\; \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle
+  \begin{array}{l}
+    \langle \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle \\
+    \quad \rightarrow \langle x \leftarrow x + 1;\; \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle
+  \end{array}
 $$
 
 Now we have reached a configuration where the statement is a composition.
 As the first statement $x \leftarrow x + 1$ will reach a terminal configuration in one-step, in particular $\langle x \leftarrow x + 1,\, [x \mapsto 0] \rangle \rightarrow [x \mapsto 1]$, our next step will return to the loop with the updated store:
 
 $$
-  \langle x \leftarrow x + 1;\; \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle \rightarrow \langle \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 1] \rangle
+  \begin{array}{l}
+    \langle x \leftarrow x + 1;\; \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 0] \rangle \\
+    \quad \rightarrow \langle \mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1,\, [x \mapsto 1] \rangle
+  \end{array}
 $$
 
 As the branch condition is still satisfied, this process will repeat an additional time:
