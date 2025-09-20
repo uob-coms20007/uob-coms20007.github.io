@@ -22,6 +22,8 @@ Links to the problem sheets and their solutions will appear here as the unit pro
 
 Each week there will be exactly one theory problem sheet and at most one practical problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
 
+Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk0.pdf" target="_blank">Brischeme</a>
+
 <table class="schedule">
   <thead>
     <tr> 
