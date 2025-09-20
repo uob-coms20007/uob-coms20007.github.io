@@ -12,7 +12,7 @@ This 20cp unit introduces you to some of the fundamentals of programming languag
   * *Semantics*: how to describe how valid programs in the given language behave when executed.
   * *Computability*: how to show that certain functions are or are not possible to implement in the given language, or in any programming language. 
 
-This unit gives you a taster of several important topics in theoretical computer science: [Programming Language Theory](https://en.wikipedia.org/wiki/Programming_language_theory), [Theory of Formal Languages](https://en.wikipedia.org/wiki/Formal_language) and [Computability Theory](https://en.wikipedia.org/wiki/Computability_theory). It prepares you for courses in the programming languages theme in your third and fourth year, especially *COMS30040: Types and Lambda Calculus* and *COMSM0067: Advanced Topics in Programming Languages*.
+This unit gives you a taster of several important topics in theoretical computer science: [Programming Language Theory](https://en.wikipedia.org/wiki/Programming_language_theory), [Theory of Formal Languages](https://en.wikipedia.org/wiki/Formal_language) and [Computability Theory](https://en.wikipedia.org/wiki/Computability_theory). It prepares you for courses related to the programming languages theme in your third and fourth year, especially *COMS30040: Types and Lambda Calculus*, *COMSM0067: Advanced Topics in Programming Languages* and also *COMS30023: Cryptology*.
 
 ## :mortar_board: Academic Staff
 
