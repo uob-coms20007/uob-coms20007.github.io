@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 9. Wild Grammars
-nav_order: 9
+title: 8. Wild Grammars
+nav_order: 8
 ---
 
 * Grammar for C at [microsoft.com](https://learn.microsoft.com/en-us/cpp/c-language/phrase-structure-grammar?view=msvc-170)
