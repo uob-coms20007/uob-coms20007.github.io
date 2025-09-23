@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 9. Hask Appl
-nav_order: 9
+title: 11. Hask Appl
+nav_order: 11
 ---
 
 $$
