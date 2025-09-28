@@ -81,25 +81,25 @@ Let's start with the rules for skip, assignment, and composition: -->
     These have to be instantiated with a concrete variable, a concrete arithmetic expression, and a concrete store to get concrete instances of this rule.
     
     For example, the rule implies that $\langle x \leftarrow (x + 1),\, [x \mapsto 2] \rangle \rightarrow [x \mapsto 3]$ where we have instantiated the rule with the variable $x$, the arithmetic expression $x + 1$, and the store $[x \mapsto 2]$.
-    The store $[x \mapsto 3]$ is determined as $[x \mapsto 2]$ updated such that $x \mapsto \llbracket x + 1 \rangle_\mathcal{A}([x \mapsto 2])$; hence, $[x \mapsto 3]$.
+    The store $[x \mapsto 3]$ is determined as $[x \mapsto 2]$ updated such that $x \mapsto \llbracket x + 1 \rrbracket_\mathcal{A}([x \mapsto 2])$; hence, $[x \mapsto 3]$.
     Note that the evaluation of the arithmetic expression doesn't constitute an execution step in its own right - our operational semantics only cares about the evolution of statements.
   
-## Composition
+## Sequence
 
-The next set of rules we will look at are those governing the operational semantics of composition $S_1;\; S_2$.
+The next set of rules we will look at are those governing the operational semantics of the sequence construct $S_1;\; S_2$.
 Intuitively, such program proceed by first executing $S_1$ and then subsequently executing $S_2$.
 
 As we are considering small-step semantics, however, it may be the case that $S_1$ executes over several steps (or indeed never terminates).
-So there are two rules for composition - one for when $S_1$ steps to another non-terminal configuration and one for when it steps to a terminal configuration:
+So there are two rules for sequence - one for when $S_1$ steps to another non-terminal configuration and one for when it steps to a terminal configuration:
 
  - $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \langle S_1';\; S_2,\, \sigma' \rangle$ whenever 
-    $\langle S_1,\, \sigma \rangle$ \rightarrow \langle S_1',\, \sigma' \rangle$
+    $\langle S_1,\, \sigma \rangle \rightarrow \langle S_1',\, \sigma' \rangle$
 
     This rule says that if the relation $\rightarrow$ includes the pair $(\langle S_1,\, \sigma \rangle,\, \langle S_1',\, \sigma' \rangle)$ then it will also include the pair $(\langle S_1; S_2,\, \sigma \rangle,\, \langle S_1';\; S_2,\, \sigma' \rangle)$.
     Intuitively, if $S_1$ makes a step to $S_1'$ with the store $\sigma$ evolving to $\sigma'$ across this step, then the compound statement $S_1;\; S_2$ will step to $S_1';\; S_2$ with the store $\sigma$ evolving to $\sigma'$.
 
   - $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \langle S_2,\, \sigma' \rangle$ whenever 
-    $\langle S_1,\, \sigma \rangle$ \rightarrow \sigma'$
+    $\langle S_1,\, \sigma \rangle \rightarrow \sigma'$
 
     The second rule applies when the first statement $S_1$ steps to a terminal configuration.
     Its execution has been completed, and the program moves onto $S_2$ with the updated store $\sigma'$. 
@@ -107,7 +107,7 @@ So there are two rules for composition - one for when $S_1$ steps to another non
 As with the previous rules, these rules apply for all statements $S_1,\, S_2 \in S$ and all stores $\sigma,\, \sigma',\, \sigma'' \in \mathsf{Store}$ - these are the rules metavariables.
 In order to use this rule, however, we need not only to instantiate metavariables but to find another instance of the $\rightarrow$ that determine the behaviour of the statements $S_1$.
 Once we have done so, we can derive a new step for the compound statement $S_1 ; S_2$.
-For example, if we already know that $\langle x \leftarrow 2,\, [x \mapsto 1] \rangle \rightarrow [x \mapsto 2]$, then we can conclude that:
+For example, as we know that $\langle x \leftarrow 2,\, [x \mapsto 1] \rangle \rightarrow [x \mapsto 2]$, we can conclude that:
 $$
   \langle x \leftarrow 2; x \leftarrow 3,\, [x \mapsto 1] \rangle \rightarrow \langle x \leftarrow 3,\, [x \mapsto 2] \rangle
 $$
@@ -175,7 +175,7 @@ Similarly, the behaviour of the while-do construct depends on whether the branch
 - $\langle \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \langle S;\; \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle$ if $\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$.
 
   If, on the other hand, the branch condition is met, the while loop is "unfolded".
-  After unfolding the loop, the statement of the new configuration is a composition of the body of the loop and the loop itself; in this way, any subsequent steps will execute the body of the loop, and then revisit the loop itself and perhaps unfold it further.
+  After unfolding the loop, the statement of the new configuration is a sequence of the body of the loop and the loop itself; in this way, any subsequent steps will execute the body of the loop, and then revisit the loop itself and perhaps unfold it further.
 
 Let's consider an example program $\mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1$ and an initial store $[x \mapsto 0]$ to get a sense of how this works in practice.
 Initially, the branch condition is met and so the program will execute by unfolding the loop:
@@ -187,7 +187,7 @@ $$
   \end{array}
 $$
 
-Now we have reached a configuration where the statement is a composition.
+Now we have reached a configuration where the statement is a sequence.
 As the first statement $x \leftarrow x + 1$ will reach a terminal configuration in one-step, in particular $\langle x \leftarrow x + 1,\, [x \mapsto 0] \rangle \rightarrow [x \mapsto 1]$, our next step will return to the loop with the updated store:
 
 $$

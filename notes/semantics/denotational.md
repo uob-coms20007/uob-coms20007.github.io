@@ -9,6 +9,8 @@ parent: Semantics
 # Denotational Semantics
 
 In the semantics part of this unit, we will be looking at how programs in an imperative programming language known as the "While language" can be given formal mathematical meanings (i.e. semantics) and how this can be used to reason about programs.
+Although this language is very simple, and doesn't have all the features you would expect of a general-purpose programming language, the fundamental aspects of programming language semantics are still present.
+
 This week, we will look at the semantics of its arithmetic and Boolean expressions using _denotational semantics_.
 Denotational semantics is a way of formally giving meaning to programs by relating them to mathematical objects.
 In doing so, we can translate our knowledge of these mathematical objects back onto the programs we are studying.
