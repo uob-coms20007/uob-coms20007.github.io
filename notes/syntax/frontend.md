@@ -13,17 +13,19 @@ There are many software tools that process some kind of programming language.  C
 
 Typically, the part of the software that is responsible for reading the text and constructing some internal representation of its structure is called a *frontend*.  There is no one way to organise a front-end but, in practice, most frontends adopt a certain architecture which makes this complicated task a bit easier.
 
-The aim of this lecture is to illustrate this architecture and its first component using the Brischeme interpreter frontend as an example.
+The aim of this lecture is to illustrate this architecture and its first component using the [Brischeme interpreter](../../questions/cwk0.pdf) frontend as an example.
 
 # The Brischeme Interpreter
 
-The Brischeme interpreter is a tool for reading Brischeme code and executing it.  The interpreter has three components, the _lexer_, the _parser_ and the _evaluator_.  The lexer and the parser together constitute the frontend: their  responsibility is to take a string of text as input and construct the corresponding internal representation of its structure.
+The Brischeme interpreter is a tool for reading Brischeme code and executing it.  The practical exercises this week will involve you getting the source code for the interpreter and extending it in various ways.  
+
+The interpreter has three components, the _lexer_, the _parser_ and the _evaluator_.  The lexer and the parser together constitute the frontend: their  responsibility is to take a string of text as input and construct the corresponding internal representation of its structure.
 
 <img src="../../assets/syntax/brischeme_interpreter.png" style="max-width:600px;"/>
 
 The input to the frontend is some text, a string.  The output is a representation of the structure conveyed by that sequence of characters.  In the case of the Brischeme interpreter it is an Abstract Syntax Tree (AST).  We will discuss ASTs in more detail in Week 4 but, for now, you should just think of an AST as a tree data structure which is convenient as an in-memory representation of the program contained in that input string.
 
-In the Brischeme interpreter, this datatype is defined as follows:
+In the Brischeme interpreter, the datatype for ASTs is defined as the following variant type:
 ```ocaml
 (** A [sexp] is an expression to be evaluated. *)
 type sexp =
@@ -31,12 +33,12 @@ type sexp =
   | Bool of bool
   | Num of int
   | Ident of string
-  | Lambda of var list * sexp
+  | Lambda of string list * sexp
   | Call of primop * sexp list
   | App of sexp * sexp list
 ```
 
-The type `var` is merely a synonym for `string`, so a `var list`, which appears in the constructor for `Lambda` is just a list of strings - the parameter names for the function.  The type `primop` is an enumeration of all the _primitive_ (i.e. provided by the language rather than user-defined) operations:
+The type `primop` is an enumeration of all the _primitive_ (i.e. provided by the language rather than user-defined) operations:
 ```ocaml
 (** [primop] is an enumeration of the available primitive operations. *)
 type primop =
@@ -58,7 +60,7 @@ In the picture, the AST shown is the `sexp`{:.ocaml} given by:
 ```
 In general, given any value of a variant (algebraic) datatype, we can think of it as a tree whose nodes are labelled by constructors, and a parent has one child for each of its arguments (in this case we implicitly dismantle the list structure).
 
-Another example is the string `"((lambda (x) (* (+ x 1) x)) 3)"` is given as input, then the Brischeme interpreter will construct the following in-memory representation:
+Another example: if the string `"((lambda (x) (* (+ x 1) x)) 3)"` is given as input, then the Brischeme interpreter will construct the following in-memory representation:
 ```ocaml
   App (
     Lambda (
@@ -71,25 +73,35 @@ Another example is the string `"((lambda (x) (* (+ x 1) x)) 3)"` is given as inp
 
 ## The Lexer
 
-So far, we have been using grammars to define languages under a very convenient assumption: namely that whitespace is ignored for the purpose of deriving strings.  Whitespace is used in the grammar to seperate consecutive elements of the sentential form on the right-hand side of a rule.  For example, in the Brischeme grammar, there is a space between the left parenthesis and the keyword `define` in the first rule for `Form` but, formally, there is no space there in the derived string.  It is only there so that we can read the grammar more easily.  In fact, if we stop ignoring whitespace for a moment, the string `"(define x 3)"` that we derived from the Brischeme grammar in ... is more properly `"(definex3)"`.  
+So far, we have been using grammars to define languages under a very convenient assumption: namely that whitespace is ignored for the purpose of deriving strings.  Whitespace is used in the grammar to seperate consecutive elements of the sentential form on the right-hand side of a rule.  For example, here is an extract of a grammar for Brischeme:
 
-This is a bit of a problem in practice, because whitespace is actually extremely important.  Without whitespace we would not be able to tell that `"(definex3)"` is really a _define form_ at all, it could be a define form (essentially by the derivation sequence of the previous part): 
+$$
+      \begin{array}{rcl}
+        \nt{Prog} &::=& \nt{Form}^*\\[1mm]
+        \nt{Form} &::=& \nt{SExpr} \mid (\ \tm{define}\ \nt{Ident}\ \nt{SExpr}\ )\\[1mm]
+        \nt{SExpr} &::=& \nt{Num} \mid (\ \nt{Ident}\ \nt{SExpr}^*\ ) \mid \ldots \\[1mm]
+        \nt{Ident} &::=& \ldots\\[1mm]
+        \nt{Num} &::=& \ldots
+      \end{array}
+$$
+
+Without going into all the details, the idea is that a Brischeme program is a sequence of _forms_ and that each form is either an expression to be evaluated or the definition of an identifier.  For example, the string `"(define x 3)"` should constitute a form which, when evaluated has the effect of assigning the name `x` to the value `3`.
 
 $$
   \begin{array}{rll}
-    \nt{Form} &\to& \nt{SExpr} \\
-              &\to& (\ \tm{define}\ \nt{Ident}\ \nt{SExpr}\ ) \\
+    \nt{Form} &\to& (\ \tm{define}\ \nt{Ident}\ \nt{SExpr}\ ) \\
               &\to& (\ \tm{define}\ \nt{Ident}\ \nt{Num}\ ) \\
-              &\to^*& (\ \tm{define}\ \tm{x}\ \tm{3} )
+              &\to^*& (\ \tm{define}\ \tm{x}\ \tm{3}\ )
   \end{array}
 $$
 
-However, it could also be a function call of the function named by the identifier `definex3` applied to no arguments.  Or it could be a function call of the function named by the identifier `def` to 4 arguments `i`, `ne`, `x` and `3`.  All of these possibilities (and more) are allowed by the grammar we gave in ...  For example:
+Notice there is a space between the left parenthesis and the keyword `define` in the first rule for `Form` but, formally, there is no space there in the derived string.  It is only there so that we can read the grammar more easily.  In fact, if we really stop ignoring whitespace for a moment, the string `"(define x 3)"` that we derived from the Brischeme grammar above is more properly `"(definex3)"`.  
+
+This is a bit of a problem in practice, because whitespace is actually extremely important.  Without whitespace we would not be able to tell that `"(definex3)"` is really a _define form_ at all, it could be a define form by the derivation just given above.  However, it could also be a function call of the function named by the identifier `definex` applied to one argument, `3`.  Or it could be a function call of the function named by the identifier `def` to 4 arguments `i`, `ne`, `x` and `3`.  All of these possibilities (and more) are allowed by the grammar we gave in ...  For example:
 
 $$
   \begin{array}{rll}
-    \nt{Form} &\to& \nt{SExpr} \\
-              &\to& (\ \nt{SExpr}\ \nt{SExpr}^*\ ) \\
+        \nt{Form} &\to& \nt{SExpr} \\
               &\to& (\ \nt{Ident}\ \nt{SExpr}^*\ ) \\
               &\to& (\ \nt{Ident}\ \nt{SExpr}\ \nt{SExpr}\ \nt{SExpr}\ \nt{SExpr}\ ) \\
               &\to& (\ \nt{Ident}\ \nt{Ident}\ \nt{Ident}\ \nt{Ident}\ \nt{Num}\ ) \\
@@ -118,7 +130,7 @@ For example, now taking whitespace into account, the string `"(define foo (+ 2 1
 
 | ( | define | foo | ( | + | 2 | 1 | ) | ) | 
 
-Hopefully this illustrates the sense of _smallest_ meaningful substrings.  One can argue that the subsequence `(+ 2 1)` is a meaningful substring, but it is not minimal since we can further break it down into the lexemes `(`, `+`, `2`, `1` and `)`, each of which is (arguably) meaningful in its own right.  On the other hand, the substring `in` should not be considered a meaningful part of `define`.
+Hopefully this illustrates the sense of _smallest_ meaningful substrings.  One can argue that the subsequence `(+ 2 1)` is a meaningful substring: this is how you write "add 2 to 1" in Brischeme.   However it is not minimal since we can further break it down into `(`, `+`, `2`, `1` and `)`, each of which is (arguably) meaningful in its own right.  On the other hand, the substring `in` should not be considered a meaningful part of `define`.
 
 In fact there is no absolute definition of what constitutes a lexeme, but rather this is a choice made when designing the language, and the description of what the language designer chose (along with how the lexemes are classified) is called the _lexical structure_ of the language.  
 
@@ -133,7 +145,7 @@ For _Brischeme_, the lexemes are the largest substrings not containing whitespac
   * Any non-empty sequence of digits 0-9, and the substrings `#t` and `#f` are **literals** (number literals and Boolean literals respectively). 
   * Any non-empty substring, not falling into one of the above classes, that: 
       - begins with a lowercase letter of the English alphabet
-      - proceeds with letters that are either lower or upper case letters of the English alphabet, the underscore, an exclamation mark or a question mark
+      - proceeds with letters that are either lower or upper case letters of the English alphabet, the underscore, an exclamation mark, a question mark or digits
   
       is an **ident** (identifier).
 
