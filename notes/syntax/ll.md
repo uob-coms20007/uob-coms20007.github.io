@@ -245,7 +245,7 @@ $$
 
 ending with a sentential form that has some prefix of terminal symbols $b_1\ b_2 \cdots{} b_{k-1}$ followed by a non-terminal $X$ followed by some other stuff $\gamma$.  If we've been crossing off letters have already been derived from the input string, then we are left aiming to derive next the letter $b_k$.
 
-<img src="../assets/syntax/matched-prefix.png" style="max-width:400px;"/>
+<img src="../../assets/syntax/matched-prefix.png" style="max-width:400px;"/>
 
 Suppose the grammar contains several production rules for nonterminal $X$.  Which should we choose?
 

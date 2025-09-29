@@ -52,7 +52,7 @@ Once you have an LL(1) parsing table, it is straightforward to implement a kind 
 
 In the Brischeme interpreter, the parser is responsible for converting a list of tokens into an abstract syntax tree, according to the grammar of the language.  
 
-<img src="../assets/syntax/parser.png" style="max-width:500px;"/>
+<img src="../../assets/syntax/parser.png" style="max-width:500px;"/>
 
 Recall that a token combines a classification of a lexeme (a kind of minimal meaningful substring of the input) along with, optionally, the lexeme itself.  The tokens for Brischeme were defined as follows:
 

@@ -43,19 +43,19 @@ We can show that $\tt \orop \tt \andop \ff$ is derivable in this grammar, by bui
 
 Now, we can choose any production to apply to this $B$.  Suppose we choose $B \Coloneqq B \andop B$.  Rather than making a step by replacing $B$ by its right-hand side, instead we place the right-hand side of the production as the children of $B$.  Each symbol is a child node and the tree is ordered, so the children need to be in the same left-to-right order.
 
-<img src="../assets/syntax/parse_tree1.png" width="400px">
+<img src="../../assets/syntax/parse_tree1.png" width="400px">
 
 We proceed by choosing any of the nonterminals at the leaves of this tree and adding children in the same way, according to some appropriate production rule.  For example, we can choose the leftmost leaf and add child nodes labelled $B$, $\orop$ and $B$, corresponding to the production $B \Coloneqq B \orop B$.
 
-<img src="../assets/syntax/parse_tree2.png" width="450px">
+<img src="../../assets/syntax/parse_tree2.png" width="450px">
 
 If, at some point, we run out of nonterminals in the leaves, then we have constructed a _parse tree_ and this parse tree witnesses the membership of the string spelled out in its leaves in the language described by the grammar.
 
-<img src="../assets/syntax/parse_tree3.png" width="500px">
+<img src="../../assets/syntax/parse_tree3.png" width="500px">
 
 Another example: we can use a parse tree to show that $\tt \andop \ff \orop \ff$ is in the grammar.
 
-<img src="../assets/syntax/parse_tree4.png" width="500px">
+<img src="../../assets/syntax/parse_tree4.png" width="500px">
 
 ## Context-Free Languages Can be Pumped
 
@@ -71,17 +71,17 @@ However, context-free grammars have no mechanism by which we can control their r
 
 To see this, consider I give you the following parse tree, but I _don't_ give you the grammar for which it is a parse tree, and I ask: what other words are derivable (equivalently, for which there is a parse tree) in this (unknown) grammar.
 
-<img src="../assets/syntax/parse_tree_repeat1.png" width="400px">
+<img src="../../assets/syntax/parse_tree_repeat1.png" width="400px">
 
 In fact, I can tell you infinitely many additional words that are in the language of this (unknown) grammar.  By looking at the parse tree, I can conclude that $Y \Coloneqq b\ Y$ must be a rule of the grammar and so must $Y \Coloneqq c$. 
 
 If we imagine how the given parse tree was constructed from root to leaves, the first time that nonterminal $Y$ was encountered the rule $Y \Coloneqq b\ Y$ was used, and the second time that nonterminal $Y$ was encountered the rule $Y \Coloneqq c$ was used.  However, it needn't have been that way.  We could have used the former, recursive rule, _again_ the second time we encountered $Y$ and then afterwards used the base case $Y \Coloneqq c$.
 
-<img src="../assets/syntax/parse_tree_repeat2.png" width="500px">
+<img src="../../assets/syntax/parse_tree_repeat2.png" width="500px">
 
 Indeed, we could have used the recursive rule 3 times, 4 times or more; in fact any number of times, including zero times:
 
-<img src="../assets/syntax/parse_tree_repeat0.png" width="300px">
+<img src="../../assets/syntax/parse_tree_repeat0.png" width="300px">
 
 That's because, unlike a programming language, which can tightly control recursion by using e.g. Boolean conditions or guards to enforce termination, a grammar has no way of enforcing how many times we explore the recursion and each of the infinity of different choices of how many recursive "calls" we make will potentially lead to us deriving a different word.
 
@@ -101,7 +101,7 @@ In general, whenever we know of a path in a parse tree from root to leaf in whic
 
 We can imagine taking a copy of the subtree underneath the second-to-last occurrence of the repeated nonterminal $Y$ and pasting it over the subtree under the last occurrence of $Y$, with the effect that we repeat $Y$ one more time than before.  
 
-<img src="../assets/syntax/parse_tree_surgery.png" width="700px">
+<img src="../../assets/syntax/parse_tree_surgery.png" width="700px">
 
 Now, let's see how this surgery has affected the word that is derived (the word that is spelled out in the leaves of the tree).  Of course, since we don't literally have the tree in front of us this time, we don't know precisely which word it is.  However, we can say something about its shape.  By finding these last two occurrences of the repeated nonterminal $Y$ in the tree, we can imagine the word split into five pieces $uvwxy$.  The piece $u$ consists of the terminal symbols at the leaves at the start of the word, and $y$ those at the end of the word: these are the prefix and suffix of terminals that derive from $S$ but do not derive from the penultimate or ultimate occurrences of $Y$.  Then $vwx$ is the substring that derives from the penultimate occurrence of $Y$ and, of that string, $w$ consists of the subsubstring derived from the final occurence of $Y$.
 
@@ -153,7 +153,7 @@ Now that we know its maximum length we can try to understand where $vwx$ occurs 
 
 *  Entirely inside the first prefix of $a$ symbols.  In this case, $uvvwxxy$ is the same but with a strictly longer prefix of $a$ symbols.  If $vw$ is of length, say $q > 0$, then the prefix of $a$ symbols will be of length $p+q$ in the new word.  Hence, it is _not_ of the form $ww$ for any $w$, and thus is _not_ in the language $R$.
 
-    <img src="../assets/syntax/word_surgery.png" width="700px">
+    <img src="../../assets/syntax/word_surgery.png" width="700px">
 
 * Entirely inside the first section of $b$ symbols.  In this case, $uvvwxxy$ is the same but with a strictly longer first section of $b$ symbols, but that is not of the form $ww$ and so cannot be in the language $R$.
 * Entirely inside the second section of $a$ symbols, or the second section of $b$ symbols: similar to the above.

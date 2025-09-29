@@ -81,7 +81,7 @@ The definition can be seen as interpreting (i.e. giving meaning to) underlined s
 For example, by applying these equations, we can see that the denotation $\llbracket \underline{1} \mathbin{\underline{\*}} (\underline{2} \mathbin{\underline{+}} \underline{3}) \rrbracket_{\mathcal{A}^{-}}$ equates to $5$.
 Notice that the equations are applied recursively in that the denotation of the expression $\underline{1} \mathbin{\underline{\*}} (\underline{2} \mathbin{\underline{-}} \underline{3})$ is calculated based on the denotation of the two sub-expressions $\underline{1}$ and $\underline{2} \mathbin{\underline{+}} \underline{3}$.
 
-<img src="../assets/semantics/simple-denotation.png" style="max-width:300px"/>
+<img src="../../assets/semantics/simple-denotation.png" style="max-width:300px"/>
 
 This may all seem a bit pedantic, and like a lot of unnecessary work, but this simple example highlights the essential ingredients of denotational semantics:
 
@@ -158,7 +158,7 @@ The denotation $\llbracket x \mathbin{\underline{*}} \underline{2} \rrbracket_A(
 To evaluate this further, we need to know the value $\sigma$ assigns to $x$.
 If we take $\sigma$ to be the store $[x \mapsto 2]$, then the denotation of our expression ultimately evaluates to $4$.
 
-<img src="../assets/semantics/arithmetic-denotation.png" style="max-width:300px"/>
+<img src="../../assets/semantics/arithmetic-denotation.png" style="max-width:300px"/>
 
 ## Boolean Expressions
 
@@ -199,7 +199,7 @@ Notice additionally that we are using the denotation function for arithmetic exp
 For example, the following application of the denotation function for Boolean expressions depends on the denotation of arithmetic expressions.
 Here we use a flat representation of expressions, although they are still to be interpreted as abstract syntax trees.
 
-<img src="../assets/semantics/boolean-denotation.png" style="max-width:300px"/>
+<img src="../../assets/semantics/boolean-denotation.png" style="max-width:300px"/>
 
 ## Semantic Equivalence
 

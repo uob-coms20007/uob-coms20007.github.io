@@ -14,7 +14,7 @@ Of course, we could just use the string itself as out internal representation.  
 
 Our Boolean expressions of the previous lecture naturally have a tree structure.  The expression `false && (true || false)` can be understood as the tree:
 
-<img src="../assets/syntax/and-of-or.png" style="max-width:400px;"/>
+<img src="../../assets/syntax/and-of-or.png" style="max-width:400px;"/>
 
 Notice that, in the abstract syntax tree, we have discarded the parentheses that were around the subexpression `true || false`.  The parentheses serve only to describe the structure that is already present in the tree, namely that the right-hand argument to `&&` is `true || true`.
 
@@ -22,7 +22,7 @@ The way to think about abstract syntax trees is as follows.  A given node descri
 
 Expressions of all kinds have a very natural tree structure which we are, to some extent, already used to from school mathematics.  However, with understanding of the previous paragraph, we can see that all kinds of program constructs can be naturally endowed with tree structure.  For example, we may represent the following concrete syntax (i.e. string) `while true do {x:= x * n; y:= y - 1}` by the following AST:
 
-<img src="../assets/syntax/ast-while.png" style="max-width:500px;"/>
+<img src="../../assets/syntax/ast-while.png" style="max-width:500px;"/>
 
 In other words, this piece of syntax is a while loop, which has two components, the guard `true` and the body `x:=x*n; y:=y-1`.  The body is itself a sequencing statement which has two components, the first expression in the sequence, `x:=x*n` and the second `y:=y-1`.  Each of these is an assignment statement and assignment statements have two components, the variable being assigned to and the expression whose value should be assigned, etc.
 
@@ -114,7 +114,7 @@ The values of these datatypes are, of course, those OCaml expressions that can b
 
 but generally it is a good idea to think of these values really as describing trees in which the arguments to a constructor form its children:
 
- <img src="../assets/syntax/brischeme-ast.png" style="max-width:500px;"/>
+ <img src="../../assets/syntax/brischeme-ast.png" style="max-width:500px;"/>
 
 In fact, when functional programmers write libraries, say a new library for X, they will often think that they are really designing a _language_ for describing X-things (and their principle operations), and the key data type for X-things describes their abstract syntax.
 
@@ -167,7 +167,7 @@ There is a different phenomenon at play in such examples, which is called _opera
 
 In terms of the abstract syntax trees that we want to construct, we therefore want a string like $4 * 5 + 3$ to yield:
 
-<img src="../assets/syntax/plus-of-times.png" style="max-width:300px">
+<img src="../../assets/syntax/plus-of-times.png" style="max-width:300px">
 
 Unfortunately, this is a bit difficult to achieve without designing it into the grammar specifically.  Following the approach of the previous lecture for obtaining LL(1) grammars, we would construct a grammar for * and + expressions such as:
 
@@ -222,7 +222,7 @@ $$
 
 <!-- In this grammar, there is only one parse tree for the string $\mathsf{true} \orop \mathsf{true} \andop \mathsf{false}$, which is:
 
-<img src="../assets/syntax/stratified-bool.png" style="max-width:400px;"/> -->
+<img src="../../assets/syntax/stratified-bool.png" style="max-width:400px;"/> -->
 
 If we want an expression that represents a factor, one of whose arguments is itself an addition, then we must use parentheses explicitly in the string, as in $(3 + 4) * 5$.
 

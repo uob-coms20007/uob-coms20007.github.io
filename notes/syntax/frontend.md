@@ -19,7 +19,7 @@ The aim of this lecture is to illustrate this architecture and its first compone
 
 The Brischeme interpreter is a tool for reading Brischeme code and executing it.  The interpreter has three components, the _lexer_, the _parser_ and the _evaluator_.  The lexer and the parser together constitute the frontend: their  responsibility is to take a string of text as input and construct the corresponding internal representation of its structure.
 
-<img src="../assets/syntax/brischeme_interpreter.png" style="max-width:600px;"/>
+<img src="../../assets/syntax/brischeme_interpreter.png" style="max-width:600px;"/>
 
 The input to the frontend is some text, a string.  The output is a representation of the structure conveyed by that sequence of characters.  In the case of the Brischeme interpreter it is an Abstract Syntax Tree (AST).  We will discuss ASTs in more detail in Week 4 but, for now, you should just think of an AST as a tree data structure which is convenient as an in-memory representation of the program contained in that input string.
 
