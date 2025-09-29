@@ -23,11 +23,12 @@ Instead, it is much easier to specify what is known as _pre-conditions_ and _pos
 These conditions allow us to abstract away details of specific individual configuration and focus on what must hold of the store initially (the pre-condition) and, when it does, what holds after the program terminates (the post-condition).
 
 <div class="defn" markdown="1">
-  Given two Boolean expresisons $$p,\, q \in \mathcal{B}$$ and a statement $$S \in \mathcal{S}$$, we write $$$\{ p \}\ S\ \{ q \}$$ to indicate that:
+  Given two Boolean expresisons $$p,\, q \in \mathcal{B}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ p \}\ S\ \{ q \}$$ to indicate that:
 
   $$
-  \text{if}\ \llbracket p \rrbracket_\mathcal{B}(\sigma) = \top\ \text{and}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma'\ \text{then}\ \llbracket q \rrbracket_\mathcal{B}(\sigma') 
-  $$ 
+    \text{if}\ \llbracket p \rrbracket_\mathcal{B}(\sigma) = \top\ \text{and}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma'\ \text{then}\ \llbracket q \rrbracket_\mathcal{B}(\sigma') 
+  $$
+
   for any store $$\sigma \in \mathsf{Store}$$.
 
   This is referred to as a _Hoare triple_.
@@ -63,14 +64,28 @@ For simplicity, we are re-use Boolean expressions as our assertion language that
 One of the advantages of considering pre- and post-conditions over manually proving correctness by deferring to traces, is that we can combine pre- and post-conditions using certain rules (this is what we mean by _composing_ triples).
 Using these rules, we can analyse individual parts of the program separately, without regard for the context in which they appear, and then later combine these summaries - a very useful feature to have when programs and their dependencies reach across hundreds of file, not all of which are available!
 
-### Skip Rule: $$\{ p \}\ \mathsf{skip}\ \{ p \}$$
+### Skip Rule:
+
+$$
+  \dfrac
+  {\{ p \}\ \mathsf{skip}\ \{ p \}}
+$$
 
 Somewhat predictably, the summary of the skip command tells us that the store doesn't change when executing this command.
 Therefore, the pre- and post-conditions are the same; if executed with a store $$\sigma \in \mathsf{Store}$$ such that $$\llbracket p \rrbracket_\mathcal{B}(\sigma) = \top$$, then any terminal store will also satisfy $$p$$ in this way.
-As with the small-step semantics, $$p \in \mathcal{B}$$ here isn't a fixed assertion, but rather this rule can be applied to any assertion we are interested.
-The same is true for any subsequent rule we will look at.
 
-### Assignment Rule: $$\{ p[e/x] \}\ x \leftarrow e\ \{ p \}$$
+The notation we are using here is a general notation for inference rule: above the line is a series of _premises_ which we must show in order to use the rule, and below the line is the _conclusion_.
+In this case, there are no premises.
+As with the small-step semantics, $$p \in \mathcal{B}$$ here isn't a fixed assertion, but rather this rule can be applied to any assertion we are interested.
+The same structural for each of the subsequent rule we will look at.
+
+### Assignment Rule:
+
+$$
+  \dfrac
+  {}
+  {\{ p[e/x] \}\ x \leftarrow e\ \{ p \}}
+$$
 
 The notation $$p[e/x]$$ refers to the Boolean expression $$p \in \mathcal{B}$$ where the variable $$x$$ has been substituted for the arithmetic expression $$e$$ (see the problem sheet for details of this operation).
 For instance, if $$e$$ was $$x + 1$$ and $$p$$ was $$x > 1$$, then $$p[e/x]$$ would be $$x + 1 > 1$$.
@@ -82,31 +97,46 @@ For instance, this rule allows us to conclude that:
 
 $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$
 
-As $$(x > 1)[x + 1/x]$$ is the expression $$x + 1 > 1$$ that is equivalent to just $$x > 0$$ (i.e. as they denote the same set of stores).
+As $$(x > 1)[x + 1/x]$$ is just the expression $$x + 1 > 1$$, which is of course equivalent to $$x > 0$$ (as pre-conditions, they denote the same set of stores).
 
-### Sequence Rule: $$\{ p \}\ S_1;\; S_2\ \{ r \}$$ whenever $$\{ p \}\ S_1\ \{ q \}$$ and $$\{ q \}\ S_2\ \{ r \}$$
+As with the previous rule, there are no premises to this rule.
+
+### Sequence Rule:
+
+$$
+  \dfrac
+  {\{ p \}\ S_1\ \{ q \} \quad \{ q \}\ S_2\ \{ r \}}
+  {\{ p \}\ S_1;\; S_2\ \{ r \}}
+$$
 
 The rule for the sequence construct is where we start to see the compositionality of pre- and post-conditions.
-To derive a pre- and post-condition for such compound statements, we first identify a Hoare triple for each sub-statement $$S_1$$ and $$S_2$$ such that the post-condition for $$S_1$$ lines-up with the pre-condition of $$S_2$$, then the triple for the statement $$S_1;\; S_2$$ has the pre-condition of $$S_1$$ and the post-condition of $$S_2$$.
+To derive a pre- and post-condition for a sequence statement, we first identify a Hoare triple for each sub-statement $$S_1$$ and $$S_2$$ such that the post-condition for $$S_1$$ lines-up with the pre-condition of $$S_2$$, these serve as the premises of the rule.
+Then the derived Hoare triple for the compound statement $$S_1;\; S_2$$ has the pre-condition of $$S_1$$ and the post-condition of $$S_2$$.
 
 To see why this rule works, consider what the two assumptions tell us:
 
-  - As $$\{ P \}\ S_1\ \{ Q \}$$, we know that whenever $$\sigma \in P$$ and $$\langle S_1,\, \sigma \rangle \rightarrow^* \sigma'$$ then $$\sigma' \in Q$$.
+  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\llbracket p \rrbracket_\mathcal{B}(\sigma)$$ and $$\langle S_1,\, \sigma \rangle \rightarrow^* \sigma'$$ then $$\llbracket q \rrbracket_\mathcal{B}(\sigma')$$.
 
-  - Likewise, as $$\{ Q \}\ S_2\ \{ R \}$$, we know that whenever $$\sigma \in Q$$ and $$\langle S_2,\, \sigma \rangle \rightarrow^* \sigma'$$ then $$\sigma' \in R$$.
+  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\llbracket q \rrbracket_\mathcal{B}(\sigma)$$ and $$\langle S_2,\, \sigma \rangle \rightarrow^* \sigma'$$ then $$\llbracket r \rrbracket_\mathcal{B}(\sigma')$$.
 
-Now let us suppose we have some initial store $$\sigma_0 \in P$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_T$$.
+Now let us suppose we have some initial store $$\llbracket p \rrbracket_\mathcal{B}(\sigma_0)$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_T$$.
 By inspecting how this execution could proceed, we can see that $$S_1$$ will execute until it ultimately reaches some terminal configuration with the store $$\sigma_1$$, and so we have that $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \langle S_2,\, \sigma_1 \rangle$$.
 Subsequent $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_T$$.
 
-Thanks to the first Hoare triple, we know that $$\sigma_1 \in Q$$ - we have assumed that the initial store satisfies the pre-condition of $$S_1$$, i.e. $$\sigma_0 \in P$$, and so, after executing $$S_1$$, this intermediate store $$\sigma_1$$ will satisfy the post-condition $$Q$$.
+Thanks to the first Hoare triple, we know that $$\llbracket q \rrbracket_\mathcal{B}(\sigma_1)$$ - we have assumed that the initial store satisfies the pre-condition of $$S_1$$, i.e. $$\llbracket p \rrbracket_\mathcal{B}(\sigma_0)$$, and so, after executing $$S_1$$, this intermediate store $$\sigma_1$$ will satisfy the post-condition $$Q$$.
 More over, we can then use this fact to see that, as $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_T$$, the terminal store $$\sigma_T$$ must satisfy $$R$$ by virtue of the second Hoare triple.
-Thus making $$\{ P \}\ S_1;\; S_2\ \{ R \}$$ a valid Hoare triple.
+Thus making $$\{ p \}\ S_1;\; S_2\ \{ q \}$$ a valid Hoare triple.
 
 This particular rule illustrates the utility of considering Hoare triples as we don't have to consider the executing of the compound statement $$S_1;\; S_2$$ directly, but rather can derive our result from Hoare triples concerning each sub-statement.
 It is worth clarifying that the reasoning above explains why the rule works, but it is not necessary when using this rule.
 
-### Conditional Rule: $$\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}$$ whenever $$\{ e \andop p \}\ S_1\ \{ q \}$$ and $$\{ \mathop{!}e \andop p \}\ S_2\ \{ q \}$$.
+### Conditional Rule:
+
+$$
+  \dfrac
+  {\{ e \andop p \}\ S_1\ \{ q \} \quad \{ \mathop{!}e \andop p \}\ S_2\ \{ q \}}
+  {\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}}
+$$.
 
 The rule for the if-then-else construct is again an example of a compositional rule.
 To show that the Hoare triple $$\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}$$ holds, we split our reasoning according to the two branches.
@@ -128,11 +158,24 @@ There are two cases to consider:
 
 In either case, we have concluded that the post-condition $$q$$ will be met and thus this rule for contructing Hoare triples is correct.
 
-### While Rule: $$\{ p \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop p \}$$ whenever $$\{ e \andop p \}\ S\ \{ p \}$$.
+### While Rule:
+
+$$
+  \dfrac
+  {\{ e \andop p \}\ S\ \{ p \}}
+  {\{ p \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop p \}}
+$$
 
 We'll look at this rule in more detail in the next lecture.
 
-### Consequence/Subsumption Rule: $$\{ p \}\ S\ \{ q \}$$ whenever $$\{ p' \}\ S\ \{ q' \}$$ if $$\llbracket p \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p' \rrbracket_\mathcal{B}(\sigma)$$ and $$\llbracket q' \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket q \rrbracket_\mathcal{B}(\sigma)$$ for any $$\sigma \in \mathsf{Store}$$.
+### Consequence/Subsumption Rule: 
+
+$$
+  \dfrac
+  {\{ p' \}\ S\ \{ q' \}}
+  {\{ p \}\ S\ \{ q \}}
+  p \vDash p' \text{and}\ q' \vDash q
+$$
 
 Unlike the other rules we have seen so far, this rule doesn't involve any particular syntactic construct but rather works for an arbitrary statement.
 It allows us to weaken a strong claim $$\{ p' \}\ S\ \{ q' \}$$, into a more specific claim $$\{ p \}\ S\ \{ q \}$$ that may fit with our overall goal.
@@ -162,9 +205,8 @@ To answer this question, we will work backwards starting with the post-condition
 <div class="defn" markdown="1">
   For a given post-condition $$q \in \mathcal{B}$$ and a statement $$S \in \mathcal{S}$$, the weakest pre-condition is some assertion $$p \in \mathcal{B}$$ such that:
   
-    - $$\{ p \}\ S\ \{ q \}$$, i.e. the weakest pre-condition is indeed a pre-condition;
-
-    - And, if $$\{ p' \}\ S\ \{ q \}$$, then $$\llbracket p' \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p \rrbracket_\mathcal{B}(\sigma)$$ for any $$\sigma \in \mathsf{Store}$$ - that is, any other pre-condition is more specific.
+  - $$\{ p \}\ S\ \{ q \}$$, i.e. the weakest pre-condition is indeed a pre-condition;
+  - And, if $$\{ p' \}\ S\ \{ q \}$$, then $$\llbracket p' \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p \rrbracket_\mathcal{B}(\sigma)$$ for any $$\sigma \in \mathsf{Store}$$ - that is, any other pre-condition is more specific.
 
   We write $$\mathsf{wp}(S,\, q)$$ to denote the weakest pre-condition of some statement $$S$$ and some post-condition $$q$$.
 </div>
@@ -186,7 +228,7 @@ Although it is worth noting that when a set is not precisely described by a Bool
 
 The reason the weakest pre-condition is useful is that when we are tasked with assessing the validity of a given Hoare triple, e.g. $$\{ \top \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$, we can work out the weakest pre-condition and then we need only check whether the specified pre-condition is a stronger predicate than the weakest pre-condition, and if so we can apply the consequence rul;e to get the desired triple.
 
-So how are we gong to derive the weakest pre-condition for $$\{ \top \}\ x \leftarrow y,\, \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$?
+So how are we going to derive the weakest pre-condition $$\mathsf{wp}(x \leftarrow y,\, \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip},\, x \geq 0)$$?
 Well it just so happens that the basic rules we defined for each language construct (other than while) calculate their weakest pre-condition - they are the most precise claims we can make.
 Therefore, as long as we retain maximum generality when applying this rules, we can calculate the weakest pre-condition compositionally.
 
@@ -194,8 +236,7 @@ At the top-level, our statement is a sequence statemtn and thus we will apply th
 To do so, we must find some $p$ and $q$ such that:
 
   - $$\{ p \}\ x \leftarrow y\ \{ q \}$$
-
-  - And $$\{ q \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$.
+  - And, $$\{ q \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$.
 
 The weakest pre-condition will reflect the strength of the post-condition.
 For instance, if we have a trivially true post-condition, then the weakest pre-condition will also be trivially true, and if we have a trivially false post-condition, then the weakest pre-condition must ensure the statement never terminates.
@@ -210,9 +251,9 @@ $$
 Let us turn our attention, therefore, to the second statement.
 As this statement uses the if-then-else construct, we will apply the corresponding rule to decompose this objective into two simpler objectives:
 
-  - $$\{ x < 0 \andop q \}\ x \leftarrow 0 - x\ \{ x \geq 0 \}$$
-
-  - $$\{ \mathop{!}(x < 0) \andop q \}\ \mathsf{skip}\ \{ x \geq 0 \}$$
+$$
+  \{ x < 0 \andop q \}\ x \leftarrow 0 - x\ \{ x \geq 0 \}\ \text{and}\ \{ \mathop{!}(x < 0) \andop q \}\ \mathsf{skip}\ \{ x \geq 0 \}
+$$
 
 From which, we may infer $$\{ q \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$.
 
