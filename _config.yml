@@ -19,3 +19,6 @@ nav_external_links:
   - title: Replay
     url: https://www.ole.bris.ac.uk/auth-saml/saml/login?apId=_183_1&redirectUrl=https%3A%2F%2Fwww.ole.bris.ac.uk%2Fwebapps%2Fblackboard%2Fexecute%2Fblti%2FlaunchPlacement%3Fblti_placement_id%3D_3169_1%26course_id%3D_264158_1%26mode%3Dview%26wrapped%3Dtrue%26globalNavigation%3Dfalse
     opens_in_new_tab: true
+  - title: Help Forum
+    url: https://teams.microsoft.com/l/channel/19%3ApSxhf5hViQtLxNM7SJLv6Aqlkpn8YxymXy2xg7ekFR41%40thread.tacv2/General?groupId=9454975e-2a9a-4d4c-be14-4d889c7936b0&tenantId=b2e47f30-cd7d-4a4e-a5da-b18cf1a4151b
+    opens_in_new_tab: true
