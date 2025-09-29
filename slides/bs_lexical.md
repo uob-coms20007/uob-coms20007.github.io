@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 22. BS Lexical Struct
-nav_order: 22
+title: 32. BS Lexical Struct
+nav_order: 32
 ---
 
 For _Brischeme_, the lexemes are the largest substrings not containing whitespace that fall into one of the following classifications (classifications given in bold):

@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 18. BS Grammar
-nav_order: 18
+title: 28. BS Grammar
+nav_order: 28
 ---
 
 $$

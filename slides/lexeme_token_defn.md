@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 21. Lexemes
-nav_order: 21
+title: 31. Lexemes
+nav_order: 31
 ---
 
 {: .defn }

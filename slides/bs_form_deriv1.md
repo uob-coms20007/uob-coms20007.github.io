@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 19. BS Deriv 1
-nav_order: 19
+title: 29. BS Deriv 1
+nav_order: 29
 ---
 
 $$
