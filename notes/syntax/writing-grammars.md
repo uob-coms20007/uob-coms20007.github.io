@@ -141,7 +141,7 @@ The best way to understand a definition of some new assertion, in this case $\al
 
 First you would try, by comparing $\alpha$ and $\beta$, to check that the only difference between them is that some nonterminal in $\alpha$ is replaced in $\beta$ by some other bit of sentential form.  A way of saying "the only difference between them" more precisely is to say that both $\alpha$ and $\beta$ start with the same sentential form, lets call it $\gamma_1$, and end with the same sentential form, lets call that $\gamma_2$, but that the bit in between $\gamma_1$ and $\gamma_2$ can be different.  However, it can't be an any old difference.  The thing that changed in $\alpha$ must be a single solitary nonterminal symbol, say $X$, which was changed according to a production rule, say $X \Coloneqq \delta$, whose left-hand side is $X$.  Then it had better be that the bit that is different in $\beta$ is exactly the right-hand side of this production rule, i.e. $\delta$.
 
-<img src="../assets/syntax/step.png" style="max-width:600px;"/>
+<img src="../../assets/syntax/step.png" style="max-width:600px;"/>
 
 Note that, since $\epsilon$ is a sentential form - the empty sentential form - the definition allows for any of $\gamma_1$, $\gamma_2$ and $\delta$ to be omitted.  In the following example, we have $\gamma_1 = \gamma_2 = \epsilon$:
 
