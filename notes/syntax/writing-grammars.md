@@ -27,7 +27,7 @@ If you think back to the previous example, you will notice that a key part of th
 {: .defn }
 A __sentential form__ is just a finite sequence of letters, each of which is either a  terminal or a nonterminal.  We use lowercase greek letters $\alpha$, $\beta$, $\gamma$ and so on as metavariables for sentential forms.
 
-We will continue to reserve metavariables $u$, $v$, $w$ and so on for strings (of terminals only).
+The purpose of a grammar is to define a language of strings (e.g. a programming language), and here we mean strings of terminal symbols (only).  We will continue to reserve metavariables $u$, $v$, $w$ and so on for such strings (of terminals only).
 
 ### Metavariables
 We use metavariables when we want to state something that involves a string, or a sentential form that we don't want to specify concretely.  For example, we might say, "for all strings $u$, $$ \abs{u^2} \geq \abs{u} $$", or "given a sentential form of shape $\alpha 0 \beta$ (i.e. containing at least one letter $0$),...".  In other words we use them as ordinary mathematical variables in our reasoning about strings, or sentential forms.
@@ -118,7 +118,7 @@ Informally the "meaning" of the different nonterminals (sometimes called the syn
 
 There are quite a number of nonterminals, but there is a sense (which we will make more precise later) that the first three are really doing all the heavy lifting in the description of this language.  The latter seven non-terminals are just describing two things: the shape of numbers and the shape of variable names (also known as identifiers). -->
 
-Note: there is nothing special about the particular letters used for the nonterminals, we could have used alternative names and we would still consider it essentially the same description of the While programming language.  For example, if we replaced everywhere in the rules the letter N by the letter P.
+<!-- Note: there is nothing special about the particular letters used for the nonterminals, we could have used alternative names and we would still consider it essentially the same description of the While programming language.  For example, if we replaced everywhere in the rules the letter N by the letter P. -->
 
 <!-- Some remarks on the notation:
   * $\mathsf{skip}$ is the "do nothing" statement, it has no effect when executed
@@ -172,90 +172,10 @@ A sentential form $\beta$ is **derivable** from $\alpha$, written $\alpha \to^* 
 Ultimately, all this machinery is there in order for us to say precisely which strings constitute the language defined by the grammar.
 
 <div class="defn" markdown="1">
-The **language of a grammar $G$**, written $L(G)$, is the set of all strings $w$ derivable from the start symbol, i.e. $$\{\, w \mid S \to^* w \,\}$$.
+The **language of a grammar $G$**, written $L(G)$, is the set of all strings $w$ consisting only of terminal symbols and which are derivable from the start symbol, i.e. $$\{\, w \mid S \to^* w \,\}$$.
 </div>
 
-## Grammars can Express Sequences
-
-Suppose we want to design a grammar to define the language of all possible sequences of digits (0-9), including the empty sequence.  A useful approach is to think of a sequence of digits as a Haskell or OCaml list, which is either empty, or consists of at least one element - the head, a digit, - and a possibly empty sequence of further elements - the tail, itself a sequence of digits.  This approach gives rise to the following grammar:
-
-$$
-  \begin{array}{rcl}
-    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
-    \nt{Digits} &\Coloneqq& \nt{Digit}\ \nt{Digits} \mid \epsilon
-  \end{array}
-$$
-
-For example:
-
-$$
-  \begin{array}{rll}
-    \nt{Digits} &\to& \nt{Digit}\ \nt{Digits}\\
-                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digits}\\
-                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digit}\ \nt{Digits}\\
-                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digit}\\
-                &\to^*& 1\ 2\ 3
-  \end{array}
-$$
-
-The same pattern works no matter how complex the elements of the sequence can be (as long as they can themselves be described by production rules).  Recall the production rules defining Boolean expressions starting from $\nt{B}$, by adding the following extra rule, we can describe all sequences of them with a nonterminal $\nt{Bs}$:
-
-$$
-  \begin{array}{rcl}
-    \nt{Bs} &\Coloneqq& \nt{B}\ \nt{Bs} \mid \epsilon
-  \end{array}
-$$
-
-Suppose we want to describe non-negative integers, that is, _non empty_ sequences of digits.  We can build this out of our description of (possibly empty) sequences of digits by saying that a number is a digit followed by a (possibly empty) sequence of digits:
-
-$$
-  \begin{array}{rcl}
-    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
-    \nt{Digits} &\Coloneqq& \nt{Digit}\ \nt{Digits} \mid \epsilon\\[2mm]
-    \nt{Number} &\Coloneqq& \nt{Digit}\ \nt{Digits}
-  \end{array}
-$$
-
-Describing sequences is so useful in the definition of programming languages that often we use some special notation to save us having to use this pattern over and over again.  The notation:
-$$
-  [\alpha]^*
-$$
-when used on the right-hand side of a production rule means "any finite sequence of $\alpha$".  We will omit the square brackets if $\alpha$ is just a single symbol.  So, non-negative integers can be defined by:
-
-$$
-  \begin{array}{rcl}
-    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
-    \nt{Number} &\Coloneqq& \nt{Digit}\ \nt{Digit}^*
-  \end{array}
-$$
-
-A non-empty comma-separated list of digits can be described by:
-
-$$
-  \begin{array}{rcl}
-    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
-    \nt{DigitList} &\Coloneqq& \nt{Digit}\ [,\ \nt{Digit}]^*
-  \end{array}
-$$
-
-This new notation doesn't really add anything to grammars, because we can always eliminate any occurrence of $$[\alpha]^*$$ by introducing two new non-terminals, say $X$ and $\nt{Xs}$, and the rules $X \Coloneqq \alpha$ and $\nt{Xs} \Coloneqq X\ \nt{Xs} \mid \epsilon$, and finally replacing $$[\alpha]^*$$ by simply $Xs$.
-
-$$
-  \begin{array}{rcl}
-    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
-    \nt{DigitList} &\Coloneqq& \nt{Digit}\ \nt{Xs}\\[2mm]
-    \nt{X} &\Coloneqq& ,\ \nt{Digit}\\[2mm]
-    \nt{Xs} &\Coloneqq& \nt{X}\ \nt{Xs} \mid \epsilon
-  \end{array}
-$$
-
-So, if you want to construct a derivation involving the notation $[\alpha]^*$, just remember that it is a shorthand for some non-terminal $\nt{Xs}$ defined as above, and so the only thing we can really do is to say that it derives any finite sequence of $\alpha$ over some number of steps.  For example, we can derive exactly three $\alpha$:
-
-$$
-  [\alpha]^* \to^* \alpha\ \alpha\ \alpha
-$$
-
-## Other Useful Patterns
+## Some Useful Patterns
 
 We discuss the following examples over alphabet $$\{0,1\}$$ (most are from Sipser Ex. 2.4), which shows some of the common patterns when formulating a CFG.
 
@@ -273,14 +193,6 @@ $$
 
 Each derivation step consists of either extending the current sentential form by any choice of digit 0 or 1, or ending the string with epsilon.  Thus, any possible word can be derived.
 
-Or, using our new notation:
-
-$$
-  \begin{array}{rcl}
-    S &\Coloneqq& B^*\\
-    B &\Coloneqq& 0 \mid 1
-  \end{array}
-$$
 
 ***
 
@@ -367,3 +279,83 @@ $$ -->
 <!-- A word in this language can be cut down the middle, and the substring on the left is different from the reverse of the substring on the right.  In other words, there is some letter, say $k$ places to the left of the midpoint which is different from the letter $k$ places to the right of the midpoint.  
 
 The grammar encodes this in the following way.  Starting from $S$, using the first rule, we derive an odd length sentential form with $S$ at the midpoint and we allow free choice over the letters to the left and right of the midpoint.  They may match or not.  At some point the derivation must choose to exit this process by replacing $S$ by $T$.  Starting from $T$ we are forced to add a mismatching pair of letters to the sentential form.  After applying either the first or second rule for $T$, we will have an odd length sentential form with $U$ at its midpoint and we are sure that the letters one place to the left and right of the midpoint are different (all the other letters may or may not be the same).  Finally, we return to the original process of adding two letters at a time which are free to match or not match and finally we terminate the string by replacing $U$ with the empty string to obtain an even length string which is guaranteed to have a mismatching pair of letters $k$ places to the left and right of the midpoint for some value of $k$. -->
+
+## Grammars can Express Sequences
+
+Suppose we want to design a grammar to define the language of all possible sequences of digits (0-9), including the empty sequence.  A useful approach is to think of a sequence of digits as a Haskell or OCaml list, which is either empty, or consists of at least one element - the head, a digit, - and a possibly empty sequence of further elements - the tail, itself a sequence of digits.  This approach gives rise to the following grammar:
+
+$$
+  \begin{array}{rcl}
+    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
+    \nt{Digits} &\Coloneqq& \nt{Digit}\ \nt{Digits} \mid \epsilon
+  \end{array}
+$$
+
+For example:
+
+$$
+  \begin{array}{rll}
+    \nt{Digits} &\to& \nt{Digit}\ \nt{Digits}\\
+                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digits}\\
+                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digit}\ \nt{Digits}\\
+                &\to& \nt{Digit}\ \nt{Digit}\ \nt{Digit}\\
+                &\to^*& 1\ 2\ 3
+  \end{array}
+$$
+
+The same pattern works no matter how complex the elements of the sequence can be (as long as they can themselves be described by production rules).  Recall the production rules defining Boolean expressions starting from $\nt{B}$, by adding the following extra rule, we can describe all sequences of them with a nonterminal $\nt{Bs}$:
+
+$$
+  \begin{array}{rcl}
+    \nt{Bs} &\Coloneqq& \nt{B}\ \nt{Bs} \mid \epsilon
+  \end{array}
+$$
+
+Suppose we want to describe non-negative integers, that is, _non empty_ sequences of digits.  We can build this out of our description of (possibly empty) sequences of digits by saying that a number is a digit followed by a (possibly empty) sequence of digits:
+
+$$
+  \begin{array}{rcl}
+    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
+    \nt{Digits} &\Coloneqq& \nt{Digit}\ \nt{Digits} \mid \epsilon\\[2mm]
+    \nt{Number} &\Coloneqq& \nt{Digit}\ \nt{Digits}
+  \end{array}
+$$
+
+Describing sequences is so useful in the definition of programming languages that often we use some special notation to save us having to use this pattern over and over again.  The notation:
+$$
+  [\alpha]^*
+$$
+when used on the right-hand side of a production rule means "any finite sequence of $\alpha$".  We will omit the square brackets if $\alpha$ is just a single symbol.  So, non-negative integers can be defined by:
+
+$$
+  \begin{array}{rcl}
+    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
+    \nt{Number} &\Coloneqq& \nt{Digit}\ \nt{Digit}^*
+  \end{array}
+$$
+
+A non-empty comma-separated list of digits can be described by:
+
+$$
+  \begin{array}{rcl}
+    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
+    \nt{DigitList} &\Coloneqq& \nt{Digit}\ [,\ \nt{Digit}]^*
+  \end{array}
+$$
+
+This new notation doesn't really add anything to grammars, because we can always eliminate any occurrence of $$[\alpha]^*$$ by introducing two new non-terminals, say $X$ and $\nt{Xs}$, and the rules $X \Coloneqq \alpha$ and $\nt{Xs} \Coloneqq X\ \nt{Xs} \mid \epsilon$, and finally replacing $$[\alpha]^*$$ by simply $Xs$.
+
+$$
+  \begin{array}{rcl}
+    \nt{Digit}  &\Coloneqq& 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9\\[2mm]
+    \nt{DigitList} &\Coloneqq& \nt{Digit}\ \nt{Xs}\\[2mm]
+    \nt{X} &\Coloneqq& ,\ \nt{Digit}\\[2mm]
+    \nt{Xs} &\Coloneqq& \nt{X}\ \nt{Xs} \mid \epsilon
+  \end{array}
+$$
+
+So, if you want to construct a derivation involving the notation $[\alpha]^*$, just remember that it is a shorthand for some non-terminal $\nt{Xs}$ defined as above, and so the only thing we can really do is to say that it derives any finite sequence of $\alpha$ over some number of steps.  For example, we can derive exactly three $\alpha$:
+
+$$
+  [\alpha]^* \to^* \alpha\ \alpha\ \alpha
+$$
