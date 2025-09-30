@@ -23,7 +23,7 @@ $$
 
 If you fix a string (the string you want to parse) then you can try to check whether or not it is in the language described by the grammar by constructing a derivation.  However, a key difficulty is that, from the very start, there are choices - which production rule should we use? 
 
-For example, consider trying to derive the string $\tt \orop \ff \andop \tt$.  We start from $B$, but which rule should we pick?  Should we pick the first rule $$B \Coloneqq B \andop B$$ because the string contains the terminal $\andop$?  Or maybe we should pick the second rule $$B \Coloneqq B \orop B$$ because the string contains the terminal $\orop$?  
+For example, consider trying to derive the string $\tt \orop \ff \andop \tt$.  We start from $B$, but which rule should we pick?  Should we pick the first rule $$B \Coloneqq B \andop B$$ because the string contains the terminal $\andop$?  Or maybe we should pick the second rule $$B \Coloneqq B \orop B$$ because the string contains the terminal $\orop$?  Or the rule $B \Coloneqq \tt$, since that is the first terminal symbol of the string?
 
 Often it can require some human insight in order to make the right choice, and this is not a good basis for an efficient algorithm.  
 
@@ -41,7 +41,7 @@ $$
   \end{array}
 $$
 
-We'll get into how one can come up with a grammar like this in the next lecture, but for now I hope you can simply accept it is an alternative way to describe this language of simple Boolean expressions.  
+We'll get into how one can come up with a grammar like this in a later lecture, but for now I hope you can simply accept it is an alternative way to describe this language of simple Boolean expressions.  
 
 Although it is arguably less readable, this grammar has the advantage that it is LL(1), i.e. for any input string in the language, we can construct a derivation in which the choice of production at each step is completely determined by the leftmost non-terminal in the sentential form and the first character of the remaining input.  Let's try to derive $\tt \orop \ff \andop \tt$.
 
@@ -74,7 +74,7 @@ $$
 We cross off $\ff$ from the remaining input, and try to derive the rest $\andop\ \tt$.  The combination of nonterminal $B'$ and next terminal $\andop$ uniquely determines the rule $B' \Coloneqq \mathord{\andop}\ A\ B'$ and so we obtain:  
 
 $$
-  \tt\ \mathord{\orop}\ \ff\ B' \to \tt\ \mathord{\orop}\ \ff\ \mathord{andop}\ A\ B'
+  \tt\ \mathord{\orop}\ \ff\ B' \to \tt\ \mathord{\orop}\ \ff\ \mathord{\andop}\ A\ B'
 $$
 
 Since the grammar is LL(1) and the given string indeed belongs to the language of this grammar, we can continue this strategy and we are guaranteed to construct a leftmost derivation which required no human insight at all:
@@ -122,7 +122,7 @@ $$
 $$ 
 </div>
 
-For example, in the grammar above whose only non-terminal is $$B$$, $$\first(B) = \{\tt, \ff, \tm{id}, ( \}$$ because $B$ derives Boolean expressions which can only begin with one of those terminal symbols.
+For example, in the grammar above whose only non-terminal is $$B$$, $$\first(B) = \{\tt, \ff, \tm{(} \}$$ because $B$ derives Boolean expressions which can only begin with one of those terminal symbols.
 
 <div class="defn" markdown=1>
 $\follow(X)$ is the set of terminal symbols that can appear immediately following non-terminal $X$ in a derivable sentential form, i.e.
