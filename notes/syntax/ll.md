@@ -316,7 +316,7 @@ Therefore, the single-line $B$ grammar we have been analysing is _not_ LL(1).  I
   * $B \Coloneqq B \andop B$, which would make sense if e.g. the rest of the string is $(\tt) \andop \ff$
   * or $B \Coloneqq B \orop B$, which would make sense if e.g. the rest of the string is $(\tt) \orop \ff$
 
-On the other hand, I can tell you that the parsing table for the alternative grammar:
+On the other hand, I can tell you that, for the alternative grammar:
 
 $$
   \begin{array}{lcl}
@@ -326,7 +326,7 @@ $$
   \end{array}
 $$
 
-has the following parsing table:
+one obtains the following parsing table:
 
 $$
   \begin{array}{|c|c|c|c|c|}\hline
