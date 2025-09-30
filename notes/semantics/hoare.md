@@ -137,7 +137,7 @@ $$
   \dfrac
   {\{ e \andop p \}\ S_1\ \{ q \} \quad \{ \mathop{!}e \andop p \}\ S_2\ \{ q \}}
   {\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}}
-$$.
+$$
 
 The rule for the if-then-else construct is again an example of a compositional rule.
 To show that the Hoare triple $$\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}$$ holds, we split our reasoning according to the two branches.

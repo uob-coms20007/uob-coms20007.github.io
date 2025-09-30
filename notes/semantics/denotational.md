@@ -59,7 +59,6 @@ The __denotation function for simple arithmetic expressions__ $\llbracket \cdot 
 $$
   \begin{array}{rl}
     \llbracket \underline{n} \rrbracket_{\mathcal{}^-} & = n \\
-
     \llbracket e_1 \mathbin{\underline{+}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} + \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
     \llbracket e_1 \mathbin{\underline{-}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} - \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
     \llbracket e_1 \mathbin{\underline{*}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} \cdot \llbracket e_2 \rrbracket_{\mathcal{A}^-}
@@ -131,18 +130,14 @@ We will write $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) \in \mathbb{Z}$ for
   The __denotation function for arithmetic expressions__  $\llbracket \cdot \rrbracket_\mathcal{A}$ is defined recursively by the following equations:
 
   $$
-  \begin{array}{rl}
-    \llbracket x\rrbracket_{\mathcal{A}}(\sigma) &= \sigma(x) \\
-
-    \llbracket n \rrbracket_{\mathcal{A}}(\sigma) & = n \\
-
-    \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) \\
-
-    \llbracket e_1 - e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) - \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) \\
-
-    \llbracket e_1 * e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) \cdot
-    \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) \\
-  \end{array}
+    \begin{array}{rl}
+      \llbracket x\rrbracket_{\mathcal{A}}(\sigma) &= \sigma(x) \\
+      \llbracket n \rrbracket_{\mathcal{A}}(\sigma) & = n \\
+      \llbracket e_1 + e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) + \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) \\
+      \llbracket e_1 - e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) - \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma) \\
+      \llbracket e_1 * e_2 \rrbracket_{\mathcal{A}}(\sigma) & = \llbracket e_1 \rrbracket_{\mathcal{A}}(\sigma) \cdot
+      \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)
+    \end{array}
   $$
 </div>
 
