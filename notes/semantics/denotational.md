@@ -54,18 +54,16 @@ This takes the form of a _denotation function_ $\llbracket \cdot \rrbracket_{\ma
 For the application of this function, we will use the notation $\llbracket e \rrbracket_{\mathcal{A}^-} \in \mathbb{Z}$ where $e \in \mathcal{A}^-$ is some expression.
 
 <div class="defn" markdown="1">
-The __denotation function for simple arithmetic expressions__ $\llbracket \cdot \rrbracket_{\mathcal{A}^-}$  is defined by the following set of equations:
+The __denotation function for simple arithmetic expressions__ $\llbracket \cdot \rrbracket_{\mathcal{A}^-}$ is defined by the following set of equations:
 
 $$
-\begin{array}{rl}
-  \llbracket \underline{n} \rrbracket_{\mathcal{A}^-} & = n \\
+  \begin{array}{rl}
+    \llbracket \underline{n} \rrbracket_{\mathcal{}^-} & = n \\
 
-  \llbracket e_1 \mathbin{\underline{+}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} + \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
-
-  \llbracket e_1 \mathbin{\underline{-}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} - \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
-
-  \llbracket e_1 \mathbin{\underline{*}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} \cdot \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
-\end{array}
+    \llbracket e_1 \mathbin{\underline{+}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} + \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
+    \llbracket e_1 \mathbin{\underline{-}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} - \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
+    \llbracket e_1 \mathbin{\underline{*}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} \cdot \llbracket e_2 \rrbracket_{\mathcal{A}^-}
+  \end{array}
 $$
 
 </div>
