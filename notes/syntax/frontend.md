@@ -1,8 +1,8 @@
 ---
 layout: math
-title: 4. Lexer Implementation
+title: 5. Lexer Implementation
 mathjax: true
-nav_order: 4
+nav_order: 5
 parent: Syntax
 ---
 
