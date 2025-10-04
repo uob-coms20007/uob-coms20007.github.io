@@ -86,8 +86,8 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
       <td style="text-align:center"> 
       {% if site.data.lectures[lec_one_idx] %}
         {% assign lec = site.data.lectures[lec_one_idx] %}
-        {% if lec.replay %}
-          <a href="{{ lec.replay }}" target="_blank">{{ lec.title }}</a>
+        {% if lec.link %}
+          <a href="{{ lec.link }}" target="_blank">{{ lec.title }}</a>
         {% else %}
           {{ lec.title }}
         {% endif %}
@@ -98,8 +98,8 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
     {% assign lec_two_idx = logical_week | minus:1 | times:2 | plus:1 %}
     {% if site.data.lectures[lec_two_idx] %}
         {% assign lec = site.data.lectures[lec_two_idx] %}
-        {% if lec.replay %}
-          <a href="{{ lec.replay }}" target="_blank">{{ lec.title }}</a>
+        {% if lec.link %}
+          <a href="{{ lec.link }}" target="_blank">{{ lec.title }}</a>
         {% else %}
           {{ lec.title }}
         {% endif %}
