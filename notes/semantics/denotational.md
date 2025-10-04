@@ -139,6 +139,7 @@ We will write $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) \in \mathbb{Z}$ for
       \llbracket e_2 \rrbracket_{\mathcal{A}}(\sigma)
     \end{array}
   $$
+
 </div>
 
 The first equation introduced by this definition interprets program variables by their current value, according to the given store.
@@ -185,6 +186,7 @@ Likewise, this can be thought of as a function with two arguments: a Boolean exp
     \llbracket e_1 \leq e_2 \rrbracket_\mathcal{B}(\sigma) & = \llbracket e_1 \rrbracket_A(\sigma) \leq \llbracket e_2 \rrbracket_A(\sigma)
   \end{array}
   $$
+  
 </div>
 
 This function is also defined by recursion over the structure of the Boolean expressions, replacing syntactic constructs with their mathematical counterpart, and thus is well-defined.
