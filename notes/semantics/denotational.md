@@ -8,7 +8,7 @@ parent: Semantics
 
 # Denotational Semantics
 
-In the semantics part of this unit, we will be looking at how programs in an imperative programming language known as the "While language" can be given formal mathematical meanings (i.e. semantics) and how this can be used to reason about programs.
+In the semantics part of this unit, we will be looking at how programs in a toy imperative programming language known as the "While language" can be given a formal mathematical meanings (i.e. a semantic) and how this can be used to reason about programs.
 Although this language is very simple, and doesn't have all the features you would expect of a general-purpose programming language, the fundamental aspects of programming language semantics are still present.
 
 This week, we will look at the semantics of its arithmetic and Boolean expressions using _denotational semantics_.
@@ -107,24 +107,24 @@ Therefore, we will consider the following grammar of arithmetic expressions:
 To give a satisfactory meaning to these expressions, we clearly must take into account the value of the variables.
 Consequently, it is not possible to assign a fixed integer to the expression $x + 1$ as it might change depending on the context, i.e. whether it follows the statement $x \leftarrow 1$ or the statement $x \leftarrow 2$.
 
-### Program Store
+### Program State
 
 What we mean by "context" here is quite vague.
 Let's make it more precise.
-The programs' _store_ is the value assigned to its variables at any given moment.
-We can think of the store as the semantic representation of the computer's memory.
+The programs' _state_ is the value assigned to its variables at any given moment.
+We can think of the state as the semantic representation of the computer's memory.
 
 <div class="defn" markdown="1">
-  A __store__ is a total function from the set $\mathsf{Store} = \mathsf{Var} \rightarrow \mathbb{Z}$.
-  We will write stores using the notation $[x_1 \mapsto v_1,\, x_2 \mapsto v_2,\, \cdots]$ to representation the store $\sigma$ such that $\sigma(x_i) = v_i$.
-  When a variable $x$ is not explicitly mapped to a value by a given store $\sigma$, we will take $\sigma(x)$ to be $0$.
+  A __state__ (also referred to as a _store_) is a total function from the set $\mathsf{State} = \mathsf{Var} \rightarrow \mathbb{Z}$.
+  We will write states using the notation $[x_1 \mapsto v_1,\, x_2 \mapsto v_2,\, \cdots]$ to representation the state $\sigma$ such that $\sigma(x_i) = v_i$.
+  When a variable $x$ is not explicitly mapped to a value by a given state $\sigma$, we will take $\sigma(x)$ to be $0$.
 </div>
 
 We can now give a denotational semantics to arithmetic expressions.
-As the value of these expressions depends on the program store, they will be interpreted as functions from stores to integer values --- the denotation function $\llbracket \cdot \rrbracket_{\mathcal{A}} : \mathcal{A} \rightarrow (\mathsf{Store} \rightarrow \mathbb{Z})$ maps expressions, not to an integer, but to a _function_ from the set of stores to integers.
+As the value of these expressions depends on the program state, they will be interpreted as functions from states to integer values --- the denotation function $\llbracket \cdot \rrbracket_{\mathcal{A}} : \mathcal{A} \rightarrow (\mathsf{State} \rightarrow \mathbb{Z})$ maps expressions, not to an integer, but to a _function_ from the set of states to integers.
 <!-- In other words, expressions are interpreted as integer that depend on the state in which they are evaluated. -->
-However, for all intents and purposes, this can be seen as a function with two arguments: the arithmetic expression and the store in which it is evaluated.
-We will write $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) \in \mathbb{Z}$ for the application of this function to the arithmetic expression $e \in \mathcal{A}$ and the store $\sigma \in \mathsf{Store}$.
+However, for all intents and purposes, this can be seen as a function with two arguments: the arithmetic expression and the state in which it is evaluated.
+We will write $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) \in \mathbb{Z}$ for the application of this function to the arithmetic expression $e \in \mathcal{A}$ and the state $\sigma \in \mathsf{State}$.
 
 <div class="defn" markdown="1">
   The __denotation function for arithmetic expressions__  $\llbracket \cdot \rrbracket_\mathcal{A}$ is defined recursively by the following equations:
@@ -142,15 +142,15 @@ We will write $\llbracket e \rrbracket_{\mathcal{A}}(\sigma) \in \mathbb{Z}$ for
 
 </div>
 
-The first equation introduced by this definition interprets program variables by their current value, according to the given store.
-The other equations are largely unchanged other than the introduction of the store parameter.
-Notice that the store is passed to recursive calls without changing.
-That is to say, these expressions only _read_ the store rather than modifying it.
+The first equation introduced by this definition interprets program variables by their current value, according to the given state.
+The other equations are largely unchanged other than the introduction of the state parameter.
+Notice that the state is passed to recursive calls without changing.
+That is to say, these expressions only _read_ the state rather than modifying it.
 
 Let's work though an example.
 The denotation $\llbracket x \mathbin{\underline{*}} \underline{2} \rrbracket_A(\sigma)$ evaluates to $\llbracket x \rrbracket_A(\sigma) * \llbracket \underline{2} \rrbracket_A(\sigma)$, which ultimately is equivalent to $\sigma(x) * 2$.
 To evaluate this further, we need to know the value $\sigma$ assigns to $x$.
-If we take $\sigma$ to be the store $[x \mapsto 2]$, then the denotation of our expression ultimately evaluates to $4$.
+If we take $\sigma$ to be the state $[x \mapsto 2]$, then the denotation of our expression ultimately evaluates to $4$.
 
 <img src="../../assets/semantics/arithmetic-denotation.png" style="max-width:300px"/>
 
@@ -168,9 +168,9 @@ $$
 
 </div>
 
-Then we define a denotation function $\llbracket \cdot \rrbracket_\mathcal{B} : \mathcal{B} \rightarrow (\mathsf{Store} \rightarrow \mathbb{B})$ where $\mathbb{B}$ is the set of Boolean values $\left\lbrace \bot,\, \top \right\rbrace$ following the same pattern of replacing syntactic constructs with semantics counterparts.
-As with the denotation of arithmetic expressions, this function maps Boolean expressions to Boolean-valued function over stores.
-Likewise, this can be thought of as a function with two arguments: a Boolean expression and a store.
+Then we define a denotation function $\llbracket \cdot \rrbracket_\mathcal{B} : \mathcal{B} \rightarrow (\mathsf{State} \rightarrow \mathbb{B})$ where $\mathbb{B}$ is the set of Boolean values $\left\lbrace \bot,\, \top \right\rbrace$ following the same pattern of replacing syntactic constructs with semantics counterparts.
+As with the denotation of arithmetic expressions, this function maps Boolean expressions to Boolean-valued function over states.
+Likewise, this can be thought of as a function with two arguments: a Boolean expression and a state.
 
 <div class="defn" markdown="1">
   The __denotation function for Boolean expressions__ $\llbracket \cdot \rrbracket_\mathcal{B}$ is defined by the following equations:
@@ -204,7 +204,7 @@ Here we use a flat representation of expressions, although they are still to be 
 </div>
 
 Recall that functions are equal if they produce the same result on all inputs.
-Therefore, two expressions are equal if they denote the same value in all stores.
+Therefore, two expressions are equal if they denote the same value in all states.
 For example, $x + x$ is semantically equivalent to $x * 2$ as they both represent the function $\sigma \mapsto 2\sigma(x)$, despite _not_ being syntactically equivalent expressions.
 
 Semantic equivalence is at the heart of the study of semantics and enables practical programming language features such as optimisations - an optimisation being a semantically equivalent, but more performant, program.
