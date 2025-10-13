@@ -94,7 +94,7 @@ $$
   \nt{SExpr} \Coloneqq (\ R \ )
 $$
 
-This is purely an aesthetic choice, it's nice to see that there has to be a matching parenthesis.
+This is purely an aesthetic choice: it's nice to see matching parentheses!
 
 ## Left Recursion
 
@@ -118,7 +118,7 @@ $$
   \tm{stmt}; \tm{stmt}; \cdots{} \tm{stmt}
 $$
 
-There are other ways to generate such sequences.  In fact three different grammars come to mind for generating lists of something (think also of defining a list datatype):
+There are other ways to generate such sequences.  In fact three different grammars come to mind for generating non-empty lists of something (think also of defining a non-empty list datatype):
 
 - The ``append'' approach: every list is either (a) a singleton list consisting of one item, or (b) obtained by appending two smaller lists together.  This is the style of definition we have above, with $\tm{;}$ playing the role of the append operator.
 
@@ -143,7 +143,7 @@ I hope you can convince yourself that each of these grammars derives exactly the
 You may notice that the _right-recursive_ ("cons") approach is exactly the pattern we noted when discussing that CFGs can express sequencing, back in lecture 3.  Using the notation introduced there we can write the above grammar as:
 
   $$
-    S \Coloneqq \tm{stmt}\ (\tm{;}\ \tm{stmt})^*
+    S \Coloneqq \tm{stmt}\ [\tm{;}\ \tm{stmt}]^*
   $$
 
 ### Left Recursion Elimination
