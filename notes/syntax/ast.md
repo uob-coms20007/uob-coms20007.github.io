@@ -174,7 +174,7 @@ Unfortunately, this is a bit difficult to achieve without designing it into the 
 $$
   \begin{array}{rcl}
     A &\Coloneqq& L\ R\\
-    R &\Coloneqq& \tm{+}\ L\ R \mid \tm{*}\ L\ R \mid \epsilon\\
+    R &\Coloneqq& \tm{+}\ A\ R \mid \tm{*}\ A\ R \mid \epsilon\\
     L &\Coloneqq& \tm{num} \mid (\ A\ )
   \end{array}
 $$
@@ -251,6 +251,6 @@ In general, if you want to design a grammar for implementation by a predictive p
 
 Operators further up the table have higher precedence than those below them, that is, they bind more tightly to their arguments.  Some operators can have the same precedence - like $+$ and $-$ in OCaml.  That's fine, but binary operators with the same precedence should have the same associativity, and this will disambiguate their usage.
 
-Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level i.e. row in the table, say $i$, your grammar should have a distinct non-terminal symbol, say $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
+Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level (corresponding to a row in the table), say $i$, your grammar should have a distinct non-terminal symbol, say $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
 
 In our example, multiplication binds tighter than addition, and we have a dedicated non-terminal for each, and the production rule for additions $T$ creates sequences each of whose elements is a multiplication $F$.

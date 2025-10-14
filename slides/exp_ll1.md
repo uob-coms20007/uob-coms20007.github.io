@@ -9,7 +9,7 @@ nav_order: 48
 $$
   \begin{array}{rcl}
     A &\Coloneqq& L\ R\\
-    R &\Coloneqq& \tm{+}\ L\ R \mid \tm{*}\ L\ R \mid \epsilon\\
+    R &\Coloneqq& \tm{+}\ A\ R \mid \tm{*}\ A\ R \mid \epsilon\\
     L &\Coloneqq& \tm{num} \mid (\ A\ )
   \end{array}
 $$

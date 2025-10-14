@@ -2,7 +2,7 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 42. Stmt Seqs
+title: 42. BS CFG 
 nav_order: 42
 ---
 

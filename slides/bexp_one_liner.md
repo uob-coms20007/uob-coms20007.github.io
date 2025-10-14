@@ -2,7 +2,7 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 38. Stmt Seqs
+title: 38. BExp 1 Line
 nav_order: 38
 ---
 
