@@ -23,10 +23,10 @@ Instead, it is much easier to specify what is known as _pre-conditions_ and _pos
 These conditions allow us to abstract away details of specific individual configuration and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition).
 
 <div class="defn" markdown="1">
-  Given two subsets of states $$P,\, Q \susbeteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ P \}\ S\ \{ Q \}$$ to indicate that:
+  Given two subsets of states $$P,\, Q \subseteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ P \}\ S\ \{ Q \}$$ to indicate that:
 
   $$
-    \text{if}\ \sigma_0 \in P \text{and}\ \langle S,\, \sigma_0 \rangle \rightarrow^* \sigma_1\ \text{then}\ \sigma_1 \in Q
+    \text{if}\ \sigma_0 \in P\ \text{and}\ \langle S,\, \sigma_0 \rangle \rightarrow^* \sigma_1\ \text{then}\ \sigma_1 \in Q
   $$
 
   for any state $$\sigma_0 \in \mathsf{State}$$.
@@ -46,7 +46,7 @@ For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any sta
 As we shall see, this generality allows us to compose Hoare triples without having to reanalyse the same statement.
 
 ## Assertion Languages
-Within the above examples, we have been using Boolean expressions to implicitly represent sets of states, e.g. $$x > 0$$ represents the set $$ \{ \sigma \in \mathsf{State} \mid \llbracket x > 0 \rrbracket_\mathcal{B}(\sigma) = \top \}$$.
+Within the above examples, we have been using Boolean expressions to implicitly represent sets of states, e.g. where $$x > 0$$ represents the set $$ \{ \sigma \in \mathsf{State} \mid \llbracket x > 0 \rrbracket_\mathcal{B}(\sigma) = \top \}$$.
 In generally, Hoare logic is defined in relation to a specific _assertion language_ that dictates what pre- and post-conditions are expressible.
 Typically, this logic is chosen to be easily (and sometimes automatically) reasoned about.
 
@@ -63,16 +63,19 @@ We will consider an assertion language based on an extension of Boolean expressi
 
   $$
   \begin{array}{rl}
-    \llbracket \forall x.\, e \rrbracket_\mathcal{B}(\sigma) & = \forall n.\, \llbracket e \rrbracket_\mathcal{B}(\sigma[x \mapsto n]) \\
-    \llbracket \exists x.\, e \rrbracket_\mathcal{B}(\sigma) & = \exists n.\, \llbracket e \rrbracket_\mathcal{B}(\sigma[x \mapsto n])
+    \llbracket \forall x.\, e \rrbracket_{\mathcal{B}^+}(\sigma) & = \forall n.\, \llbracket e \rrbracket_{\mathcal{B}^+}(\sigma[x \mapsto n]) \\
+    \llbracket \exists x.\, e \rrbracket_{\mathcal{B}^+}(\sigma) & = \exists n.\, \llbracket e \rrbracket_{\mathcal{B}^+}(\sigma[x \mapsto n])
   \end{array}  
   $$
 
 </div>
 
-You don't need to worry too many about the behaviour of extended Boolean expressions.
-For the most part, they behave exactly like classical logical formulas and satisfy all the usual identities.
-The key thing to remember, however, is that free variables within extended Boolean expressions refer to variables within the state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is even. 
+We will write $\sigma \models P$ for some extended Boolean expression $P \in \mathcal{B}^+$ to represent the fact that $\llbracket P \rrbracket_{\mathcal{B}^+}(\sigma) = \top$.
+
+You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities.
+We will use them interchangeably with sets of states - feel free to use any logical expression within assertions.
+
+The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound to a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is even.
 
 # Compositionality
 
@@ -84,15 +87,15 @@ Using these rules, we can analyse individual parts of the program separately, wi
 $$
   \dfrac
   {}
-  {\{ p \}\ \mathsf{skip}\ \{ p \}}
+  {\{ P \}\ \mathsf{skip}\ \{ P \}}
 $$
 
 Somewhat predictably, the summary of the skip command tells us that the state doesn't change when executing this command.
-Therefore, the pre- and post-conditions are the same; if executed with a state $$\sigma \in \mathsf{State}$$ such that $$\llbracket p \rrbracket_\mathcal{B}(\sigma) = \top$$, then any terminal state will also satisfy $$p$$ for any assertion $p \in \mathcal{B}^+$.
+Therefore, the pre- and post-conditions are the same; if executed with a state $$\sigma \in \mathsf{State}$$ such that $$\sigma \in P$$, then any terminal state will also satisfy $$P \subseteq \mathsf{State}$$.
 
 The notation we are using here is a general notation for inference rule: above the line is a series of _premises_ which we must show in order to use the rule, and below the line is the _conclusion_ - you can read it as "if everything above the line holds, then everything below the line holds."
 In this case, there are no premises, so we can use the conclusion without having to show anything first.
-As with the small-step semantics, $$p \in \mathcal{B}$$ here isn't a fixed assertion, but rather this rule can be applied to any assertion we are interested.
+As with the small-step semantics, $$P \subseteq \mathsf{State}$$ here isn't a fixed assertion, but rather this rule can be applied to any assertion we are interested.
 The same structural for each of the subsequent rule we will look at.
 
 ### Assignment Rule:
@@ -100,11 +103,40 @@ The same structural for each of the subsequent rule we will look at.
 $$
   \dfrac
   {}
-  {\{ p \}\ x \leftarrow e\ \{ \exists x'.\, p[x'/x] \andop x = e[x'/x] \}}
+  {\{ P \}\ x \leftarrow e\ \{ \exists x'.\, P[x'/x] \andop x = e[x'/x] \}}
 $$
 
-The notation $$e_1[e_2/x]$$ refers to the arithmetic (or Boolean resp.) expression $$e_1 \in \mathcal{A}$$ ($$e_1 \in \mathcal{B}$$ resp.) where the variable $$x$$ has been substituted for the arithmetic expression $$e$$ (see the problem sheet for details of this operation for arithmetic and Boolean expression).
-For instance, if $$e_2$$ was $$x + 1$$ and $$e_1$$ was $$x > 1$$, then $$e_1[e_2/x]$$ would be $$x + 1 > 1$$.
+The notation $$P[e/x]$$ refers to the assertion $$P$$ where the variable $$x$$ has been substituted for the arithmetic expression $$e$$.
+If $$P$$ is represented as an extended Boolean expression, then we can define this recursively as in the problem sheet:
+
+$$
+  \begin{array}{rl}
+    y[e/x] &= \begin{cases}
+                e &= \text{if}\ x = y \\
+                y &= \text{otherwise}
+              \end{cases} \\
+    \top[e/x] &= \top \\
+    (a_1 \leq a_2)[e/x] &= a_1[e/x] \leq a_2[e/x] \\
+    (b_1 \andop b_2)[e/x] &= b_1[e/x] \andop b_2[e/x] \\
+    \cdots
+  \end{array}
+$$
+
+For instance, if $$P$$ was the extended Boolean expression $$x > 1$$, then $$P[x + 1/x]$$ would be $$x + 1 > 1$$.
+
+Or, for a set of states $$P \subseteq \mathsf{State}$$, we can define it as $$\{ \sigma \mid \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)] \in P \}$$, i.e. those states that would be in $$P$$ if $$x$$ is replaced with $$e$$.
+For instance:
+
+$$
+  \begin{array}{rl}
+    P &= \{ \sigma \mid \sigma(x) > 0 \} \\ \\
+    P[x+1/x] &= \{ \sigma \mid \sigma[x \mapsto \llbracket x + 1 \rrbracket_\mathcal{A}(\sigma)] \in P \} \\
+             &= \{ \sigma \mid \sigma[x \mapsto \llbracket x + 1 \rrbracket_\mathcal{A}(\sigma)](x) > 0 \} \\
+             &= \{ \sigma \mid \llbracket x + 1 \rrbracket_\mathcal{A}(\sigma) > 0 \} \\
+             &= \{ \sigma \mid \sigma(x) + 1 > 0 \} \\
+  \end{array}
+$$
+
 
 Within the post-condition, we have an existential variable $$x'$$. 
 Intuitively, this variable corresponds to the value of $$x$$ _prior_ to execution of this assignment statement.
@@ -116,7 +148,7 @@ For example, this rule allows us to conclude that:
 
 $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ \exists x'.\, x' > 0 \andop x = x' + 1 \}$$
 
-Here the assertion $p$ is $x > 0$ so that $p[x'/x]$ becomes $x' > 0$.
+Here the assertion $P$, i.e. our pre-condition, is $x > 0$ hence $P[x'/x]$ becomes $x' > 0$.
 As expected, this post-condition is equivalent to $x > 1$ in the sense that they denote the same set of states.
 Therefore, we could have equivalently said $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$.
 
@@ -124,8 +156,8 @@ Therefore, we could have equivalently said $$\{ x > 0 \}\ x \leftarrow x + 1\ \{
 
 $$
   \dfrac
-  {\{ p \}\ S_1\ \{ q \} \quad \{ q \}\ S_2\ \{ r \}}
-  {\{ p \}\ S_1;\; S_2\ \{ r \}}
+  {\{ P \}\ S_1\ \{ Q \} \quad \{ Q \}\ S_2\ \{ R \}}
+  {\{ P \}\ S_1;\; S_2\ \{ R \}}
 $$
 
 The rule for the sequence construct is where we start to see the compositionality of pre- and post-conditions.
@@ -134,15 +166,15 @@ Then the derived Hoare triple for the compound statement $$S_1;\; S_2$$ has the 
 
 To see why this rule works, consider what the two assumptions tell us:
 
-  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\llbracket p \rrbracket_{\mathcal{B}^+}(\sigma_0)$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\llbracket q \rrbracket_{\mathcal{B}^+}(\sigma_1)$$.
+  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\sigma_0 \models p$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \models q$$.
 
-  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\llbracket q \rrbracket_{\mathcal{B}^+}(\sigma_0)$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\llbracket r \rrbracket_{\mathcal{B}^+}(\sigma_1)$$.
+  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\sigma_0 \models q$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \models r$$.
 
-Now let us suppose we have some initial state $$\sigma$$ such that $$\llbracket p \rrbracket_{\mathcal{B}^+}(\sigma_0)$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_2$$.
-By inspecting how this execution could proceed, we can see that $$S_1$$ will execute first until it ultimately reaches some terminal configuration with the state $$\sigma_1$$, and so we have that $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \langle S_2,\, \sigma_1 \rangle$$.
-Subsequent, we will have $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_2$$.
+Now let us suppose we have some initial state $$\sigma$$ such that $$\sigma_0 \models p$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_2$$.
+By inspecting how this execution could proceed, we can see that $$S_1$$ will execute first until it ultimately reaches some terminal configuration with the state $$\sigma_1$$, and so we have that $$\langle S_1; S_2,\, \sigma \rangle \rightarrow^* \langle S_2,\, \sigma_1 \rangle$$.
+Subsequently, $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_2$$.
 
-Thanks to the first Hoare triple, we know that $$\llbracket q \rrbracket_{\mathcal{B}^+}(\sigma_1)$$ - we have assumed that the initial state satisfies the pre-condition of $$S_1$$, i.e. $$\llbracket p \rrbracket_{\mathcal{B}^+}(\sigma_0)$$, and so, after executing $$S_1$$, this intermediate state $$\sigma_1$$ will satisfy the post-condition $$Q$$.
+The first premise tell us that $$\sigma_1 \models q$$ - we have assumed that the initial state satisfies the pre-condition of $$S_1$$, i.e. $$\sigma_0 \models p$$, and so, after executing $$S_1$$, this intermediate state $$\sigma_1$$ will satisfy the post-condition $$q$$.
 More over, we can then use this fact to see that, as $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_2$$, the terminal state $$\sigma_2$$ must satisfy $$R$$ by virtue of the second Hoare triple.
 Thus making $$\{ p \}\ S_1;\; S_2\ \{ q \}$$ a valid Hoare triple.
 
@@ -258,7 +290,7 @@ In this sense, we can imagine the strong post-condition as a form of _symbolic_ 
 That is, rather than executing the statement in a specific state, e.g. $[x \mapsto 2]$, we are executing it in a symbolic state, e.g. $x > 0$, that represents a set of states.
 Unlike normal execution, symbolic execution requires us to consider all the different paths the program may go down and collect the results from each, which is why the if-then-else rule has a disjunction over the post-conditions of each branch.
 
-### Aside
+#### Aside
 This correspondence is only intuitive as not all sets of states can be described by an extended Boolean expression.
 For example, you cannot describe the set of states $\sigma \in \mathsf{state}$ for which $\sigma(x)$ is prime just using an extended Boolean expression.
 The strict definition of the strongest post-condition, however, only requires that it is the strongest extended Boolean expression that approximates this set.

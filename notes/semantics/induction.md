@@ -84,9 +84,9 @@ Structural induction is a direct generalisation of numerical induction where we 
 For the time being, inductively defined structures will only extend to those sets defined by grammars.
 To get an idea of how we will generalise the induction principle for the natural numbers to an arbitrary grammar, let us unpack the definition of the natural numbers.
 
-For us, the natural numbers are defined by the following grammar: $N \to 0 \mid N + 1$ where our usual notation for a number such as $3$ is just shorthand for $0 + 1 + 1 + 1$.
+For us, the natural numbers are defined by the following grammar: $N \Coloneqq 0 \mid N + 1$ where our usual notation for a number such as $3$ is just shorthand for $0 + 1 + 1 + 1$.
 That is, a natural number $n \in \mathbb{N}$ is either $0$ or $m + 1$ for some other natural number $m \in \mathbb{N}$.
-If we compare these two production rules to the two cases of our inductive proof, then a similarity appears: there is a base case $N \rightarrow 0$ and an inductive case $N \rightarrow N + 1$...
+If we compare these two production rules to the two cases of our inductive proof, then a similarity appears: there is a base case $N \Coloneqq 0$ and an inductive case $N \Coloneqq N + 1$...
 
 It is precisely because the natural numbers can only have one of these forms that we can be sure that $P(n)$ is true for any particular $n$ in this set.
 Any natural number is derived by adding $1$ to $0$ a certain number of times.
