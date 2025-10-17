@@ -8,7 +8,7 @@ parent: Syntax
 
 # Abstract Syntax Trees
 
-However, it is a bit generous to call the implementation of the previous chapter a parser. Usually we expect that a parser does not only recognise whether a string is in the language or not, but in the former case, it constructs some abstract, internal representation of the piece of syntax in memory.  This is then used in other parts of the language translator (interpreter, compiler etc) to actually effect the translation (e.g. generate code).
+A parser does not only recognise whether a string is in the language or not, but in the former case, it constructs some abstract, internal representation of the piece of syntax in memory.  This is then used in other parts of the language translator (interpreter, compiler etc) to actually effect the translation (e.g. generate code).
 
 Of course, we could just use the string itself as out internal representation.  However, since most of the languages for which we want to parse are more structured, it is convenient to use a representation that makes this structure explicit.  Moreover, the concrete syntax (the string) contains a lot of information which is not essential to understanding the fundamental structure.  A standard approach is to instead use *abstract syntax trees* or ASTs for short.
 
@@ -130,18 +130,18 @@ The abstract syntax of a language is really an internal representation, and so o
 
 Note, this is a syntactic property of operators and is different from the semantic property of _being associative_, which you will have come across in mathematics.  If an operator _is associative_ this means that the value of $(u \oplus v) \oplus w$ is the same as the value of $u \oplus (v \oplus w)$, i.e. they evaluate to the same thing - they have the same semantics.  In the notation you will learn in part 2 of this unit, we would write $$[\![(u \oplus v) \oplus w]\!] = [\![u \oplus (v \oplus w)]\!]$$ for this.  So, if an operator is associative, then it doesn't really matter whether it associates right or left in the syntax, because no matter how we insert the implicit parentheses the same value will be obtained.  However, even in this case, we still need to make a choice in the parser in order to build the AST one way or another.
 
-Note: in Brischeme (and other Scheme languages) all operator calls are required to be explicitly parenthesised, so a chain like $3 + 4 + 5$ is simply invalid.  Thus, associativity is a non-issue in the Brischeme language.  However, in most other programming languages, an expression like $3 + 4 + 5$, or a type like $\mathsf{Int} \to \mathsf{Int} \to \mathsf{Int}$ is valid syntax, and then we have to confront the question of what is meant by it.
+Note: in Brischeme (and other Scheme languages) all operator calls are required to be explicitly parenthesised, so a chain like $3 + 4 + 5$ is simply invalid.  Thus, associativity is a non-issue in the Brischeme language.  However, in most other programming languages, an expression like $3 + 4 + 5$, or a type like $\mathsf{Int} \to \mathsf{Int} \to \mathsf{Int}$ is valid syntax, and then we have to confront the question of which AST is being described.
 
 ### Precedence
 
 Associativity refers to how to understand the structure of expressions made of a single operators (in some cases, it can also be used for chains of several "similar" operators - we will see what "similar" means shortly).  However, it does not on its own allow us to disambiguate the structure of an expression involving a chain of different operators.
 
-For example, it is a common convention (though not universal) that the numerical operators "+" and "*" associate to the left.  E.g.
+For example, it is a common convention that the numerical operators "+" and "*" associate to the left.  E.g.
 
 $$
   \begin{array}{lcr}
-    3 + 4 + 5 & \text{is identical to} & 3 + (4 + 5)\\
-    3 * 4 * 5 & \text{is identical to} & 3 * (4 * 5)
+    3 + 4 + 5 & \text{is identical to} & (3 + 4) + 5\\
+    3 * 4 * 5 & \text{is identical to} & (3 * 4) * 5
   \end{array}
 $$
 
@@ -151,13 +151,13 @@ $$
   3 + 4 * 5 \qquad 4 * 5 + 3
 $$
 
-If we were to simply say that these chains are left associated, because both the operators are, then we will end up with (ASTs corresponding to the following parenthesisation):
+If we were to simply say that these chains are left associated, because both the operators involved are, then we will end up with (ASTs corresponding to the following parenthesisation):
 
 $$
   (3 + 4) * 5 \qquad (4 * 5) + 3
 $$
 
-which cannot be right, because then the expression on the left will evaluate to 12 and the expression on the right will evaluate to 23.  Yet, we expect the original, unparenthesized, expressions to evaluate to the same thing.  A similar problem would arise if we blindly associated to the right.
+which cannot be right, because then the expression on the left will evaluate to 12 and the expression on the right will evaluate to 23.  Yet, we expect the original, unparenthesized expressions to evaluate to the same thing.  A similar problem would arise if we blindly associated to the right.
 
 There is a different phenomenon at play in such examples, which is called _operator precedence_, or binding strength.  In arithmetic, it is a common convention that the multiplication operator _binds more tightly_ than the addition operator, we also say that _multiplication has higher precedence_.  This means that, when we have an expression $4 * 5 + 3$ in which the multiplication operator $*$ and the addition operator $+$ are fighting over who gets their (seemingly) common argument $5$, multiplication grabs this argument (binds) more tightly and wins the struggle, i.e. the expression is resolved as $$(4 * 5) + 3$$.
 
@@ -174,7 +174,7 @@ Unfortunately, this is a bit difficult to achieve without designing it into the 
 $$
   \begin{array}{rcl}
     A &\Coloneqq& L\ R\\
-    R &\Coloneqq& \tm{+}\ L\ R \mid \tm{*}\ L\ R \mid \epsilon\\
+    R &\Coloneqq& \tm{+}\ A\ R \mid \tm{*}\ A\ R \mid \epsilon\\
     L &\Coloneqq& \tm{num} \mid (\ A\ )
   \end{array}
 $$
@@ -206,7 +206,7 @@ and this would give rise to parsing functions like:
         ???
 ```
 
-When we parse a complex expression from $A$, we will obtain the first argument in the chain and then the rest of the chain as a list of operator-operand pairs.  It's then a little bit complex to try to piece together what the corresponding syntax tree should be, e.g. you have this list, what is going to be the root of the tree?
+When we parse a complex expression from $A$, we will obtain the first argument in the chain and then the rest of the chain as a list of operator-operand pairs.  It's then a little bit complex to try to piece together what the corresponding syntax tree should be, e.g. you have this list, but which element represents the root of the tree?
 
 A different approach builds the precedence of operators into the (LL(1)) grammar.  The idea is to replace the single non-terminal $A$ for arithmetic expressions by two separate non-terminals: say $F$ for factors (subchains of addition operations) and $T$ for terms (chains of multiplication operations), and then to reformulate the grammar so that factors can be bare (that is, without enclosing parens) inside a term but not vice versa. 
 
@@ -251,6 +251,6 @@ In general, if you want to design a grammar for implementation by a predictive p
 
 Operators further up the table have higher precedence than those below them, that is, they bind more tightly to their arguments.  Some operators can have the same precedence - like $+$ and $-$ in OCaml.  That's fine, but binary operators with the same precedence should have the same associativity, and this will disambiguate their usage.
 
-Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level i.e. row in the table, say $i$, your grammar should have a distinct non-terminal symbol $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
+Once you have worked out the order of precedence of your operators, there is a standard approach to fitting them into the grammar.  For each precedence level (corresponding to a row in the table), say $i$, your grammar should have a distinct non-terminal symbol, say $A_i$, which produces expressions formed from that operator.  If some operators of a higher precedence, say $j > i$, are allowed to be nested (without parenthesisation, since they bind tighter) inside those of level $i$, then the arguments of the operator will be described by $A_j$ in the production rule for $A_i$.
 
 In our example, multiplication binds tighter than addition, and we have a dedicated non-terminal for each, and the production rule for additions $T$ creates sequences each of whose elements is a multiplication $F$.
