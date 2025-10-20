@@ -201,12 +201,13 @@ Similarly, the behaviour of the while-do construct depends on whether the branch
 $$
   \dfrac
   {}
-  {\mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \sigma}
+  {\langle \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \sigma}
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot
 $$
 
 $$
   \dfrac
+  {}
   {\langle \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \langle S;\; \mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle}
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \top
 $$
