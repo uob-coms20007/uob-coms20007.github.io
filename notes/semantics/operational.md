@@ -59,7 +59,8 @@ Let's start with the rules for skip, assignment, and composition: -->
 
     $$
       \dfrac
-      \langle \mathsf{skip},\, \sigma \rangle \rightarrow \sigma
+      {}
+      {\langle \mathsf{skip},\, \sigma \rangle \rightarrow \sigma}
     $$
 
     The fraction-esque notation denotes an _inference rule_.
@@ -78,7 +79,9 @@ Let's start with the rules for skip, assignment, and composition: -->
     Corresponding, the inference rule for describing the behaviour of the assignment state is as follows:
 
     $$
-      \langle x \leftarrow e,\, \sigma \rangle \rightarrow \sigma[x \mapsto \llbracket e \rrbracket_A(\sigma)]
+      \dfrac
+      {}
+      {\langle x \leftarrow e,\, \sigma \rangle \rightarrow \sigma[x \mapsto \llbracket e \rrbracket_A(\sigma)]}
     $$
 
     The notation $\sigma[x \mapsto n]$ refers to the state that results from updating the value assigned to $x$ to be $n$.
@@ -117,7 +120,7 @@ $$
 The second rule applies when the first statement $S_1$ steps directly to a terminal configuration.
 Its execution has been completed, and the program moves onto $S_2$ with the updated state $\sigma'$.
 
-As with the previous rules, these rules apply for all statements $S_1,\, S_2 \in S$ and all states $\sigma,\, \sigma',\, \sigma'' \in \mathsf{state}$ - these are the rules metavariables.
+As with the previous rules, these rules apply for all statements $S_1,\, S_2 \in S$ and all states $\sigma,\, \sigma',\, \sigma'' \in \mathsf{State}$ - these are the rules metavariables.
 In order to use this rule, however, we need not only to instantiate metavariables but to find another instance of the $\rightarrow$ that determine the behaviour of the statements $S_1$.
 Once we have done so, we can derive a new step for the compound statement $S_1 ; S_2$.
 For example, as we know that $\langle x \leftarrow 2,\, [x \mapsto 1] \rangle \rightarrow [x \mapsto 2]$, we can conclude that:
@@ -164,7 +167,7 @@ The many-step transition relation can be understood as sumarising a trace.
 If there exists a trace $\gamma_1 \rightarrow \gamma_2 \rightarrow \cdots \rightarrow \gamma_n$, then we have that $\gamma_1 \rightarrow^* \gamma_n$ and vice versa.
 So, for instance, we may write $\langle x \leftarrow 2; x \leftarrow 3,\, [x \mapsto 1] \rangle \rightarrow^* [x \mapsto 3]$.
 
-## If and While
+## If
 
 The behaviour of the if-then construct is naturally conditional on whether the branch condition (i.e.\ the Boolean expression) evaluates to true or false under the current state.
 Therefore, there are two rules for such statements:
@@ -176,8 +179,6 @@ $$
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \top.
 $$
 
-When the branch condition $b$ evaluates to true, we transition in a single step to the first branch $S_1$.
-As with the assignment rule, the evaluation of the branch condition isn't considered an operational step.
 
 $$
   \dfrac
@@ -186,19 +187,23 @@ $$
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot.
 $$
 
-
+When the branch condition $b$ evaluates to true, we transition in a single step to the first branch $S_1$.
+As with the assignment rule, the evaluation of the branch condition isn't considered an operational step.
 Conversely, when the branch condition $b$ evaluates to false, we transition in a single step to the second branch $S_2$.
+
+We don't write the condition $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ or $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ as a premise directly as it isn't another operational step.
+These are referred to as _side-conditions_, but they effectively act as premises.
+
+## While
 
 Similarly, the behaviour of the while-do construct depends on whether the branch condition is met or not, and thus there are two rules:
 
 $$
   \dfrac
+  {}
   {\mathsf{while}\ b\ \mathsf{do}\ S,\, \sigma \rangle \rightarrow \sigma}
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot
 $$
-
-  Under the first rule, when the branch condition is not met, we transition to a terminal configuration with the same state.
-  Compare this rule to that of skip - if the branch condition is not met, the while-do construct does nothing.
 
 $$
   \dfrac
@@ -206,8 +211,10 @@ $$
   \llbracket b \rrbracket_\mathcal{B}(\sigma) = \top
 $$
 
-  If, on the other hand, the branch condition is met, the while loop is "unfolded".
-  After unfolding the loop, the statement of the new configuration is a sequence of the body of the loop and the loop itself; in this way, any subsequent steps will execute the body of the loop, and then revisit the loop itself and perhaps unfold it further.
+Under the first rule, when the branch condition is not met, we transition to a terminal configuration with the same state.
+Compare this rule to that of skip - if the branch condition is not met, the while-do construct does nothing.
+If, on the other hand, the branch condition is met, the while loop is "unfolded".
+After unfolding the loop, the statement of the new configuration is a sequence of the body of the loop and the loop itself; in this way, any subsequent steps will execute the body of the loop, and then revisit the loop itself and perhaps unfold it further.
 
 Let's consider an example program $\mathsf{while}\ (x \leq 1)\ \mathsf{do}\ x \leftarrow x + 1$ and an initial state $[x \mapsto 0]$ to get a sense of how this works in practice.
 Initially, the branch condition is met and so the program will execute by unfolding the loop:
