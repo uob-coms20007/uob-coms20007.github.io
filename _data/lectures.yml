@@ -18,4 +18,9 @@
 - title: Implementation
   link: https://uob-coms20007.github.io/notes/syntax/frontend.html
 
+- title: Obtaining LL(1)
+  link: https://uob-coms20007.github.io/notes/syntax/obtaining.html
+
+- title: Abstract Syntax
+  link: https://uob-coms20007.github.io/notes/syntax/ast.html
 
