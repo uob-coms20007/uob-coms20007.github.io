@@ -24,3 +24,8 @@
 - title: Abstract Syntax
   link: https://uob-coms20007.github.io/notes/syntax/ast.html
 
+- title: Denotational Semantics
+  link: https://uob-coms20007.github.io/notes/semantics/denotational.html
+
+- title: Structural Induction
+  link: https://uob-coms20007.github.io/notes/semantics/induction.html
