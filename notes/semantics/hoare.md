@@ -10,9 +10,9 @@ parent: Semantics
 
 There are a number of reasons why it is useful to have a mathematic description of a programming language's semantics.
 For instance, it can serve as a specification for a compiler or interpreter - a benchmark to ensure that an implementation matches the intended behaviour and to ensure that different implementations behave in the same way.
-However, it also gives us a framework for formally _reasoning_ about programs.
+However, it also gives us a framework for formally _reasoning_ about the behaviour of programs.
 
-The first property of a program that we will look at is _functional correctness_; that is, whether a program computes an intended function or not.
+For the operational semantics of the While language, we will look at is _functional correctness_; that is, whether a program computes an intended function or not.
 More specifically, we will look at _partial correctness_ which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result.
 Partial correctness disentangles the input-output expectations from the termination condition.
 
@@ -42,7 +42,7 @@ As an example, we may assert that $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}
 This gives us a way to summarise the behaviour of program $$x \leftarrow x + 1$$ across infinitely many traces.
 
 It is worth noting that Hoare triples are more flexible than specifying the exact input-output behaviour of a statement, rather they describe a relation that subsumes the particular function.
-For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any statement that will increase $$x$$ iduring any terminating trace, but it doesn't just have to be $$x \leftarrow x + 1$$ and nor doesn't need to be limited to updating $$x$$.
+For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any statement that will increase $$x$$ during any terminating trace, but it doesn't just have to be $$x \leftarrow x + 1$$ and nor doesn't need to be limited to updating $$x$$.
 As we shall see, this generality allows us to compose Hoare triples without having to reanalyse the same statement.
 
 ## Assertion Languages
@@ -74,7 +74,6 @@ We will write $\sigma \models P$ for some extended Boolean expression $P \in \ma
 
 You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities.
 We will use them interchangeably with sets of states - feel free to use any logical expression within assertions.
-
 The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound to a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is even.
 
 # Compositionality
@@ -93,10 +92,10 @@ $$
 Somewhat predictably, the summary of the skip command tells us that the state doesn't change when executing this command.
 Therefore, the pre- and post-conditions are the same; if executed with a state $$\sigma \in \mathsf{State}$$ such that $$\sigma \in P$$, then any terminal state will also satisfy $$P \subseteq \mathsf{State}$$.
 
-The notation we are using here is a general notation for inference rule: above the line is a series of _premises_ which we must show in order to use the rule, and below the line is the _conclusion_ - you can read it as "if everything above the line holds, then everything below the line holds."
+The notation we are using here is similar to that of the operational semantics rule: above the line is a series of _premises_ which we must show in order to use the rule, and below the line is the _conclusion_ - you can read it as "if everything above the line holds, then everything below the line holds."
 In this case, there are no premises, so we can use the conclusion without having to show anything first.
-As with the small-step semantics, $$P \subseteq \mathsf{State}$$ here isn't a fixed assertion, but rather this rule can be applied to any assertion we are interested.
-The same structural for each of the subsequent rule we will look at.
+As with the small-step semantics, $$P \subseteq \mathsf{State}$$ here isn't a fixed object, but rather a metavariable so that this rule can be applied to any assertion we are interested.
+The same structure holds for each of the subsequent rule we will look at.
 
 ### Assignment Rule:
 
@@ -107,7 +106,7 @@ $$
 $$
 
 The notation $$P[e/x]$$ refers to the assertion $$P$$ where the variable $$x$$ has been substituted for the arithmetic expression $$e$$.
-If $$P$$ is represented as an extended Boolean expression, then we can define this recursively as in the problem sheet:
+If $$P$$ is represented as an extended Boolean expression, then we can define this recursively in a similar manner to the substitution operations from the problem sheet:
 
 $$
   \begin{array}{rl}
@@ -137,7 +136,6 @@ $$
   \end{array}
 $$
 
-
 Within the post-condition, we have an existential variable $$x'$$. 
 Intuitively, this variable corresponds to the value of $$x$$ _prior_ to execution of this assignment statement.
 So, in particular, we know that $$p[x'/x]$$ holds as this was specified by our pre-condition.
@@ -166,17 +164,17 @@ Then the derived Hoare triple for the compound statement $$S_1;\; S_2$$ has the 
 
 To see why this rule works, consider what the two assumptions tell us:
 
-  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\sigma_0 \models p$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \models q$$.
+  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\sigma_0 \in P$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in Q$$.
 
-  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\sigma_0 \models q$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \models r$$.
+  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\sigma_0 \in Q$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in R$$.
 
-Now let us suppose we have some initial state $$\sigma$$ such that $$\sigma_0 \models p$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_2$$.
+Now let us suppose we have some initial state $$\sigma$$ such that $$\sigma_0 \in P$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_2$$.
 By inspecting how this execution could proceed, we can see that $$S_1$$ will execute first until it ultimately reaches some terminal configuration with the state $$\sigma_1$$, and so we have that $$\langle S_1; S_2,\, \sigma \rangle \rightarrow^* \langle S_2,\, \sigma_1 \rangle$$.
 Subsequently, $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_2$$.
 
-The first premise tell us that $$\sigma_1 \models q$$ - we have assumed that the initial state satisfies the pre-condition of $$S_1$$, i.e. $$\sigma_0 \models p$$, and so, after executing $$S_1$$, this intermediate state $$\sigma_1$$ will satisfy the post-condition $$q$$.
+The first premise tell us that $$\sigma_1 \in Q$$ - we have assumed that the initial state satisfies the pre-condition of $$S_1$$, i.e. $$\sigma_0 \in P$$, and so, after executing $$S_1$$, this intermediate state $$\sigma_1$$ will satisfy the post-condition $$Q$$.
 More over, we can then use this fact to see that, as $$\langle S_2,\, \sigma_1 \rangle \rightarrow^* \sigma_2$$, the terminal state $$\sigma_2$$ must satisfy $$R$$ by virtue of the second Hoare triple.
-Thus making $$\{ p \}\ S_1;\; S_2\ \{ q \}$$ a valid Hoare triple.
+Thus making $$\{ P \}\ S_1;\; S_2\ \{ Q \}$$ a valid Hoare triple.
 
 This particular rule illustrates the utility of considering Hoare triples as we don't have to consider the executing of the compound statement $$S_1;\; S_2$$ directly, but rather can derive our result from Hoare triples concerning each sub-statement.
 It is worth clarifying that the reasoning above explains why the rule works, but it is not necessary when using this rule.
@@ -185,8 +183,8 @@ It is worth clarifying that the reasoning above explains why the rule works, but
 
 $$
   \dfrac
-  {\{ e \andop p \}\ S_1\ \{ q_1 \} \quad \{ \mathop{!}e \andop p \}\ S_2\ \{ q_2 \}}
-  {\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q_1 \orop q_2 \}}
+  {\{ e \andop P \}\ S_1\ \{ Q_1 \} \quad \{ \mathop{!}e \andop p \}\ S_2\ \{ Q_2 \}}
+  {\{ P \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ Q_1 \orop Q_2 \}}
 $$
 
 <!-- To show that the Hoare triple $$\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}$$ holds, we split our reasoning according to the two branches.
@@ -202,28 +200,28 @@ Suppose $$\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sig
 There are two cases to consider:
 
   - If $$\llbracket e \rrbracket_\mathcal{B}(\sigma_0) = \top$$, then it must be the case that $$\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \rangle \rightarrow \langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
-    In this case, we can appeal the Hoare-triple concerning the first branch to see that $$\sigma_1$$ must satisfy $$q_1$$ as the pre-condition $$e \andop p$$ is satisfy by $$\sigma$$.
+    In this case, we can appeal the Hoare-triple concerning the first branch to see that $$\sigma_1$$ must satisfy $$Q_1$$ as the pre-condition $$e \andop P$$ is satisfy by $$\sigma$$.
     We get to assume $e$ as well because it is only under this condition that the branch will be executed.
   
   - Otherwise, if $$\llbracket e \rrbracket_\mathcal{B}(\sigma_0) = \bot$$ and $$\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma_0 \rangle \rightarrow \langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$, our reasoning is symmetric.
-    We know that $$\mathop{!}e \andop e$$ will be satisfied by the state $$\sigma_0$$ and so, according to the Hoare triple concerning the second branch, we can conclude that $$\sigma_1$$ will satisfy the post-condition $$q_2$$.
+    We know that $$\mathop{!}e \andop P$$ will be satisfied by the state $$\sigma_0$$ and so, according to the Hoare triple concerning the second branch, we can conclude that $$\sigma_1$$ will satisfy the post-condition $$Q_2$$.
     We get to assume $!e$ as well because it is only under this condition that the branch will be executed.
 
-Therefore, we know that the post-condition will satisfy either $q_1$ or $q_2$, but we don't know which.
-Hence, we can only conclude that the post-condition will satisfy $q_1 \orop q_2$.
+Therefore, we know that the post-condition will satisfy either $Q_1$ or $Q_2$, but we don't know which.
+Hence, we can only conclude that the post-condition will satisfy $Q_1 \orop Q_2$.
 
 ### Consequence/Subsumption Rule: 
 
 $$
   \dfrac
-  {\{ p_1 \}\ S\ \{ q_1 \}}
-  {\{ p_2 \}\ S\ \{ q_2 \}}
-  p_2 \vDash p_1 \text{and}\ q_1 \vDash q_2
+  {\{ P_1 \}\ S\ \{ Q_1 \}}
+  {\{ P_2 \}\ S\ \{ Q_2 \}}
+  P_2 \vDash P_1 \text{and}\ Q_1 \vDash Q_2
 $$
 
 Unlike the other rules we have seen so far, this rule doesn't involve any particular syntactic construct but rather works for an arbitrary statement.
-It allows us to weaken a strong assertion $$\{ p_1 \}\ S\ \{ q_1 \}$$, into a more specific claim $$\{ p_2 \}\ S\ \{ q_2 \}$$ that fits with our particular objective.
-The _side conditions_ $$p_2 \vDash p_1$$ and $$q_1 \vDash q_2$$ say that whenever $$p_2$$ is true $$p_1$$ is also true, and likewise whenever $$q_1$$ is true $$q_2$$ is true (formally, $$p_2 \vDash p_1$$ just if $$\llbracket p_2 \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p_1 \rrbracket_\mathcal{B}(\sigma)$$ for all states $$\sigma \in \mathsf{state}$).
+It allows us to weaken a strong assertion $$\{ P_1 \}\ S\ \{ Q_1 \}$$, into a more specific claim $$\{ P_2 \}\ S\ \{ Q_2 \}$$ that fits with our particular objective.
+The _side conditions_ $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$ say that whenever $$p_2$$ is true $$p_1$$ is also true, and likewise whenever $$q_1$$ is true $$q_2$$ is true (formally, $$p_2 \vDash p_1$$ just if $$\llbracket p_2 \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p_1 \rrbracket_\mathcal{B}(\sigma)$$ for all states $$\sigma \in \mathsf{state}$).
 
 What we mean by a "weaker" assertion is one that is more general, i.e. is true of more statess.
 This may sound contradictory, but it is weaker in the sense that it tells us less about the initial or terminal state.
@@ -245,8 +243,8 @@ In this case, it wouldn't be too difficult to derive the triple $\{ x > 0 \}\ x 
 
 $$
   \dfrac
-  {\{ e \andop p \}\ S\ \{ p \}}
-  {\{ p \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop p \}}
+  {\{ e \andop P \}\ S\ \{ P \}}
+  {\{ P \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop P \}}
 $$
 
 Finally, there is the while rule.
@@ -292,7 +290,7 @@ Unlike normal execution, symbolic execution requires us to consider all the diff
 
 #### Aside
 This correspondence is only intuitive as not all sets of states can be described by an extended Boolean expression.
-For example, you cannot describe the set of states $\sigma \in \mathsf{state}$ for which $\sigma(x)$ is prime just using an extended Boolean expression.
+For example, you cannot describe the set of states $\sigma \in \mathsf{State}$ for which $\sigma(x)$ is prime just using an extended Boolean expression.
 The strict definition of the strongest post-condition, however, only requires that it is the strongest extended Boolean expression that approximates this set.
 When a set can not be precisely described by an extended Boolean expression, we can imagine an ever increase sequence of approximations; and so, in such case the strongest post-condition would not be defined anyway.
 
