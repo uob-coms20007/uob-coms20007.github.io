@@ -202,12 +202,12 @@ $$
   \dfrac
   {\{ P_1 \}\ S\ \{ Q_1 \}}
   {\{ P_2 \}\ S\ \{ Q_2 \}}
-  P_2 \vDash P_1 \text{and}\ Q_1 \vDash Q_2
+  P_2 \subseteq P_1 \text{and}\ Q_1 \subseteq Q_2
 $$
 
 Unlike the other rules we have seen so far, this rule doesn't involve any particular syntactic construct but rather works for an arbitrary statement.
 It allows us to weaken a strong assertion $$\{ P_1 \}\ S\ \{ Q_1 \}$$, into a more specific claim $$\{ P_2 \}\ S\ \{ Q_2 \}$$ that fits with our particular objective.
-The _side conditions_ $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$ say that whenever $$p_2$$ is true $$p_1$$ is also true, and likewise whenever $$q_1$$ is true $$q_2$$ is true (formally, $$p_2 \vDash p_1$$ just if $$\llbracket p_2 \rrbracket_\mathcal{B}(\sigma) \Rightarrow \llbracket p_1 \rrbracket_\mathcal{B}(\sigma)$$ for all states $$\sigma \in \mathsf{state}$).
+The _side conditions_ $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$ ensure that any state in the desired pre-condition $P_2$ will also meet the required pre-condition of the premise, and thus we may conclude from this premise that the final state will be in $Q_1$ and hence also in $Q_2$ as required.
 
 What we mean by a "weaker" assertion is one that is more general, i.e. is true of more statess.
 This may sound contradictory, but it is weaker in the sense that it tells us less about the initial or terminal state.
@@ -327,7 +327,7 @@ The post-condition $\exists x'.\, y = x' \andop x' < 0 \andop x = 0 - x'$ is equ
 For the second branch, we use the skip rule and we may to assume that $!(x < 0)$ otherwise this branch isn't reached:
 
 $$
-  \{ y = x \andop !(x < 0) \}\ \mathsf{skip}\ \{ y = x \andop !(x < 0) \}
+  \{ y = x \andop !(x < 0) \}\ \mathsf{skip}\ \{ y = x \andop {!(x < 0)} \}
 $$
 
 In general, we have that:
@@ -339,7 +339,7 @@ $$
 Now we have the strongest post-condition for each branch, we can combine them using them using the if-then-else rule:
 
 $$
-  \{ y = x \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ (y < 0 \andop x = 0 - y) \orop !(x < 0) \}
+  \{ y = x \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ (y < 0 \andop x = 0 - y) \orop {!(x < 0)} \}
 $$
 
 Remember, as our Hoare triple must summarise the entire behaviour of its subject, the post-condition is derived from the disjunction of both branches.
