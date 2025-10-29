@@ -8,11 +8,11 @@ parent: Semantics
 
 # Hoare Logic
 
-There are a number of reasons why it is useful to have a mathematic description of a programming language's semantics.
-For instance, it can serve as a specification for a compiler or interpreter - a benchmark to ensure that an implementation matches the intended behaviour and to ensure that different implementations behave in the same way.
-However, it also gives us a framework for formally _reasoning_ about the behaviour of programs.
+Having a mathematical description of a programming language's semantics enables us to formal reason about the behaviour of programs.
+However, it can be quite cumbersome doing so directly, and much of the field of programming language's is based on designing effective reasoning techniques.
+Hoare logic is one such framework.
 
-For the operational semantics of the While language, we will look at is _functional correctness_; that is, whether a program computes an intended function or not.
+The sort of properties Hoare logic can be used for are _functional correctness_ properties; that is, whether a program computes an intended function or not.
 More specifically, we will look at _partial correctness_ which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result.
 Partial correctness disentangles the input-output expectations from the termination condition.
 
@@ -70,10 +70,10 @@ We will consider an assertion language based on an extension of Boolean expressi
 
 </div>
 
-We will write $\sigma \models P$ for some extended Boolean expression $P \in \mathcal{B}^+$ to represent the fact that $\llbracket P \rrbracket_{\mathcal{B}^+}(\sigma) = \top$.
+<!-- We will write $\sigma \models P$ for some extended Boolean expression $P \in \mathcal{B}^+$ to represent the fact that $\llbracket P \rrbracket_{\mathcal{B}^+}(\sigma) = \top$. -->
 
-You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities.
-We will use them interchangeably with sets of states - feel free to use any logical expression within assertions.
+We will use extended Boolean expressions interchangeably with sets of states.
+You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities - feel free to use any logical expression within assertions.
 The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound to a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is even.
 
 # Compositionality
@@ -106,23 +106,9 @@ $$
 $$
 
 The notation $$P[e/x]$$ refers to the assertion $$P$$ where the variable $$x$$ has been substituted for the arithmetic expression $$e$$.
-If $$P$$ is represented as an extended Boolean expression, then we can define this recursively in a similar manner to the substitution operations from the problem sheet:
-
-$$
-  \begin{array}{rl}
-    y[e/x] &= \begin{cases}
-                e &= \text{if}\ x = y \\
-                y &= \text{otherwise}
-              \end{cases} \\
-    \top[e/x] &= \top \\
-    (a_1 \leq a_2)[e/x] &= a_1[e/x] \leq a_2[e/x] \\
-    (b_1 \andop b_2)[e/x] &= b_1[e/x] \andop b_2[e/x] \\
-    \cdots
-  \end{array}
-$$
-
 For instance, if $$P$$ was the extended Boolean expression $$x > 1$$, then $$P[x + 1/x]$$ would be $$x + 1 > 1$$.
 
+If $$P$$ is represented as an extended Boolean expression, then we can define this recursively in a similar manner to the substitution operations from the problem sheet.
 Or, for a set of states $$P \subseteq \mathsf{State}$$, we can define it as $$\{ \sigma \mid \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)] \in P \}$$, i.e. those states that would be in $$P$$ if $$x$$ is replaced with $$e$$.
 For instance:
 
@@ -147,7 +133,7 @@ For example, this rule allows us to conclude that:
 $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ \exists x'.\, x' > 0 \andop x = x' + 1 \}$$
 
 Here the assertion $P$, i.e. our pre-condition, is $x > 0$ hence $P[x'/x]$ becomes $x' > 0$.
-As expected, this post-condition is equivalent to $x > 1$ in the sense that they denote the same set of states.
+As expected, this post-condition is equivalent to $x > 1$ (in the sense that they denote the same set of states).
 Therefore, we could have equivalently said $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$.
 
 ### Sequence Rule:
@@ -164,9 +150,9 @@ Then the derived Hoare triple for the compound statement $$S_1;\; S_2$$ has the 
 
 To see why this rule works, consider what the two assumptions tell us:
 
-  - As $$\{ p \}\ S_1\ \{ q \}$$, we know that whenever $$\sigma_0 \in P$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in Q$$.
+  - As $$\{ P \}\ S_1\ \{ Q \}$$, we know that whenever $$\sigma_0 \in P$$ and $$\langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in Q$$.
 
-  - Likewise, as $$\{ q \}\ S_2\ \{ r \}$$, we know that whenever $$\sigma_0 \in Q$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in R$$.
+  - Likewise, as $$\{ Q \}\ S_2\ \{ R \}$$, we know that whenever $$\sigma_0 \in Q$$ and $$\langle S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ then $$\sigma_1 \in R$$.
 
 Now let us suppose we have some initial state $$\sigma$$ such that $$\sigma_0 \in P$$ and $$\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \sigma_2$$.
 By inspecting how this execution could proceed, we can see that $$S_1$$ will execute first until it ultimately reaches some terminal configuration with the state $$\sigma_1$$, and so we have that $$\langle S_1; S_2,\, \sigma \rangle \rightarrow^* \langle S_2,\, \sigma_1 \rangle$$.
@@ -250,27 +236,28 @@ $$
 Finally, there is the while rule.
 This rule doesn't behave as nicely as the others, so we will look at it in more detail next time.
 
-## Strongest Post-condition and Consequent
+## Strongest Post-condition
 
 As we have seen, we can derive Hoare triples from the rules given above.
-In practice, however, we are more likely to be given Hoare triple holds that serves as a specification for a program we wish to verify, e.g.
+In practice, however, we are more likely to be given a pre- and post-condition that serves as a specification for our program and we wish to verify that the implementation matches this expectation.
+For instance, when given the triple:
 
 $$
   \{ \top \}\ y \leftarrow x;\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}
 $$
 
-and asked to determine whether it is valid or not.
-That is, does this program ensure that $x$ is non-negative after execution?
+how do we determine whether it is valid or not?
+That is, does this program ensure that $x$ is non-negative after execution.
 
 To answer this question, we will start with the pre-condition $$x \geq 0$$ to try to determine the *strongest* post-condition that follows from the pre-condition.
 
 <div class="defn" markdown="1">
-  For a given pre-condition $$p \in \mathcal{B}^+$$ and a statement $$S \in \mathcal{S}$$, the strongest post-condition is some assertion $$q \in \mathcal{B}^+$$ such that:
+  For a given pre-condition $$P \subseteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, the strongest post-condition is some assertion $$Q \subseteq \mathsf{State}$$ such that:
   
-  - $$\{ p \}\ S\ \{ q \}$$, i.e. the strongest post-condition is indeed a post-condition;
-  - And, if $$\{ p \}\ S\ \{ q' \}$$, then $$q \models q'$$ that is, any other post-condition is implied by the stronger post-condition.
+  - $$\{ P \}\ S\ \{ Q \}$$, i.e. the strongest post-condition is indeed a post-condition;
+  - And, if $$\{ P \}\ S\ \{ Q' \}$$, then $$Q \subseteq Q'$$ that is, any other post-condition is a larger, and thus less specific, than the strongest post-condition.
 
-  We write $$\mathsf{SPC}(S,\, p)$$ to denote the strongest post-condition of some statement $$S$$ and some pre-condition $$p$$.
+  We write $$\mathsf{SPC}(S,\, P)$$ to denote the strongest post-condition of some statement $$S$$ and some pre-condition $$P$$.
 </div>
 
 The strong post-condition is not only a post-condition that follows from the give pre-condition, but it is in some sense the canonical such post-condition and will subsume any other such post-condition.
@@ -281,7 +268,7 @@ For example, $$\mathsf{SPC}(x \leftarrow x + 1,\, x > 0)$$ is $$x > 1$$ as it is
 Rather than prove it is weaker than all pre-conditions, we will see certain rules for computing the weakest pre-condition in a moment.   -->
 Intuitively, the strong post-condition corresponds to the exact set of states that the statement may terminate in when executed in any state satisfy the pre-condition:
 $$
-  \mathsf{SPC}(S,\, q) = \{ \sigma \in \mathsf{state} \mid \text{if}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma'\ \text{then}\ \llbracket q \rrbracket_\mathcal{B}(\sigma') \}
+  \mathsf{SPC}(S,\, q) = \{ \sigma \in \mathsf{State} \mid \text{if}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma'\ \text{then}\ \llbracket q \rrbracket_\mathcal{B}(\sigma') \}
 $$
 
 In this sense, we can imagine the strong post-condition as a form of _symbolic_ execution.
@@ -289,12 +276,17 @@ That is, rather than executing the statement in a specific state, e.g. $[x \maps
 Unlike normal execution, symbolic execution requires us to consider all the different paths the program may go down and collect the results from each, which is why the if-then-else rule has a disjunction over the post-conditions of each branch.
 
 #### Aside
-This correspondence is only intuitive as not all sets of states can be described by an extended Boolean expression.
-For example, you cannot describe the set of states $\sigma \in \mathsf{State}$ for which $\sigma(x)$ is prime just using an extended Boolean expression.
-The strict definition of the strongest post-condition, however, only requires that it is the strongest extended Boolean expression that approximates this set.
-When a set can not be precisely described by an extended Boolean expression, we can imagine an ever increase sequence of approximations; and so, in such case the strongest post-condition would not be defined anyway.
+Whilst the set of states corresponding to the strongest post-condition will always exist, it won't necessarily be describable by any given assertion language.
+A common choice for assertion language is linear arithmetic, which does not permit quantifiers or multiplication, as it can be algorithmically checked.
+However, there are strongest post-conditions that it cannot express.
+Our extended Boolean arithmetic can express all strongest post-conditions.
 
-The importance of the strongest post-condition comes from  when we are tasked with assessing the validity of a given Hoare triple, e.g. $$\{ \top \}\ S \{ x \geq 0 \}$$ where $$S$$ is the program we saw earlier.
+<!-- This correspondence is only intuitive as not all sets of states can be described by an extended Boolean expression. -->
+<!-- For example, you cannot describe the set of states $\sigma \in \mathsf{State}$ for which $\sigma(x)$ is prime just using an extended Boolean expression. -->
+<!-- The strict definition of the strongest post-condition, however, only requires that it is the strongest extended Boolean expression that approximates this set. -->
+<!-- When a set can not be precisely described by an extended Boolean expression, we can imagine an ever increase sequence of approximations; and so, in such case the strongest post-condition would not be defined anyway. -->
+
+The importance of the strongest post-condition comes from when we are tasked with assessing the validity of a given Hoare triple, e.g. $$\{ \top \}\ S \{ x \geq 0 \}$$ where $$S$$ is the program we saw earlier.
 If we can work out the strongest post-condition $\mathsf{SPC}(S,\, \top)$ then all we need to check is whether the specified post-condition is a implied by the strongest post-condition.
 If so, then we can apply the consequence rule to get the desired triple, and if not, then we know the triple is invalid by the fact that the strongest post-condition would imply any other post-condition.
 
@@ -302,12 +294,12 @@ So, how are we going to derive the strongest post-condition for $$S$$ with the p
 Well it just so happens that the basic rules we defined for each language construct (other than while) calculate their strong post-condition directly - they are the most precise claims we can make.
 Therefore, as long as we retain maximum generality when applying this rules, we can calculate the strongest pre-condition compositionally.
 
-At the top-level, our statement is a sequence statement, and so we will apply the rule for this construct splitting our objective into two: we must the strongest $p$ such that $$\{ \top \}\ x \leftarrow y\ \{ p \}$$, then we can use this to determine where $$\{ p \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$ holds.
+At the top-level, our statement is a sequence statement, and so we will apply the rule for this construct splitting our objective into two: we must the strongest post-condition $P$ such that $$\{ \top \}\ x \leftarrow y\ \{ P \}$$, then we can use this to determine where $$\{ P \}\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}$$ holds.
 We can summarise this step by the equation:
 
 $$
-  \mathsf{SPC}(S_1;\; S_2, p) = 
-    \mathsf{SPC}(S_2,\, \mathsf{SPC}(S_1, p))
+  \mathsf{SPC}(S_1;\; S_2, P) = 
+    \mathsf{SPC}(S_2,\, \mathsf{SPC}(S_1, P))
 $$
 
 i.e. the strongest post-condition of a sequence $S_1;\; S_2$ for a pre-condition $p$ is the strongest post-condition for $S_2$ for the pre-condition that is itself the strong post-condition of $S_2$.
@@ -317,7 +309,7 @@ As the first statement is the assignment $y \leftarrow x$, we can calculate that
 In general, we have that:
 
 $$
-  \mathsf{SPC}(x \leftarrow e, p) = \exists x'.\, p[x'/x] \andop x = e[x'/x]
+  \mathsf{SPC}(x \leftarrow e, P) = \exists x'.\, P[x'/x] \andop x = e[x'/x]
 $$
 
 This gives us the strongest post-condition to the first statement that we can then use to find the strongest post-condition to the second statement $\mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}$.
@@ -341,7 +333,7 @@ $$
 In general, we have that:
 
 $$
-  \mathsf{SPC}(\mathsf{skip},\, p) = p
+  \mathsf{SPC}(\mathsf{skip},\, P) = P
 $$
 
 Now we have the strongest post-condition for each branch, we can combine them using them using the if-then-else rule:
@@ -354,11 +346,11 @@ Remember, as our Hoare triple must summarise the entire behaviour of its subject
 We can summarise the strongest post-condition for the if-then-else construct as follows:
 
 $$
-  \mathsf{SPC}(\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, p) = 
-    \mathsf{SPC}(S_1,\, p \andop e) \orop \mathsf{SPC}(S_2,\, p \andop !e)
+  \mathsf{SPC}(\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, P) = 
+    \mathsf{SPC}(S_1,\, P \andop e) \orop \mathsf{SPC}(S_2,\, P \andop !e)
 $$
 
-Therefore, we have the strongest post-condition for the statement $S$; namely, $(y < 0 \andop x = 0 - y) \orop !(x < 0)$.
+Therefore, we have the strongest post-condition for the statement $S$: $(y < 0 \andop x = 0 - y) \orop {!(x < 0)}$.
 All that remains is to check whether this can be weakened into the desired post-condition $x \geq 0$.
 Indeed, we have that $x \geq 0$ when $y < 0 \andop x = 0 - y$ and, likewise, when $!(x < 0)$.
 Therefore, the desired post-condition follows from the strongest post-condition and we can conclude that the Hoare triple is valid.
@@ -437,18 +429,18 @@ Therefore, we can conclude the original triple $$\{ \top \}\ \mathsf{if}\ x < 0\
 This may seem rather long-winded, but actually that is because we have been closely inspecting the various steps taken along the way.
 We can summarize the process more compactly as follows:
 
-To check whether $$\{ p \} S \{ q \}$$ is valid:
+To check whether $$\{ P \} S \{ Q \}$$ is valid:
 
-  - Calculate $$\mathsf{SPC}(S,\, p)$$ using the equations laid-out above.
+  - Calculate $$\mathsf{SPC}(S,\, P)$$ using the equations laid-out above.
 
-  - Determine whether $$\llbracket \mathsf{SPC}(S,\, p) \rrbracket_{\mathcal{B}^+}(\sigma) \Rightarrow \llbracket q \rrbracket_{\mathcal{B}^+}(\sigma)$$ for all $$\sigma$$. 
+  - Determine whether $$\mathsf{SPC}(S,\, P) \subseteq Q$$.
 
 For programs that don't involve the while statement, the strategy we have seen for checking whether a given triple holds is _complete_.
 That is, if the triple holds, then are strategy will indeed be able to derive it from the rules we have outlined.
 Moreover, if the strategy fails as the final implication does not hold, we know the triple does not hold.
 The completeness here is derived precisely from the fact we consider the _strongest_ post-condition - any given post-condition must be weaker; or, if it is not weaker, then it is not a post-condition.
 
-For programs involving while loops, the process breaks down as we cannot always computer the strongest post-condition precisely.
+For programs involving while loops, the process breaks down as we cannot always computer the strongest post-condition directly.
 Instead, we may have to _over-approximate_ it, i.e. compute a less general post-condition.
 We can still use the process to check whether a triple holds, but if it doesn't work we don't know whether this is due to our over-approximation or not - it is sound, but incomplete.
 But more on that next week!
