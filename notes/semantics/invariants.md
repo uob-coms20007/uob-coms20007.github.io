@@ -216,7 +216,7 @@ So, for our earlier example:
 $$
   \begin{array}{l}
     \{ n \geq 0 \andop sum = 0 \andop i = 0 \} \\
-    \mathsf{while}\ i < n \mathsf{do} \\
+    \mathsf{while}\ i < n\ \mathsf{do} \\
     \quad sum \leftarrow sum + i;\; \\
     \quad i \leftarrow i + 1 \\
     \{ 2 * sum = n * (n - 1) \}
@@ -225,8 +225,8 @@ $$
 
 We need to find some $I$ such that:
 
- - $$n \geq 0 \andop sum = 0 \andop i = 0 \Rightarrow I$$
- - $$\mathsf{SPC}(sum \leftarrow sum + i;\; i \leftarrow i + 1,\, I \andop i < n) \Rightarrow I$$
- - $$I \andop i \geq n \Rightarrow 2 * sum = n * (n - 1)$$
+ - $$n \geq 0 \andop sum = 0 \andop i = 0 \Rightarrow I$$.
+ - $$\mathsf{SPC}(sum \leftarrow sum + i;\; i \leftarrow i + 1,\, I \andop i < n) \Rightarrow I$$.
+ - $$I \andop i \geq n \Rightarrow 2 * sum = n * (n - 1)$$.
 
 And we can see that $2 * sum = i * (i - 1) \andop i \leq n$ satisfies these constraints.
