@@ -32,8 +32,8 @@ Let's look at an example:
 
 $$
   \begin{array}{l}
-    \mathsf{while}\ x < y \mathsf{do} \\
-      x \leftarrow x + 1
+    \mathsf{while}\ x < y\ \mathsf{do} \\
+    \quad x \leftarrow x + 1
   \end{array}
 $$
 
@@ -47,20 +47,21 @@ $$
 $$
 
 The Hoare rule for the While construct only allows us to conclude a triple of the form $$\{ x \leq y \}\ \mathsf{while}\ x < y\ \mathsf{do}\ x \leftarrow x + 1\ \{ \mathop{!}(x < y) \andop x \leq y \}$$ if we can show that $$\{ x < y \andop x \leq y \}\ x \leftarrow x + 1\ \{ x \leq y \}$$.
-Here, we have chosen $x \leq y$ as our loop invariant as it is the pre-condition.
+Here, we have chosen $x \leq y$ as our loop invariant as it is the pre-condition - it is precisely what we know before, so let's see if it forms a loop invariant.
 
 To verify $$\{ x < y \andop x \leq y \}\ x \leftarrow x + 1\ \{ x \leq y \}$$, we calculate the trongest post-condition $\mathsf{SPC}(x \leftarrow x + 1,\, x < y \andop x \leq y)$ to be $$\exists x'. x' < y \andop (x \leq y)[x'/x] \andop x = x' + 1$$.
 And we can then see that this post-condition is equivalent to $$x \leq y$$ as required.
 Therefore, $$x \leq y$$ is a loop invariant - it is preserved under execution of the loop.
 
 Given this loop invariant, the rule for the while construct gives us $$\{ x \leq y \}\ \mathsf{while}\ x < y\ \mathsf{do}\ x \leftarrow x + 1\ \{ \mathop{!}(x < y) \andop x \leq y \}$$, which we can then weaken to $$\{ x \leq y \}\ \mathsf{while}\ x < y\ \mathsf{do}\ x \leftarrow x + 1\ \{ x \leq y \}$$ by the consequent rule.
+That is, if the loop terminates, then we will have $x \leq y$ after.
 
 ## The Sweet Spot
 
 In the above example, the loop invariant required was chosen to be the pre-condition.
 We can also see that it was forced upon us by the post-condition - we wanted some invariant $P$ such that the post-condition $!(x < y) \andop P$ would imply $x \leq y$ for which $x \leq y$ is the most general solution
 
-However, it isn't always the case that the loop invariant is determined by the pre- and post-condition.
+However, it isn't always the case that the loop invariant can be determined by the pre- or post-condition.
 More often than not finding the right loop invariant will take some tinkering, much like finding the right induction hypothesis.
 
 Consider the following program $S_2$:
@@ -70,8 +71,8 @@ $$
     sum \leftarrow 0 \\
     i \leftarrow 0 \\
     \mathsf{while}\ i < n \mathsf{do} \\
-      sum \leftarrow sum + i;\; \\
-      i \leftarrow i + 1
+    \quad sum \leftarrow sum + i;\; \\
+    \quad i \leftarrow i + 1
   \end{array}
 $$
 
@@ -93,10 +94,10 @@ So we are left with the objective:
 
 $$
   \begin{array}{l}
-    \{ n \geq 0 \andop sum = 0 \andop i = 0 \}
+    \{ n \geq 0 \andop sum = 0 \andop i = 0 \} \\
     \mathsf{while}\ i < n \mathsf{do} \\
-      sum \leftarrow sum + i;\; \\
-      i \leftarrow i + 1 \\
+    \quad sum \leftarrow sum + i;\; \\
+    \quad i \leftarrow i + 1 \\
     \{ 2 * sum = n * (n - 1) \}
   \end{array}
 $$
@@ -123,9 +124,9 @@ To verify this, we need to check that:
 
 $$
   \begin{array}{l}
-    \{ i < n \andop 2 * sum = n * (n - 1) \}
-    sum \leftarrow sum + i;\; \\
-    i \leftarrow i + 1 \\
+    \{ i < n \andop 2 * sum = n * (n - 1) \} \\
+    \quad sum \leftarrow sum + i;\; \\
+    \quad i \leftarrow i + 1 \\
     \{ 2 * sum = n * (n - 1) \}
   \end{array}
 $$
@@ -168,20 +169,30 @@ This leads us to the final invariant $2 * sum = i * (i - 1) \andop i \leq n$.
 It is indeed an invariant as we have:
 
 $$
-  \{ i < n \andop 2 * sum = i * (i - 1) \andop i \leq n \}\ sum \leftarrow sum + i;\; i \leftarrow i + 1\ \{ 2 * sum = i * (i - 1) \andop i \leq n \}
+  \begin{array}{l}
+    \{ i < n \andop 2 * sum = i * (i - 1) \andop i \leq n \}\\
+    sum \leftarrow sum + i;\;\\
+    i \leftarrow i + 1\\
+    \{ 2 * sum = i * (i - 1) \andop i \leq n \}
+  \end{array}
 $$
 
 and thus we can conclude:
 
 $$
-  \{ 2 * sum = i * (i - 1) \andop i \leq n \}\ \mathsf{while}\ i < n\ \mathsf{do}\ ...\ \{ i \geq n \andop 2 * sum = i * (i - 1) \andop i \leq n \}
+  \begin{array}{l}
+    \{ 2 * sum = i * (i - 1) \andop i \leq n \}\\
+    \mathsf{while}\ i < n\ \mathsf{do}\\
+    \quad sum \leftarrow sum + i;\;\\
+    \quad i \leftarrow i + 1\\
+  \{ i \geq n \andop 2 * sum = i * (i - 1) \andop i \leq n \}
+  \end{array}
 $$
 
 where the post-condition can be weakened to $2 * sum = n * (n - 1)$ (because $i \geq n$ and $i \leq n$ is only satisfied when $i = n$) as required.
 
 To get a pre-condition for the entire program, we just need to apply our weakest pre-condition formulas from last time to get $2 * 0 = 0 * (0 - 1) \andop 0 \leq n$, which is equivalent to $0 \leq n$.
 Therefore, we can conclude the program has the correct behaviour and indeed will compute the sum of the first $n$ numbers when $n$ is initially greater than or equal to $0$.
-
 
 ## Constraints
 
@@ -198,16 +209,16 @@ To ensure that $$\{ P \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ Q \}$$ holds, we
 
  - $$\mathsf{SPC}(S,\, I \andop e) \Rightarrow I$$; that is, if it holds at the start of the loop and the branch condition is true, then it will holds after execution of the loop.
 
- - $$I \andop !e \Rightarrow Q$$; that is, if the loop has terminated and the invariant is still true, then the desired post-condition is also true.
+ - $$I \andop {!e} \Rightarrow Q$$; that is, if the loop has terminated and the invariant is still true, then the desired post-condition is also true.
 
 So, for our earlier example:
 
 $$
   \begin{array}{l}
-    \{ n \geq 0 \andop sum = 0 \andop i = 0 \}
+    \{ n \geq 0 \andop sum = 0 \andop i = 0 \} \\
     \mathsf{while}\ i < n \mathsf{do} \\
-      sum \leftarrow sum + i;\; \\
-      i \leftarrow i + 1 \\
+    \quad sum \leftarrow sum + i;\; \\
+    \quad i \leftarrow i + 1 \\
     \{ 2 * sum = n * (n - 1) \}
   \end{array}
 $$
@@ -215,9 +226,7 @@ $$
 We need to find some $I$ such that:
 
  - $$n \geq 0 \andop sum = 0 \andop i = 0 \Rightarrow I$$
-
  - $$\mathsf{SPC}(sum \leftarrow sum + i;\; i \leftarrow i + 1,\, I \andop i < n) \Rightarrow I$$
-
  - $$I \andop i \geq n \Rightarrow 2 * sum = n * (n - 1)$$
 
-And solving these constraints will give us a suitable invariant.
+And we can see that $2 * sum = i * (i - 1) \andop i \leq n$ satisfies these constraints.
