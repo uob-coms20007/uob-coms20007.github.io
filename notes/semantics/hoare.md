@@ -268,7 +268,7 @@ For example, $$\mathsf{SPC}(x \leftarrow x + 1,\, x > 0)$$ is $$x > 1$$ as it is
 Rather than prove it is weaker than all pre-conditions, we will see certain rules for computing the weakest pre-condition in a moment.   -->
 Intuitively, the strong post-condition corresponds to the exact set of states that the statement may terminate in when executed in any state satisfy the pre-condition:
 $$
-  \mathsf{SPC}(S,\, q) = \{ \sigma \in \mathsf{State} \mid \text{if}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma'\ \text{then}\ \llbracket q \rrbracket_\mathcal{B}(\sigma') \}
+  \mathsf{SPC}(S,\, P) = \{ \sigma' \in \mathsf{State} \mid \sigma \in S\ \text{and}\ \langle S,\, \sigma \rangle \rightarrow^* \sigma' \}
 $$
 
 In this sense, we can imagine the strong post-condition as a form of _symbolic_ execution.
