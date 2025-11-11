@@ -15,7 +15,7 @@ The rule for while loops is as follows:
 
 $$
   \dfrac
-  {\{ e \andop p \}\ S\ \{ P \}}
+  {\{ e \andop P \}\ S\ \{ P \}}
   {\{ P \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop P \}}
 $$
 
@@ -70,7 +70,7 @@ $$
   \begin{array}{l}
     sum \leftarrow 0 \\
     i \leftarrow 0 \\
-    \mathsf{while}\ i < n \mathsf{do} \\
+    \mathsf{while}\ i < n\ \mathsf{do} \\
     \quad sum \leftarrow sum + i;\; \\
     \quad i \leftarrow i + 1
   \end{array}
