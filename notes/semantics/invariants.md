@@ -95,7 +95,7 @@ So we are left with the objective:
 $$
   \begin{array}{l}
     \{ n \geq 0 \andop sum = 0 \andop i = 0 \} \\
-    \mathsf{while}\ i < n \mathsf{do} \\
+    \mathsf{while}\ i < n\ \mathsf{do} \\
     \quad sum \leftarrow sum + i;\; \\
     \quad i \leftarrow i + 1 \\
     \{ 2 * sum = n * (n - 1) \}
