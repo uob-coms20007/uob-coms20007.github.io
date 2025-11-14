@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Gödel numbering
+title: While Eats Itself
 nav_order: 7
 mathjax: true
 parent: Computability
@@ -11,18 +11,18 @@ parent: Computability
 
 We have now shown how to put the following things in bijection with the natural
 numbers:
-[integers](https://uob-coms20007.github.io/reference/computability/bijections.html#bijection-between-naturals-and-integers),
+[integers](https://uob-coms20007.github.io/notes/computability/encoding.html#integers-vs-natural-numbers),
 [pairs of
-naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#pairing-function),
+naturals](https://uob-coms20007.github.io/notes/computability/encoding.html#encoding-pairs-of-numbers),
 and [lists of
-naturals](https://uob-coms20007.github.io/reference/computability/encodings.html#encoding-lists).
+naturals](https://uob-coms20007.github.io/notes/computability/encoding.html#encoding-lists).
 
 In the problem sheet, you were also asked to show how to put binary trees in
 bijection with natural numbers.
 
 In previous lectures we discussed that While programs themselves may be
 represented as an [Abstract Syntax Tree
-(AST)](https://uob-coms20007.github.io/reference/while/abstract-syntax.html).
+(AST)](https://uob-coms20007.github.io/notes/syntax/ast.html).
 Thus, it is not a stretch of the imagination to imagine that we may encode
 While ASTs as natural numbers.
 
