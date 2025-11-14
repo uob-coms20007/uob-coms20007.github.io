@@ -173,7 +173,7 @@ want](https://www.youtube.com/watch?v=Ef9QnZVpVd8).
 
 From this point onwards let us fix a particular variable `x` wrt which our
 [definition of
-computability](https://uob-coms20007.github.io/reference/computability/functions.html#computes)
+computability](https://uob-coms20007.github.io/notes/computability/computable.html#computable-functions)
 is stated.
 
 We define a function
@@ -308,7 +308,7 @@ arbitrary size. However, we are willing to accept that in the name of
 simplicity.
 
 We have also seen that it is possible to write an
-[interpreter](https://uob-coms20007.github.io/reference/computability/universal.html#interpreter)
+[interpreter](https://uob-coms20007.github.io/notes/computability/autophagy.html#the-universal-function)
 for While. Through appropriate Gödel numbering, encoding of pairs, etc. it
 was even possible to implement this interpreter in While itself.
 

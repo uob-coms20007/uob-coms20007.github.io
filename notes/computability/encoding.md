@@ -35,9 +35,9 @@ such that
 Both equations are necessary!
 
 Using [function
-composition](https://uob-coms20007.github.io/reference/prereqs/functions.html#composition)
+composition](https://uob-coms20007.github.io/notes/prereqs/functions.html#composition-of-functions)
 and the [identity
-function](https://uob-coms20007.github.io/reference/prereqs/functions.html#identity-function),
+function](https://uob-coms20007.github.io/notes/prereqs/functions.html#identity-function),
 they may be re-written in a so-called _point-free_ style as
 * $f^{-1} \circ f = \textsf{id}_A$
 * $f \circ f^{-1} = \textsf{id}_B$
