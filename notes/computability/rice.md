@@ -100,7 +100,7 @@ The proof of Rice's theorem is by reduction.
 ## Intuition
 
 Recall the notion of _static analysis_ from our discussion of the [Halting
-Problem](https://uob-coms20007.github.io/reference/computability/halting.html#the-halting-problem).
+Problem](https://uob-coms20007.github.io/notes/computability/halting.html).
 
 A static analyzer is supposed to go through a program and detect bad
 behaviours that might arise during runtime.

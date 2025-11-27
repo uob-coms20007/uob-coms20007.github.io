@@ -9,7 +9,7 @@ parent: Computability
 # Reductions
 
 Establishing that the [Halting
-Problem](https://uob-coms20007.github.io/reference/computability/halting.html)
+Problem](https://uob-coms20007.github.io/notes/computability/halting.html)
 was undecidable was a laborious task. It required an explicit proof using a
 diagonal method, and lots of careful reasoning.
 
@@ -81,7 +81,7 @@ of (the Gödel numbers of) programs which _never_ go into an infinite loop.
 
 To construct the reduction $\textsf{HALT} ≲ \textsf{ALL}$, recall the notion
 of a [code
-transformation](https://uob-coms20007.github.io/reference/computability/goedel.html#code-transformation).
+transformation](https://uob-coms20007.github.io/notes/computability/autophagy.html#use-case-1-code-transformations).
 Define a function
 
 $$
@@ -99,7 +99,7 @@ and returns another program as output. The program $g(S, n)$ it outputs is a
 program that first simulates the running of $S$ on $n$, and - if and when that
 finishes - simply returns 0 as its final result. We know that we can write such
 a program by adapting the code of the [universal
-function](https://uob-coms20007.github.io/reference/computability/universal.html#universal-function).
+function](https://uob-coms20007.github.io/notes/computability/autophagy.html#the-universal-function).
 
 The reduction we seek is the reflection $\tilde{g} : \mathbb{N} \to \mathbb{N}$
 of $g$. Hence, $\tilde{g}$ is a function maps the natural number/encoding

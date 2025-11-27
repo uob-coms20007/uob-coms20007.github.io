@@ -39,7 +39,7 @@ is undecidable.
 Let us unpack this statement. First, it refers to a predicate, i.e. a set of
 'good' numbers. It says that this predicate is undecidable: no While program
 can decide whether a particular number belongs to this set or not. By the
-[Church-Turing thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html#Church-Turing-thesis),
+[Church-Turing thesis](https://uob-coms20007.github.io/notes/computability/autophagy.html#the-church-turing-thesis),
 no algorithm written in any language can decide it either.
 
 The 'good' numbers in this set arise as pairs of the form $\langle e, n
@@ -122,7 +122,7 @@ Turing's result shows that $\textsf{HALT}$ is not decidable.
 
 However, it is not very difficult to show that
 
-*Theorem.* $\textsf{HALT}$ is [semi-decidable](https://uob-coms20007.github.io/reference/computability/predicates.html#semi-decidable).
+*Theorem.* $\textsf{HALT}$ is [semi-decidable](https://uob-coms20007.github.io/notes/computability/computable.html#semi-decidable-predicates).
 
 _Proof._ The semi-characterstic function of $\textsf{HALT}$ is computed by a program that works as follows.
 
@@ -136,12 +136,12 @@ semi-characteristic function. Instead, we merely describe its function. We
 argue that we could elaborate this description into an actual program due to two factors:
 
 * the fact that the [universal
-  function](https://uob-coms20007.github.io/reference/computability/universal.html)
+  function](https://uob-coms20007.github.io/notes/computability/autophagy.html#the-universal-function)
   is computable, so the idea of "simulating" a program on an input is not
   unrealistic; and
 * the fact that everything else we do is vaguely realistic in terms of
   programming, so by the [Church-Turing
-  thesis](https://uob-coms20007.github.io/reference/computability/church-turing.html)
+  thesis](https://uob-coms20007.github.io/notes/computability/autophagy.html#the-church-turing-thesis)
   must be achievable through a While program.
 
 From now on our proofs will often be of that form.
