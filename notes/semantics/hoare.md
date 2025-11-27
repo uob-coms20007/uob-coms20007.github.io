@@ -74,7 +74,7 @@ We will consider an assertion language based on an extension of Boolean expressi
 
 We will use extended Boolean expressions interchangeably with sets of states.
 You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities - feel free to use any logical expression within assertions.
-The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound to a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is even.
+The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound to a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $x$ is odd.
 
 # Compositionality
 
