@@ -148,3 +148,11 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
 {% endfor %}
   </tbody>
 </table>
+
+## Revision Material
+
+The following are practice papers based on previous year's exams.
+Note that in previous years the exam was three hours, not the two hours that it will be this year.
+
+ * Paper 1: [Questions](papers/2024.pdf), [Solutions](papers/2024-solutions.pdf)
+ * Paper 2: [Questions](papers/2024-practice.pdf), [Solutions](papers/2024-practice-solutions.pdf)
