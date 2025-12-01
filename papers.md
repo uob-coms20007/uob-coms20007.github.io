@@ -1,9 +1,8 @@
 ---
 layout: default
-title: papers
+title: Assessment Info
 ---
 
-![report card](assets/icons8-report-card-100.png){: .icon } 
 ## Assessment
 
 The unit is 100% assessed by a 2-hour written exam in the Winter assessment period (i.e. the week following Week 12 of TB1).
