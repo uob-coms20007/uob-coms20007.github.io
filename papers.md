@@ -34,14 +34,15 @@ Typical examples of the shape of 1* questions (mostly mechanical tasks that requ
 * Writing a While program to achieve some simple specification, or to show computability of some function.
 * Distinguish different kinds of syntax in the While language, e.g. arithmetic vs Boolean expressions.
 * Deducing the final state after executing a While program from a given starting configuration.
-* Construct a derivation or find a final state for a given program in the While semantics.
+* Construct a trace or find a final state for a given program in the While semantics.
 * Evaluate expressions in a given state.
 
-Typical examples of the shape of 2* questions (mostly constructing simple objects -- programs, equational proofs, derivations, grammars etc -- to meet given requirements):
+Typical examples of the shape of 2* questions (mostly constructing simple objects -- programs, equational proofs, trace, grammars etc -- to meet given requirements):
 * Construct a grammar to express a certain language.
 * Give an LL(1) grammar equivalent to a given grammar.
 * Reason symbolically about (extensions of) the While language, for example to show the equivalence of two given expressions / statements, including straightforward induction proofs.
-* Construct a derivation or find a final state for a given program in extensions of the While semantics.
+* Construct a trace or find a final state for a given program in extensions of the While semantics.
+* Calculate the strongest post-condition or verify that a Hoare triple is valid for straightline code.
 * Show that a (more complex) function is computable, by writing a While program.
 * Prove simple properties of functions/combinations of functions (injectivity, surjectivity etc).
 * Show that a predicate is decidable/semi-decidable.
@@ -50,7 +51,7 @@ A few typical examples of the shape of 3* questions, but 3* questions are often 
 * More intricate induction proofs.
 * Show that a predicate is undecidable.
 * Show that a language can be expressed by a grammar, where there is some insight needed to first simplify the description of the language.
-* Prove, using an invariant/variant that a While program satisfies a given property.
+* Find loop invariants and show that a While program satisfies a given property.
 
 *Before the day of the exam, you should be confident in your ability to answer typical 1\* and 2\* questions.*
 
