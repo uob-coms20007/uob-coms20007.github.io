@@ -318,9 +318,9 @@ interpreter in Haskell (and if you are adventurous you may have already tried
 to do so).
 
 Conversely, there is nothing special about implementing an interpreter for
-While. With enough time and tenacy we could implement an interpreter for e.g.
-Java as a While program. Or we could implement an interpreter for Haskell,
-again in While. The possibilities are endless.
+While. With enough time and tenacity we could implement an interpreter for e.g.
+Java as a While program. Or we could implement an interpreter for Haskell, again
+in While. The possibilities are endless.
 
 This is not only a practical phenomenon, but also a theoretical observation.
 Suppose you take issue with the idea that While is a realistic model of

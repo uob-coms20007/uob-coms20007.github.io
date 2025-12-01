@@ -124,8 +124,9 @@ $n$ before stopping with its own input as output. Thus,
 * If $\langle \ulcorner S \urcorner, n \rangle \in \textsf{HALT}$, then $S$
   halts on input $n$. Then, the program $G_{S, n}$ always halts, returning $0$.
   Consequently, the program $G_{S, n}$ is an expensive and roundabout way of
-  computing the identity function. The identity function is always defined on
-  all inputs, so $\ulcorner G_{S, n} \urcorner \in \textsf{ALL}$.
+  computing the function that constantly outputs $0$. This constant function is
+  always defined on all inputs, so $\ulcorner G_{S, n} \urcorner \in
+  \textsf{ALL}$.
 * If $\langle \ulcorner S \urcorner, n \rangle \not\in \textsf{HALT}$, then $S$
   does _not_ halt on input $n$. Then, the program $G_{S, n}$ also never halts:
   the simulation of $S$ on $n$ runs forever! Hence, $G_{S, n}$ computes a
