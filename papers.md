@@ -3,14 +3,16 @@ layout: default
 title: Assessment Info
 ---
 
-## Assessment
+## :100: Assessment
 
 The unit is 100% assessed by a 2-hour written exam in the Winter assessment period (i.e. the week following Week 12 of TB1).
 
 This exam is considered open book in the following sense:
 *Candidates may bring to the exam room 1 double-sided A4 page of notes in any format.*
 
-In addition, most of the important definitions from the unit are available for your reference at the back of the exam paper.  A practice paper is available below so that you can familiarise yourself with the format.
+In addition, most of the important definitions from the unit are available for your reference at the back of the exam paper.  
+
+Here is the exact front- and backmatter of the exam paper that you will see on the day of your exam: [:open_book:](papers/rubric.pdf)
 
 The exam is a series of problems to solve in the same style as the weekly problem sheets.  There will be questions covering material from all parts of the unit.  The difficulty of questions is related to your possible marks in the following way:
 
