@@ -16,11 +16,11 @@ This unit gives you a taster of several important topics in theoretical computer
 
 ## :mortar_board: Academic Staff
 
-The unit is run by Eddie Jones, Alex Kavvos and Steven Ramsay (UD).
+The unit is run by Eddie Jones, Sam Frohlich and Steven Ramsay (UD).
 
 {: .invisitable }
-|![Eddie](assets/admin/Eddie.png) |![Alex](assets/admin/Alex.jpg) |![Steven](assets/admin/Steven.jpg)  |
-| [Eddie Jones][1] | [Alex Kavvos][2] | [Steven Ramsay][3] |
+|![Eddie](assets/admin/Eddie.png) |![Sam](assets/admin/Sam.jpeg) |![Steven](assets/admin/Steven.jpg)  |
+| [Eddie Jones][1] | [Sam Frohlich][2] | [Steven Ramsay][3] |
 
 [1]: https://ec-jones.github.io/
 [2]: https://www.lambdabetaeta.eu
@@ -40,7 +40,7 @@ The unit is divided into three parts, each of which is run by one of the three l
 |:------:|:--------:|:------| 
 | Weeks 1-4    | Steven Ramsay | Syntax        |
 | Weeks 5,7,8  | Eddie Jones   | Semantics     |
-| Weeks 9-11   | Alex Kavvos   | Computability |
+| Weeks 9-11   | Sam Frohlich   | Computability |
 
 <br/>
 
