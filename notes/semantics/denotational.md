@@ -8,10 +8,10 @@ parent: Semantics
 
 # Denotational Semantics
 
-In the semantics part of this unit, we will be looking at how programs in a toy imperative programming language known as the "While language" can be given a formal mathematical meanings (i.e. a semantic) and how this can be used to reason about programs.
-Although this language is very simple, and doesn't have all the features you would expect of a general-purpose programming language, the fundamental aspects of programming language semantics are still present.
+In the semantics part of this unit, we will be looking at how programs in a toy imperative programming language known as the "While language" can be given a formal mathematical meanings (i.e. a semantics) and how this can be used to reason about programs.
+Although this language is very simple, and doesn't have all the features you would expect of a general-purpose programming language, it still provides enough context to explore the fundamental aspects of programming language semantics.
 
-This week, we will look at the semantics of its arithmetic and Boolean expressions using _denotational semantics_.
+First, we will look at the semantics of its arithmetic and Boolean expressions using _denotational semantics_.
 Denotational semantics is a way of formally giving meaning to programs by relating them to mathematical objects.
 In doing so, we can translate our knowledge of these mathematical objects back onto the programs we are studying.
 
@@ -29,11 +29,12 @@ To get a flavour of denotational semantics, we will first look at a semantics of
   where $\underline{n}$ stands for any integer literals (used as terminals).
 </div>
 
-When it comes to talking about the semantics of a language, we are no longer interested in its exact textural representation as a string of characters, complete with whitespace, comments, and punctuation; but instead, we work with its _abstract syntax trees_.
+When it comes to talking about the semantics of a language, we are no longer interested in its exact textual representation as a string of characters, complete with whitespace, comments, and punctuation; but instead, we work with its _abstract syntax trees_.
 Recall that an abstract syntax tree is a tree representation of a statement or an expression that captures its essential structure - each node in the tree represents a syntactic construction; in this case, integer literals, additional, etc.
 
-By an "element of" a given grammar, therefore, we actually mean an abstract syntax tree for some string within the language of that grammar.
-Although the structure of ASTs don't always have a one to one correspondence with the production rules of a grammar, in our case each production rule will be considered a different node type.
+By an "element of" a given grammar, we actually mean an abstract syntax tree for some string within the language of that grammar.
+<!-- Although the structure of ASTs don't always have a one to one correspondence with the production rules of a grammar, in our case each production rule will be considered a different node type. -->
+
 There is also a degree of abstraction in that we have integer literals as terminals - we assume their textual representation has already been interpreted as an integer.
 It is common when defining semantics to make these kinds of assumptions, well, the interpretation of integer literals isn't that interesting!
 
@@ -49,7 +50,7 @@ For example, the expressions $\underline{1} \mathbin{\underline{+}} \underline{1
 
 ### Denotation Function
 
-The denotational semantics for simple arithmetic expressions associates each expression with an integer values - the mathematical objects that we will use to ascribe meaning to expressions. 
+The denotational semantics for simple arithmetic expressions associates each expression with an integer value - the mathematical objects that we will use to ascribe meaning to expressions. 
 This takes the form of a _denotation function_ $\llbracket \cdot \rrbracket_{\mathcal{A}^-} : \mathcal{A}^- \rightarrow \mathbb{Z}$ that maps simple arithmetic expressions to the integers.
 For the application of this function, we will use the notation $\llbracket e \rrbracket_{\mathcal{A}^-} \in \mathbb{Z}$ where $e \in \mathcal{A}^-$ is some expression.
 
@@ -58,7 +59,7 @@ The __denotation function for simple arithmetic expressions__ $\llbracket \cdot 
 
 $$
   \begin{array}{rl}
-    \llbracket \underline{n} \rrbracket_{\mathcal{}^-} & = n \\
+    \llbracket \underline{n} \rrbracket_{\mathcal{A}^-} & = n \\
     \llbracket e_1 \mathbin{\underline{+}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} + \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
     \llbracket e_1 \mathbin{\underline{-}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} - \llbracket e_2 \rrbracket_{\mathcal{A}^-} \\
     \llbracket e_1 \mathbin{\underline{*}} e_2 \rrbracket_{\mathcal{A}^-} & = \llbracket e_1 \rrbracket_{\mathcal{A}^-} \cdot \llbracket e_2 \rrbracket_{\mathcal{A}^-}
@@ -76,20 +77,20 @@ That is, every expression has a unique denotation according to our equations.
 
 The definition can be seen as interpreting (i.e. giving meaning to) underlined syntactic constructs as their usual mathematical definitions.
 For example, by applying these equations, we can see that the denotation $\llbracket \underline{1} \mathbin{\underline{\*}} (\underline{2} \mathbin{\underline{+}} \underline{3}) \rrbracket_{\mathcal{A}^{-}}$ equates to $5$.
-Notice that the equations are applied recursively in that the denotation of the expression $\underline{1} \mathbin{\underline{\*}} (\underline{2} \mathbin{\underline{-}} \underline{3})$ is calculated based on the denotation of the two sub-expressions $\underline{1}$ and $\underline{2} \mathbin{\underline{+}} \underline{3}$.
+Notice that the equations are applied recursively in that the denotation of the expression $\underline{1} \mathbin{\underline{\*}} (\underline{2} \mathbin{\underline{+}} \underline{3})$ is calculated based on the denotation of the two sub-expressions $\underline{1}$ and $\underline{2} \mathbin{\underline{+}} \underline{3}$.
 
 <img src="../../assets/semantics/simple-denotation.png" style="max-width:300px"/>
 
 This may all seem a bit pedantic, and like a lot of unnecessary work, but this simple example highlights the essential ingredients of denotational semantics:
 
 * A collection of mathematical objects that we will use to model programs (e.g. the integers);
-* And a recursive function mapping each syntactic constructs to operations over these objects. 
+* And a _recursive_ function mapping each syntactic constructs to operations over these objects. 
 
 We're now ready to define a denotational semantics for a more interesting language.
 
 ## Adding Variables
 
-The next logical step is to add variables to our expression language.
+The next step is to add variables to our expression language.
 Therefore, we will consider the following grammar of arithmetic expressions:
 
 <div class="defn" markdown="1">
@@ -104,8 +105,10 @@ Therefore, we will consider the following grammar of arithmetic expressions:
   As before, we will write $\mathcal{A}$ to denote the set of arithmetic expressions (a.k.a abstract syntax trees generated by this grammar).
 </div>
 
+Although we will no longer underline each operations, for brevity, it is imporant to remember when "$+$" means the syntatic addition construct and when it means the mathematical addition of two numbers.
+
 To give a satisfactory meaning to these expressions, we clearly must take into account the value of the variables.
-Consequently, it is not possible to assign a fixed integer to the expression $x + 1$ as it might change depending on the context, i.e. whether it follows the statement $x \leftarrow 1$ or the statement $x \leftarrow 2$.
+It is not possible to assign a fixed integer to the expression $x + 1$ as it will clearly change depending on the context, i.e. whether it follows the statement $x \leftarrow 1$ or the statement $x \leftarrow 2$.
 
 ### Program State
 
