@@ -5,7 +5,7 @@ nav_order: 2
 ---
 
 {% assign lecture_one_day = "Monday" %}
-{% assign lecture_one_time = "3pm" %}
+{% assign lecture_one_time = "4pm" %}
 {% assign lecture_one_room = "PHYS G.42" %}
 
 {% assign lecture_two_day = "Tuesday" %}
@@ -13,16 +13,15 @@ nav_order: 2
 {% assign lecture_two_room = "PHYS G.42" %}
 
 {% assign lab_day = "Thursday" %}
-{% assign lab_time = "3pm" %}
+{% assign lab_time = "4pm" %}
 {% assign lab_room = "MVB 2.11/1.15" %}
 
 ## :date: Week by Week
 
 Links to the problem sheets and their solutions will appear here as the unit progresses.
 
-Each week there will be exactly one theory problem sheet and at most one practical problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
+Each week there will be exactly one problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
 
-Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk0.pdf" target="_blank">Brischeme</a>
 
 <table class="schedule">
   <thead>
