@@ -12,7 +12,7 @@ This exam is considered open book in the following sense:
 
 In addition, most of the important definitions from the unit are available for your reference at the back of the exam paper.  
 
-Here is the exact front- and backmatter of the exam paper that you will see on the day of your exam: [:open_book:](papers/rubric.pdf)
+<!-- Here is the exact front- and backmatter of the exam paper that you will see on the day of your exam: [:open_book:](papers/rubric.pdf) -->
 
 The exam is a series of problems to solve in the same style as the weekly problem sheets.  There will be questions covering material from all parts of the unit.  The difficulty of questions is related to your possible marks in the following way:
 
@@ -55,7 +55,7 @@ A few typical examples of the shape of 3* questions, but 3* questions are often 
 
 *Before the day of the exam, you should be confident in your ability to answer typical 1\* and 2\* questions.*
 
-General feedback sent to students on the overall performance in the 2024 exam, which had a relatively high average mark, can be viewed [here](feedback24.txt).  Note: that exam was 3 hours duration (your exam is 2 hours duration) and some of the material has changed this year, so you may find that some of the feedback doesn't apply.
+<!-- General feedback sent to students on the overall performance in the 2024 exam, which had a relatively high average mark, can be viewed [here](feedback24.txt).  Note: that exam was 3 hours duration (your exam is 2 hours duration) and some of the material has changed this year, so you may find that some of the feedback doesn't apply. -->
 
 
 <!-- A practice exam: <a href="papers/exam.pdf" target="_blank">qns</a> / <a href="papers/exam-answers.pdf" target="_blank">ans</a>
