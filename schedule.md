@@ -134,7 +134,7 @@ Each week there will be exactly one problem sheet.  This is a 20cp unit, so you 
 ## Revision Material
 
 The following are practice papers based on previous year's exams.
-Note that in previous years the exam was three hours, not the two hours that it will be this year.
+Note that in 2024 the exam was three hours, not the two hours that it will be this year.
 
  * Paper 1: [Questions](papers/2024.pdf), [Solutions](papers/2024-solutions.pdf)
  * Paper 2: [Questions](papers/2024-practice.pdf), [Solutions](papers/2024-practice-solutions.pdf)
