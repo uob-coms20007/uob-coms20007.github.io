@@ -108,12 +108,8 @@ Each week there will be exactly one problem sheet.  This is a 20cp unit, so you 
       <td style="text-align:center">
     {% capture qns_name %}/questions/sheet{{ calendar_week }}.pdf{% endcapture %}
     {% capture ans_name %}/answers/sheet{{ calendar_week }}.pdf{% endcapture %}
-    {% capture lab_qns_name %}/questions/lab{{ calendar_week }}.pdf{% endcapture %}
-    {% capture lab_ans_name %}/answers/lab{{ calendar_week }}.pdf{% endcapture %}
     {% assign qns = false %}
     {% assign ans = false %}
-    {% assign lab_qns = false %}
-    {% assign lab_ans = false %}
     {% for static_file in site.static_files %}
       {% if static_file.path == qns_name %}
         {% assign qns = true %}
@@ -121,25 +117,12 @@ Each week there will be exactly one problem sheet.  This is a 20cp unit, so you 
       {% if static_file.path == ans_name %}
         {% assign ans = true %}
       {% endif %}
-      {% if static_file.path == lab_qns_name %}
-        {% assign lab_qns = true %}
-      {% endif %}
-      {% if static_file.path == lab_ans_name %}
-        {% assign lab_ans = true %}
-      {% endif %}
     {% endfor %}
     {% if qns %}
-        Theory: <a href="{{ qns_name | remove_first: "/" }}" target="_blank">qns</a>  
+        <a href="{{ qns_name | remove_first: "/" }}" target="_blank">qns</a>  
     {% endif  %}
     {% if ans %}
         / <a href="{{ ans_name | remove_first: "/" }}" target="_blank">ans</a>  
-    {% endif %}
-    <br/>
-    {% if lab_qns %}
-        Practice: <a href="{{ lab_qns_name | remove_first: "/" }}" target="_blank">qns</a>
-    {% endif %}
-    {% if lab_ans %}
-        / <a href="{{ lab_ans_name | remove_first: "/" }}" target="_blank">ans</a>
     {% endif %}
       </td>
     </tr>
