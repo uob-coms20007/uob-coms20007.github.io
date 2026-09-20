@@ -12,11 +12,11 @@ nav_order: 3
 * 100% written exam (2 hours) in December
 * 2 Lectures per week
 * 2hr Lab each week
-    - Two tracks in part 1 this year
-* Unit page on Blackboard
-* Complete notes at [https://uob-coms20007.github.io/](https://uob-coms20007.github.io/)
+    - Week 3: need computer
+* Unit page linked from Blackboard
+* Complete notes at [https://uob-coms20007.github.io/notes](https://uob-coms20007.github.io/)
 
 * Weeks 1,2,3,4: Syntax (SR)
 * Weeks 5,7,8: Semantics (EJ)
-* Weeks 9,10,11: Computability (AK)
+* Weeks 9,10,11: Computability (SF)
 
