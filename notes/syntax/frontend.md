@@ -13,186 +13,226 @@ There are many software tools that process some kind of programming language.  C
 
 Typically, the part of the software that is responsible for reading the text and constructing some internal representation of its structure is called a *frontend*.  There is no one way to organise a front-end but, in practice, most frontends adopt a certain architecture which makes this complicated task a bit easier.
 
-The aim of this lecture is to illustrate this architecture and its first component using the [Brischeme interpreter](../../questions/cwk0.pdf) frontend as an example.
+The aim of this lecture is to illustrate this architecture and its first component using our Microbrew interpreter frontend as an example.
 
-# The Brischeme Interpreter
+# The Microbrew Language
 
-The Brischeme interpreter is a tool for reading Brischeme code and executing it.  The practical exercises this week will involve you getting the source code for the interpreter and extending it in various ways.  
+<img src="../../assets/syntax/microbrew.png" style="max-width:600px;"/>
 
-The interpreter has three components, the _lexer_, the _parser_ and the _evaluator_.  The lexer and the parser together constitute the frontend: their  responsibility is to take a string of text as input and construct the corresponding internal representation of its structure.
+Microbrew, or the Little Bristol Rewriting language, is an extremely simple, yet Turing powerful programming language (the meaning of this latter term will become clear in the third part of the course), created this year for PLC.  The language is based on first-order term rewriting, that is, computation proceeds by rewriting a function call using the definition of the function.
 
-<img src="../../assets/syntax/brischeme_interpreter.png" style="max-width:600px;"/>
+The Microbrew interpreter provides a Read Eval Print Loop (REPL) in which you can define functions and evaluate expressions.
 
-The input to the frontend is some text, a string.  The output is a representation of the structure conveyed by that sequence of characters.  In the case of the Brischeme interpreter it is an Abstract Syntax Tree (AST).  We will discuss ASTs in more detail in Week 4 but, for now, you should just think of an AST as a tree data structure which is convenient as an in-memory representation of the program contained in that input string.
+Functions can be defined using the keyword ``def`` and giving an equation that, functional programming style, describes the behaviour of the function over a given shape of input.  For example, the following clauses defines the first and second projection functions which, given a pair of arguments, returns the first or second one, respectively.
+```
+  > def Fst(x,y) = x
+  > def Snd(x,y) = y
+```
+The equations consist of a function call on the left, then an equals symbol, then an expression on the right constructed from function calls and variables.  Function symbols start with an uppercase letter and variables (function parameters) start with a lowercase letter.
 
-In the Brischeme interpreter, the datatype for ASTs is defined as the following variant type:
-```ocaml
-(** A [sexp] is an expression to be evaluated. *)
-type sexp =
-  | Atom of string
-  | Bool of bool
-  | Num of int
-  | Ident of string
-  | Lambda of string list * sexp
-  | Call of primop * sexp list
-  | App of sexp * sexp list
+Expressions can be evaluated simply by writing them at the REPL:
+```
+  > Fst(Foo(),Bar())
+  Foo()
+```
+The system matches the expression ``Fst(Foo(),Bar())`` with the first function clause above and replaces it by the body of the function (the expression on the RHS of the equals symbol), i.e. ``x``, but with formal parameters appropriately replaced by actual parameters.
+
+And that's it.  There are no datatypes in Microbrew, no numbers, no strings, no lists, arrays or dictionaries.  
+
+However, all of these datatypes can, in priciple, be simulated using uninterpreted function symbols (UF).  By UF I mean function names that we have not given any defining equations for.  If we ask the interpreter to evaluate a call of an UF, then no computation will occur (except possibly in evaluating the arguments to the function call) because there are no defining equations for the function.  For example, continuing the current REPL session:
+```
+  > Who(Fst(Foo(),Bar()))
+  Who(Foo())
+```
+Here, the interpreter is able to evaluate the call to ``Fst`` because we have a defining equation, but not the call to ``Who`` because we don't.  Incidentally, ``Foo()`` and ``Bar()`` are also examples of calls to UF.
+
+We can use UF like constructors for datatypes (in the sense of functional programming).  For example, although there are no numbers in Microbrew, we can encode the natural numbers using two UF, say ``Z`` for "zero" and ``S`` for "successor" (or "plus-1").  The idea is that the number n will be encoded by n-applications of the successor to zero.  E.g. the number 0 will be encoded by zero applications of ``S`` to ``Z()``:
+```
+  > Z()
+  Z()
+```
+And the number 3 will be encoded by three applications of ``S`` to ``Z()``:
+```
+  > S(S(S(Z())))
+  S(S(S(Z())))
 ```
 
-The type `primop` is an enumeration of all the _primitive_ (i.e. provided by the language rather than user-defined) operations:
-```ocaml
-(** [primop] is an enumeration of the available primitive operations. *)
-type primop =
-  | Plus
-  | Minus
-  | Times
-  | Divide
-  | Eq
-  | Less
-  | If
-  | And
-  | Or
-  | Not
+Using this encoding it is straightforward to define addition on natural numbers:
+```
+  > def Add(Z(),y) = y
+  > def Add(S(x),y) = S(Add(x,y))
+```
+The first equation says that, when adding zero to any number ``y``, the result is just ``y``.  The second says that, when adding a number of shape ``S(x)``, i.e. the successor of some other number ``x``, to some number ``y``, the result can be obtained by recursively adding ``x`` and ``y`` and then adding one more successor on top.
+
+This is a standard recursive definition of addition, but I guess you may not be familiar with unary encodings of natural numbers, so you will either have to think about it for a while or just take my word for it.  Anyway, it must work because when we add 2 and 2 we get 4:
+```
+  > Add(S(S(Z())),S(S(Z())))
+  S(S(S(S(Z()))))
 ```
 
-In the picture, the AST shown is the `sexp`{:.ocaml} given by:
-```ocaml
-  Call (Plus, [Num 3; Num 4])
+Multiplication follows a similar pattern:
 ```
-In general, given any value of a variant (algebraic) datatype, we can think of it as a tree whose nodes are labelled by constructors, and a parent has one child for each of its arguments (in this case we implicitly dismantle the list structure).
+  > def Mult(Z(),y) = Z()
+  > def Mult(S(x),y) = Add(y,Mult(x,y))
 
-Another example: if the string `"((lambda (x) (* (+ x 1) x)) 3)"` is given as input, then the Brischeme interpreter will construct the following in-memory representation:
-```ocaml
-  App (
-    Lambda (
-      ["x"], 
-      Call (Times, [(Call (Plus, [Ident "x"; Num 1])); Ident "x"])
-    ),
-    Num 3
-  )
+  > Mult(S(S(Z())),S(S(S(Z()))))
+  S(S(S(S(S(S(Z()))))))
 ```
 
-## The Lexer
+Similarly you could choose two UF symbols, say ``T`` and ``F``, and use ``T()`` and ``F()`` to represent Booleans, and define all the usual Boolean functions on them.  You could choose UF symbols ``C`` and ``N`` to represent lists, with ``C(x,xs)`` for the cons of ``x`` and ``xs`` and ``N()`` for the empty list, e.g. the list consisting of the first three natural numbers would be written ``C(Z(),C(S(Z()),C(S(S(Z())),N())))``.
 
-So far, we have been using grammars to define languages under a very convenient assumption: namely that whitespace is ignored for the purpose of deriving strings.  Whitespace is used in the grammar to seperate consecutive elements of the sentential form on the right-hand side of a rule.  For example, here is an extract of a grammar for Brischeme:
+## Microbrew Formal Syntax
+
+Anyway, what you can build on top of this language is not important, the important thing is that the syntax and semantics of the language are extremely simple.  
+
+### Grammatical Structure
+
+The following is an LL(1) grammar for the syntax of Microbrew:
 
 $$
-      \begin{array}{rcl}
-        \nt{Prog} &::=& \nt{Form}^*\\[1mm]
-        \nt{Form} &::=& \nt{SExpr} \mid (\ \tm{define}\ \nt{Ident}\ \nt{SExpr}\ )\\[1mm]
-        \nt{SExpr} &::=& \nt{Num} \mid (\ \nt{Ident}\ \nt{SExpr}^*\ ) \mid \ldots \\[1mm]
-        \nt{Ident} &::=& \ldots\\[1mm]
-        \nt{Num} &::=& \ldots
-      \end{array}
-$$
-
-Without going into all the details, the idea is that a Brischeme program is a sequence of _forms_ and that each form is either an expression to be evaluated or the definition of an identifier.  For example, the string `"(define x 3)"` should constitute a form which, when evaluated has the effect of assigning the name `x` to the value `3`.
-
-$$
-  \begin{array}{rll}
-    \nt{Form} &\to& (\ \tm{define}\ \nt{Ident}\ \nt{SExpr}\ ) \\
-              &\to& (\ \tm{define}\ \nt{Ident}\ \nt{Num}\ ) \\
-              &\to^*& (\ \tm{define}\ \tm{x}\ \tm{3}\ )
+  \begin{array}{rcl}
+    \nt{Cmd} &\Coloneqq& \tm{\$}\\[2mm]
+    &\mid& \nt{Exp}\ \tm{\$}\\[2mm]
+    &\mid& \tm{def}\ \tm{ident}\ \tm{(}\ \nt{ExpList}\ \tm{)}\ \tm{=}\ \nt{Exp}\ \tm{\$}\\[4mm]
+    \nt{Exp} &\Coloneqq& \tm{var} \\[2mm]
+    &\mid& \tm{ident}\ \tm{(}\ \nt{ExpList}\ \tm{)}\\[4mm]
+    \nt{ExpList} &\Coloneqq& \epsilon\\[2mm]
+    &\mid& \nt{Exp}\ [\tm{,}\ \nt{Exp}]^{*}\\[4mm]
   \end{array}
 $$
 
-Notice there is a space between the left parenthesis and the keyword `define` in the first rule for `Form` but, formally, there is no space there in the derived string.  It is only there so that we can read the grammar more easily.  In fact, if we really stop ignoring whitespace for a moment, the string `"(define x 3)"` that we derived from the Brischeme grammar above is more properly `"(definex3)"`.  
-
-This is a bit of a problem in practice, because whitespace is actually extremely important.  Without whitespace we would not be able to tell that `"(definex3)"` is really a _define form_ at all, it could be a define form by the derivation just given above.  However, it could also be a function call of the function named by the identifier `definex` applied to one argument, `3`.  Or it could be a function call of the function named by the identifier `def` to 4 arguments `i`, `ne`, `x` and `3`.  All of these possibilities (and more) are allowed by the grammar we gave in ...  For example:
+The distinguished starting nonterminal is $$\nt{Cmd}$$.  The grammar is formed over seven terminal symbols:
 
 $$
-  \begin{array}{rll}
-        \nt{Form} &\to& \nt{SExpr} \\
-              &\to& (\ \nt{Ident}\ \nt{SExpr}^*\ ) \\
-              &\to& (\ \nt{Ident}\ \nt{SExpr}\ \nt{SExpr}\ \nt{SExpr}\ \nt{SExpr}\ ) \\
-              &\to& (\ \nt{Ident}\ \nt{Ident}\ \nt{Ident}\ \nt{Ident}\ \nt{Num}\ ) \\
-              &\to^*& (\ \tm{def}\ \tm{i}\ \tm{ne}\ \tm{x}\ \tm{3}\ )
-  \end{array}
+  \tm{var} \qquad \tm{ident} \qquad \tm{(} \qquad \tm{)} \qquad \tm{,} \qquad \tm{def} \qquad \tm{=} \qquad \tm{\$}
 $$
 
-Of course, if we are only interested in whether or not the string `"(definex3)"` is in the language or not, there is no problem, both of the above derivations are perfectly good justifications.  However, in practice, we are interested in understanding the _structure_ of the program contained in the string, and here we want to know whether it contains a function call expression or a define form (and we can distinguish between these based on which rules are chosen in the derivation). 
+The terminal symbol $$\tm{var}$$ stands for variables (function parameters) and the terminal symbol $$\tm{ident}$$ stands for function names (IDENTifiers).  The terminal symbol $\tm{\$}$ is used as a marker to represent the end of the input string.    Intuitively, the nonterminals can be thought of as follows: 
+  * $$\nt{Exp}$$ is the nonterminal that describes Microbrew expressions, it derives strings of terminal symbols such as:
 
-There are two standard ways of fixing this problem:
+  $$
+    \begin{array}{l}
+      \tm{var}\\
+      \tm{ident}(\tm{var})\\
+      \tm{ident}(\tm{ident}(),\tm{ident}())
+    \end{array}
+  $$
 
-  1. Integrate whitespace formally into the grammar.
-  2. Have a preprocessing step which eliminates the need to consider whitespace (essentially, make good on our assumption that whitespace can be ignored).
-
-Both are viable, but in practice the second is most common.  
-
-An advantage of the first is that we don't need any new technology, we just need to write a more complex grammar to describe our language.  A disadvantage is that we need to write a more complex grammar to describe our language: the grammar will become much more cluttered with the consumption of whitespace, which will infect almost every production rule.
-
-An advantage of the second is that we can actually simplify the grammar of our language (both conceptually, and in a way that can be made precise), but a disadvantage is that we need some new tech, namely the idea of a _Lexer_ (also known as a _Scanner_).
-
-### Lexemes and Tokens
-
-The idea of _lexing_ (also known as _scanning_) is to, in a preprocessing step, identify and classify the smallest meaningful substrings of the input string, taking into account the use of whitespace as a separator.  These smallest meaningful substrings are called _lexemes_.
-
-For example, now taking whitespace into account, the string `"(define foo (+ 2 1))"` consists of 9 lexemes:
-
-| ( | define | foo | ( | + | 2 | 1 | ) | ) | 
-
-Hopefully this illustrates the sense of _smallest_ meaningful substrings.  One can argue that the subsequence `(+ 2 1)` is a meaningful substring: this is how you write "add 2 to 1" in Brischeme.   However it is not minimal since we can further break it down into `(`, `+`, `2`, `1` and `)`, each of which is (arguably) meaningful in its own right.  On the other hand, the substring `in` should not be considered a meaningful part of `define`.
-
-In fact there is no absolute definition of what constitutes a lexeme, but rather this is a choice made when designing the language, and the description of what the language designer chose (along with how the lexemes are classified) is called the _lexical structure_ of the language.  
-
-{: .defn }
-A _lexeme_ is a substring of the input that is deemed a smallest meaningful unit, according to the lexical structure of the language.
-
-For _Brischeme_, the lexemes are the largest substrings not containing whitespace that fall into one of the following classifications (classifications given in bold):
-
-  * The substrings `(`, `)` are the left (**lparen**) and right (**rpraren**) parentheses.
-  * The substrings `+`, `-`, `*`, `/`, `<`, `=`, `not`, `and`, `or` are the **primops** (primitive operators).
-  * The substring `define` is the keyword **define** and the substring `lambda` is the keyword **lambda**.
-  * Any non-empty sequence of digits 0-9, and the substrings `#t` and `#f` are **literals** (number literals and Boolean literals respectively). 
-  * Any non-empty substring, not falling into one of the above classes, that: 
-      - begins with a lowercase letter of the English alphabet
-      - proceeds with letters that are either lower or upper case letters of the English alphabet, the underscore, an exclamation mark, a question mark or digits
+  * $$\nt{ExpList}$$ is the nonterminal that describes possibly empty, comma-separated lists of expressions, which are used to describe function parameters and the arguments at call sites.  An example is:
   
-      is an **ident** (identifier).
+  $$
+    \tm{var},\tm{ident}(\tm{var}),\tm{ident}(\tm{ident}(),\tm{ident}())
+  $$
+  
+  * $$\nt{Cmd}$$ is the nonterminal that describes REPL commands, which can either simply be an expression, as above, or the definition of a new function equation, such as:
 
-{: .defn }
-The combination of a lexeme with its classification is called a *token*. 
+  $$
+    \tm{def}\ \tm{ident}(\tm{ident}(\tm{var}),\tm{var})\ \tm{=}\ \tm{ident}(\tm{ident}(\tm{var},\tm{var}))
+  $$
 
-It is the responsibility of the lexer to transform the original input string -- a sequence of characters -- into a sequence of tokens.  However, for certain of the classifications, there is only one lexeme that has that classification.  For example, the classification **rparen** can only refer to the lexeme `)`.  In such cases, there is no need for the lexer to record the lexeme associated with the classification, since it is uniquely determined.
 
-## Lexer Implementation
 
-The lexer takes as input a string and transforms it into a sequence of tokens according to the lexical structure of the language.
+### Lexical Structure
 
-### Token Type
+You might be surprised that $$\tm{var}$$ and $$\tm{ident}$$ are terminal symbols and not nonterminals that _derive_ every possible variable and identifier name respectively.  However, this is actually very common in the definition of programming languages.  It represents a certain level of abstraction: as far as the language grammar is concerned, variables and identifiers are abstract, black-box entities.  The grammar can't distinguish different identifiers apart - ``Z``, ``S``, ``Add`` and so on all appear to the grammar simply as a single terminal symbol $$\tm{ident}$$, though it can distinguish variables from identifiers since they are separate terminal symbols.
 
-Tokens are defined according to the following datatype:
+There are two good reasons for this.  
+
+* The first is that there is some conceptual advantage to reasoning about a programming language at this higher level of abstraction.  Typically, to determine if a given string really is a valid program in some programming language, there is simply no need to distinguish between identifiers.  If there is some structure in the language that can contain an identifier ``Foo``, then the structure does not become syntactically invalid by replacing ``Foo`` by ``Bar``.  For example, the syntactically valid Java class definition ``class Foo{}`` remains valid when replacing ``Foo`` by ``Bar`` to obtain ``class Bar{}``.
+* The second reason is that there is usually a lot of overlap between the structure of program identifiers (or variables) and program keywords.  Trying to tease out this overlap in an LL(1) grammar, although it may be possible, will usually be quite painful.  For example, consider the C-language keyword ``for`` and the C-language identifier ``fortitude``.  A grammar that operates character-by-character (i.e. where the terminal symbols are just individual characters) would need to bake in a bunch of rules that factor out the common prefix ``for``.  A similar clash occurs in Microbrew between the keyword ``def`` and variable names like ``definitely``.
+
+So for these reasons the Microbrew grammar understands all identifiers simply as the terminal symbol $$\tm{ident}$$ and all variables simply as the terminal symbol $$\tm{var}$$.  Of course, a Microcode program is actually written as text, a string, so at some point someone needs to say which sequences of characters actually constitute a valid identifer and which constitute a valid variable name.  More generally, the language designer must specify how to recognise each terminal symbol as some substring of the input.  This is called the __lexical__ structure of the language, and for Microbrew it is as follows:
+
+* The definition keyword, terminal symbol __def__, is just the substring "def".
+* A variable, terminal symbol __var__, is any substring consisting of letters or digits and starting with a lowercase letter, except the substring "def".
+* An identifier, terminal symbol __ident__, is any sequence of letters or digits starting with an upper-case letter.
+* The terminal symbols for left parenthesis, right parenthesis, comma, and equals are just substrings consisting of exactly those characters.
+
+Sometimes a programming language will just describe the lexical structure informally, as I have done here for Microbrew, see also [Python](https://docs.python.org/3/reference/lexical_analysis.html).  Many languages use a separate grammar to present the lexical structure, e.g. [Rust](https://doc.rust-lang.org/reference/lexical-structure.html), [OCaml](https://ocaml.org/manual/5.5/lex.html), [Java](https://docs.oracle.com/javase/specs/jls/se27/html/jls-3.html).  However it is described, there is usually an implicit rule that each mention of "substring" in the description really means "maximal substring".  That is, if we have a C program substring like "fortitude" then this must be an identifier and not the keyword "for" followed by an identifier "titude".  This implicit rule is called _maximal munch_.
+
+## The Microbrew Frontend
+
+The Microbrew interpreter is a tool for reading Microbrew code line-by-line and executing it.  The problem sheet this week will involve you implementing your own version of the interpreter.
+
+The interpreter has four components, the _lexer_, the _parser_, the _evaluator_ and the _printer_.  You can see an example of the data flow through the interpreter below.
+
+<img src="../../assets/syntax/interpreter_arch.png" style="max-width:800px;"/>
+
+The input to the interpreter is some code in textual form, i.e. a string.  The output is also a string - if the input string described an expression, then the output string will be the value resulting from evaluating that expression.
+
+The lexer, parser, evaluator and printer implement the processing from input to output.  In this part of the unit we are interested in syntax, so we will only look in detail at the first two components.  Together these components, the lexer and the parser, form the _frontend_ of the interpreter.
+
+### The Lexer
+
+* Input: Program text given as a string of characters.
+* Output: Sequence of tokens.
+
+Conceptually, the lexer is responsible for taking the input string of characters and turning it into a string of terminal symbols, according the lexical structure of the language.  
+
+If our only goal for the frontend was to check whether a given input string was a valid Microbrew program, then this would be enough.  However, in reality, whenever the input string is a valid Microbrew program, we want to construct an in-memory representation of its structure so that we can then evaluate (execute) it. 
+
+To build this structured representation of the program, we can't afford to simply forget the names of variables and identifiers- if we want to evaluate the program, it really is important to know which identifier occurs at a particular program point and not only that it is an identifier.  So, in reality, the lexer actually produces a string of terminal symbols that is annotated with the original variable and identifier names.  This combination of a terminal symbol optionally annotated with some substring of the program text (e.g. a variable name) is called a __token__, and the optional substring component is called a __lexeme__.
+
+You can see in the picture above that the lexer has recognised that the first three characters constitute an identifier, so the first token in the output is the terminal symbol ``ident`` annotated with the substring ``Add``.  The fourth character in the input string is a left parenthesis and so the next token in the output sequence is the left parenthesis terminal symbol (here it is not useful to annotate it with a lexeme).  The fifth character of the input was another identifier with name "S", and so the next token output is the terminal symbol ``ident`` annotated with the substring ``S``; and so on.  
+
+Incidentally, you can see from character 12 of the input string that the lexer makes good on our assumption that whitespace is not relevant when giving the grammar for a programming language.  In most programming languages whitespace is essential in the original program text - the input string - to separate different entities:  imagine some C code like ``intx=3;`` which has the whitespace stripped away, we don't know if it is meant to be ``int x = 3;`` or ``intx = 3;`` (the assignment of three to the variable called ``intx``).  However, our grammars have so far all assumed that whitespace is irrelevant, the input is just a sequence of terminal symbols.  The lexer bridges this gap, it uses whitespace in the input string to help recognise where one terminal symbol ends and another begins, but it also strips it away - once we have converted the input string to a sequence of tokens, whitespace is no longer useful.
+
+### The Parser
+
+* Input: Sequence of tokens.
+* Output: Abstract syntax tree.
+
+The parser is responsible for taking the sequence of tokens and recognising the higher-level, grammatical structure of the programming language, according to the language grammar.  There are two aspects to the parser:
+  - It is responsible for checking that the given list of terminal symbols describes a valid Microbrew program.  For this, the parser only requires the sequence of terminal symbols but not their annotatations (the lexemes).  The particular names of variables and identifiers are not necessary (since they are anyway indistinguishable in the grammar).  
+  - Whenever the string of terminals is a valid program, it outputs a tree representation of the structure of that program, which will be passed along to the evaluator component to be executed.  For this, the parser _does_ require the particular names of variables and identifiers (the lexemes), because whether you are calling function ``F`` or function ``G`` is important when evaluating the program.
+    
+  In the picture above you can see a tree representation of the structure of the program.  We will discuss this in more detail later, but the idea is that the tree shows you that, at its root, the expression that was described by the input string is actually a call - we use the node label ``App`` which is traditional in programming language theory and stands for "function APPlied to some arguments" or simply "function APPlication".  Then the children of the each ``App`` node describe the key components of the function call: the subtree in the left-most child is the function that is being applied (called), all children to the right of it constitute the arguments of that function.  So, in this example, we can see that the first argument to the call to ``Add``, i.e. the middle child of the root, is itself a call to ``S``, and the argument to this call to ``S`` is itself a call to ``Z``, and so on. 
+
+  These kinds of trees are called __abstract syntax trees__ or ASTs for short.  We will discuss them in more detail in a later lecture, but for now I hope it's clear that: 
+    
+  - It's a _tree_ structure 
+  - It's still just a representation of the _syntax_ of the program: there is nothing in the tree that explains what happens when you make a call to ``Add`` (semantics), only where the call occurs and what its arguments are.
+  - The tree representation is, in a sense, more _abstract_ than the string version of the program code because we have forgotten certain syntactic details like whitespace and superfluous bracketing.  For example, the strings ``Add(S(Z()),S(Z()))`` and ``(Add(((S (Z()))),   S(Z())))`` will both result in the same abstract syntax tree (which is the one picured).
+
+## Implementation of the Lexer
+
+The Microbrew interpreter happens to be written in OCaml, which is an _impure_ functional programming language.  The qualifier _impure_ means that functions do not only return a value, like in Haskell, but can have other _side effects_ such as mutating local state, opening file handles, throwing exceptions and so on.
+
+Since it is a functional programming language, the most natural way to represent tokens is with an algebraic datatype (also called a _variant_ type in OCaml).  The following piece of OCaml defines a datatype called ``token`` which has seven constructors.  
 
 ```ocaml
-(** [token] is an enumeration of all possible tokens produced by the lexer *)
 type token =
-  | TkLit of literal
   | TkIdent of string
+  | TkVar of string
   | TkLParen
   | TkRParen
   | TkDefine
-  | TkLambda
-  | TkPrimOp of primop
-  | TkEnd
+  | TkComma
+  | TkEquals
 ```
 
-We include in this datatype one token that does not correspond to anything in the lexical structure we gave above -- the end-of-file (EOF) token `TkEnd`.  This will be useful to parsing later.
+Each of the constructors corresponds to one of the terminal symbols, and those terminal symbols that require an annotation have a string argument.  For example, the token that consists of the terminal symbol for the left parenthesis is represented simply as ``TkLParen``, this is a value of type ``token``.  The token that consists of terminal symbol ident annotated with the string "Add" is encoded by the value ``TkIdent "Add"``. 
 
-For the left and right parenthesis tokens, the define and lambda keyword tokens, and the EOF token, there is no need to record the corresponding lexeme.  A `TkLambda` token can only refer to the lexeme `lambda`, so no information is lost by omitting the substring.
-
-For literals we use a single token `TkLit x` where `x` records the kind of literal and its value.  This is made precise by the following type:
-
-```ocaml
-(** [lit] is an enumeration of language literals *)
-type literal =
-  | LBool of bool
-  | LNum of int
-```
-
-For example, `TkLit (LNum 3)` is the token corresponding to the lexeme `3`.
+Now that we have a type for tokens, our objective is to implement the lexer as a function ``lex : string -> token list``.  I.e. that takes a string as input and transforms it into a list of tokens as output.
 
 ### Input String State
 
-The lexer will proceed character by character through the input string, considering each character in turn and outputing a token whenever a complete lexeme is discovered.  The implementation is in an imperative style, with the input string and progress through it tracked by the some internal state.
+This idea of this lex function is as follows.  It will proceed character by character through the input string, consuming each character in turn and outputing a token whenever a complete terminal symbol is recognised.  
+
+Some consideration of the lexical structure of the language leads to the following observation.  There are some characters where the lexer can immediately output the corresponding token (terminal symbol + optional lexeme), irrespective of which characters have been seen so far, and there are some characters where the lexer needs more context in order to know what to do.
+
+For example, when encountering the left parenthesis character ``'('`` in the input string the lexer can immediately output the token ``TkLParen`` into the output list, no matter which characters have been seen before it.  Similarly, when encountering the equals character ``'='`` in the input string, the lexer can immediately output the token ``TkEquals``.
+
+However, when encountering the character ``'e'`` the lexer cannot know how to proceed without more information.  This 'e' could be part of a identifier ``MkTree``, or part of a variable `me`, or part of a keyword `def`.  So here, the lexer needs to know that it is in the middle of reading in a variable, identifier or keyword (though it does not necessarily yet know which), and remember the relevant sequence of characters that came before it.  It can't take action - that is output a token - until it has reached the end of the identifier, variable or keyword. 
+
+This leads to a state machine style architecture in which there are two states:
+
+* The "initial" state, in which there is no need to remember anything.
+* The "identifier, variable or keyword" state, in which the lexer knows that it is in the middle of scanning either an identifier, variable or keyword, and so should remember the constituent characters in some variable in order to create the lexeme once it determines which it is.
+
+The lexer begins in the "initial" state.  In this state, reading in a left parenthesis, right parenthesis, comma or equals character takes the lexer back to the "initial" state and outputs the corresponding terminal symbol as a side effect.  The lexer switches from the "initial state" to the "identifier, variable, or keyword" state upon reading a lower or uppercase letter.  It stays in the "identifier, variable or keyword" state so long as the next character is a lower or uppercase letter or a number. It switches back to the "initial" state when the next character is not a letter or a digit, because this signals that it has finished reading the identifier, variable or keyword. 
+
+The implementation is in an imperative style, with the input string and progress through it tracked by the some internal state.
 
 ```ocaml
   (* Input string state *)
@@ -204,34 +244,11 @@ Here, `input` is a reference (mutable variable) of type `string ref` and it will
 
 To avoid dependence on the particular choice of input string state representation, there is a small API which is used by the rest of the lexer:
 
-```ocaml
-(* Simple API for input string state *)
-
-let is_more () : bool = 
-  !idx < String.length !input
-
-let peek () : char =
-  !input.[!idx]
-
-let drop () =
-  idx := !idx + 1
-
-let raise_lex_error exp =
-  let c = peek () in
-  let msg = Printf.sprintf "LEX ERROR: Expected %s but found %c." exp c in
-  failwith msg
-
-let eat (c:char) =
-  if peek () = c then drop () else raise_lex_error (String.make 1 c)
-```
-
-The behaviour of these functions in the context of the lexer is as follows:
-
-  * `is_more ()` returns `true` just if there is still more input to consider.
-  * `peek ()` returns the current character under consideration.
-  * `drop ()` discards the current character from the input (once it has been considered).
-  * `raise_lex_error exp` aborts the lex with a failure exception.
-  * `eat c` discards the current character just if it is `c` and aborts the lex otherwise.
+* `is_more ()` returns `true` just if there is still more input to consider and `false` otherwise.
+* `peek ()` returns the current character under consideration.
+* `drop ()` discards the current character from the input (once it has been considered).
+* `raise_lex_error exp` aborts the lex with a failure exception.
+* `eat c` discards the current character just if it is `c` and aborts the lex otherwise.
 
 ### Character Class Utilities
 
@@ -264,10 +281,10 @@ let lex (s:string) : token list =
       let tk = lex_init () in
       output := tk :: !output
   done;
-  List.rev (TkEnd :: !output)
+  List.rev (!output)
 ```
 
-The recognising process is contained in the function `lex_init` which is responsible for consuming characters from the input string one-by-one until a complete lexeme is discovered.  For example, when `lex_init` sees that the next character in the input string is `=` then it can drop it and immediately return the token `TkPrimOp Eq`, when it sees the next character of the input string is `<`, it can drop it and immediately return the token `TkPrimOp <`, and so on.
+The recognising process is contained in the function `lex_init` which is responsible for consuming characters from the input string one-by-one until a complete lexeme is discovered.  For example, when `lex_init` sees that the next character in the input string is `=` then it can drop it and immediately return the token `TkEquals`, when it sees the next character of the input string is `,`, it can drop it and immediately return the token `TkComma`, and so on.
 
 ```ocaml
 let lex_init () =

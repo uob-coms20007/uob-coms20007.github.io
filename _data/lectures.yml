@@ -1,61 +1,61 @@
 # - title:
 #   link:
 
-- title: Intro and Strings
-  link: https://uob-coms20007.github.io/notes/syntax/strings.html
+# - title: Intro and Strings
+#   link: https://uob-coms20007.github.io/notes/syntax/strings.html
 
-- title: Context-Free Grammars
-  link: https://uob-coms20007.github.io/notes/syntax/reading-grammars.html
+# - title: Context-Free Grammars
+#   link: https://uob-coms20007.github.io/notes/syntax/reading-grammars.html
 
-- title: Grammar Design
-  link: https://uob-coms20007.github.io/notes/syntax/writing-grammars.html
+# - title: Grammar Design
+#   link: https://uob-coms20007.github.io/notes/syntax/writing-grammars.html
 
-- title: LL(1) for Parsing
-  link: https://uob-coms20007.github.io/notes/syntax/ll.html
+# - title: LL(1) for Parsing
+#   link: https://uob-coms20007.github.io/notes/syntax/ll.html
 
-- title: No Lecture
+# - title: No Lecture
 
-- title: Implementation
-  link: https://uob-coms20007.github.io/notes/syntax/frontend.html
+# - title: Implementation
+#   link: https://uob-coms20007.github.io/notes/syntax/frontend.html
 
-- title: Obtaining LL(1)
-  link: https://uob-coms20007.github.io/notes/syntax/obtaining.html
+# - title: Obtaining LL(1)
+#   link: https://uob-coms20007.github.io/notes/syntax/obtaining.html
 
-- title: Abstract Syntax
-  link: https://uob-coms20007.github.io/notes/syntax/ast.html
+# - title: Abstract Syntax
+#   link: https://uob-coms20007.github.io/notes/syntax/ast.html
 
-- title: Denotational Semantics
-  link: https://uob-coms20007.github.io/notes/semantics/denotational.html
+# - title: Denotational Semantics
+#   link: https://uob-coms20007.github.io/notes/semantics/denotational.html
 
-- title: Structural Induction
-  link: https://uob-coms20007.github.io/notes/semantics/induction.html
+# - title: Structural Induction
+#   link: https://uob-coms20007.github.io/notes/semantics/induction.html
 
-- title: Operational Semantics
-  link: https://uob-coms20007.github.io/notes/semantics/operational.html
+# - title: Operational Semantics
+#   link: https://uob-coms20007.github.io/notes/semantics/operational.html
 
-- title: Hoare Logic (pt1)
-  link: https://uob-coms20007.github.io/notes/semantics/hoare.html
+# - title: Hoare Logic (pt1)
+#   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
 
-- title: Hoare Logic (pt2)
-  link: https://uob-coms20007.github.io/notes/semantics/hoare.html
+# - title: Hoare Logic (pt2)
+#   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
 
-- title: Invariants
-  link: https://uob-coms20007.github.io/notes/semantics/invariants.html
+# - title: Invariants
+#   link: https://uob-coms20007.github.io/notes/semantics/invariants.html
 
-- title: Computability and decidability
-  link: https://uob-coms20007.github.io/notes/computability/computable.html
+# - title: Computability and decidability
+#   link: https://uob-coms20007.github.io/notes/computability/computable.html
 
-- title: Encoding first-order data
-  link: https://uob-coms20007.github.io/notes/computability/encoding.html
+# - title: Encoding first-order data
+#   link: https://uob-coms20007.github.io/notes/computability/encoding.html
 
-- title: While Eats Itself
-  link: https://uob-coms20007.github.io/notes/computability/autophagy.html
+# - title: While Eats Itself
+#   link: https://uob-coms20007.github.io/notes/computability/autophagy.html
 
-- title: The Halting Problem
-  link: https://uob-coms20007.github.io/notes/computability/halting.html
+# - title: The Halting Problem
+#   link: https://uob-coms20007.github.io/notes/computability/halting.html
 
-- title: Reductions I
-  link: https://uob-coms20007.github.io/notes/computability/reductions.html
+# - title: Reductions I
+#   link: https://uob-coms20007.github.io/notes/computability/reductions.html
 
-- title: Reductions II and Rice's Theorem
-  link: https://uob-coms20007.github.io/notes/computability/rice.html
+# - title: Reductions II and Rice's Theorem
+#   link: https://uob-coms20007.github.io/notes/computability/rice.html

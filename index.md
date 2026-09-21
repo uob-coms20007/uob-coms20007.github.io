@@ -26,7 +26,7 @@ The unit is run by Eddie Jones, Sam Frohlich and Steven Ramsay (UD).
 [2]: https://samfrohlich.github.io/
 [3]: https://sjrsay.github.io
 
-Outside of lectures and labs, please reach out to us via the unit [Team](https://teams.microsoft.com/l/channel/19%3ApSxhf5hViQtLxNM7SJLv6Aqlkpn8YxymXy2xg7ekFR41%40thread.tacv2/General?groupId=9454975e-2a9a-4d4c-be14-4d889c7936b0&tenantId=b2e47f30-cd7d-4a4e-a5da-b18cf1a4151b) rather than by email.  Feel free to ask questions about the unit material, how the units runs, or anything at all to do with programming language theory, formal language theory or computability right in the General channel.  We love to hear what you are thinking!
+Outside of lectures and labs, please reach out to us via the unit [Team](https://teams.microsoft.com/l/channel/19%3AuvWCXp2V2MsXaFFFVt1ASE2y2djLbKMncHcHvOowz-g1%40thread.tacv2/General?groupId=89e3d701-45f4-4664-9797-95be554de58f&tenantId=b2e47f30-cd7d-4a4e-a5da-b18cf1a4151b) rather than by email.  Feel free to ask questions about the unit material, how the units runs, or anything at all to do with programming language theory, formal language theory or computability right in the General channel.  We love to hear what you are thinking!
 
 
 ## :date: Schedule

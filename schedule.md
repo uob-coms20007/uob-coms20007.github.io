@@ -5,7 +5,7 @@ nav_order: 2
 ---
 
 {% assign lecture_one_day = "Monday" %}
-{% assign lecture_one_time = "3pm" %}
+{% assign lecture_one_time = "4pm" %}
 {% assign lecture_one_room = "PHYS G.42" %}
 
 {% assign lecture_two_day = "Tuesday" %}
@@ -13,16 +13,15 @@ nav_order: 2
 {% assign lecture_two_room = "PHYS G.42" %}
 
 {% assign lab_day = "Thursday" %}
-{% assign lab_time = "3pm" %}
+{% assign lab_time = "4pm" %}
 {% assign lab_room = "MVB 2.11/1.15" %}
 
 ## :date: Week by Week
 
 Links to the problem sheets and their solutions will appear here as the unit progresses.
 
-Each week there will be exactly one theory problem sheet and at most one practical problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
+Each week there will be exactly one problem sheet.  This is a 20cp unit, so you should expect to spend about a third of your week working on these problem sheets (2 hours of which will be working on them in the lab).
 
-Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk0.pdf" target="_blank">Brischeme</a>
 
 <table class="schedule">
   <thead>
@@ -109,12 +108,8 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
       <td style="text-align:center">
     {% capture qns_name %}/questions/sheet{{ calendar_week }}.pdf{% endcapture %}
     {% capture ans_name %}/answers/sheet{{ calendar_week }}.pdf{% endcapture %}
-    {% capture lab_qns_name %}/questions/lab{{ calendar_week }}.pdf{% endcapture %}
-    {% capture lab_ans_name %}/answers/lab{{ calendar_week }}.pdf{% endcapture %}
     {% assign qns = false %}
     {% assign ans = false %}
-    {% assign lab_qns = false %}
-    {% assign lab_ans = false %}
     {% for static_file in site.static_files %}
       {% if static_file.path == qns_name %}
         {% assign qns = true %}
@@ -122,25 +117,12 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
       {% if static_file.path == ans_name %}
         {% assign ans = true %}
       {% endif %}
-      {% if static_file.path == lab_qns_name %}
-        {% assign lab_qns = true %}
-      {% endif %}
-      {% if static_file.path == lab_ans_name %}
-        {% assign lab_ans = true %}
-      {% endif %}
     {% endfor %}
     {% if qns %}
-        Theory: <a href="{{ qns_name | remove_first: "/" }}" target="_blank">qns</a>  
+        <a href="{{ qns_name | remove_first: "/" }}" target="_blank">qns</a>  
     {% endif  %}
     {% if ans %}
         / <a href="{{ ans_name | remove_first: "/" }}" target="_blank">ans</a>  
-    {% endif %}
-    <br/>
-    {% if lab_qns %}
-        Practice: <a href="{{ lab_qns_name | remove_first: "/" }}" target="_blank">qns</a>
-    {% endif %}
-    {% if lab_ans %}
-        / <a href="{{ lab_ans_name | remove_first: "/" }}" target="_blank">ans</a>
     {% endif %}
       </td>
     </tr>
@@ -152,7 +134,7 @@ Brischeme prototype coursework (not assessed in 2025/26): <a href="questions/cwk
 ## Revision Material
 
 The following are practice papers based on previous year's exams.
-Note that in previous years the exam was three hours, not the two hours that it will be this year.
+Note that in 2024 the exam was three hours, not the two hours that it will be this year.
 
  * Paper 1: [Questions](papers/2024.pdf), [Solutions](papers/2024-solutions.pdf)
  * Paper 2: [Questions](papers/2024-practice.pdf), [Solutions](papers/2024-practice-solutions.pdf)
