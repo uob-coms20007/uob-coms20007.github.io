@@ -19,7 +19,7 @@ This unit gives you a taster of several important topics in theoretical computer
 The unit is run by Eddie Jones, Sam Frohlich and Steven Ramsay (UD).
 
 {: .invisitable }
-|![Eddie](assets/admin/Eddie.png) |![Sam](assets/admin/Sam.jpeg) |![Steven](assets/admin/Steven.jpg)  |
+|![Eddie](assets/admin/Eddie.jpg) |![Sam](assets/admin/Sam.jpeg) |![Steven](assets/admin/Steven.jpg)  |
 | [Eddie Jones][1] | [Sam Frohlich][2] | [Steven Ramsay][3] |
 
 [1]: https://ec-jones.github.io/
