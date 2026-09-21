@@ -71,7 +71,7 @@ The notation $\sigma[x \mapsto n]$ refers to the state that results from updatin
 Note that it will be evaluated under the previous state, not the newly derived state.
 The evaluation of the arithmetic expression doesn't constitute an execution step in its own right - our operational semantics only cares about the evolution of statements.
     
-For example, the rule tell us that $\langle x \leftarrow (x + 1),\, [x \mapsto 2] \rangle \rightarrow [x \mapsto 3]$ where we have instantiated the rule with the variable $x$, the arithmetic expression $x + 1$, and the state $[x \mapsto 2]$.
+For example, the rule tell us that $\langle x \leftarrow x + 1,\, [x \mapsto 2] \rangle \rightarrow [x \mapsto 3]$ where we have instantiated the rule with the variable $x$, the arithmetic expression $x + 1$, and the state $[x \mapsto 2]$.
 The state $[x \mapsto 3]$ is determined as $[x \mapsto 2]$ updated such that $x \mapsto \llbracket x + 1 \rrbracket_\mathcal{A}([x \mapsto 2])$; hence, $[x \mapsto 3]$.
 As with the $\mathsf{skip}$ statement, this rule doesn't require any premises as it's behaviour be described without making reference to other statements as it is not a compound statement (i.e. it is a base case of the grammar).
   
@@ -84,21 +84,21 @@ We encode this behaviour using a condition inference rule, i.e. one with premise
 
 $$
   \dfrac
-  {\langle S_1,\, \sigma_1 \rangle \Downarrow \sigma_2}
-  {\langle S_2,\, \sigma_2 \rangle \Downarrow \sigma_3}
+  {\langle S_1,\, \sigma_1 \rangle \Downarrow \sigma_2\ 
+    \langle S_2,\, \sigma_2 \rangle \Downarrow \sigma_3}
   {\langle S_1;\; S_2,\, \sigma \rangle \Downarrow \sigma_3}
 $$
 
 That is, if we know that executing $S_1$ in the state $\sigma_1$ leads to $\sigma_2$, and executing $S_2$ in the state $\sigma_2$ leads to $\sigma_3$, then we can conclude that executing $S_1;\; S_2$ in the state $\sigma_1$ will lead to $\sigma_3$.
 
-For example, we know that $\langle x \leftarrow 2,\, [x \mapsto 1] \rangle \Downarrow [x \mapsto 2]$ according to the assignment rule and $\langle x \leftarrow x * 2,\, [x \mapsto 2] \rangle \Downarrow [x \mapsto 4]$.
-Therefore, we can conclude that:
+As with the previous rules, this rule apply for all statements $S_1,\, S_2 \in S$ and all states $\sigma_1,\, \sigma_2,\, \sigma_3 \in \mathsf{State}$ - these are the rules metavariables.
+In order to use this rule, however, we need not only to instantiate metavariables but also the premises by determining the behaviour of the statements $S_1$ and $S_2$.
+
+For example, we know that $\langle x \leftarrow 2,\, [x \mapsto 1] \rangle \Downarrow [x \mapsto 2]$ by the assignment rule and $\langle x \leftarrow x * 2,\, [x \mapsto 2] \rangle \Downarrow [x \mapsto 4]$.
+Therefore, we can conclude:
 $$
   \langle x \leftarrow 2; x \leftarrow x * 2,\, [x \mapsto 1] \rangle \Downarrow [x \mapsto 4]
-$$
-
-As with the previous rules, these rules apply for all statements $S_1,\, S_2 \in S$ and all states $\sigma_1,\, \sigma_2,\, \sigma_3 \in \mathsf{State}$ - these are the rules metavariables.
-In order to use this rule, however, we need not only to instantiate metavariables but also the premises by determining the behaviour of the statements $S_1$ and $S_2$.
+$$.
 
 ## Derivations Trees
 
