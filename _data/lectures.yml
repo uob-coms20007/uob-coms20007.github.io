@@ -1,11 +1,11 @@
 # - title:
 #   link:
 
-# - title: Intro and Strings
-#   link: https://uob-coms20007.github.io/notes/syntax/strings.html
+- title: Intro and Strings
+  link: https://uob-coms20007.github.io/notes/syntax/strings.html
 
-# - title: Context-Free Grammars
-#   link: https://uob-coms20007.github.io/notes/syntax/reading-grammars.html
+- title: Context-Free Grammars
+  link: https://uob-coms20007.github.io/notes/syntax/reading-grammars.html
 
 # - title: Grammar Design
 #   link: https://uob-coms20007.github.io/notes/syntax/writing-grammars.html
