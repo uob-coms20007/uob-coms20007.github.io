@@ -23,7 +23,7 @@ Microbrew, or the Little Bristol Rewriting language, is an extremely simple, yet
 
 The Microbrew interpreter provides a Read Eval Print Loop (REPL) in which you can define functions and evaluate expressions.
 
-Functions can be defined using the keyword ``def`` and giving an equation that, functional programming style, describes the behaviour of the function over a given shape of input.  For example, the following clauses defines the first and second projection functions which, given a pair of arguments, returns the first or second one, respectively.
+Functions can be defined using the keyword ``def`` and giving an equation that, in functional programming style, describes the behaviour of the function over a given shape of input.  For example, the following clauses define the first and second projection functions which, given a pair of arguments, returns the first or second one, respectively.
 ```
   > def Fst(x,y) = x
   > def Snd(x,y) = y
@@ -83,7 +83,7 @@ Similarly you could choose two UF symbols, say ``T`` and ``F``, and use ``T()`` 
 
 ## Microbrew Formal Syntax
 
-Anyway, what you can build on top of this language is not important, the important thing is that the syntax and semantics of the language are extremely simple.  
+What you can build on top of this language (i.e. it's expressive power - see part 3 of this unit) is not important to us now, the important thing is that the syntax of the language is extremely simple.  
 
 ### Grammatical Structure
 
@@ -101,7 +101,7 @@ $$
   \end{array}
 $$
 
-The distinguished starting nonterminal is $$\nt{Cmd}$$.  The grammar is formed over seven terminal symbols:
+The distinguished starting nonterminal is $$\nt{Cmd}$$.  The grammar is formed over eight terminal symbols:
 
 $$
   \tm{var} \qquad \tm{ident} \qquad \tm{(} \qquad \tm{)} \qquad \tm{,} \qquad \tm{def} \qquad \tm{=} \qquad \tm{\$}
@@ -124,10 +124,10 @@ The terminal symbol $$\tm{var}$$ stands for variables (function parameters) and 
     \tm{var},\tm{ident}(\tm{var}),\tm{ident}(\tm{ident}(),\tm{ident}())
   $$
   
-  * $$\nt{Cmd}$$ is the nonterminal that describes REPL commands, which can either simply be an expression, as above, or the definition of a new function equation, such as:
+  * $$\nt{Cmd}$$ is the nonterminal that describes REPL commands, which can either simply be an expression, as above, or the definition of a new function equation, followed by the end-of-input marker, such as:
 
   $$
-    \tm{def}\ \tm{ident}(\tm{ident}(\tm{var}),\tm{var})\ \tm{=}\ \tm{ident}(\tm{ident}(\tm{var},\tm{var}))
+    \tm{def}\ \tm{ident}(\tm{ident}(\tm{var}),\tm{var})\ \tm{=}\ \tm{ident}(\tm{ident}(\tm{var},\tm{var}))\ \$
   $$
 
 
@@ -152,7 +152,7 @@ Sometimes a programming language will just describe the lexical structure inform
 
 ## The Microbrew Frontend
 
-The Microbrew interpreter is a tool for reading Microbrew code line-by-line and executing it.  The problem sheet this week will involve you implementing your own version of the interpreter.
+The Microbrew interpreter is a tool for reading Microbrew code line-by-line and executing it.  The problem sheet this week will involve you implementing your own version of a part of it.
 
 The interpreter has four components, the _lexer_, the _parser_, the _evaluator_ and the _printer_.  You can see an example of the data flow through the interpreter below.
 
@@ -169,7 +169,7 @@ The lexer, parser, evaluator and printer implement the processing from input to 
 
 Conceptually, the lexer is responsible for taking the input string of characters and turning it into a string of terminal symbols, according the lexical structure of the language.  
 
-If our only goal for the frontend was to check whether a given input string was a valid Microbrew program, then this would be enough.  However, in reality, whenever the input string is a valid Microbrew program, we want to construct an in-memory representation of its structure so that we can then evaluate (execute) it. 
+If our only goal for the frontend was to check whether a given input string was a valid Microbrew program, and this will be your only goal in the week 3 problem sheet, then this would be enough.  However, to have a working interpreter, whenever the input string is a valid Microbrew program, we want to construct an in-memory representation of its structure so that we can then evaluate (execute) it. 
 
 To build this structured representation of the program, we can't afford to simply forget the names of variables and identifiers- if we want to evaluate the program, it really is important to know which identifier occurs at a particular program point and not only that it is an identifier.  So, in reality, the lexer actually produces a string of terminal symbols that is annotated with the original variable and identifier names.  This combination of a terminal symbol optionally annotated with some substring of the program text (e.g. a variable name) is called a __token__, and the optional substring component is called a __lexeme__.
 
@@ -196,7 +196,7 @@ The parser is responsible for taking the sequence of tokens and recognising the 
 
 ## Implementation of the Lexer
 
-The Microbrew interpreter happens to be written in OCaml, which is an _impure_ functional programming language.  The qualifier _impure_ means that functions do not only return a value, like in Haskell, but can have other _side effects_ such as mutating local state, opening file handles, throwing exceptions and so on.
+The Microbrew interpreter happens to be written in OCaml, which is an _impure_ functional programming language.  The qualifier _impure_ means that functions do not only return a value, like in Haskell, but can have other _side effects_ such as mutating local state, opening file handles, throwing exceptions and so on.  We're not going to learn OCaml in these lectures, rather we're just going to see it as a kind of psuedocode to describe the behaviour of the interpreter.
 
 Since it is a functional programming language, the most natural way to represent tokens is with an algebraic datatype (also called a _variant_ type in OCaml).  The following piece of OCaml defines a datatype called ``token`` which has seven constructors.  
 
@@ -215,9 +215,17 @@ Each of the constructors corresponds to one of the terminal symbols, and those t
 
 Now that we have a type for tokens, our objective is to implement the lexer as a function ``lex : string -> token list``.  I.e. that takes a string as input and transforms it into a list of tokens as output.
 
-### Input String State
+### Input and Output State
 
 This idea of this lex function is as follows.  It will proceed character by character through the input string, consuming each character in turn and outputing a token whenever a complete terminal symbol is recognised.  
+
+The implementation is in an imperative style, with the input string and progress through it tracked by some internal state.  To avoid dependence on the particular choice of representation for this internal  state, there is a small API which is used by the rest of the lexer:
+
+* `peek ()` returns `Some c` when `c` is the current character of the input, and `None` otherwise.
+* `drop ()` discards the current character from the input.
+* `emit tk` adds the token `tk` to the end of the output token sequence.
+
+### State Machine Architecture
 
 Some consideration of the lexical structure of the language leads to the following observation.  There are some characters where the lexer can immediately output the corresponding token (terminal symbol + optional lexeme), irrespective of which characters have been seen so far, and there are some characters where the lexer needs more context in order to know what to do.
 
@@ -232,145 +240,83 @@ This leads to a state machine style architecture in which there are two states:
 
 The lexer begins in the "initial" state.  In this state, reading in a left parenthesis, right parenthesis, comma or equals character takes the lexer back to the "initial" state and outputs the corresponding terminal symbol as a side effect.  The lexer switches from the "initial state" to the "identifier, variable, or keyword" state upon reading a lower or uppercase letter.  It stays in the "identifier, variable or keyword" state so long as the next character is a lower or uppercase letter or a number. It switches back to the "initial" state when the next character is not a letter or a digit, because this signals that it has finished reading the identifier, variable or keyword. 
 
-The implementation is in an imperative style, with the input string and progress through it tracked by the some internal state.
+We implement these states as two recursive functions `lex_init : unit -> unit` and `lex_var_or_id_or_kw : unit -> unit`.  The idea is that whilst the lexer is executing a call to one of these functions, one can think of it as being "in" the corresponding state.  Here is the code for `lex_init`:
 
 ```ocaml
-  (* Input string state *)
-  let idx = ref 0
-  let input = ref ""
-```
-
-Here, `input` is a reference (mutable variable) of type `string ref` and it will store the input string which is to be lexed.  The reference `idx` of type `int ref` is used to keep track of how far through the input string we have lexed so far.
-
-To avoid dependence on the particular choice of input string state representation, there is a small API which is used by the rest of the lexer:
-
-* `is_more ()` returns `true` just if there is still more input to consider and `false` otherwise.
-* `peek ()` returns the current character under consideration.
-* `drop ()` discards the current character from the input (once it has been considered).
-* `raise_lex_error exp` aborts the lex with a failure exception.
-* `eat c` discards the current character just if it is `c` and aborts the lex otherwise.
-
-### Character Class Utilities
-
-We also assume we have the following utility functions available for recognising character classes (these are written directly in the implementation, but they could also be imported from external libraries).
-
-  * `is_digit c` returns `true` just if `c` is in the range `0..9` and `false` otherwise.
-  * `is_lower c` returns `true` just if `c` is in the range `a..z` and `false` otherwise.
-  * `is_upper c` returns `true` just if `c` is in the range `A..Z` and `false` otherwise.
-  * `is_wspace c` returns `true` just if `c` is the space character or a newline, and `false` otherwise.
-  * `is_punctuation c` returns `true` just if `c` is `!`, `?` or `_`, and `false` otherwise.
-  * `is_id_char c` returns `true` just if `c` is lowercase, uppercase, a digit or punctuation, and `false` otherwise.
-
-### Lexer Main Loop
-
-The heart of the lexer is a loop which is responsible for recognising the next lexeme from the input string and outputting it with its classification as a token.  Any intervening whitespace is silently discarded.  
-
-```ocaml
-(** 
-    [lex s] returns the token list obtained by scanning [s].
-    @raises [Failure] if [s] fails to scan.
-*)
-let lex (s:string) : token list =
-  input := s;
-  idx := 0;
-  let output = ref [] in
-  while is_more () do 
-    if is_wspace (peek ()) then
-      drop ()
-    else
-      let tk = lex_init () in
-      output := tk :: !output
-  done;
-  List.rev (!output)
-```
-
-The recognising process is contained in the function `lex_init` which is responsible for consuming characters from the input string one-by-one until a complete lexeme is discovered.  For example, when `lex_init` sees that the next character in the input string is `=` then it can drop it and immediately return the token `TkEquals`, when it sees the next character of the input string is `,`, it can drop it and immediately return the token `TkComma`, and so on.
-
-```ocaml
-let lex_init () =
+let rec lex_init () =
   match peek () with
-  | '=' -> 
-    drop (); 
-    TkPrimOp Eq
-  | '<' ->
-    drop ();
-    TkPrimOp Less
-  | '+' ->
-    drop ();
-    TkPrimOp Plus
-  | '-' ->
-    drop ();
-    TkPrimOp Minus
-  | '*' ->
-    drop ();
-    TkPrimOp Times
-  | '/' ->
-    drop ();
-    TkPrimOp Divide
-  | '(' ->
-    drop ();
-    TkLParen
-  | ')' ->
-    drop ();
-    TkRParen
-  | '#' -> lex_bool ()
-  | c when is_digit c -> lex_number ()
-  | c when is_lower c -> lex_kw_or_id ()
+  | None -> 
+      (* We already processed the whole input *)
+      emit TkEnd
+  | Some '(' ->
+      drop ();
+      emit TkLParen;
+      lex_init ()
+  | Some ')' ->
+      drop ();
+      emit TkRParen;
+      lex_init ()
+  | Some '=' ->
+      drop ();
+      emit TkEquals;
+      lex_init ()
+  | Some ',' ->
+      drop ();
+      emit TkComma;
+      lex_init ()
+  | Some c when is_wspace c -> 
+      drop ();
+      lex_init ()
+  | Some c when is_letter c -> 
+      (* Move to lexer state var_or_id_or_kw with a so far empty lexeme *)
+      lex_var_or_id_or_kw ("")
   | _ -> raise_lex_error "valid character"
 ```
 
-However, consider what should happen when the lexer encounters the character `t`.  Here, it depends what comes before.  For example, if the previous character was whitespace or the letter `s`, then this `t` must be part of an identifier.  On the other hand, if the previous character was `#` then this `t` is part of the boolean literal `#t`.  Similarly, what should happen when the lexer encounters `_`.  If it is right at the start of a lexeme, then this is an invalid program, because no lexeme can start with `_`.  However, if the lexer is in the middle of reading an identifier, then the `_` can be consumed and become part of the identifier lexeme.
+Hopefully the algorithm is quite clear.  On entry to this function, we first peek at the next character of the input and try to match it against one of a number of predefined patterns.  In case there is no more input string to process (i.e. we already reached the end of the string), `peek ()` will return `None` and we will emit the end-of-input token `TkEnd` and return from the function.  If there is a character still to process, and it is a left parenthesis, we will drop it from the input string (i.e. advance the cursor to the next character of the input), emit the `TkLParen` token and then return to the initial state ready to process the next character.  This last part is implemented by making a recursive call to ``lex_init ()``.  Similar remarks apply if the next character is `)`, `=` or `,`.  If the next character is whitespace, we can simply drop it and continue in the same state.  If the next character is a lower or uppercase letter, then we are starting to scan a variable, identifier or keyword and so we will move to the second state.  Finally, if we see any other character, the input cannot possibly be a valid Microbrew program, and so we throw an exception.
 
-Thus to carry out the recognition correctly, the implementation must have some memory of what has come before and its behaviour depends on that memory.  We could add some additional internal state to remember, e.g. the _previous_ character that was considered.  However, some consideration reveals that this is really too much information - we don't care whether the previous character was `a` or `b`, and only that it was a valid character for an identifier.  In fact, we can identify three situations we care about:
+The second state is implemented by the (mutually) recursive function `lex_var_or_kw_or_id
+```ocaml
+and lex_var_or_id_or_kw (lexeme: string) =
+  match peek () with
+  | Some c when is_letter c -> 
+      drop ();
+      (* Return to this same state *)
+      lex_var_or_id_or_kw (lexeme ^ String.make 1 c)
+  | _ ->
+      (* We have reached the end of the lexeme, 
+        Check if it is the keyword "def", 
+        otherwise it's a variable or identifier. *)
+      (match lexeme with
+      | "def" -> emit TkDefine
+      | _     -> 
+          (* Determine if it is a variable or identifier *)
+          if is_lower (lexeme.[0]) then 
+            emit (TkVar lexeme) 
+          else 
+            emit (TkIdent lexeme)
+      );
+      (* Continue in the initial lexer state *)
+      lex_init ()
+```
 
-  * When the current lexeme starts with `#`, which indicates we are trying to lex a boolean literal and so we should allow only the characters `t` and `f` to follow next and abort the whole lex in all other cases.
-  * When the current lexeme starts with a digit, which indicates we are trying to lex a number.  Any subsequent digits should form part of the current lexeme, and any other character indicates we have already reached the end of this lexeme.
-  * When the current lexeme starts with a lowercase character, which indicates we are trying to lex an identifier or a keyword (`not`, `or`, `lambda` etc.).  In this case, we should continue consuming identifier characters until we meet a non-identifier character, and then we can classify the resulting lexeme as either an identifier or a keyword depending on the content of the string.
-  * When there is no previous non-whitespace character, which indicates we are starting a new lexeme.
+In this state, we are scanning a variable, identifier or keyword, and, because in the two former cases we want to preserve the actual name (the lexeme), we need to keep track of it.  This will also help us to decide which of a variable, identifier or lexeme it is that we are scanning.  We keep track of the lexeme in the argument of the function.  The idea is that when the machine is executing a call `lex_var_or_id_or_kw ("foo")` then this means the lexer is in the "variable, identifier or keyword" state and so far we have seen the string `foo`.
 
-In this situation, where the behaviour of the program depends on a small number of characterisations of what has happened so far, an elegant approach is to organise the implementation as a _state machine_.  There will be three states, `lex_bool`, `lex_num`, `lex_kw_or_id` and `lex_init` corresponding the three bullets above, respectively.
+The overall shape is similar: we start by peeking at the next character of the input.  If it is another letter (i.e. the proper continuation of a variable, identifier or keyword), then we drop it and add it to the current lexeme, returning to the same state.  Otherwise, we must have come to the end of the variable, identifier or keyword, and it is time to decide which of those we actually have in our hand (in the `lexeme` parameter).  If `lexeme` is exactly the string `"def"`, then we have scanned the define keyword and so we emit the token `TkDefine`.  Otherwise, we have a variable or an identifier, and these can be distinguished by whether their first character is lower or uppercase.  Finally, we return to the initial state.
 
-Each state corresponds to a function in the code of the same name.  We have already seen `lex_init`, the others are implemented as follows:
+### Lexer Interface
+
+Finally, the `lex` function simply takes the input string, sets up the internal state variables and begins lexing in the initial state. 
 
 ```ocaml
-let lex_bool () : token =
-  (* Assumes [peek () = '#'] *)
-  drop (); 
-  match peek () with
-  | 't' -> 
-      drop (); 
-      TkLit (LBool true);
-  | 'f' -> 
-      drop ();
-      TkLit (LBool false);
-  | _ -> 
-      raise_lex_error "t or f"
-
-let lex_number () : token  =
-  let lexeme = ref "" in
-  while is_more () && is_digit (peek ()) do
-    let c = peek () in
-      drop ();
-      lexeme := !lexeme ^ String.make 1 c
-  done;
-  TkLit (LNum (int_of_string !lexeme))
-
-let lex_kw_or_id () : token =
-  let lexeme = ref "" in
-  (* assumes the first char is correctly lowercase *)
-  while is_more () && is_id_char (peek ()) do
-    let c = peek () in
-    drop ();
-    lexeme := !lexeme ^ String.make 1 c
-  done;
-  (* Check if the lexeme is a keyword, 
-     otherwise it's an identifier. *)
-  match !lexeme with
-  | "define" -> TkDefine
-  | "if"     -> TkPrimOp If
-  | "not"    -> TkPrimOp Not
-  | "and"    -> TkPrimOp And
-  | "or"     -> TkPrimOp Or
-  | "lambda" -> TkLambda
-  | _        -> TkIdent !lexeme
+let lex (s:string) : token list =
+  (* Setup the internal variables *)
+  input := s;
+  idx := 0;
+  output := [];
+  (* Begin lexing in the initial state *)
+  lex_init ();
+  (* Return the output *)
+  !output
 ```
+
