@@ -221,7 +221,7 @@ A grammar for this language is:
 
 $$
   \begin{array}{rcl}
-    S &\Coloneqq& 0 A 0 \mid 1 A 1 \mid 0 \mid 1 \mid \epsilon
+    S &\Coloneqq& 0 A 0 \mid 1 A 1 \mid 0 \mid 1 \mid \epsilon\\
     A &\Coloneqq& 0\ A \mid 1\ A \mid \epsilon
   \end{array}
 $$
