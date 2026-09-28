@@ -282,7 +282,7 @@ The grammar encodes this in the following way.  Starting from $S$, using the fir
 
 ## Grammars can Express Sequences
 
-Suppose we want to design a grammar to define the language of all possible sequences of digits (0-9), including the empty sequence.  A useful approach is to think of a sequence of digits as a Haskell or OCaml list, which is either empty, or consists of at least one element - the head, a digit, - and a possibly empty sequence of further elements - the tail, itself a sequence of digits.  This approach gives rise to the following grammar:
+Suppose we want to design a grammar to define the language of all possible sequences of digits (0-9), including the empty sequence.  A useful approach is to think of a sequence of digits as a Haskell list, which is either empty, or consists of at least one element - the head, a digit, - and a possibly empty sequence of further elements - the tail, itself a sequence of digits.  This approach gives rise to the following grammar:
 
 $$
   \begin{array}{rcl}
