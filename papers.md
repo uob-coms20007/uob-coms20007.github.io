@@ -34,22 +34,20 @@ Typical examples of the shape of 1* questions (mostly mechanical tasks that requ
 * Deriving a string in a grammar, giving examples of strings in the language expressed by a grammar. 
 * Constructing a parse table for a grammar.
 * Identify the different syntactic categories of the While language, e.g. arithmetic vs. Boolean expressions.
-* Evaluate arithmetic and Boolean expressions in a given state using the denotation function.
-* Construct derivations trees for While programs from a given starting configuration.
+* Evaluate arithmetic and Boolean expressions, and construct traces for While programs and extensions.
 * Writing a While program to achieve some simple specification, or to show computability of some function.
 
 Typical examples of the shape of 2* questions (mostly constructing simple objects -- programs, proofs, derivations, grammars etc -- to meet given requirements):
 * Construct a grammar to express a certain language.
 * Give an LL(1) grammar equivalent to a given grammar.
-* Evaluate extensions to the While language with new language constructs or semantics.
-* Reason symbolically about (extensions to) the While language, including partial correctness properties.
+* Reason symbolically about (extensions to) the While language, including simple partial correctness properties.
 * Show that a (more complex) function is computable, by writing a While program.
 * Prove simple properties of functions/combinations of functions (injectivity, surjectivity etc).
 * Show that a predicate is decidable/semi-decidable.
 
 A few typical examples of the shape of 3* questions, but 3* questions are often atypical and of a shape that you may have never encountered before during the unit.
 * Show that a language can be expressed by a grammar, where there is some insight needed to first simplify the description of the language.
-* Construct proofs by structural induction over expressions and statements.
+* Construct proofs by structural induction over expressions or statements.
 * Construct, and justify the correctness of, loop invariants.
 * Show that a predicate is undecidable.
 

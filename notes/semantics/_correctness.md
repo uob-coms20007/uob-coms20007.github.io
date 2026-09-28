@@ -1,12 +1,12 @@
 ---
 layout: math
-title: Hoare Logic
+title: Partial Correctness (Hoare Logic)
 nav_order: 4
 mathjax: true
 parent: Semantics
 ---
 
-# Hoare Logic
+# Partial Correctness
 
 Having a mathematical description of a programming language's semantics enables us to formal reason about the behaviour of programs.
 However, it can be quite cumbersome doing so directly, and much of the field of programming language's is based on designing effective reasoning techniques.
@@ -170,7 +170,7 @@ It is worth clarifying that the reasoning above explains why the rule works, but
 $$
   \dfrac
   {\{ e \andop P \}\ S_1\ \{ Q_1 \} \quad \{ \mathop{!}e \andop p \}\ S_2\ \{ Q_2 \}}
-  {\{ P \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ Q_1 \orop Q_2 \}}
+  {\{ P \}\ \mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}\ \{ Q_1 \orop Q_2 \}}
 $$
 
 <!-- To show that the Hoare triple $$\{ p \}\ \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2\ \{ q \}$$ holds, we split our reasoning according to the two branches.
@@ -182,10 +182,10 @@ In particular, the first branch is only executed when considering a state that s
 
 The rule for the if-then-else construct is again an example of a compositional rule.
 As with the previous rule, this rule can be formally understood in relation to the operational semantics.
-Suppose $$\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ for some $$\sigma_0$$ that satisfies $$p$$.
+Suppose $$\langle \mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$ for some $$\sigma_0$$ that satisfies $$p$$.
 There are two cases to consider:
 
-  - If $$\llbracket e \rrbracket_\mathcal{B}(\sigma_0) = \top$$, then it must be the case that $$\langle \mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, \sigma \rangle \rightarrow \langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
+  - If $$\llbracket e \rrbracket_\mathcal{B}(\sigma_0) = \top$$, then it must be the case that $$\langle \mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle \rightarrow \langle S_1,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
     In this case, we can appeal the Hoare-triple concerning the first branch to see that $$\sigma_1$$ must satisfy $$Q_1$$ as the pre-condition $$e \andop P$$ is satisfy by $$\sigma$$.
     We get to assume $e$ as well because it is only under this condition that the branch will be executed.
   
