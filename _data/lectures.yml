@@ -7,11 +7,11 @@
 - title: Context-Free Grammars
   link: https://uob-coms20007.github.io/notes/syntax/reading-grammars.html
 
-# - title: Grammar Design
-#   link: https://uob-coms20007.github.io/notes/syntax/writing-grammars.html
+- title: Grammar Design
+  link: https://uob-coms20007.github.io/notes/syntax/writing-grammars.html
 
-# - title: LL(1) for Parsing
-#   link: https://uob-coms20007.github.io/notes/syntax/ll.html
+- title: LL(1) for Parsing
+  link: https://uob-coms20007.github.io/notes/syntax/ll.html
 
 # - title: No Lecture
 
