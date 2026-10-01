@@ -1,0 +1,9 @@
+Cmd -> ''
+Cmd -> Exp
+Cmd -> def ident ( ExpList ) = Exp
+Exp -> var
+Exp -> ident ( ExpList )
+ExpList -> ''
+ExpList -> Exp ExpList'
+ExpList' -> ''
+ExpList' -> , Exp ExpList'
