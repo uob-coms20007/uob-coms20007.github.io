@@ -167,7 +167,7 @@ The many-step transition relation can be understood as sumarising a trace.
 If there exists a trace $\gamma_1 \rightarrow \gamma_2 \rightarrow \cdots \rightarrow \gamma_n$, then we have that $\gamma_1 \rightarrow^* \gamma_n$ and vice versa.
 So, for instance, we may write $\langle x \leftarrow 2; x \leftarrow 3,\, [x \mapsto 1] \rangle \rightarrow^* [x \mapsto 3]$.
 
-## If
+## Conditional Branching
 
 The behaviour of the if-then construct is naturally conditional on whether the branch condition (i.e.\ the Boolean expression) evaluates to true or false under the current state.
 Therefore, there are two rules for such statements:
@@ -194,7 +194,7 @@ Conversely, when the branch condition $b$ evaluates to false, we transition in a
 We don't write the condition $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ or $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ as a premise directly as it isn't another operational step.
 These are referred to as _side-conditions_, but they effectively act as premises.
 
-## While
+## While Loops
 
 Similarly, the behaviour of the while-do construct depends on whether the branch condition is met or not, and thus there are two rules:
 
