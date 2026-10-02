@@ -97,7 +97,9 @@ $$
     \nt{Exp} &\Coloneqq& \tm{var} \\[2mm]
     &\mid& \tm{ident}\ \tm{(}\ \nt{ExpList}\ \tm{)}\\[4mm]
     \nt{ExpList} &\Coloneqq& \epsilon\\[2mm]
-    &\mid& \nt{Exp}\ [\tm{,}\ \nt{Exp}]^{*}\\[4mm]
+    &\mid& \nt{Exp}\ \nt{ExpList'}\\[4mm]
+    \nt{ExpList'} &\Coloneqq& \epsilon\\[2mm]
+    &\mid& \tm{,}\ \nt{Exp}\ \nt{ExpList'}\\[4mm]
   \end{array}
 $$
 
