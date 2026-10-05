@@ -19,7 +19,7 @@ $$
 
 Once you have an LL(1) parsing table, it is straightforward to implement a kind of parser called a _predictive parser_.  It is _predictive_ in the sense that it can predict what rule to use at every step - due to the grammar being LL(1).  
 
-In the Brischeme interpreter, the parser is responsible for converting a list of tokens into an abstract syntax tree, according to the grammar of the language.  
+In the Microbrew interpreter, the parser is responsible for converting a list of tokens into an abstract syntax tree, according to the grammar of the language.  
 
 <!-- <img src="../../assets/syntax/parser.png" style="max-width:500px;"/> -->
 
