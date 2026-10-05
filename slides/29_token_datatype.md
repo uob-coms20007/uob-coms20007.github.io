@@ -15,4 +15,5 @@ type token =
   | TkDefine
   | TkComma
   | TkEquals
+  | TkEnd
 ```
