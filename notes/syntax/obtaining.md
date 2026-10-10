@@ -29,34 +29,38 @@ There is no simple recipe to transform a given grammar such as the one above int
 
 ## Left Factoring
 
-The definition of the Brischeme language from the coursework sheet Appendix A is not LL(1).  Here it is:
+Consider the following grammar (fragment) of an imperative programming language.  In the part we will be interested in there are six terminal symbols:
+
+$$
+  \tm{if} \qquad \tm{(} \qquad \tm{)} \qquad \tm{\{} \qquad \tm{\}} \qquad \tm{else}
+$$
+
+In this fragment there are several non-terminals but we will only really interested in the nonterminal $$\nt{IfStmt}$$, which derives if-then and if-then-else statements.  For this there are two grammar productions:
 
 $$
   \begin{array}{rcl}
-    \nt{Prog} &\Coloneqq& \nt{Form}^*\\[4mm]
-    \nt{Form} &\Coloneqq& \nt{SExpr}\\[2mm]
-              &\mid& (\ \tm{define}\ \tm{ident}\ \nt{SExpr}\ )\\[4mm]
-    \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
-                &\mid& \tm{ident}\\[2mm]
-                &\mid& (\ \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
-                &\mid& (\ \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
-                &\mid& (\ \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
+    \nt{IfStmt} &\Coloneqq& \tm{if}\ \tm{(}\ \nt{Expr}\ \tm{)}\ \tm{\{} \nt{Stmts}\ \tm{\}}\\
+                &\mid&  \tm{if}\ \tm{(}\ \nt{Expr}\ \tm{)}\ \tm{\{} \nt{Stmts}\ \tm{\}}\ \tm{else}\ \tm{\{}\ \nt{Stmts}\ \tm{\}}
   \end{array}
 $$
 
-If we were to construct the parse table $T$, we would see that the cell at $T[\nt{SExpr},\,\tm{(}]$ contains several rules.  If the leftmost nonterminal is $\nt{SExpr}$ and the next letter of the input is $\tm{(}$, then clearly, there are three eligible rules:
+Even if we put the rest of the grammar (not shown) to one side, this fragment consisting of two production rules is already not LL(1).  Suppose we are trying to derive the valid string 
 
 $$
-  \begin{array}{rcl}
-    \nt{SExpr} &\Coloneqq& (\ \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
-    \nt{SExpr} &\Coloneqq& (\ \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
-    \nt{SExpr} &\Coloneqq& (\ \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
-  \end{array}
+\tm{if}\ ( x > 2 )\ \{ x = 1 \}
 $$
 
-without knowing more about what comes after the left-parenthesis, it's not clear which rule should be chosen.
+and the leftmost non-terminal (which we want to replace, in order to derive this string) is $\nt{IfStmt}$.  If this really were part of an LL(1) grammar, then we would know which of the two production rules to choose for replacing $\nt{IfStmt}$ simply by looking at the leftmost terminal symbol of the string that we are aiming to derive.  However, only looking at the leftmost terminal symbol, here $\tm{if}$, is not enough information to know which rule to pick.  Only knowing that the first terminal of the string is $\tm{if}$ doesn't tell us whether we are aiming to derive an if-then statement, or whether we are actually aiming to derive an if-then-else statement.  
 
-Fortunately, there is a simple remedy which is to _left factor_ the rules, which involves factoring out the common prefix (in this case '(').  Whenever we have several rules, say $k>1$ in number, for the same nonterminal with a common prefix, say $\alpha$:
+If we built the parsing table $T$ for this grammar, we would see that the cell at $T[\nt{IfStmt},\tm{if}]$ contains both of these production rules, and is thus not LL(1).  
+
+Fortunately, this kind of obstacle to LL(1)-ness is easy to overcome.  A simple remedy is to _left factor_ the rules, which involves factoring out the common prefix of the sentential forms on the right-hand-sides.  In this case, this common prefix is:
+
+$$
+  \tm{if}\ \tm{(}\ \nt{Expr}\ \tm{)}\ \tm{\{} \nt{Stmts}\ \tm{\}}
+$$
+
+In general, whenever we have several rules, say $k>1$ in number, for the same nonterminal with a common prefix, say $\alpha$:
 
 $$
     X \Coloneqq \alpha\ \beta_1 \mid \alpha\ \beta_2 \mid \cdots{} \mid \alpha\ \beta_k 
@@ -73,28 +77,16 @@ $$
 
 Note: it may be there are also $X$-rules that do not share the common prefix, and these can be safely ignored, they do not participate in the transformation.
 
-Thus, we can rephrase the rules for $\nt{SExpr}$ by:
+Thus, we can rephrase the rules for $\nt{IfStmt}$ by:
 
 $$
   \begin{array}{rcl}
-  \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
-                &\mid& \tm{ident}\\[2mm]
-                &\mid& (\ R\\[4mm]
-  \nt{R} &\Coloneqq& \nt{SExpr}\ \nt{SExpr}^*\ )\\[2mm]
-                &\mid& \tm{primop}\ \nt{SExpr}^*\ )\\[2mm]
-                &\mid& \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}\ )
+    \nt{IfStmt} &\Coloneqq& \tm{if}\ \tm{(}\ \nt{Expr}\ \tm{)}\ \tm{\{} \nt{Stmts}\ \tm{\}}\ \nt{ElseOpt}\\[2mm]
+    \nt{ElseOpt} &\Coloneqq&  \tm{else}\ \tm{\{}\ \nt{Stmts}\ \tm{\}} \mid \epsilon
   \end{array}
 $$
 
-Now which of the three rules for $\nt{SExpr}$ is chosen is clearly uniquely determined by the next letter of the input, since each starts with a different terminal symbol.  Similarly, which of the three rules for $R$ is chosen is also uniquely determined because it is easy to see that $\mathsf{First}(\nt{SExpr})$ is different from $\tm{primop}$ and $\tm{lambda}$, which are clearly different from each other.  However, in general, the left factoring process may have to continue into the definition of $R$.
-
-Incidentally, if you look at the LL(1) grammar in Appendix C of the Brischeme coursework, you will see that we also factored out the common suffix of the three rules in $R$.  So that this particular rule is rather more like:
-
-$$
-  \nt{SExpr} \Coloneqq (\ R \ )
-$$
-
-This is purely an aesthetic choice: it's nice to see matching parentheses!
+Now, there is no longer any choice for which rule to pick when replacing $\nt{IfStmt}$ - there is only one rule.  Moreover, assuming the rest of the grammar presents no further obstacle, we can choose between the two possible rules of $\nt{ElseOpt}$ simply by looking to see if the next terminal symbol is $\tm{else}$ or not.  In general, it may be that  performing one left-factoring transformation fixes an immediate obstacle to LL(1)-ness, but also reveals a new one, so you may have to repeat the left-factoring process several times until all common prefixes are factored out.
 
 ## Left Recursion
 
@@ -217,31 +209,30 @@ and now the grammar contains no left recursion.  In fact, if we were to build th
 
 ## No Guarantees
 
-Common prefixes (which can be removed by left factoring) and left recursion are two common problems that prevent grammars for programming languages from being left recursive, and reformulating a grammar with one of these problems is often enough to obtain an LL(1) grammar.  However, there are no guarantees.  The grammar we obtained for Brischeme after left factoring no longer contains any common prefixes or left recursion, but it is still not LL(1).
+Common prefixes (which can be removed by left factoring) and left recursion are two common problems that prevent grammars for programming languages from being left recursive, and reformulating a grammar with one of these problems is often enough to obtain an LL(1) grammar.  However, there are no guarantees - in particular, not every context-free grammar has an equivalent presentation as an LL(1) grammar, some languages expressible by CFGs are inherently not LL(1).  Even if your language does have an equivalent presentation as an LL(1) grammar, it may require more than simply applying the above two rules in order to obtain it.  A simple example can be seen in this fragment of the [Go grammar](https://go.dev/ref/spec#Expression_statements):
 
 $$
   \begin{array}{rcl}
-  \nt{Prog} &\Coloneqq& \nt{Form}^*\\[4mm]
-  \nt{Form} &\Coloneqq& \nt{SExpr}\\[2mm]
-            &\mid& (\ \tm{define}\ \tm{ident}\ \nt{SExpr}\ )\\[4mm]
-  \nt{SExpr} &\Coloneqq& \tm{literal}\\[2mm] 
-                &\mid& \tm{ident}\\[2mm]
-                &\mid& (\ R\ )\\[4mm]
-  \nt{R} &\Coloneqq& \nt{SExpr}\ \nt{SExpr}^*\\[2mm]
-                &\mid& \tm{primop}\ \nt{SExpr}^*\\[2mm]
-                &\mid& \tm{lambda}\ \tm{(}\ \tm{ident}^*\ \tm{)}\ \nt{SExpr}
+  \nt{SimpleStmt} &\Coloneqq& \nt{EmptyStmt} \mid \nt{ExpressionStmt} \mid \nt{SendStmt} \mid \nt{IncDecStmt} \mid \nt{Assignment} \mid \nt{ShortVarDecl}\\[2mm]
+  \nt{ExpressionStmt} &\Coloneqq& \nt{Expression}\\[2mm]
+  \nt{SendStmt} &\Coloneqq& \nt{Channel}\ \tm{\leftarrow}\ \nt{Expression}\\[2mm]
+  \nt{Channel} &\Coloneqq& \nt{Expression}
   \end{array}
 $$
 
-In particular, if, during parsing, we are attempting to derive a string starting with a left parenthesis $($ from the nonterminal $\nt{Form}$, then the rule to use is not determined: both of the rules for $\nt{Form}$ can derive strings starting with $($.  This can be avoided by introducing a new nonterminal $\nt{CForm}$ and reformulating the rules for $\nt{Form}$:
+Suppose we are trying to derive a string like $\tm{getChannel()}\ \tm{\leftarrow}\ \tm{3}$ starting from the nonterminal $\nt{SimpleStmt}$.  Just looking at the leftmost terminal symbol - here an identifier $\tm{getChannel}$ for a function name - isn't enough on its own to determine whether we are deriving an $\nt{ExpressionStmt}$ or a $\nt{SendStmt}$ since both start with an expression.  Yet, there isn't and _immediate_ left-factoring problem or left-recursion problem, as described above.  
+
+However, there is a kind of indirect left-factoring problem.  If we reformulate the grammar a bit, then we can see it more clearly.  Suppose we just inline the rules for $\nt{ExpressionStmt}$, $\nt{SendStmt}$ and $\nt{Channel}$ - clearly this will not change the language of derivable strings:
 
 $$
-  \begin{array}{rcl}
-    \nt{Form} &\Coloneqq& \tm{ident}\\[2mm] 
-              &\mid& \tm{literal}\\[2mm]
-              &\mid& (\ \nt{CForm} \ )\\[4mm]
-    \nt{CForm} &\Coloneqq& \nt{R} \mid \tm{define}\ \tm{ident}\ \nt{SExpr}
-  \end{array}
+\begin{array}{rcl}
+\nt{SimpleStmt} &\Coloneqq& \nt{EmptyStmt}\\[2mm] 
+&\mid& \nt{Expression} \\[2mm]
+&\mid& \nt{Expression}\ \tm{\leftarrow}\ \nt{Expression} \\[2mm]
+&\mid& \nt{IncDecStmt} \\[2mm]
+&\mid& \nt{Assignment} \\[2mm]
+&\mid& \nt{ShortVarDecl}
+\end{array}
 $$
 
-Essentially, we have inlined the rules for $\nt{SExpr}$ and then performed left factoring; but this required a little bit of thinking -- to understand what the problem is, as identified in the parsing table, and how to solve it -- rather than _only_ following one of the two recipes above.
+Now one can see there is really a left-factoring problem, and one can perform the transformation described above to eliminate it, although this is not what the Go language writers chose to do.
