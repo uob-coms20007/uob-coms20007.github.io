@@ -11,7 +11,7 @@ parent: Syntax
 
 ## (NOT ASSESSED)
 
-_This material is not assessed, look at it only for interest._
+_This material is not assessed._
 
 In each case, the idea will be to iteratively compute approximations $\nullable[X]$, $\first[X]$ and $\follow[X]$ to the three properties, each iteration refining the approximation until eventually they exactly coincide with $\nullable(X)$, $\first(X)$ and $\follow(X)$ respectively.  
 
