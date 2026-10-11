@@ -65,59 +65,6 @@ Each has its own syntactic peculiarities, some use braces, some parentheses, som
 
   I mean that this is the essential information in the sense that if you forget what the loops look like in their syntax but I tell you the contents of points 1-3, then you can recreate the syntax in whichever language you are interested in.  For example, if I tell you points 1-3 above, and then ask you to write the loop in C, then you can reconstruct (modulo whitespace and unnecessary bracketing) the first piece of syntax above.  On the other hand, if I omitted any one of 1-3, say 2, then you could not possibly know what the loop looked like when written in C in the original syntax.
 
-## The Brischeme Abstract Syntax Tree
-
-In OCaml, like most functional programming languages, tree data structures are standard.  Every algebraic data type (variant type) is really a tree data structure and should be thought of that way.  In the Brischeme interpreter, the AST is given by four types:
-
-```ocaml
-(** [primop] is an enumeration of the available primitive operations. *)
-type primop =
-  | Plus
-  | Minus
-  | Times
-  | Divide
-  | Eq
-  | Less
-  | If
-  | And
-  | Or
-  | Not
-
-(** A [form] is either a top-level definition or an expression to be evaluated .*)
-type form =
-  | Define of string * sexp
-  | Expr of sexp
-
-(** A [sexp] is an expression to be evaluated. *)
-and sexp =
-  | Bool of bool
-  | Num of int
-  | Ident of string
-  | Lambda of string list * sexp
-  | Call of primop * sexp list
-  | App of sexp * sexp list
-
-(** A [prog] is just a list of [form]. *)
-type prog = form list
-
-```
-
-The values of these datatypes are, of course, those OCaml expressions that can be formed from the constructors (and their arguments).  Here are four values of type `sexp`:
-
-```ocaml
-  Num 3 
-  Ident "foo"
-  Call (Plus, [Num 3, Ident "x"])
-  Lambda (x, (Call (Plus, [Num 3, Ident x]))) 
-  App (Lambda (x, (Call (Plus, [Num 3, Ident x]))), [Call (Minus, [Num 5; Num 3])])
-```
-
-but generally it is a good idea to think of these values really as describing trees in which the arguments to a constructor form its children:
-
- <img src="../../assets/syntax/brischeme-ast.png" style="max-width:500px;"/>
-
-In fact, when functional programmers write libraries, say a new library for X, they will often think that they are really designing a _language_ for describing X-things (and their principle operations), and the key data type for X-things describes their abstract syntax.
-
 ## Precedence and Associativity 
 
 The abstract syntax of a language is really an internal representation, and so one would expect it to be completely hidden to the programmer.  However, there is an important way in which it leaks through, and that is via operator precedence and associativity.

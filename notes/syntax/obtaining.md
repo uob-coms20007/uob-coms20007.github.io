@@ -235,4 +235,4 @@ $$
 \end{array}
 $$
 
-Now one can see there is really a left-factoring problem, and one can perform the transformation described above to eliminate it, although this is not what the Go language writers chose to do.
+Now one can see there is really a left-factoring problem, and one can perform the transformation described above to attempt to eliminate it, although this is not what the Go language writers chose to do.
