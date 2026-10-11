@@ -19,11 +19,11 @@
 - title: Parsing
   link: https://uob-coms20007.github.io/notes/syntax/predictive.html
 
-# - title: Obtaining LL(1)
-#   link: https://uob-coms20007.github.io/notes/syntax/obtaining.html
+- title: Obtaining LL(1)
+  link: https://uob-coms20007.github.io/notes/syntax/obtaining.html
 
-# - title: Abstract Syntax
-#   link: https://uob-coms20007.github.io/notes/syntax/ast.html
+- title: Abstract Syntax
+  link: https://uob-coms20007.github.io/notes/syntax/ast.html
 
 # - title: Denotational Semantics
 #   link: https://uob-coms20007.github.io/notes/semantics/denotational.html
