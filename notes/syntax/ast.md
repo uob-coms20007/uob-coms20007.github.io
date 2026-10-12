@@ -77,8 +77,6 @@ The abstract syntax of a language is really an internal representation, and so o
 
 Note, this is a syntactic property of operators and is different from the semantic property of _being associative_, which you will have come across in mathematics.  If an operator _is associative_ this means that the value of $(u \oplus v) \oplus w$ is the same as the value of $u \oplus (v \oplus w)$, i.e. they evaluate to the same thing - they have the same semantics.  In the notation you will learn in part 2 of this unit, we would write $$[\![(u \oplus v) \oplus w]\!] = [\![u \oplus (v \oplus w)]\!]$$ for this.  So, if an operator is associative, then it doesn't really matter whether it associates right or left in the syntax, because no matter how we insert the implicit parentheses the same value will be obtained.  However, even in this case, we still need to make a choice in the parser in order to build the AST one way or another.
 
-Note: in Brischeme (and other Scheme languages) all operator calls are required to be explicitly parenthesised, so a chain like $3 + 4 + 5$ is simply invalid.  Thus, associativity is a non-issue in the Brischeme language.  However, in most other programming languages, an expression like $3 + 4 + 5$, or a type like $\mathsf{Int} \to \mathsf{Int} \to \mathsf{Int}$ is valid syntax, and then we have to confront the question of which AST is being described.
-
 ### Precedence
 
 Associativity refers to how to understand the structure of expressions made of a single operators (in some cases, it can also be used for chains of several "similar" operators - we will see what "similar" means shortly).  However, it does not on its own allow us to disambiguate the structure of an expression involving a chain of different operators.
@@ -121,7 +119,7 @@ Unfortunately, this is a bit difficult to achieve without designing it into the 
 $$
   \begin{array}{rcl}
     A &\Coloneqq& L\ R\\
-    R &\Coloneqq& \tm{+}\ A\ R \mid \tm{*}\ A\ R \mid \epsilon\\
+    R &\Coloneqq& \tm{+}\ L\ R \mid \tm{*}\ L\ R \mid \epsilon\\
     L &\Coloneqq& \tm{num} \mid (\ A\ )
   \end{array}
 $$
@@ -159,11 +157,11 @@ A different approach builds the precedence of operators into the (LL(1)) grammar
 
 $$
   \begin{array}{rcl}
-    T &\longrightarrow& F\ T' \\
-    T' &\longrightarrow& \tm{+}\ F\ T' \mid \epsilon \\ 
-    F &\longrightarrow& L\ F' \\
-    F' &\longrightarrow& \tm{*}\ L\ F' \mid \epsilon \\
-    L &\longrightarrow& \tm{num} \mid (T)
+    T &::=& F\ T' \\
+    T' &::=& \tm{+}\ F\ T' \mid \epsilon \\ 
+    F &::=& L\ F' \\
+    F' &::=& \tm{*}\ L\ F' \mid \epsilon \\
+    L &::=& \tm{num} \mid (T)
   \end{array}
 $$
 
