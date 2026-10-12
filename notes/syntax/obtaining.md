@@ -146,7 +146,7 @@ $$
   B \Coloneqq B \andop B \mid B \orop B \mid \tt \mid \ff \mid (B)
 $$
 
-This involves two left recursive productions, $B \longrightarrow B \andop B$ and $B \longrightarrow B \orop B$.
+This involves two left recursive productions, $B ::= B \andop B$ and $B ::= B \orop B$.
 
 The kinds of strings these production rules generate are all Boolean expressions, e.g.
 
@@ -156,7 +156,7 @@ $$
 
 Personally, I find it unintuitive to think of such expressions as some kind of recursively generated sequence.  However, it is not so difficult to do just that if we introduce a couple of new nonterminals to clarify the structure a bit.  
 
-Let's start by putting all the non-left recursive rules together into a separate production, say for a new nonterminal $A$:
+Let's start by putting all the __non__-left recursive rules together into a separate production, say for a new nonterminal $A$:
 
 $$
   \begin{array}{rcl}
@@ -167,45 +167,66 @@ $$
 
 Hopefully it's clear to you that this revised grammar generates the same sequences (but also suffers from the same left-recursion problem).
 
-Next, let's left-factor the new $B$ productions, to lift out the common $B$ prefix of the first two rules:
+Next, let's put together the two left-recursive productions into a single one, by factoring out the operator part:
 
 $$
   \begin{array}{rcl}
-    B &\Coloneqq& B\ R \mid A\\
-    R &\Coloneqq& \tm{\andop}\ B \mid \tm{\orop}\ B\\
+    B &\Coloneqq& B\ \nt{Op}\ B \mid A\\
+    \nt{Op} &\Coloneqq& \tm{\andop} \mid \tm{\orop}\\
     A &\Coloneqq& \tt \mid \ff \mid (B)\\
   \end{array} 
 $$
 
-Again, the nonterminal B of the new grammar derives exactly the same language as in the old grammar, and still suffers from left recursion.  However, now we can see the clearly the kind of sequences that $B$ is recursively generating: each such sequence is either (a) a singleton $A$ or (b) an additional item $R$ added to the end of a smaller list.  If we only consider the rules for $B$, forgetting the other rules for a moment, then the sentential forms we can derive are sequences of $R$ starting with an $A$:
+Again, the nonterminal B of the new grammar derives exactly the same language as in the old grammar, and still suffers from left recursion.  However, now we can see more clearly the kind of sequences that $B$ is recursively generating: each such sequence is either (a) a singleton $A$ or (b) two smaller lists appended together using Op.  If we _only_ consider the rules for $B$, pretending for a moment that the other rules don't exist, then the sentential forms we can derive are just Op-separated sequences of $A$:
 
 $$
   \begin{array}{l}
     A\\
-    A\ R\\
-    A\ R\ R\\
-    A\ R\ R\ R\\
+    A\ \nt{Op}\ A\\
+    A\ \nt{Op}\ A\ \nt{Op}\ A\\
+    A\ \nt{Op}\ A\ \nt{Op}\ A\ \nt{Op}\ A\\
     \quad\vdots{}
   \end{array}
 $$
 
-It is easy to generate such sequences using our notation for sequences:
-
-$$
-  B \Coloneqq A\ R^*
-$$
-
-Since this generates exactly the same sentential forms as the $B$ rules $$B \Coloneqq B\ R \mid A$$ above, we can replace those two rules in the grammar by the rule $$B \Coloneqq A\ R^*$$ without changing the language defined.
+To eliminate the left recursion, we just need to rexpress such lists instead using right recursion.  That is, to derive them as "cons"-style lists.
 
 $$
   \begin{array}{rcl}
-    B &\Coloneqq& A\ R^*\\
-    R &\Coloneqq& \tm{\andop}\ B \mid \tm{\orop}\ B\\
+    B &\Coloneqq& A\ \nt{Op}\ B \mid A\\
+    \nt{Op} &\Coloneqq& \tm{\andop} \mid \tm{\orop}\\
     A &\Coloneqq& \tt \mid \ff \mid (B)\\
-  \end{array} 
+  \end{array}
 $$
 
-and now the grammar contains no left recursion.  In fact, if we were to build the parse table, we would see that it is LL(1).
+This eliminates the left recursion.  We can now observe, however, that we have a left-factoring problem: the two possible rules for B have a common prefix, which is exactly the sentential form consisting of A.  We can left-factor the rules by introducing a new non-terminal R for "Rest":
+
+$$
+  \begin{array}{rcl}
+    B &\Coloneqq& A\ R\\
+    R &\Coloneqq& \nt{Op}\ B\\
+    \nt{Op} &\Coloneqq& \tm{\andop} \mid \tm{\orop}\\
+    A &\Coloneqq& \tt \mid \ff \mid (B)\\
+  \end{array}
+$$
+
+If we want, we can now re-inline the $A$ and the $\nt{Op}$ nonterminals, since we only factored those out to make our understanding easier.  In the version of the grammar I showed you in week 2, I inlined $\nt{Op}$ but left $A$ as it was:
+
+$$
+  \begin{array}{rcl}
+    B &\Coloneqq& A\ R\\
+    R &\Coloneqq& \tm{\andop}\ B \mid \tm{\orop}\ B\\
+    A &\Coloneqq& \tt \mid \ff \mid (B)\\
+  \end{array}
+$$
+
+Note, the special syntactic sugar for sequences is generally very useful when eliminating left recursion because we can immediately express all the non-empty, $\nt{Op}$-separated lists of $A$ by:
+
+$$
+  B \Coloneqq A\ [\nt{Op}\ A]^*
+$$
+
+Either way, the new grammar is equivalent (derives the same strings) but contains no left recursion.  In fact, if we were to build the parse table, we would see that it is LL(1).
 
 ## No Guarantees
 
@@ -235,4 +256,4 @@ $$
 \end{array}
 $$
 
-Now one can see there is really a left-factoring problem, and one can perform the transformation described above to attempt to eliminate it, although this is not what the Go language writers chose to do.
+Now one can see there is really a left-factoring problem, and one can perform the transformation described above to attempt to eliminate it.  This is exactly what the Go compiler authors have done, but implicitly - the grammar is left as it is, but in the implementation of the parsing function for SimpleStmt, it first parses an expression unconditionally, and then afterwards decides which production to use corresponding in order to parse the rest.
