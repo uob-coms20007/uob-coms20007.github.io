@@ -2,8 +2,8 @@
 layout: math
 mathjax: true
 parent: "Slides"
-title: 41. Stmt Seqs
-nav_order: 41
+title: 40. Stmt Seqs
+nav_order: 40
 ---
 
 $$
