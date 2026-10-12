@@ -9,6 +9,10 @@ parent: Syntax
 
 # Language Frontend and the Lexer
 
+## (NOT ASSESSED)
+
+_This material is not assessed._
+
 There are many software tools that process some kind of programming language.  Compilers and interpreters are perhaps the most obvious, but also program analysis tools (e.g. Facebook Infer, GitHub CodeQL, Google's Go Vet, Amazon CodeGuru),  documentation generators (e.g. Doxygen, Javadoc).  In fact, any software that has to read some kind of non-trivial configuration file (e.g. JSON, XML) needs to be able to process a formal language from a textual input.
 
 Typically, the part of the software that is responsible for reading the text and constructing some internal representation of its structure is called a *frontend*.  There is no one way to organise a front-end but, in practice, most frontends adopt a certain architecture which makes this complicated task a bit easier.

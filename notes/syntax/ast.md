@@ -10,7 +10,7 @@ parent: Syntax
 
 A parser does not only recognise whether a string is in the language or not, but in the former case, it constructs some abstract, internal representation of the piece of syntax in memory.  This is then used in other parts of the language translator (interpreter, compiler etc) to actually effect the translation (e.g. generate code).
 
-Of course, we could just use the string itself as out internal representation.  However, since most of the languages for which we want to parse are more structured, it is convenient to use a representation that makes this structure explicit.  Moreover, the concrete syntax (the string) contains a lot of information which is not essential to understanding the fundamental structure.  A standard approach is to instead use *abstract syntax trees* or ASTs for short.
+Of course, we could just use the string itself as our internal representation.  However, since most of the languages for which we want to parse are more structured, it is convenient to use a representation that makes this structure explicit.  Moreover, the concrete syntax (the string) contains a lot of information which is not essential to understanding the fundamental structure.  A standard approach is to instead use *abstract syntax trees* or ASTs for short.
 
 Our Boolean expressions of the previous lecture naturally have a tree structure.  The expression `false && (true || false)` can be understood as the tree:
 
@@ -65,59 +65,6 @@ Each has its own syntactic peculiarities, some use braces, some parentheses, som
 
   I mean that this is the essential information in the sense that if you forget what the loops look like in their syntax but I tell you the contents of points 1-3, then you can recreate the syntax in whichever language you are interested in.  For example, if I tell you points 1-3 above, and then ask you to write the loop in C, then you can reconstruct (modulo whitespace and unnecessary bracketing) the first piece of syntax above.  On the other hand, if I omitted any one of 1-3, say 2, then you could not possibly know what the loop looked like when written in C in the original syntax.
 
-## The Brischeme Abstract Syntax Tree
-
-In OCaml, like most functional programming languages, tree data structures are standard.  Every algebraic data type (variant type) is really a tree data structure and should be thought of that way.  In the Brischeme interpreter, the AST is given by four types:
-
-```ocaml
-(** [primop] is an enumeration of the available primitive operations. *)
-type primop =
-  | Plus
-  | Minus
-  | Times
-  | Divide
-  | Eq
-  | Less
-  | If
-  | And
-  | Or
-  | Not
-
-(** A [form] is either a top-level definition or an expression to be evaluated .*)
-type form =
-  | Define of string * sexp
-  | Expr of sexp
-
-(** A [sexp] is an expression to be evaluated. *)
-and sexp =
-  | Bool of bool
-  | Num of int
-  | Ident of string
-  | Lambda of string list * sexp
-  | Call of primop * sexp list
-  | App of sexp * sexp list
-
-(** A [prog] is just a list of [form]. *)
-type prog = form list
-
-```
-
-The values of these datatypes are, of course, those OCaml expressions that can be formed from the constructors (and their arguments).  Here are four values of type `sexp`:
-
-```ocaml
-  Num 3 
-  Ident "foo"
-  Call (Plus, [Num 3, Ident "x"])
-  Lambda (x, (Call (Plus, [Num 3, Ident x]))) 
-  App (Lambda (x, (Call (Plus, [Num 3, Ident x]))), [Call (Minus, [Num 5; Num 3])])
-```
-
-but generally it is a good idea to think of these values really as describing trees in which the arguments to a constructor form its children:
-
- <img src="../../assets/syntax/brischeme-ast.png" style="max-width:500px;"/>
-
-In fact, when functional programmers write libraries, say a new library for X, they will often think that they are really designing a _language_ for describing X-things (and their principle operations), and the key data type for X-things describes their abstract syntax.
-
 ## Precedence and Associativity 
 
 The abstract syntax of a language is really an internal representation, and so one would expect it to be completely hidden to the programmer.  However, there is an important way in which it leaks through, and that is via operator precedence and associativity.
@@ -129,8 +76,6 @@ The abstract syntax of a language is really an internal representation, and so o
 </div>
 
 Note, this is a syntactic property of operators and is different from the semantic property of _being associative_, which you will have come across in mathematics.  If an operator _is associative_ this means that the value of $(u \oplus v) \oplus w$ is the same as the value of $u \oplus (v \oplus w)$, i.e. they evaluate to the same thing - they have the same semantics.  In the notation you will learn in part 2 of this unit, we would write $$[\![(u \oplus v) \oplus w]\!] = [\![u \oplus (v \oplus w)]\!]$$ for this.  So, if an operator is associative, then it doesn't really matter whether it associates right or left in the syntax, because no matter how we insert the implicit parentheses the same value will be obtained.  However, even in this case, we still need to make a choice in the parser in order to build the AST one way or another.
-
-Note: in Brischeme (and other Scheme languages) all operator calls are required to be explicitly parenthesised, so a chain like $3 + 4 + 5$ is simply invalid.  Thus, associativity is a non-issue in the Brischeme language.  However, in most other programming languages, an expression like $3 + 4 + 5$, or a type like $\mathsf{Int} \to \mathsf{Int} \to \mathsf{Int}$ is valid syntax, and then we have to confront the question of which AST is being described.
 
 ### Precedence
 
@@ -174,7 +119,7 @@ Unfortunately, this is a bit difficult to achieve without designing it into the 
 $$
   \begin{array}{rcl}
     A &\Coloneqq& L\ R\\
-    R &\Coloneqq& \tm{+}\ A\ R \mid \tm{*}\ A\ R \mid \epsilon\\
+    R &\Coloneqq& \tm{+}\ L\ R \mid \tm{*}\ L\ R \mid \epsilon\\
     L &\Coloneqq& \tm{num} \mid (\ A\ )
   \end{array}
 $$
@@ -212,11 +157,11 @@ A different approach builds the precedence of operators into the (LL(1)) grammar
 
 $$
   \begin{array}{rcl}
-    T &\longrightarrow& F\ T' \\
-    T' &\longrightarrow& \tm{+}\ F\ T' \mid \epsilon \\ 
-    F &\longrightarrow& L\ F' \\
-    F' &\longrightarrow& \tm{*}\ L\ F' \mid \epsilon \\
-    L &\longrightarrow& \tm{num} \mid (T)
+    T &::=& F\ T' \\
+    T' &::=& \tm{+}\ F\ T' \mid \epsilon \\ 
+    F &::=& L\ F' \\
+    F' &::=& \tm{*}\ L\ F' \mid \epsilon \\
+    L &::=& \tm{num} \mid (T)
   \end{array}
 $$
 

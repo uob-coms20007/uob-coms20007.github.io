@@ -8,10 +8,10 @@ nav_order: 49
 
 $$
   \begin{array}{rcl}
-    T &\longrightarrow& F\ T' \\
-    T' &\longrightarrow& \tm{+}\ F\ T' \mid \epsilon \\ 
-    F &\longrightarrow& L\ F' \\
-    F' &\longrightarrow& \tm{*}\ L\ F' \mid \epsilon \\
-    L &\longrightarrow& \tm{num} \mid (T)
+    T &::=& F\ T' \\
+    T' &::=& \tm{+}\ F\ T' \mid \epsilon \\ 
+    F &::=& L\ F' \\
+    F' &::=& \tm{*}\ L\ F' \mid \epsilon \\
+    L &::=& \tm{num} \mid (T)
   \end{array}
 $$
