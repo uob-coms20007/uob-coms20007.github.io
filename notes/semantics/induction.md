@@ -6,9 +6,12 @@ mathjax: true
 parent: Semantics
 ---
 
-# Arithmetic Induction
+# Structural Induction
 
-Many of you will have seen a form of proof by induction that goes something like this:
+## Arithmetic Induction
+
+Proof by induction is a very useful technique for reasoning about program semantics.
+Recall the arithmetic induction principle:
 
 <div class="defn" markdown="1">
 Suppose $P$ is some property of natural numbers.
@@ -78,14 +81,17 @@ This is a promising sign that our induction proof is going to work out!
 Having expanded the summation, we can apply the induction hypothesis to replace the summand $0 + \cdots + m$ with the formula $1/2 \times m \times (m + 1)$.
 The rest of the proof follows from standard identities about addition and multiplication.
 
-# Structural Induction
+## Generalising to Other Grammars
 
 Structural induction is a direct generalisation of numerical induction where we substitute the natural numbers for some other set of interest; in particular, an _inductively defined_ structure.
-For the time being, inductively defined structures will only extend to those sets defined by grammars.
-To get an idea of how we will generalise the induction principle for the natural numbers to an arbitrary grammar, let us unpack the definition of the natural numbers.
 
+Informally, inductively defined structures are sets where the elements are "generated" by some rules.
+Most relevant to us are those sets defined by grammars. i.e. abstract syntax trees.
+
+To get an idea of how we will generalise the induction principle for the natural numbers to an arbitrary grammar, let us unpack the definition of the natural numbers.
 For us, the natural numbers are defined by the following grammar: $N \Coloneqq 0 \mid N + 1$ where our usual notation for a number such as $3$ is just shorthand for $0 + 1 + 1 + 1$.
 That is, a natural number $n \in \mathbb{N}$ is either $0$ or $m + 1$ for some other natural number $m \in \mathbb{N}$.
+
 If we compare these two production rules to the two cases of our inductive proof, then a similarity appears: there is a base case $N \Coloneqq 0$ and an inductive case $N \Coloneqq N + 1$...
 
 It is precisely because the natural numbers can only have one of these forms that we can be sure that $P(n)$ is true for any particular $n$ in this set.
@@ -96,17 +102,17 @@ Therefore, for any natural number $n$, we can combine the induction step with th
 It is precisely because the natural numbers can only have one of these forms that we can be sure that $P(n)$ is true for any particular $n$ in this set.
 A given natural number $n$ is derived via the production rules of this grammar and that derivation can be mimicked by our inductive principle. -->
 
-To see how this correspondence plays out for a concrete number, let's revisit the case of $0 + 1 + 1$.
+<!-- To see how this correspondence plays out for a concrete number, let's revisit the case of $0 + 1 + 1$.
 We know that $0 + 1 + 1$ is a natural number because $0 + 1$ is a natural number, and in turn $0 + 1$ is a natural number because $0$ is a natural number.
 In the first two steps the non-terminal $N$ is replaced by $N + 1$, then finally we replace $N$ with the terminal $0$.
-This derivation can be mimicked by our induction principle as follows: $P(0 + 1 + 1)$ holds because $P(0 + 1)$ holds (an inductive step), likewise $P(0 + 1)$ holds because $P(0)$ holds (another inductive step), and finally $P(0)$ holds as it is a base case.
+This derivation can be mimicked by our induction principle as follows: $P(0 + 1 + 1)$ holds because $P(0 + 1)$ holds (an inductive step), likewise $P(0 + 1)$ holds because $P(0)$ holds (another inductive step), and finally $P(0)$ holds as it is a base case. -->
 
 ## Induction over Arithmetic Expressions
 
-There is nothing special about the natural numbers (despite what some philosophers might tell you).
-We can apply the strategy of structural induction to any grammar of your choosing.
+There is nothing special about the natural numbers - we can apply the same logic of induction to any inductively defined structure, and in particular, any grammar.
+This is known as _structural induction_.
 
-For example, consider the set of arithmetic expressions $\mathcal{A}$ defined by the following grammar:
+Recall the set of arithmetic expressions $\mathcal{A}$ defined by the following grammar:
 
 $$
   A \Coloneqq x \mid n \mid A + A \mid A - A \mid A * A
