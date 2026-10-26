@@ -268,3 +268,18 @@ $$
 $$
 
 As we have reached a terminal configuration, we can see that the statement and this initial state will terminate with the state $[x \mapsto 2]$.
+
+## Semantic Equivalence
+
+As with denotational semantics, there a natural notion for when two program statements have the same behaviour.
+
+<div class="defn" markdown="1">
+  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if, for all states $\sigma,\, \sigma' \in \mathsf{State}$,
+  
+  $$
+    \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'.
+  $$
+</div>
+
+Viewing statements are relations between initial and finals tates, $S_1$ and $S_2$ are semantically equivalent if the relations $\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$ and $\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$ are equal in that they contain the same pairs.
+
