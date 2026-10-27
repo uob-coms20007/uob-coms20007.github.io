@@ -34,6 +34,9 @@
 - title: Operational Semantics
   link: https://uob-coms20007.github.io/notes/semantics/operational.html
 
+- title: Determinism
+  link: https://uob-coms20007.github.io/notes/semantics/determinism.html
+
 # - title: Hoare Logic (pt1)
 #   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
 

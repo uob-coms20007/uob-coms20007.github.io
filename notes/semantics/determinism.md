@@ -1,11 +1,23 @@
 ---
 layout: math
-title: The Inversion Principle
+title: Determinism
 nav_order: 4
 mathjax: true
 parent: Semantics
 ---
-## Inversion
+
+## Inversion and Determinism
+
+Recall the table sumarising the transition rules from the last lecture:
+
+| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
+|---|---|---|
+| $\sigma$ | none | -- |
+| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
+| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
+| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
+| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
+| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
 
 We described the transition relation $\rightarrow$ as the _least_ relation closed under the rules.
 This means that not only does each rule describe a possible step, but every possible step is derived from one of these rules.
@@ -25,21 +37,8 @@ Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (the
 For instance, if $\langle \mathsf{skip},\, \sigma \rangle \rightarrow \gamma$, then we know that $\gamma$ is the terminal configuration $\sigma$.
 Likewise, if $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \gamma$, then we know there are only two possible cases depending on whether $S_1$ reaches a terminal configuration or note.
 
-Compare the above theorem to the table sumarising the transition rules from the last lecture:
-
-| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
-|---|---|---|
-| $\sigma$ | none | -- |
-| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
-| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
-| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
-| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
-| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
-
-## Determinism
-
-Inversion tells us that the form of a statement and the state determine which rules could apply.
-In fact, they determine the step completely.
+In other words, inversion tells us that the form of a statement and the state _completely_ determine which rules could apply.
+As a result, the programs may only result in at most one output - a property known as _determinism_. 
 
 <div class="thm" markdown="1">
 __Determinism.__ If $\gamma \rightarrow \gamma'$ and $\gamma \rightarrow \gamma''$, then $\gamma' = \gamma''$.
@@ -59,6 +58,8 @@ We prove, by structural induction on the statement $S$, that for all states $\si
 
 The same argument extends to many-step traces.
 
+As a result, we can think of the semantics of programs not just as arbitrary relations but specifically as _partial functions_.
+
 ## Semantic Equivalence
 
 As with denotational semantics, there is a natural notion for when two program statements have the same behaviour.
@@ -72,14 +73,13 @@ As with denotational semantics, there is a natural notion for when two program s
 </div>
 
 Viewing statements as relations between initial and final states, $S_1$ and $S_2$ are semantically equivalent if the relations $$\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$$ and $$\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$$ are equal in that they contain the same pairs.
-By the unique final state result, these relations are _partial functions_, and so another way to say the same thing is that, from every state $\sigma$, either both statements diverge or both terminate with the same final state.
-It is immediate from the definition that semantic equivalence is reflexive, symmetric, and transitive.
+As these relations are partial functions, however, equivalently we have that, from every state $\sigma$, either both statements diverge or both terminate with the same final state.
 
-This is a different use of the word "equivalent" from the denotational semantics, where two _expressions_ are equivalent if they have the same value in every state; here we compare _statements_ by the final states that they can reach.
-When we say that a Boolean expression $e$ is equivalent to $\mathsf{false}$, we mean that $$\llbracket e \rrbracket_\mathcal{B}(\sigma) = \bot$$ for every state $\sigma$.
+<!-- This is a different use of the word "equivalent" from the denotational semantics, where two _expressions_ are equivalent if they have the same value in every state; here we compare _statements_ by the final states that they can reach.
+When we say that a Boolean expression $e$ is equivalent to $\mathsf{false}$, we mean that $$\llbracket e \rrbracket_\mathcal{B}(\sigma) = \bot$$ for every state $\sigma$. -->
 
 To prove that two statements are semantically equivalent, fix arbitrary states $\sigma$ and $\sigma'$ and prove both directions of the bi-implication.
-Often it is easiest to use determinism and inversion to work out _every_ trace from $\langle S_1,\, \sigma \rangle$ and from $\langle S_2,\, \sigma \rangle$, and compare where they end up.
+Often it is easiest to use determinism to work out _every_ trace from $\langle S_1,\, \sigma \rangle$ and from $\langle S_2,\, \sigma \rangle$, and compare where they end up.
 To prove that two statements are _not_ semantically equivalent, exhibit a state from which they behave differently.
 Here are three examples.
 
@@ -108,7 +108,7 @@ Then $\langle x \leftarrow y,\, \sigma \rangle \rightarrow [x \mapsto 1,\, y \ma
 Since $[x \mapsto 1,\, y \mapsto 1] \neq []$, by determinism the state $[]$ is reachable from $\langle y \leftarrow x,\, \sigma \rangle$ but not from $\langle x \leftarrow y,\, \sigma \rangle$.
 
 __Example 3.__
-A while loop is semantically equivalent to its unfolding: for any statement $S$ and Boolean expression $b$, writing $W$ for $\mathsf{while}\ b\ \{ S \}$,
+A while loop is semantically equivalent to its unfolding: for any statement $S$ and Boolean expression $b$, writing $W$ for $$\mathsf{while}\ b\ \{ S \}$$,
 
 $$
   W \quad \text{is semantically equivalent to} \quad \mathsf{if}\ b\ \{ S;\; W \}\ \mathsf{else}\ \{ \mathsf{skip} \}.
@@ -126,22 +126,18 @@ We consider two cases, according to the value of $b$ in $\sigma$.
     By inversion, the only step from $\langle W,\, \sigma \rangle$ is to $\sigma$ by (While-False), and the only step from $\langle I,\, \sigma \rangle$ is to $\langle \mathsf{skip},\, \sigma \rangle$ by (If-False), whose only step is to $\sigma$ by (Skip).
     So both statements reach $\sigma$ and nothing else.
 
-Some remarks on these examples.
+Note that the definition of semantically equivalent statements does not require them to have traces of the same length.
+For instancce, in this final case, the loop takes one step and the $\mathsf{if}$ statement takes two.
+Equivalence concerns which states can be reached, not how many steps it takes to reach them.
 
-  - Semantically equivalent statements need not have traces of the same length.
-    In the second case of Example 3, the loop takes one step and the $\mathsf{if}$ statement takes two.
-    Equivalence concerns which states can be reached, not how many steps it takes to reach them.
-
-  - Equivalence only observes terminating behaviour.
-    Any two statements that diverge from every state are semantically equivalent, even if they do very different things along the way: for instance, $\mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \}$ and $\mathsf{while}\ (x \leq x)\ \{ x \leftarrow x + 1 \}$.
-
-  - The proof in Example 3 had the same shape as the proof of Example 1: fix $\sigma$, use inversion to find the forced steps, and compare.
-    The difference is that Example 3 doesn't know the value of $b$ and so splits into cases, and that it doesn't compute the final state but instead shows the two statements reach the same states whatever they are.
+<!-- - Equivalence only observes terminating behaviour.
+  Any two statements that diverge from every state are semantically equivalent, even if they do very different things along the way: for instance, $$\mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \}$$ and $$\mathsf{while}\ (x \leq x)\ \{ x \leftarrow x + 1 \}$$. -->
 
 ## Extending the Language
+<!-- 
+Operational semantics makes it straightforward to add new constructs to the language: add a production to the grammar of statements and add rules describing its steps. -->
 
-Operational semantics makes it straightforward to add new constructs to the language: add a production to the grammar of statements and add rules describing its steps.
-For example, we might add a new conditional $\mathsf{if}\ b\ \{ S \}$ with the rules
+Suppose we add a new conditional construct $$\mathsf{if}\ b\ \{ S \}$$ with the rules
 
 $$
   \dfrac
@@ -156,9 +152,10 @@ $$
 $$
 
 Adding a new set of rules changes adds new rows to the table of rules, and therefore changes the inversion principle.
+However, in this case, it doesn't effect determinisim.
 
 A natural question is then whether the new construct adds anything.
 It does not if it can be _desugared_, i.e. replaced by a statement of the original language that is semantically equivalent to it.
-For example, with the above rule, $\mathsf{if}\ b\ \{ S \}$ is semantically equivalent to $\mathsf{if}\ b\ \{ S \}\ \mathsf{else}\ \{ \mathsf{skip} \}$.
+For example, with the above rule, $$\mathsf{if}\ b\ \{ S \}$$ is semantically equivalent to $$\mathsf{if}\ b\ \{ S \}\ \mathsf{else}\ \{ \mathsf{skip} \}$$.
 If $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ then both statements have the single step to $\langle S,\, \sigma \rangle$, and so they reach the same states.
 If, on the other hand, $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ then the new statement steps in one step to $\sigma$, whereas the desugared statement steps to $\langle \mathsf{skip},\, \sigma \rangle$ and then to $\sigma$; again, they reach the same states, but in a different number of steps.
