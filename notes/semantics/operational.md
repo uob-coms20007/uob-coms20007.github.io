@@ -307,48 +307,46 @@ As we have reached a terminal configuration, we can see that the statement and t
 We now have all of the rules for the transition relation $\rightarrow$: (Skip), (Assign), (Seq-Step), (Seq-Done), (If-True), (If-False), (While-False), and (While-True).
 Notice that each statement form has its own rules, so which rules could possibly apply to a configuration is determined by the form of its statement:
 
-| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
-|---|---|---|
-| $\sigma$ | none | -- |
-| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
-| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
-| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
-| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
-| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
-
-This table will be the key to reasoning about the transition relation, as we shall see shortly.
-
-## Inversion
-
-Earlier, we said that $\rightarrow$ is the _least_ relation closed under the rules.
-This means that no only does each rule describe a step, but every possible step $\gamma \rightarrow \gamma'$ is derived from a step, i.e. there are no other steps.
-Therefore, we can inspect an arbitrary step $\gamma \rightarrow \gamma'$ and ask which rule must have been used to derive it using a principle known as _inversion_.
-
-<div class="thm" markdown="1">
-__Inversion.__ Suppose $\gamma \rightarrow \gamma'$.
-Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (there is no step from a state) and, depending on the form of $S$:
-
-  - if $S = \mathsf{skip}$, then $\gamma' = \sigma$;
-  - if $S = x \leftarrow e$, then $\gamma' = \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)]$;
-  - if $S = S_1;\; S_2$, then either $\langle S_1,\, \sigma \rangle \rightarrow \sigma'$ and $\gamma' = \langle S_2,\, \sigma' \rangle$, or $\langle S_1,\, \sigma \rangle \rightarrow \langle S_1',\, \sigma' \rangle$ and $\gamma' = \langle S_1';\; S_2,\, \sigma' \rangle$;
-  - if $S = \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}$, then $\gamma' = \langle S_1,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ and $\gamma' = \langle S_2,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$;
-  - if $S = \mathsf{while}\ b\ \{ S' \}$, then $\gamma' = \sigma$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ and $\gamma' = \langle S';\; \mathsf{while}\ b\ \{ S' \},\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$.
-</div>
-
-For instance, the only step from $\langle \mathsf{skip},\, \sigma \rangle$ is to $\sigma$, and a state has no steps at all, as no rule has a state on its left-hand side.
-
-
-## Semantic Equivalence
-
-As with denotational semantics, there a natural notion for when two program statements have the same behaviour.
+## Termination
 
 <div class="defn" markdown="1">
-  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if, for all states $\sigma,\, \sigma' \in \mathsf{State}$,
-  
-  $$
-    \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'.
-  $$
+Let $S \in \mathcal{S}$ be a statement and $\sigma \in \mathsf{State}$ be a state.
+
+  - $S$ __terminates__ from $\sigma$ with final state $\sigma'$ if $\langle S,\, \sigma \rangle \rightarrow^* \sigma'$.
+    We say that $S$ terminates from $\sigma$ if there is some such $\sigma'$.
+
+  - $S$ __diverges__ (or does not terminate) from $\sigma$ if it does not terminate from $\sigma$; that is, there is no state $\sigma'$ with $\langle S,\, \sigma \rangle \rightarrow^* \sigma'$.
 </div>
 
-Viewing statements are relations between initial and finals tates, $S_1$ and $S_2$ are semantically equivalent if the relations $\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$ and $\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$ are equal in that they contain the same pairs.
+The simplest diverging statement is a loop whose condition is always true.
+For any state $\sigma$, the statement $$\mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \}$$ has the infinite trace:
 
+$$
+  \begin{array}{l}
+    \langle \mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \},\, \sigma \rangle \\
+    \quad \rightarrow \langle \mathsf{skip};\; \mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \},\, \sigma \rangle \\
+    \quad \rightarrow \langle \mathsf{while}\ (x \leq x)\ \{ \mathsf{skip} \},\, \sigma \rangle \\
+    \quad \rightarrow \cdots
+  \end{array}
+$$
+
+However, diverging statements need not repeat a configuration.
+Consider $W = \mathsf{while}\ (0 \leq x)\ \{ x \leftarrow x + 1 \}$ from the state $[x \mapsto 0]$:
+
+$$
+  \begin{array}{l}
+    \langle W,\, [x \mapsto 0] \rangle \\
+    \quad \rightarrow \langle x \leftarrow x + 1;\; W,\, [x \mapsto 0] \rangle \\
+    \quad \rightarrow \langle W,\, [x \mapsto 1] \rangle \\
+    \quad \rightarrow \langle x \leftarrow x + 1;\; W,\, [x \mapsto 1] \rangle \\
+    \quad \rightarrow \langle W,\, [x \mapsto 2] \rangle \\
+    \quad \rightarrow \cdots
+  \end{array}
+$$
+
+The state changes every iteration but the condition $0 \leq x$ is never falsified.
+To be sure that this trace really goes on forever we need an argument that covers infinitely many steps, which means using induction.
+We show that $\langle W,\, [x \mapsto 0] \rangle \rightarrow^{2n} \langle W,\, [x \mapsto n] \rangle$ for every $n \geq 0$.
+When $n = 0$ there is nothing to show.
+For the step, $0 \leq n$ holds, so $\langle W,\, [x \mapsto n] \rangle \rightarrow \langle x \leftarrow x + 1;\; W,\, [x \mapsto n] \rangle \rightarrow \langle W,\, [x \mapsto n][x \mapsto n + 1] \rangle$, and $[x \mapsto n][x \mapsto n + 1] = [x \mapsto n + 1]$ by the second update law.
+Every configuration in the trace is therefore a non-terminal configuration, and so $W$ never reaches a terminal configuration, i.e. it diverges.
