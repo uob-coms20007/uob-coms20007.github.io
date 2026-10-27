@@ -206,7 +206,7 @@ Conversely, when the branch condition $b$ evaluates to false, we transition in a
 We don't write the condition $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ or $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ as a premise directly as it isn't another operational step.
 These are referred to as _side-conditions_, but they effectively act as premises.
 
-For example, consider $\mathsf{if}\ x \leq 0\ \{ x \leftarrow 0 - x \}\ \mathsf{else}\ \{ \mathsf{skip} \}$.
+For example, consider $$\mathsf{if}\ x \leq 0\ \{ x \leftarrow 0 - x \}\ \mathsf{else}\ \{ \mathsf{skip} \}$$.
 From the state $[x \mapsto -3]$ the condition is true, so we take the first branch:
 
 $$
@@ -252,7 +252,7 @@ Compare this rule to that of skip - if the branch condition is not met, the whil
 If, on the other hand, the branch condition is met, the while loop is "unfolded".
 After unfolding the loop, the statement of the new configuration is a sequence of the body of the loop and the loop itself; in this way, any subsequent steps will execute the body of the loop, and then revisit the loop itself and perhaps unfold it further.
 
-Let's consider an example program $\mathsf{while}\ (x \leq 1)\ \{ x \leftarrow x + 1 \}$ and an initial state $[x \mapsto 0]$ to get a sense of how this works in practice.
+Let's consider an example program $$\mathsf{while}\ (x \leq 1)\ \{ x \leftarrow x + 1 \}$$ and an initial state $[x \mapsto 0]$ to get a sense of how this works in practice.
 Initially, the branch condition is met and so the program will execute by unfolding the loop:
 
 $$
@@ -304,10 +304,22 @@ $$
 
 As we have reached a terminal configuration, we can see that the statement and this initial state will terminate with the state $[x \mapsto 2]$.
 
-We now have all of the rules for the transition relation $\rightarrow$: (Skip), (Assign), (Seq-Step), (Seq-Done), (If-True), (If-False), (While-False), and (While-True).
-Notice that each statement form has its own rules, so which rules could possibly apply to a configuration is determined by the form of its statement:
+We now have all of the rules for the transition relation $\rightarrow$.
+Notice that each statement form has its own rules, so which rules could possibly apply to a configuration is determined by the form of its statement.
+We can summarise these as the following table:
+
+| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
+|---|---|---|
+| $\sigma$ | none | -- |
+| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
+| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
+| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
+| $$\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
+| $$\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
 
 ## Termination
+
+There is nothing that guarantees a configuration will lead to a terminal configurations.
 
 <div class="defn" markdown="1">
 Let $S \in \mathcal{S}$ be a statement and $\sigma \in \mathsf{State}$ be a state.
@@ -331,7 +343,7 @@ $$
 $$
 
 However, diverging statements need not repeat a configuration.
-Consider $W = \mathsf{while}\ (0 \leq x)\ \{ x \leftarrow x + 1 \}$ from the state $[x \mapsto 0]$:
+Consider, for example, the program $W = \mathsf{while}\ (0 \leq x)\ \{ x \leftarrow x + 1 \}$ and the state $[x \mapsto 0]$ which also leads to an infinite trace but without repetition:
 
 $$
   \begin{array}{l}
@@ -343,10 +355,3 @@ $$
     \quad \rightarrow \cdots
   \end{array}
 $$
-
-The state changes every iteration but the condition $0 \leq x$ is never falsified.
-To be sure that this trace really goes on forever we need an argument that covers infinitely many steps, which means using induction.
-We show that $\langle W,\, [x \mapsto 0] \rangle \rightarrow^{2n} \langle W,\, [x \mapsto n] \rangle$ for every $n \geq 0$.
-When $n = 0$ there is nothing to show.
-For the step, $0 \leq n$ holds, so $\langle W,\, [x \mapsto n] \rangle \rightarrow \langle x \leftarrow x + 1;\; W,\, [x \mapsto n] \rangle \rightarrow \langle W,\, [x \mapsto n][x \mapsto n + 1] \rangle$, and $[x \mapsto n][x \mapsto n + 1] = [x \mapsto n + 1]$ by the second update law.
-Every configuration in the trace is therefore a non-terminal configuration, and so $W$ never reaches a terminal configuration, i.e. it diverges.

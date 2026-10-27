@@ -1,25 +1,14 @@
 ---
 layout: math
-title: Inversion
+title: The Inversion Principle
 nav_order: 4
 mathjax: true
 parent: Semantics
 ---
 ## Inversion
 
-Recall from the table from the notes introducing the operational semantics.
-
-| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
-|---|---|---|
-| $\sigma$ | none | -- |
-| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
-| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
-| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
-| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
-| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
-
 We described the transition relation $\rightarrow$ as the _least_ relation closed under the rules.
-This means that no only does each rule describe a step, but every possible step $\gamma \rightarrow \gamma'$ is derived from a step, i.e. there are no other steps.
+This means that not only does each rule describe a possible step, but every possible step is derived from one of these rules.
 Therefore, we can inspect an arbitrary step $\gamma \rightarrow \gamma'$ and ask which rule must have been used to derive it using a principle known as _inversion_.
 
 <div class="thm" markdown="1">
@@ -33,12 +22,24 @@ Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (the
   - if $S = \mathsf{while}\ b\ \{ S' \}$, then $\gamma' = \sigma$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ and $\gamma' = \langle S';\; \mathsf{while}\ b\ \{ S' \},\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$.
 </div>
 
-For instance, the only step from $\langle \mathsf{skip},\, \sigma \rangle$ is to $\sigma$, and a state has no steps at all, as no rule has a state on its left-hand side.
+For instance, if $\langle \mathsf{skip},\, \sigma \rangle \rightarrow \gamma$, then we know that $\gamma$ is the terminal configuration $\sigma$.
+Likewise, if $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \gamma$, then we know there are only two possible cases depending on whether $S_1$ reaches a terminal configuration or note.
+
+Compare the above theorem to the table sumarising the transition rules from the last lecture:
+
+| Configuration $\gamma$ | Rules that can derive a step from $\gamma$ | Which rule applies? |
+|---|---|---|
+| $\sigma$ | none | -- |
+| $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
+| $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
+| $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
+| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
+| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
 
 ## Determinism
 
 Inversion tells us that the form of a statement and the state determine which rules could apply.
-In fact they determine the step completely.
+In fact, they determine the step completely.
 
 <div class="thm" markdown="1">
 __Determinism.__ If $\gamma \rightarrow \gamma'$ and $\gamma \rightarrow \gamma''$, then $\gamma' = \gamma''$.
@@ -54,7 +55,9 @@ We prove, by structural induction on the statement $S$, that for all states $\si
     By the induction hypothesis for $S_1$, there is at most one such step, to some configuration $\gamma_1$.
     If $\gamma_1$ is a state $\sigma_1$, then only (Seq-Done) can apply (the premise of (Seq-Step) needs a configuration containing a statement), and the step must be to $\langle S_2,\, \sigma_1 \rangle$.
     If $\gamma_1 = \langle S_1',\, \sigma_1 \rangle$, then only (Seq-Step) can apply, and the step must be to $\langle S_1';\; S_2,\, \sigma_1 \rangle$.
-    Either way there is at most one successor. $\square$
+    Either way there is at most one successor.
+
+The same argument extends to many-step traces.
 
 ## Semantic Equivalence
 
@@ -68,7 +71,7 @@ As with denotational semantics, there is a natural notion for when two program s
   $$
 </div>
 
-Viewing statements as relations between initial and final states, $S_1$ and $S_2$ are semantically equivalent if the relations $\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$ and $\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$ are equal in that they contain the same pairs.
+Viewing statements as relations between initial and final states, $S_1$ and $S_2$ are semantically equivalent if the relations $$\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$$ and $$\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$$ are equal in that they contain the same pairs.
 By the unique final state result, these relations are _partial functions_, and so another way to say the same thing is that, from every state $\sigma$, either both statements diverge or both terminate with the same final state.
 It is immediate from the definition that semantic equivalence is reflexive, symmetric, and transitive.
 
