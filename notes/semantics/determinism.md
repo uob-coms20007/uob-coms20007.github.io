@@ -65,11 +65,9 @@ As a result, we can think of the semantics of programs not just as arbitrary rel
 As with denotational semantics, there is a natural notion for when two program statements have the same behaviour.
 
 <div class="defn" markdown="1">
-  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if, for all states $\sigma,\, \sigma' \in \mathsf{State}$,
-
-  $$
-    \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'.
-  $$
+  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if $$
+    \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'
+  $$ for all states $\sigma,\, \sigma' \in \mathsf{State}$.
 </div>
 
 Viewing statements as relations between initial and final states, $S_1$ and $S_2$ are semantically equivalent if the relations $$\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$$ and $$\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$$ are equal in that they contain the same pairs.
@@ -152,7 +150,7 @@ $$
 $$
 
 Adding a new set of rules changes adds new rows to the table of rules, and therefore changes the inversion principle.
-However, in this case, it doesn't effect determinisim.
+In this case, determinisim isn't affected; but not all extensions are deterministic, e.g. concurrency.
 
 A natural question is then whether the new construct adds anything.
 It does not if it can be _desugared_, i.e. replaced by a statement of the original language that is semantically equivalent to it.
