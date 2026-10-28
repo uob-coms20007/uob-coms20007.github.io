@@ -23,7 +23,7 @@ We described the transition relation $\rightarrow$ as the _least_ relation close
 This means that not only does each rule describe a possible step, but every possible step is derived from one of these rules.
 Therefore, we can inspect an arbitrary step $\gamma \rightarrow \gamma'$ and ask which rule must have been used to derive it using a principle known as _inversion_.
 
-<div class="thm" markdown="1">
+<div class="defn" markdown="1">
 __Inversion.__ Suppose $\gamma \rightarrow \gamma'$.
 Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (there is no step from a state) and, depending on the form of $S$:
 
@@ -35,12 +35,13 @@ Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (the
 </div>
 
 For instance, if $\langle \mathsf{skip},\, \sigma \rangle \rightarrow \gamma$, then we know that $\gamma$ is the terminal configuration $\sigma$.
-Likewise, if $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow \gamma$, then we know there are only two possible cases depending on whether $S_1$ reaches a terminal configuration or note.
+The same reasoning applies to many step traces.
+If $\langle S_1;\; S_2,\, \sigma \rangle \rightarrow^* \gamma$, for example, then we know there are only two possible cases depending on whether $S_1$ reaches a terminal configuration or not - either $\langle S_1,\, \sigma \rangle \sigma'$ and $\langle S_2,\, \sigma'\rangle \rightarrow^* \gamma$ or $\langle S_1,\, \sigma \rangle \langle S_1',\, \sigma' \rangle$ and $\langle S_1';\; S_2,\, \sigma'\rangle \rightarrow^* \gamma$.
 
 In other words, inversion tells us that the form of a statement and the state _completely_ determine which rules could apply.
 As a result, the programs may only result in at most one output - a property known as _determinism_. 
 
-<div class="thm" markdown="1">
+<div class="defn" markdown="1">
 __Determinism.__ If $\gamma \rightarrow \gamma'$ and $\gamma \rightarrow \gamma''$, then $\gamma' = \gamma''$.
 </div>
 
