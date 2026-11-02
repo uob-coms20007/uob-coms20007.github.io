@@ -1,6 +1,6 @@
 ---
 layout: math
-title: Determinism
+title: Inversion and Determinism
 nav_order: 4
 mathjax: true
 parent: Semantics
@@ -45,30 +45,17 @@ As a result, the programs may only result in at most one output - a property kno
 __Determinism.__ If $\gamma \rightarrow \gamma'$ and $\gamma \rightarrow \gamma''$, then $\gamma' = \gamma''$.
 </div>
 
-_Proof._
-By inversion, $\gamma = \langle S,\, \sigma \rangle$.
-We prove, by structural induction on the statement $S$, that for all states $\sigma$ the configuration $\langle S,\, \sigma \rangle$ has at most one successor.
-
-  - If $S$ is $\mathsf{skip}$ or an assignment, inversion says there is only one possible step.
-  - If $S$ is an $\mathsf{if}$ or a $\mathsf{while}$, then $$\llbracket b \rrbracket_\mathcal{B}(\sigma)$$ is either $\top$ or $\bot$ but not both, so by inversion exactly one rule can apply, and it yields a single configuration.
-  - If $S = S_1;\; S_2$, then by inversion any step from $\langle S_1;\; S_2,\, \sigma \rangle$ comes from a step of $\langle S_1,\, \sigma \rangle$.
-    By the induction hypothesis for $S_1$, there is at most one such step, to some configuration $\gamma_1$.
-    If $\gamma_1$ is a state $\sigma_1$, then only (Seq-Done) can apply (the premise of (Seq-Step) needs a configuration containing a statement), and the step must be to $\langle S_2,\, \sigma_1 \rangle$.
-    If $\gamma_1 = \langle S_1',\, \sigma_1 \rangle$, then only (Seq-Step) can apply, and the step must be to $\langle S_1';\; S_2,\, \sigma_1 \rangle$.
-    Either way there is at most one successor.
-
 The same argument extends to many-step traces.
+Hence, if $\gamma \rightarrow^* \gamma'$ and $\gamma \rightarrow^* \gamma''$, then $\gamma' = \gamma''$.
 
-As a result, we can think of the semantics of programs not just as arbitrary relations but specifically as _partial functions_.
+As a result, we can think of the semantics of programs not just as arbitrary relations but specifically as _partial functions_ mapping initial states onto terminal states.
 
 ## Semantic Equivalence
 
 As with denotational semantics, there is a natural notion for when two program statements have the same behaviour.
 
 <div class="defn" markdown="1">
-  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if $$
-    \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'
-  $$ for all states $\sigma,\, \sigma' \in \mathsf{State}$.
+  We say that two statements $S_1,\, S_2 \in \mathcal{S}$ are __semantically equivalent__ if $$ \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \Leftrightarrow \langle S_2,\, \sigma \rangle \rightarrow^* \sigma'$$ for all states $\sigma,\, \sigma' \in \mathsf{State}$.
 </div>
 
 Viewing statements as relations between initial and final states, $S_1$ and $S_2$ are semantically equivalent if the relations $$\{ (\sigma,\, \sigma') \mid \langle S_1,\, \sigma \rangle \rightarrow^* \sigma' \}$$ and $$\{ (\sigma,\, \sigma') \mid \langle S_2,\, \sigma \rangle \rightarrow^* \sigma' \}$$ are equal in that they contain the same pairs.
@@ -80,7 +67,6 @@ When we say that a Boolean expression $e$ is equivalent to $\mathsf{false}$, we 
 To prove that two statements are semantically equivalent, fix arbitrary states $\sigma$ and $\sigma'$ and prove both directions of the bi-implication.
 Often it is easiest to use determinism to work out _every_ trace from $\langle S_1,\, \sigma \rangle$ and from $\langle S_2,\, \sigma \rangle$, and compare where they end up.
 To prove that two statements are _not_ semantically equivalent, exhibit a state from which they behave differently.
-Here are three examples.
 
 __Example 1.__
 The statements $x \leftarrow x + 1;\; x \leftarrow x + 1$ and $x \leftarrow x + 2$ are semantically equivalent.
@@ -156,5 +142,5 @@ In this case, determinisim isn't affected; but not all extensions are determinis
 A natural question is then whether the new construct adds anything.
 It does not if it can be _desugared_, i.e. replaced by a statement of the original language that is semantically equivalent to it.
 For example, with the above rule, $$\mathsf{if}\ b\ \{ S \}$$ is semantically equivalent to $$\mathsf{if}\ b\ \{ S \}\ \mathsf{else}\ \{ \mathsf{skip} \}$$.
-If $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ then both statements have the single step to $\langle S,\, \sigma \rangle$, and so they reach the same states.
-If, on the other hand, $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ then the new statement steps in one step to $\sigma$, whereas the desugared statement steps to $\langle \mathsf{skip},\, \sigma \rangle$ and then to $\sigma$; again, they reach the same states, but in a different number of steps.
+Using inversion, we know that $$\langle \mathsf{if}\ b\ \{ S \},\, \sigma \rangle \rightarrow \gamma$$ just if $$\gamma$$ is $$\langle S,\, \sigma$$ and $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$, or if $$\gamma$$ is just $$\sigma$$ as these are the only two rules available.
+Therefore, we can argue that its behaviour will be the same as $$\mathsf{if}\ b\ \{ S \}\ \mathsf{else}\ \{ \mathsf{skip} \}$$ which has $\langle \mathsf{if}\ b\ \{ S \}\ \mathsf{else}\ \{ \mathsf{skip} \},\, \sigma \rangle \rightarrow \gamma$$ if, and only if, $$\gamma$$ is $$\langle S,\, \sigma$$ and $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$, or if $$\gamma$$ is $$\langle \mathsf{skip},\, \sigma \rangle$$.
