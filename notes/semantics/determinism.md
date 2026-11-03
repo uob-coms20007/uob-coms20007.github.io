@@ -81,7 +81,6 @@ $$
   \end{array}
 $$
 
-where the final equality is the second update law.
 By determinism this is the only trace from this configuration, and so $\langle x \leftarrow x + 1;\; x \leftarrow x + 1,\, \sigma \rangle \rightarrow^* \sigma'$ if and only if $\sigma' = \sigma[x \mapsto n + 2]$.
 Likewise, $\langle x \leftarrow x + 2,\, \sigma \rangle \rightarrow \sigma[x \mapsto n + 2]$ is the only trace from this configuration, so $\langle x \leftarrow x + 2,\, \sigma \rangle \rightarrow^* \sigma'$ if and only if $\sigma' = \sigma[x \mapsto n + 2]$.
 The two statements reach exactly the same states.
@@ -89,7 +88,7 @@ The two statements reach exactly the same states.
 __Example 2.__
 The statements $x \leftarrow y$ and $y \leftarrow x$ are _not_ semantically equivalent.
 Take $\sigma = [y \mapsto 1]$.
-Then $\langle x \leftarrow y,\, \sigma \rangle \rightarrow [x \mapsto 1,\, y \mapsto 1]$, whereas $\langle y \leftarrow x,\, \sigma \rangle \rightarrow \sigma[y \mapsto 0] = []$, using the first and second update laws.
+Then $\langle x \leftarrow y,\, \sigma \rangle \rightarrow [x \mapsto 1,\, y \mapsto 1]$, whereas $\langle y \leftarrow x,\, \sigma \rangle \rightarrow \sigma[y \mapsto 0] = []$.
 Since $[x \mapsto 1,\, y \mapsto 1] \neq []$, by determinism the state $[]$ is reachable from $\langle y \leftarrow x,\, \sigma \rangle$ but not from $\langle x \leftarrow y,\, \sigma \rangle$.
 
 __Example 3.__
