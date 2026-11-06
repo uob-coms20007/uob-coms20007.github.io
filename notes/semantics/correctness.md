@@ -278,7 +278,7 @@ Notice that $$\sigma[s \mapsto -1]$$ also tells us what the statement _doesn't_ 
 This is just as important as the change itself.
 
 ### Executing with a specified statement
-To run a program containing such a statement, we treat the specification as a (big-step) execution rule for it.
+We can simulate the behaviour of a program containing such a statement, using its specification as a proxy for the specific steps that $$\mathsf{isPos}_{x,b}$$ might take.
 For example, starting from $$[x \mapsto -3,\, s \mapsto 7]$$, the program $$\mathsf{sign}_{x,s};\; x \leftarrow x + s$$ proceeds as follows:
 
   1. As $$[x \mapsto -3,\, s \mapsto 7](x) = -3 < 0$$, case SG1 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$[x \mapsto -3,\, s \mapsto -1]$$.
