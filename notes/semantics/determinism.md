@@ -16,8 +16,8 @@ Recall the table sumarising the transition rules from the last lecture:
 | $\langle \mathsf{skip},\, \sigma \rangle$ | (Skip) | always |
 | $\langle x \leftarrow e,\, \sigma \rangle$ | (Assign) | always |
 | $\langle S_1;\; S_2,\, \sigma \rangle$ | (Seq-Done), (Seq-Step) | depends on whether $\langle S_1,\, \sigma \rangle$ steps to a state or to a configuration containing a statement |
-| $\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
-| $\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
+| $$\langle \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, \sigma \rangle$$ | (If-True), (If-False) | depends on whether $b$ is true or false in $\sigma$ |
+| $$\langle \mathsf{while}\ b\ \{ S \},\, \sigma \rangle$$ | (While-True), (While-False) | depends on whether $b$ is true or false in $\sigma$ |
 
 We described the transition relation $\rightarrow$ as the _least_ relation closed under the rules.
 This means that not only does each rule describe a possible step, but every possible step is derived from one of these rules.
@@ -30,8 +30,8 @@ Then $\gamma = \langle S,\, \sigma \rangle$ is a non-terminal configuration (the
   - if $S = \mathsf{skip}$, then $\gamma' = \sigma$;
   - if $S = x \leftarrow e$, then $\gamma' = \sigma[x \mapsto \llbracket e \rrbracket_\mathcal{A}(\sigma)]$;
   - if $S = S_1;\; S_2$, then either $\langle S_1,\, \sigma \rangle \rightarrow \sigma'$ and $\gamma' = \langle S_2,\, \sigma' \rangle$, or $\langle S_1,\, \sigma \rangle \rightarrow \langle S_1',\, \sigma' \rangle$ and $\gamma' = \langle S_1';\; S_2,\, \sigma' \rangle$;
-  - if $S = \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}$, then $\gamma' = \langle S_1,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ and $\gamma' = \langle S_2,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$;
-  - if $S = \mathsf{while}\ b\ \{ S' \}$, then $\gamma' = \sigma$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ and $\gamma' = \langle S';\; \mathsf{while}\ b\ \{ S' \},\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$.
+  - if $$S = \mathsf{if}\ b\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}$$, then $\gamma' = \langle S_1,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$ and $\gamma' = \langle S_2,\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$;
+  - if $$S = \mathsf{while}\ b\ \{ S' \}$$, then $\gamma' = \sigma$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \bot$$ and $\gamma' = \langle S';\; \mathsf{while}\ b\ \{ S' \},\, \sigma \rangle$ when $$\llbracket b \rrbracket_\mathcal{B}(\sigma) = \top$$.
 </div>
 
 For instance, if $\langle \mathsf{skip},\, \sigma \rangle \rightarrow \gamma$, then we know that $\gamma$ is the terminal configuration $\sigma$.
