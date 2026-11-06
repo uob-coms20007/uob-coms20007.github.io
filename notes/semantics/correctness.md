@@ -14,12 +14,12 @@ Hoare logic is one such framework.
 
 The sort of properties Hoare logic can be used for are _functional correctness_ properties; that is, whether a program computes an intended function or not.
 More specifically, we will look at _partial correctness_ which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result.
-Partial correctness disentangles the input-output expectations from the termination condition.
+In other words, partial correctness just cares about the input-output expectations, not termination.
 
-A naive way to approach partial correctness would be to define a partial function on states that we expect our program to compute and then manually prove that the operational semantics aligns with this expectation.
-The problem with this approach is that it quickly becomes unwieldy for complex programs which may have infinitely many distinct traces.
-Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
-These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition).
+<!-- A naive way to approach partial correctness would be to define a partial function on states that we expect our program to compute and then manually prove that the operational semantics aligns with this expectation. -->
+<!-- The problem with this approach is that it quickly becomes unwieldy for complex programs which may have infinitely many distinct traces. -->
+<!-- Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
+These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition). -->
 
 <div class="defn" markdown="1">
   Given two subsets of states $$P,\, Q \subseteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ P \}\ S\ \{ Q \}$$ to indicate that:
@@ -33,7 +33,9 @@ These conditions allow us to abstract away details of specific individual config
   This is referred to as a _Hoare triple_.
 </div>
 
-In other words, a Hoare triple, i.e. a pre- and post-condition for a given statement, consists of two conditions on states such that when the statement is executed in a state that satisfies the pre-condition, if it terminates, then the terminal state will also satisfy the post-condition.
+_Pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
+These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition). 
+A Hoare triple, i.e. a pre- and post-condition for a given statement, consists of two conditions on states such that when the statement is executed in a state that satisfies the pre-condition, if it terminates, then the terminal state will also satisfy the post-condition.
 If the statement doesn't terminate, however, then the Hoare triple says nothing about its behaviour and there is nothing to say that it will terminate.
 In particular, a statement that never terminates will in fact satisfy _any_ Hoare triple.
 
@@ -167,7 +169,7 @@ The calculation will be driven by the structure of the statement, with one equat
 </div>
 
 It is called the weakest pre-condition because it is the most general thing we can assume about the initial state: it is the largest set of states that is guaranteed to lead to $$Q$$, and so it asks the _least_ of the initial state.
-(Strictly speaking, since we ignore termination, this is known as the weakest _liberal_ pre-condition.)
+<!-- (Strictly speaking, since we ignore termination, this is known as the weakest _liberal_ pre-condition.) -->
 For example, $$\mathsf{WP}(x \leftarrow x + 1,\, x > 1)$$ is $$x > 0$$: executing the statement in a state with $$x > 0$$ gives $$x > 1$$, and executing it in any state with $$x \leq 0$$ gives a state where $$x \leq 1$$.
 
 The reason this notion is useful is that it gives us an exact characterisation of Hoare triples.
@@ -259,7 +261,7 @@ Each implication only constrains the states that actually take that branch: if $
 Whilst the set of states corresponding to the weakest pre-condition will always exist, it won't necessarily be describable by any given assertion language.
 A common choice for assertion language is linear arithmetic, which does not permit quantifiers or multiplication, as it can be algorithmically checked.
 Notice that the equations above for skip, assignment, sequence and conditional only ever use substitution and the Boolean connectives, and so they stay inside linear arithmetic - no quantifiers are needed - which is one reason why weakest pre-conditions are popular in practice.
-It is only the while loop, with its infinite intersection, that may take us outside of any given assertion language.
+It is typically only the while loop, with its infinite behaviour, that may take us outside of any given assertion language.
 
 ## Statements Specified by Their Behaviour
 
@@ -412,25 +414,6 @@ Had we instead asked for the post-condition $$x > 0$$, the same calculation woul
 The check $$\top \subseteq x \neq 0$$ fails: the state $$[x \mapsto 0,\, y \mapsto 0]$$ is not in the weakest pre-condition, and indeed it terminates with $$x = 0$$.
 As the weakest pre-condition describes exactly the states that are guaranteed to end up in the post-condition, this tells us the triple is genuinely invalid, and moreover any state in $$P$$ outside the weakest pre-condition gives us a counterexample.
 
-## Checking Inclusions
-
-The final step of the method, showing $$P \subseteq \mathsf{WP}(S,\, Q)$$, is a statement about sets of states, so it is worth being systematic about it.
-The usual approach is to take an arbitrary state that satisfies the left-hand side and argue that it satisfies the right-hand side.
-Some tips:
-
-  - **Handle implications by assuming the antecedent.** To show a state satisfies $$A \Rightarrow B$$, suppose it satisfies $$A$$ and show that it satisfies $$B$$, as we did above.
-    Since weakest pre-conditions of conditionals and specified statements are conjunctions of implications, you will use this often.
-    Show each conjunct separately.
-  - **Split into cases.** For a disjunction on the left, show that each disjunct implies the right-hand side separately.
-    For a disjunction on the right, it suffices to show that the state satisfies one of the disjuncts - choosing which one will usually be guided by the left-hand side.
-  - **Use the arithmetic.** Use facts about the integers, e.g. $$x < 0$$ implies $$0 - x > 0$$, or that for any $$d$$ and $$n$$ either $$d \mid n$$ or not $$d \mid n$$.
-    Here $$d \mid n$$ is shorthand for the assertion $$\exists k.\, n = k * d$$, and so it is itself an extended Boolean expression.
-    If it appears as an assumption, you may pick a witness $$k$$ and use it; if it appears in a goal, you must supply a witness.
-  - **Let substitution do the bookkeeping.** Substitution only changes the variable being assigned, so anything the pre-condition says about other variables is unaffected, and the pre-condition's facts about them can be used directly once the substitution is performed.
-  - **Simplify as you go.** Substituting a known value, e.g. $$s = 1$$, will often make a disjunct trivially false, as in the example above, and this can shrink the assertion considerably.
-
-Finally, recall that a triple is _not_ established by exhibiting a single execution; to show a triple is valid, argue about all states in the pre-condition, but to show it is invalid, a single state in the pre-condition that terminates outside the post-condition suffices.
-
 # Summary
 
 To check whether $$\{ P \}\ S\ \{ Q \}$$ is valid:
@@ -443,7 +426,8 @@ For programs that don't involve the while statement, this strategy is _complete_
 That is, if the triple holds, then our strategy will indeed show it, and if the final inclusion fails, we know the triple does not hold.
 The completeness here is derived precisely from the fact we consider the _weakest_ pre-condition - any valid pre-condition must be included in it; or, if it is not, then it is not a pre-condition.
 
+Finally, recall that a triple is _not_ established by exhibiting a single execution; to show a triple is valid, argue about all states in the pre-condition, but to show it is invalid, a single state in the pre-condition that terminates outside the post-condition suffices.
+
 For programs involving while loops, the process breaks down as we cannot always compute the weakest pre-condition directly, since it requires an infinite intersection.
 Instead, we may have to _under-approximate_ it, i.e. compute a stronger, more restrictive, pre-condition.
 We can still use the process to check whether a triple holds, but if it doesn't work we don't know whether this is due to our under-approximation or not - it is sound, but incomplete.
-But more on that next week!
