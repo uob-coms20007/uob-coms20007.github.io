@@ -299,11 +299,11 @@ Notice that we work through the sequence _backwards_: we start with the final po
 Notice also that we never have to consider the execution of the compound statement directly; we calculate it from the behaviour of each sub-statement.
 
 ### Conditional
-Executing $$\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2$$ in a state $$\sigma$$ executes $$S_1$$ from $$\sigma$$ if $$\llbracket e \rrbracket_\mathcal{B}(\sigma) = \top$$ and executes $$S_2$$ from $$\sigma$$ otherwise.
+Executing $$\mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}$$ in a state $$\sigma$$ executes $$S_1$$ from $$\sigma$$ if $$\llbracket e \rrbracket_\mathcal{B}(\sigma) = \top$$ and executes $$S_2$$ from $$\sigma$$ otherwise.
 So a state satisfying $$e$$ leads to $$Q$$ exactly when it is in $$\mathsf{WP}(S_1,\, Q)$$, and a state satisfying $$\mathop{!}e$$ leads to $$Q$$ exactly when it is in $$\mathsf{WP}(S_2,\, Q)$$:
 
 $$
-  \mathsf{WP}(\mathsf{if}\ e\ \mathsf{then}\ S_1\ \mathsf{else}\ S_2,\, Q) =
+  \mathsf{WP}(\mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \},\, Q) =
     (e \Rightarrow \mathsf{WP}(S_1,\, Q)) \andop (\mathop{!}e \Rightarrow \mathsf{WP}(S_2,\, Q))
 $$
 
@@ -329,7 +329,7 @@ $$
   \mathsf{WP}(\mathsf{sign}_{x,s},\, Q) = (x < 0 \Rightarrow Q[-1/s]) \andop (x \geq 0 \Rightarrow Q[1/s])
 $$
 
-This is exactly the weakest pre-condition of $$\mathsf{if}\ x < 0\ \mathsf{then}\ s \leftarrow -1\ \mathsf{else}\ s \leftarrow 1$$, and in general we get one conjunct per case of the specification.
+This is exactly the weakest pre-condition of $$\mathsf{if}\ x < 0\ \{ s \leftarrow -1 \}\ \mathsf{else}\ \{ s \leftarrow 1 \}$$, and in general we get one conjunct per case of the specification.
 The conditions of the specification describe the state _before_ the statement runs, which is just what the pre-condition describes, so they can be used as they are; we don't need to rename any variables, even if a condition mentions the variable that is being updated.
 The completeness of the specification is what makes this valid: it tells us that these cases are all the behaviours we need to account for.
 
@@ -404,7 +404,7 @@ Let us return to the question of how to determine whether a triple is valid.
 For instance, given the triple:
 
 $$
-  \{ \top \}\ y \leftarrow x;\ \mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip}\ \{ x \geq 0 \}
+  \{ \top \}\ y \leftarrow x;\ \mathsf{if}\ x < 0\ \{ x \leftarrow 0 - x \}\ \mathsf{else}\ \{ \mathsf{skip} \}\ \{ x \geq 0 \}
 $$
 
 does this program ensure that $$x$$ is non-negative after execution?
@@ -429,7 +429,7 @@ $$
 Combining them, we obtain:
 
 $$
-  \mathsf{WP}(\mathsf{if}\ x < 0\ \mathsf{then}\ x \leftarrow 0 - x\ \mathsf{else}\ \mathsf{skip},\, x \geq 0) = (x < 0 \Rightarrow 0 - x \geq 0) \andop (\mathop{!}(x < 0) \Rightarrow x \geq 0)
+  \mathsf{WP}(\mathsf{if}\ x < 0\ \{ x \leftarrow 0 - x \}\ \mathsf{else}\ \{ \mathsf{skip} \},\, x \geq 0) = (x < 0 \Rightarrow 0 - x \geq 0) \andop (\mathop{!}(x < 0) \Rightarrow x \geq 0)
 $$
 
 **First statement.** We now push this assertion back through $$y \leftarrow x$$.

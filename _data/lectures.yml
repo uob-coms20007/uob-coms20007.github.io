@@ -40,8 +40,8 @@
 - title: Partial Correctness
   link: https://uob-coms20007.github.io/notes/semantics/correctness.html
 
-# - title: Hoare Logic (pt2)
-#   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
+- title: Loop Invariants
+  link: https://uob-coms20007.github.io/notes/semantics/invariants.html
 
 # - title: Invariants
 #   link: https://uob-coms20007.github.io/notes/semantics/invariants.html
