@@ -20,8 +20,8 @@ Partial correctness disentangles the input-output expectations from the terminat
 
 A natural way to say what a statement should do is to describe, exactly, what it computes, i.e. for each initial state, which terminal state does it reach.
 We will call this a _complete specification_.
-A complete specification need not be code; it might describe a library function whose source we cannot inspect, or a component we have yet to implement.
-We give it in terms of the operational semantics.
+<!-- A complete specification need not be the actually ; it might describe a library function whose source we cannot inspect, or a component we have yet to implement. -->
+<!-- We give it in terms of the operational semantics. -->
 
 For example, let $$\mathsf{isPos}_{x,b}$$ be some statement such that:
 
@@ -38,7 +38,7 @@ Given a complete specification, we can reason about programs that use the statem
 Consider the program $$T = \mathsf{isPos}_{x,b};\; x \leftarrow x - b$$.
 We will show that, if $$\sigma_0(x) \geq 0$$ and $$\langle T,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$, then $$\sigma_2(x) \geq 0$$.
 
-The first statement executes first, terminating in some state $$\sigma_1$$ with $$\langle \mathsf{isPos}_{x,b},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
+As per the operational semantics, the first statement $$\mathsf{isPos}_{x,b}$$ executes first, terminating in some state $$\sigma_1$$ with $$\langle \mathsf{isPos}_{x,b},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
 The assignment then terminates in $$\sigma_2 = \sigma_1[x \mapsto \sigma_1(x) - \sigma_1(b)]$$.
 There are two cases to consider.
 

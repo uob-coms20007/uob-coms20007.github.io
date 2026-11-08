@@ -37,8 +37,8 @@
 - title: Operational Semantics (pt2)
   link: https://uob-coms20007.github.io/notes/semantics/determinism.html
 
-# - title: Hoare Logic (pt1)
-#   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
+- title: Partial Correctness
+  link: https://uob-coms20007.github.io/notes/semantics/correctness.html
 
 # - title: Hoare Logic (pt2)
 #   link: https://uob-coms20007.github.io/notes/semantics/hoare.html
