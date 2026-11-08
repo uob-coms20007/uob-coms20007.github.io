@@ -14,12 +14,72 @@ Hoare logic is one such framework.
 
 The sort of properties Hoare logic can be used for are _functional correctness_ properties; that is, whether a program computes an intended function or not.
 More specifically, we will look at _partial correctness_ which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result.
-In other words, partial correctness just cares about the input-output expectations, not termination.
+Partial correctness disentangles the input-output expectations from the termination condition.
 
-<!-- A naive way to approach partial correctness would be to define a partial function on states that we expect our program to compute and then manually prove that the operational semantics aligns with this expectation. -->
-<!-- The problem with this approach is that it quickly becomes unwieldy for complex programs which may have infinitely many distinct traces. -->
-<!-- Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
-These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition). -->
+## Complete Specifications
+
+A natural way to say what a statement should do is to describe, exactly, what it computes, i.e. for each initial state, which terminal state does it reach.
+We will call this a _complete specification_.
+A complete specification need not be code; it might describe a library function whose source we cannot inspect, or a component we have yet to implement.
+We give it in terms of the operational semantics.
+
+For example, let $$\mathsf{isPos}_{x,b}$$ be some statement such that:
+
+  - **IP1.** if $$\sigma(x) > 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 1]$$;
+  - **IP2.** otherwise, if $$\sigma(x) \leq 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 0]$$.
+
+The subscripts are just a label for the variables the statement is concerned with.
+The specification is complete: these are the only terminal states the statement can reach, and it terminates in each case.
+Notice that $$\sigma[b \mapsto 1]$$ tells us that every variable other than $$b$$ keeps its value; this is just as important as the change itself.
+
+Given a complete specification, we can reason about programs that use the statement directly from the operational semantics.
+
+### Example: isPos
+Consider the program $$T = \mathsf{isPos}_{x,b};\; x \leftarrow x - b$$.
+We will show that, if $$\sigma_0(x) \geq 0$$ and $$\langle T,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$, then $$\sigma_2(x) \geq 0$$.
+
+The first statement executes first, terminating in some state $$\sigma_1$$ with $$\langle \mathsf{isPos}_{x,b},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
+The assignment then terminates in $$\sigma_2 = \sigma_1[x \mapsto \sigma_1(x) - \sigma_1(b)]$$.
+There are two cases to consider.
+
+  - If $$\sigma_0(x) > 0$$, then case IP1 applies and $$\sigma_1 = \sigma_0[b \mapsto 1]$$.
+    So $$\sigma_2(x) = \sigma_0(x) - 1$$, which is non-negative as $$\sigma_0(x)$$ is an integer greater than $$0$$.
+  - Otherwise, as $$\sigma_0(x) \geq 0$$, we have $$\sigma_0(x) = 0$$ and so $$\sigma_0(x) \leq 0$$, so case IP2 applies and $$\sigma_1 = \sigma_0[b \mapsto 0]$$.
+    So $$\sigma_2(x) = 0 - 0 = 0$$, which is non-negative.
+
+In either case $$\sigma_2(x) \geq 0$$ as required.
+
+### Example: sign
+Now let $$\mathsf{sign}_{x,s}$$ be some statement such that:
+
+  - **SG1.** if $$\sigma(x) < 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto -1]$$;
+  - **SG2.** otherwise, if $$\sigma(x) \geq 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto 1]$$.
+
+To run a program containing such a statement, we treat the specification as an execution rule for it.
+For example, starting from $$[x \mapsto -3,\, s \mapsto 7]$$, the program $$\mathsf{sign}_{x,s};\; x \leftarrow x + s$$ proceeds as follows:
+
+  1. As $$[x \mapsto -3,\, s \mapsto 7](x) = -3 < 0$$, case SG1 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$[x \mapsto -3,\, s \mapsto -1]$$.
+  2. The assignment then updates $$x$$ to $$-3 + (-1) = -4$$, so the final state is $$[x \mapsto -4,\, s \mapsto -1]$$.
+
+When justifying such a step, name the case of the specification that you are using and show that its condition holds in the _current_ state, i.e. the state at the point the statement is executed, which may differ from the initial state of the whole program.
+Remember that the notation $$\sigma[x \mapsto n]$$ means that only $$x$$ has changed, so the value assigned to other variables the statement doesn't mention carry over.
+
+We can also reason about _all_ executions at once.
+Let $$T = \mathsf{sign}_{x,s};\; x \leftarrow x + s$$.
+We will show that, for any $$\sigma_0$$ with $$\langle T,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$, the variable $$s$$ records the sign of $$x$$ at the end, i.e. $$(\sigma_2(x) < 0 \text{ and } \sigma_2(s) = -1)$$ or $$(\sigma_2(x) > 0 \text{ and } \sigma_2(s) = 1)$$.
+
+  - If $$\sigma_0(x) < 0$$, then SG1 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$\sigma_0[s \mapsto -1]$$, and then $$x$$ becomes $$\sigma_0(x) - 1$$.
+    Hence $$\sigma_2(x) < 0$$ and $$\sigma_2(s) = -1$$.
+  - If $$\sigma_0(x) \geq 0$$, then SG2 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$\sigma_0[s \mapsto 1]$$, and then $$x$$ becomes $$\sigma_0(x) + 1$$.
+    Hence $$\sigma_2(x) > 0$$ and $$\sigma_2(s) = 1$$.
+
+### The limits of complete specifications
+Reasoning directly from complete specifications works well for small programs.
+The problem with this approach is that it quickly becomes unwieldy for complex programs which may have infinitely many distinct traces.
+Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
+These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition).
+
+## Hoare Triples
 
 <div class="defn" markdown="1">
   Given two subsets of states $$P,\, Q \subseteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ P \}\ S\ \{ Q \}$$ to indicate that:
@@ -33,16 +93,18 @@ These conditions allow us to abstract away details of specific individual config
   This is referred to as a _Hoare triple_.
 </div>
 
-_Pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
-These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition). 
-A Hoare triple, i.e. a pre- and post-condition for a given statement, consists of two conditions on states such that when the statement is executed in a state that satisfies the pre-condition, if it terminates, then the terminal state will also satisfy the post-condition.
+In other words, a Hoare triple, i.e. a pre- and post-condition for a given statement, consists of two conditions on states such that when the statement is executed in a state that satisfies the pre-condition, if it terminates, then the terminal state will also satisfy the post-condition.
 If the statement doesn't terminate, however, then the Hoare triple says nothing about its behaviour and there is nothing to say that it will terminate.
 In particular, a statement that never terminates will in fact satisfy _any_ Hoare triple.
 
 As an example, we may assert that $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$ as, for any state in which $$x > 0$$, when we execute this statement, it will reach a state in which $$x > 1$$.
 This gives us a way to summarise the behaviour of the program $$x \leftarrow x + 1$$ across infinitely many traces.
 
-It is worth noting that Hoare triples are more flexible than specifying the exact input-output behaviour of a statement; rather, they describe a relation that subsumes the particular function.
+The properties we proved directly in the previous section can be seen as Hoare triples.
+For instance, the first example showed that $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}$$, and the second that $$\{ \top \}\ \mathsf{sign}_{x,s};\; x \leftarrow x + s\ \{ (x < 0 \andop s = -1) \orop (x > 0 \andop s = 1) \}$$.
+Hoare triples are more general than complete specifications, however.
+A complete specification determines a triple for every pre- and post-condition that is consistent with it, but a triple can also be given for a statement whose exact behaviour we don't know or don't care about.
+Rather than specifying the exact input-output behaviour of a statement, a triple describes a relation that subsumes the particular function.
 For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any statement that will increase $$x$$ during any terminating trace, but it doesn't just have to be $$x \leftarrow x + 1$$ and nor does it need to be limited to updating $$x$$.
 
 ## Assertion Languages
@@ -77,32 +139,18 @@ The key thing to remember, however, is that _free variables_ within assertions, 
 # Reasoning with Hoare Triples
 
 <!-- The definition of a Hoare triple quantifies over all executions of a statement, so it is not something we want to check directly. -->
-The advantage of working with Hoare triples is that they let us analyse the parts of a program separately and then combine what we learn about each part.
-We will start with an example of this kind of reasoning, and then turn to a systematic method for doing it.
+The advantage of triples is that they let us analyse the parts of a program separately and then combine what we learn about each part.
+We will start by revisiting our earlier examples in this light, and then turn to a systematic method for doing it.
 
 ## Reasoning Compositionally
 
-Suppose we are using a statement $$\mathsf{isPos}_{x,b}$$ (perhaps a library function whose code we cannot inspect) about which all we know is the following specification:
-
-  - **IP1.** if $$\sigma(x) > 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 1]$$;
-  - **IP2.** otherwise, if $$\sigma(x) \leq 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 0]$$.
-
-The subscripts are just a label for the variables the statement is concerned with.
-In this case, the specification is complete - these are the only terminal states the statement can reach (and it terminates in each case).
-
-Our goal is to show that, for the program $$ \mathsf{isPos}_{x,b};\; x \leftarrow x - b$$, satisfies the Hoare triple:
-
-$$
-  \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
-$$
-
-We will do so by analysing each statement on its own, and then combining the results.
+Let us revisit the program $$\mathsf{isPos}_{x,b};\; x \leftarrow x - b$$, using only a triple for each statement rather than unfolding specifications inside a proof about the whole program.
 
 **Step 1: a triple from the specification.**
+We turn the complete specification of $$\mathsf{isPos}_{x,b}$$ into a triple, once and for all.
 Let $$\sigma_0$$ be a state with $$\sigma_0(x) \geq 0$$.
-There are two possibilities.
 If $$\sigma_0(x) > 0$$, then case IP1 applies and $$\mathsf{isPos}_{x,b}$$ terminates in $$\sigma_0[b \mapsto 1]$$, in which $$x > 0$$ and $$b = 1$$.
-Otherwise $$\sigma_0(x) = 0$$ so $$\sigma_0(x) \leq 0$$, case IP2 applies, and it terminates in $$\sigma_0[b \mapsto 0]$$, in which $$x = 0$$ and $$b = 0$$.
+Otherwise $$\sigma_0(x) = 0$$, case IP2 applies, and it terminates in $$\sigma_0[b \mapsto 0]$$, in which $$x = 0$$ and $$b = 0$$.
 Either way, the terminal state satisfies the following post-condition, and so:
 
 $$
@@ -133,13 +181,18 @@ The post-condition of the first triple is the pre-condition of the second, so we
 To see why this works, suppose $$\sigma_0(x) \geq 0$$ and $$\langle \mathsf{isPos}_{x,b};\; x \leftarrow x - b,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$.
 The first statement must execute first, terminating in some state $$\sigma_1$$ such that $$\langle \mathsf{isPos}_{x,b},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$, and so $$\sigma_1(x) \geq \sigma_1(b)$$ by the triple from Step 2.
 The assignment then executes from $$\sigma_1$$ and terminates in $$\sigma_2$$, and so $$\sigma_2(x) \geq 0$$ by the triple from Step 3.
-Therefore we have shown, as required:
+Therefore we have shown, as before:
 
 $$
   \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
 $$
 
-Observe that we never looked inside $$\mathsf{isPos}_{x,b}$$: we only used a triple derived from its specification, and that triple can be reused in any other program that uses the statement.
+**Reusing the triple.**
+The benefit is that the triple from Step 2 can be reused in other programs without unfolding the specification again.
+For instance, to analyse $$\mathsf{isPos}_{x,b};\; y \leftarrow x - b$$, all that is needed is a new triple for the assignment, $$\{ x \geq b \}\ y \leftarrow x - b\ \{ y \geq 0 \}$$, which can be chained with the triple from Step 2 to conclude $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; y \leftarrow x - b\ \{ y \geq 0 \}$$.
+Moreover, the triple from Step 2 is also satisfied by statements other than $$\mathsf{isPos}_{x,b}$$, so the same reasoning applies to anything that is only known to satisfy it.
+
+Observe that, having derived the triples, we never needed to look inside $$\mathsf{isPos}_{x,b}$$ again.
 This is the pattern that we will use again and again:
 
   - turn the specification of each statement into a Hoare triple, considering each case of the specification;
@@ -153,8 +206,8 @@ Our next step is to replace this insight with a calculation, by working systemat
 ## Weakest Pre-condition
 
 The reasoning above relied on our spotting the right assertion to put between each pair of statements.
-To approach it more systematically, we will work _backwards_ from the post-condition.
-Given a statement $$S$$ and a post-condition $$Q$$, which states are guaranteed to end up in $$Q$$, if the statement terminates?
+Instead, we will work _backwards_ from the post-condition.
+Given a statement $$S$$ and a post-condition $$Q$$, we will ask: which states are guaranteed to end up in $$Q$$, if the statement terminates?
 Rather than reasoning about one particular state, e.g. $$[x \mapsto 2]$$, we reason about a whole set of states at once, which we describe with an assertion.
 The calculation will be driven by the structure of the statement, with one equation for each language construct.
 
@@ -169,7 +222,7 @@ The calculation will be driven by the structure of the statement, with one equat
 </div>
 
 It is called the weakest pre-condition because it is the most general thing we can assume about the initial state: it is the largest set of states that is guaranteed to lead to $$Q$$, and so it asks the _least_ of the initial state.
-<!-- (Strictly speaking, since we ignore termination, this is known as the weakest _liberal_ pre-condition.) -->
+(Strictly speaking, since we ignore termination, this is known as the weakest _liberal_ pre-condition.)
 For example, $$\mathsf{WP}(x \leftarrow x + 1,\, x > 1)$$ is $$x > 0$$: executing the statement in a state with $$x > 0$$ gives $$x > 1$$, and executing it in any state with $$x \leq 0$$ gives a state where $$x \leq 1$$.
 
 The reason this notion is useful is that it gives us an exact characterisation of Hoare triples.
@@ -265,31 +318,12 @@ It is typically only the while loop, with its infinite behaviour, that may take 
 
 ## Statements Specified by Their Behaviour
 
-As in the $$\mathsf{isPos}_{x,b}$$ example at the start of this section, we are sometimes given not the code of a sub-statement but only a specification of its behaviour in terms of the operational semantics.
-We now see how to handle this using weakest pre-conditions.
-For example, let $$\mathsf{sign}_{x,s}$$ be some statement such that:
+Recall that we started by considering statements, like $$\mathsf{isPos}_{x,b}$$ and $$\mathsf{sign}_{x,s}$$, given only by a complete specification in terms of the operational semantics.
+We now see how to handle these using weakest pre-conditions.
 
-  - **SG1.** if $$\sigma(x) < 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto -1]$$;
-  - **SG2.** otherwise, if $$\sigma(x) \geq 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto 1]$$.
-
-The subscripts are just a label for the variables the statement is concerned with.
-We take such a specification to be _complete_: when we say the behaviour is determined by these cases, we mean that these are the only terminal states reachable (and that the statement terminates in each case).
-Notice that $$\sigma[s \mapsto -1]$$ also tells us what the statement _doesn't_ do: every variable other than $$s$$ keeps its value.
-This is just as important as the change itself.
-
-### Executing with a specified statement
-We can simulate the behaviour of a program containing such a statement, using its specification as a proxy for the specific steps that $$\mathsf{isPos}_{x,b}$$ might take.
-For example, starting from $$[x \mapsto -3,\, s \mapsto 7]$$, the program $$\mathsf{sign}_{x,s};\; x \leftarrow x + s$$ proceeds as follows:
-
-  1. As $$[x \mapsto -3,\, s \mapsto 7](x) = -3 < 0$$, case SG1 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$[x \mapsto -3,\, s \mapsto -1]$$.
-  2. The assignment then updates $$x$$ to $$-3 + (-1) = -4$$, so the final state is $$[x \mapsto -4,\, s \mapsto -1]$$.
-
-When justifying such a step, name the case of the specification that you are using and show that its condition holds in the _current_ state, i.e. the state at the point the statement is executed, which may differ from the initial state of the whole program.
-Remember also to carry over every variable the statement doesn't mention.
-
-### Weakest pre-condition of a specified statement
-Each case of a specification describes what looks exactly like an assignment applied to those states that satisfy the case's condition.
-So, for a state to lead to $$Q$$, it must satisfy, for each case, that _if_ the case's condition holds, _then_ the updated state is in $$Q$$:
+Each case of such a specification describes what looks exactly like an assignment applied to those states that satisfy the case's condition.
+So, for a state to lead to $$Q$$, it must satisfy, for each case, that _if_ the case's condition holds, _then_ the updated state is in $$Q$$.
+For $$\mathsf{sign}_{x,s}$$, whose cases are SG1 and SG2:
 
 $$
   \mathsf{WP}(\mathsf{sign}_{x,s},\, Q) = (x < 0 \Rightarrow Q[-1/s]) \andop (x \geq 0 \Rightarrow Q[1/s])
@@ -299,13 +333,12 @@ This is exactly the weakest pre-condition of $$\mathsf{if}\ x < 0\ \mathsf{then}
 The conditions of the specification describe the state _before_ the statement runs, which is just what the pre-condition describes, so they can be used as they are; we don't need to rename any variables, even if a condition mentions the variable that is being updated.
 The completeness of the specification is what makes this valid: it tells us that these cases are all the behaviours we need to account for.
 
-As a worked example, let us check the triple
+As a worked example, let us recheck the triple that we showed directly earlier:
 
 $$
   \{ \top \}\ \mathsf{sign}_{x,s};\; x \leftarrow x + s\ \{ (x < 0 \andop s = -1) \orop (x > 0 \andop s = 1) \}
 $$
 
-which says that $$s$$ records the sign of $$x$$ at the end.
 Let $$Q$$ be the post-condition.
 We work backwards through the sequence, starting with the second statement:
 
@@ -324,6 +357,7 @@ $$
 
 Both conjuncts are true of every state, so the weakest pre-condition is equivalent to $$\top$$.
 Therefore $$\top \subseteq \mathsf{WP}(\mathsf{sign}_{x,s};\; x \leftarrow x + s,\, Q)$$ and the triple is valid.
+Notice how this replaces the case analysis in our earlier direct proof with a calculation.
 
 ## Strengthening and Weakening
 
