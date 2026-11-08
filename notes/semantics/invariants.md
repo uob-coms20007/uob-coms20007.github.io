@@ -23,10 +23,10 @@ The set $$I$$ is called a loop _invariant_.
   An assertion $$I$$ is a __loop invariant__ for $$\mathsf{while}\ e \{ S \}$$ if
 
   $$
-    I \andop e \subseteq \mathsf{WP}(S,\, I)
+    \{ e \andop I \}\ S\ \{ I \}
   $$
 
-  or, equivalently, if $$\{ e \andop I \}\ S\ \{ I \}$$.
+  or, equivalently, if $$I \andop e \subseteq \mathsf{WP}(S,\, I)$$.
 </div>
 
 In other words, when the body of the loop is executed in a state that satisfies the branch condition $$e$$ and this other property $$I$$, then any terminal state will satisfy $$I$$ as well.
@@ -34,10 +34,11 @@ So $$I$$ is a property that is _preserved_ across each iteration of the loop: if
 As a result, no matter how many times the loop is executed, we still know that it will hold after the loop has terminated (if indeed it terminates), and we also know that $$\mathop{!}e$$ must be satisfied by the terminal state (otherwise the loop would carry on).
 We can use this to show that the triple holds:
 
-<div class="defn" markdown="1">
-  Suppose $$I$$ is a loop invariant for $$\mathsf{while}\ e\ \{ S \}$$.
-  Then $$\{ I \}\ \mathsf{while}\ e\ \{ S \}\ \{ \mathop{!}e \andop I \}$$.
-</div>
+$$
+  \{ I \}\ \mathsf{while}\ e\ \{ S \}\ \{ \mathop{!}e \andop I \}
+$$
+
+for any choice of invariant $$I$$.
 
 <!-- To see why this works, we show by induction on $$n$$ that $$I \subseteq W_n$$ for every $$n$$, with $$W_n$$ as above.
 
@@ -58,7 +59,7 @@ Let's look at an example:
 $$
   \begin{array}{l}
     \mathsf{while}\ x < y\ \{ \\
-    \quad x \leftarrow x + 1
+    \quad x \leftarrow x + 1 \\
     \}
   \end{array}
 $$
@@ -83,9 +84,8 @@ We then need to check that $$I \andop e \subseteq x + 1 \leq y$$, i.e. that $$x 
 This holds as we are working with integers.
 Therefore, $$x \leq y$$ is a loop invariant - it is preserved under execution of the loop.
 
-Finally, $$I \andop \mathop{!}(x < y)$$ is $$x \leq y \andop x \geq y$$ which certainly implies the post-condition $$x \leq y$$.
-Therefore, $$x \leq y \subseteq \mathsf{WP}(S_1,\, x \leq y)$$ and the triple holds.
-That is, if the loop terminates, then we will have $$x \leq y$$ after.
+Finally, $$I \andop \mathop{!}(x < y)$$ is equivalent to $$x \leq y \andop x \geq y$$ which certainly implies the post-condition $$x \leq y$$.
+Therefore, $$x \leq y$$ is a loop invariant, and, if the loop terminates, then we will have $$x \leq y$$ after.
 
 ## The Sweet Spot
 
@@ -103,7 +103,7 @@ $$
     i \leftarrow 0;\; \\
     \mathsf{while}\ i < n\ \{ \\
     \quad sum \leftarrow sum + i;\; \\
-    \quad i \leftarrow i + 1
+    \quad i \leftarrow i + 1 \\
     \}
   \end{array}
 $$
@@ -116,15 +116,17 @@ $$
 $$
 
 Let $$L$$ denote the while loop.
-We want to show that $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0;\; L,\, 2 * sum = n * (n - 1))$$.
-Working backwards, this is $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ but we cannot compute the weakest pre-condition of the loop.
-Instead, we will look for a loop invariant $$I$$ that satisfies the following conditions:
+We want to show that $$\{ n \geq 0 \}\ sum \leftarrow 0;\; i \leftarrow 0;\; L\ \{ 2 * sum = n * (n - 1) \}$$.
+We can decompose this triple into $$\{ n \geq 0 \}\ sum \leftarrow 0;\; i \leftarrow 0\ \{ I \}$$ and $$\{ I \}\ L\ \{ 2 * sum = n * (n - 1) \}$$.
+<!-- Therefore, we are interested in a pre-condition for the triple $$\{ P \}\ L\ \{ 2 * sum = n * (n - 1) \}$$. -->
+<!-- Working backwards, this is $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ but we cannot compute the weakest pre-condition of the loop. -->
+We will therefore look for a loop invariant $$I$$ that satisfies the following conditions:
 
-  1. $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$; the invariant holds once the initialisation has finished.
-  2. $$I \andop i < n \subseteq \mathsf{WP}(sum \leftarrow sum + i;\; i \leftarrow i + 1,\, I)$$; the invariant is preserved by the loop body.
+  1. $$\{ n \geq 0 \} sum \leftarrow 0;\; i \leftarrow 0 \{ I \}$$; the invariant holds once the initialisation has finished.
+  2. $$\{ I \andop i < n \}\ sum \leftarrow sum + i;\; i \leftarrow i + 1\ \{ I \}$$; the invariant is preserved by the loop body.
   3. $$I \andop \mathop{!}(i < n) \subseteq (2 * sum = n * (n - 1))$$; the invariant implies the post-condition once the loop is finished.
 
-If they hold, then $$I \subseteq \mathsf{WP}(L,\, 2 * sum = n * (n - 1))$$ and, by monotonicity, $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I) \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ as required.
+<!-- If they hold, then $$I \subseteq \mathsf{WP}(L,\, 2 * sum = n * (n - 1))$$ and, by monotonicity, $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I) \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ as required. -->
 
 **First attempt.**
 Perhaps the post-condition is a loop invariant, i.e. $$I = (2 * sum = n * (n - 1))$$.
@@ -172,9 +174,8 @@ This leads us to the final invariant $$I = (2 * sum = i * (i - 1) \andop i \leq 
 **Final invariant.**
 Let us check each of the three conditions for $$I = (2 * sum = i * (i - 1) \andop i \leq n)$$.
 
-  1. We have that $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$ is $$2 * 0 = 0 * (0 - 1) \andop 0 \leq n$$, which is equivalent to $$0 \leq n$$.
-     So $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$ as required.
-  2. The weakest pre-condition of the loop body is $$2 * (sum + i) = (i + 1) * i \andop i + 1 \leq n$$.
+  1. We have that $$\{ 0 \leq n \}\ sum \leftarrow 0;\; i \leftarrow 0\ \{ I \}$$.
+  2. The weakest pre-condition of the loop body under the invariant is $$2 * (sum + i) = (i + 1) * i \andop i + 1 \leq n$$.
      Suppose $$2 * sum = i * (i - 1) \andop i \leq n \andop i < n$$. The first conjunct follows as above, and $$i + 1 \leq n$$ follows from $$i < n$$ as we are working with integers.
   3. If $$I \andop \mathop{!}(i < n)$$, then $$i \leq n$$ and $$i \geq n$$, so $$i = n$$ and thus $$2 * sum = n * (n - 1)$$ as required.
 
@@ -198,7 +199,7 @@ $$
     \mathsf{while}\ \mathop{!}(x = 0)\ \{ \\
     \quad \mathsf{sign}_{x,s};\; \\
     \quad x \leftarrow x - s;\; \\
-    \quad c \leftarrow c + 1
+    \quad c \leftarrow c + 1 \\
     \}
   \end{array}
 $$
@@ -249,18 +250,15 @@ To ensure that $$\{ P \}\ S_0;\; \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ holds, wh
 
  - $$I \andop {\mathop{!}e} \subseteq Q$$; that is, if the loop has terminated and the invariant is still true, then the desired post-condition is also true.
 
-Together, these give $$P \subseteq \mathsf{WP}(S_0,\, I) \subseteq \mathsf{WP}(S_0,\, \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q))$$ as required.
-When answering a question like this, it is a good idea to state the invariant, and then check each of the three constraints in turn, calculating weakest pre-conditions where needed.
-When the loop body or initialisation contains a statement known only by its specification, refer to the relevant case(s) of its specification in your calculation.
+<!-- Together, these give $$P \subseteq \mathsf{WP}(S_0,\, I) \subseteq \mathsf{WP}(S_0,\, \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q))$$ as required. -->
+<!-- When answering a question like this, it is a good idea to state the invariant, and then check each of the three constraints in turn, calculating weakest pre-conditions where needed. -->
+<!-- When the loop body or initialisation contains a statement known only by its specification, refer to the relevant case(s) of its specification in your calculation. -->
 
 Some tips for finding an invariant:
 
   - **Start from the post-condition.** The invariant, together with the failure of the branch condition, must imply the post-condition. What do you get for free from $$\mathop{!}e$$, and what must the invariant supply?
   - **Start from the pre-condition.** What is true after initialisation, and which parts of it stay true across iterations?
   - **Trace a few iterations.** Write down the values of the variables after $$0, 1, 2, \ldots$$ iterations and look for a relationship that persists, like $$2 * sum = i * (i - 1)$$. This is often a _generalisation_ of the post-condition, with a loop variable in place of its final value, much like an induction hypothesis.
-  - **Consider each way of exiting.** If the branch condition has several parts, e.g. $$a \andop b$$, then $$\mathop{!}(a \andop b)$$ is $$\mathop{!}a \orop \mathop{!}b$$ and the loop may exit for either reason. The invariant must give you the post-condition in each case.
-  - **Keep facts you will need at the end.** If a fact about variables the loop doesn't modify is needed to prove the post-condition (like $$i \leq n$$ above), it has to be part of the invariant, otherwise we have no way of knowing it still holds when the loop exits.
-  - **Use failures as feedback.** If the second constraint fails, the state in $$I \andop e$$ that falls outside $$\mathsf{WP}(S,\, I)$$ tells you what fact is missing; if the third fails, the state in $$I \andop \mathop{!}e$$ outside $$Q$$ tells you what the invariant needs to rule out.
 
 ## Showing a Loop Does Not Terminate
 
