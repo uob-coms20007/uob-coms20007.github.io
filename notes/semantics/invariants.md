@@ -12,9 +12,10 @@ Last time we introduced Hoare triples, and saw how to calculate the weakest pre-
 Today, we will look at while loops.
 
 As while loops may iterate an arbitrary number of times, we cannot directly calculate their weakest pre-condition.
+Intuitively, they require some kind of inductive reasoning, much like a proof with infinitely many cases.
+
 Instead of computing $$\mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q)$$ itself, we will find a more set of states that we can show is _contained_ within it.
-<!-- As  -->
-Then any pre-condition $$P \subseteq I$$ will also be contained within it, and so $$\{ P \}\ \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ will hold.
+Then any pre-condition $$P \subseteq I$$ is also contained within it, and so $$\{ P \}\ \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ will hold.
 The set $$I$$ is called a loop _invariant_.
 
 ## Invariants
@@ -39,15 +40,16 @@ $$
 $$
 
 for any choice of invariant $$I$$.
-
-<!-- To see why this works, we show by induction on $$n$$ that $$I \subseteq W_n$$ for every $$n$$, with $$W_n$$ as above.
+<!-- 
+To see why this works, we show by induction on $$n$$ that $$I \subseteq W_n$$ for every $$n$$, with $$W_n$$ as above.
 
   - For $$n = 0$$, let $$\sigma \in I$$. We must show that $$\sigma$$ satisfies $$\mathop{!}e \Rightarrow Q$$. If $$\sigma$$ satisfies $$\mathop{!}e$$, then it satisfies $$I \andop \mathop{!}e$$ and hence $$Q$$ by assumption.
 
-  - For $$n + 1$$, suppose $$I \subseteq W_n$$ and let $$\sigma \in I$$. We must show that $$\sigma$$ satisfies $$e \Rightarrow \mathsf{WP}(S,\, W_n)$$. If $$\sigma$$ satisfies $$e$$, then it satisfies $$I \andop e$$, and so it is in $$\mathsf{WP}(S,\, I)$$ because $$I$$ is a loop invariant. As $$I \subseteq W_n$$, monotonicity gives $$\mathsf{WP}(S,\, I) \subseteq \mathsf{WP}(S,\, W_n)$$, and so $$\sigma \in \mathsf{WP}(S,\, W_n)$$. -->
+  - For $$n + 1$$, suppose $$I \subseteq W_n$$ and let $$\sigma \in I$$. We must show that $$\sigma$$ satisfies $$e \Rightarrow \mathsf{WP}(S,\, W_n)$$. If $$\sigma$$ satisfies $$e$$, then it satisfies $$I \andop e$$, and so it is in $$\mathsf{WP}(S,\, I)$$ because $$I$$ is a loop invariant. As $$I \subseteq W_n$$, monotonicity of the weakest pre-condition (in the post-condition) gives $$\mathsf{WP}(S,\, I) \subseteq \mathsf{WP}(S,\, W_n)$$, and so $$\sigma \in \mathsf{WP}(S,\, W_n)$$.
 
-<!-- Therefore, $$I \subseteq \bigcap_n W_n = \mathsf{WP}(\mathsf{while}\ e\ \mathsf{do}\ S,\, Q)$$. -->
-<!-- Taking $$Q$$ to be $$\mathop{!}e \andop I$$ gives the form you may see in textbooks: if $$\{ e \andop I \}\ S\ \{ I \}$$ then $$\{ I \}\ \mathsf{while}\ e\ \mathsf{do}\ S\ \{ \mathop{!}e \andop I \}$$. -->
+Therefore, $$I \subseteq \bigcap_n W_n = \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q)$$.
+Taking $$Q$$ to be $$\mathop{!}e \andop I$$ gives the form you may see in textbooks: if $$\{ e \andop I \}\ S\ \{ I \}$$ then $$\{ I \}\ \mathsf{while}\ e\ \{ S \}\ \{ \mathop{!}e \andop I \}$$. -->
+
 
 An invariant $$I$$ is an _under-approximation_ of the weakest pre-condition - a poor choice of $$I$$ may be too small to contain the pre-condition we want.
 For example, $$\mathsf{false}$$ is always a loop invariant satisfying the conditions above, but it contains no states at all!
@@ -85,7 +87,8 @@ This holds as we are working with integers.
 Therefore, $$x \leq y$$ is a loop invariant - it is preserved under execution of the loop.
 
 Finally, $$I \andop \mathop{!}(x < y)$$ is equivalent to $$x \leq y \andop x \geq y$$ which certainly implies the post-condition $$x \leq y$$.
-Therefore, $$x \leq y$$ is a loop invariant, and, if the loop terminates, then we will have $$x \leq y$$ after.
+Therefore, $$x \leq y \subseteq \mathsf{WP}(S_1,\, x \leq y)$$ and the triple holds.
+That is, if the loop terminates, then we will have $$x \leq y$$ after.
 
 ## The Sweet Spot
 
@@ -116,14 +119,12 @@ $$
 $$
 
 Let $$L$$ denote the while loop.
-We want to show that $$\{ n \geq 0 \}\ sum \leftarrow 0;\; i \leftarrow 0;\; L\ \{ 2 * sum = n * (n - 1) \}$$.
-We can decompose this triple into $$\{ n \geq 0 \}\ sum \leftarrow 0;\; i \leftarrow 0\ \{ I \}$$ and $$\{ I \}\ L\ \{ 2 * sum = n * (n - 1) \}$$.
-<!-- Therefore, we are interested in a pre-condition for the triple $$\{ P \}\ L\ \{ 2 * sum = n * (n - 1) \}$$. -->
-<!-- Working backwards, this is $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ but we cannot compute the weakest pre-condition of the loop. -->
-We will therefore look for a loop invariant $$I$$ that satisfies the following conditions:
+We want to show that $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0;\; L,\, 2 * sum = n * (n - 1))$$.
+Working backwards, this is $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ but we cannot compute the weakest pre-condition of the loop.
+Instead, we will look for a loop invariant $$I$$ that satisfies the following conditions:
 
-  1. $$\{ n \geq 0 \} sum \leftarrow 0;\; i \leftarrow 0 \{ I \}$$; the invariant holds once the initialisation has finished.
-  2. $$\{ I \andop i < n \}\ sum \leftarrow sum + i;\; i \leftarrow i + 1\ \{ I \}$$; the invariant is preserved by the loop body.
+  1. $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$; the invariant holds once the initialisation has finished.
+  2. $$I \andop i < n \subseteq \mathsf{WP}(sum \leftarrow sum + i;\; i \leftarrow i + 1,\, I)$$; the invariant is preserved by the loop body.
   3. $$I \andop \mathop{!}(i < n) \subseteq (2 * sum = n * (n - 1))$$; the invariant implies the post-condition once the loop is finished.
 
 <!-- If they hold, then $$I \subseteq \mathsf{WP}(L,\, 2 * sum = n * (n - 1))$$ and, by monotonicity, $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I) \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, \mathsf{WP}(L,\, 2 * sum = n * (n - 1)))$$ as required. -->
@@ -174,7 +175,8 @@ This leads us to the final invariant $$I = (2 * sum = i * (i - 1) \andop i \leq 
 **Final invariant.**
 Let us check each of the three conditions for $$I = (2 * sum = i * (i - 1) \andop i \leq n)$$.
 
-  1. We have that $$\{ 0 \leq n \}\ sum \leftarrow 0;\; i \leftarrow 0\ \{ I \}$$.
+  1. We have that $$\mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$ is $$2 * 0 = 0 * (0 - 1) \andop 0 \leq n$$, which is equivalent to $$0 \leq n$$.
+     So $$n \geq 0 \subseteq \mathsf{WP}(sum \leftarrow 0;\; i \leftarrow 0,\, I)$$ as required.
   2. The weakest pre-condition of the loop body under the invariant is $$2 * (sum + i) = (i + 1) * i \andop i + 1 \leq n$$.
      Suppose $$2 * sum = i * (i - 1) \andop i \leq n \andop i < n$$. The first conjunct follows as above, and $$i + 1 \leq n$$ follows from $$i < n$$ as we are working with integers.
   3. If $$I \andop \mathop{!}(i < n)$$, then $$i \leq n$$ and $$i \geq n$$, so $$i = n$$ and thus $$2 * sum = n * (n - 1)$$ as required.
@@ -184,21 +186,21 @@ Therefore, we can conclude the program has the correct behaviour and indeed will
 ## Loops with Specified Statements
 
 The body of a loop can also contain statements that we only know by their specification.
-Recall the statement $$\mathsf{sign}_{x,s}$$ from last time:
+Recall the statement $$\mathsf{isPos}_{x,b}$$ from last time:
 
-  - **SG1.** if $$\sigma(x) < 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto -1]$$;
-  - **SG2.** otherwise, if $$\sigma(x) \geq 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto 1]$$.
+  - **IP1.** if $$\sigma(x) > 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 1]$$;
+  - **IP2.** otherwise, if $$\sigma(x) \leq 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 0]$$.
 
-and recall that its weakest pre-condition is $$\mathsf{WP}(\mathsf{sign}_{x,s},\, Q) = (x < 0 \Rightarrow Q[-1/s]) \andop (x \geq 0 \Rightarrow Q[1/s])$$.
+and recall that its weakest pre-condition is $$\mathsf{WP}(\mathsf{isPos}_{x,b},\, Q) = (x > 0 \Rightarrow Q[1/b]) \andop (x \leq 0 \Rightarrow Q[0/b])$$.
 
-Consider the following program $$S_3$$, which counts $$x$$ down to $$0$$ using $$c$$ to count the number of steps:
+Consider the following program $$S_3$$, which counts $$x$$ down to $$0$$, only decrementing it when it is positive, and uses $$c$$ to count the number of steps:
 
 $$
   \begin{array}{l}
     c \leftarrow 0;\; \\
     \mathsf{while}\ \mathop{!}(x = 0)\ \{ \\
-    \quad \mathsf{sign}_{x,s};\; \\
-    \quad x \leftarrow x - s;\; \\
+    \quad \mathsf{isPos}_{x,b};\; \\
+    \quad x \leftarrow x - b;\; \\
     \quad c \leftarrow c + 1 \\
     \}
   \end{array}
@@ -206,7 +208,7 @@ $$
 
 We would like to show that $$\{ x = n \andop n \geq 0 \}\ S_3\ \{ c = n \}$$.
 Counting down from $$x$$ should take $$n$$ steps, and the loop should only exit when $$x = 0$$.
-This tells us that $$c + x = n$$ throughout the loop, and, as $$\mathsf{sign}$$ could behave in a different way if $$x$$ were negative, we will also need to know that $$x \geq 0$$.
+This tells us that $$c + x = n$$ throughout the loop, and, as $$\mathsf{isPos}$$ would behave in a different way if $$x$$ were negative (and the loop would never reach $$0$$), we will also need to know that $$x \geq 0$$.
 So, let us try the invariant $$I = (x \geq 0 \andop c + x = n)$$.
 
   1. The initialisation is $$c \leftarrow 0$$, and $$\mathsf{WP}(c \leftarrow 0,\, I) = x \geq 0 \andop 0 + x = n$$. This is implied by $$x = n \andop n \geq 0$$ as required.
@@ -216,22 +218,22 @@ So, let us try the invariant $$I = (x \geq 0 \andop c + x = n)$$.
      $$
        \begin{array}{rl}
          \mathsf{WP}(c \leftarrow c + 1,\, I) &= x \geq 0 \andop (c + 1) + x = n \\
-         \mathsf{WP}(x \leftarrow x - s,\, \cdots) &= x - s \geq 0 \andop (c + 1) + (x - s) = n \\
-         \mathsf{WP}(\mathsf{sign}_{x,s},\, \cdots) &= (x < 0 \Rightarrow x + 1 \geq 0 \andop (c + 1) + (x + 1) = n) \\
-           & \quad \andop (x \geq 0 \Rightarrow x - 1 \geq 0 \andop (c + 1) + (x - 1) = n)
+         \mathsf{WP}(x \leftarrow x - b,\, \cdots) &= x - b \geq 0 \andop (c + 1) + (x - b) = n \\
+         \mathsf{WP}(\mathsf{isPos}_{x,b},\, \cdots) &= (x > 0 \Rightarrow x - 1 \geq 0 \andop (c + 1) + (x - 1) = n) \\
+           & \quad \andop (x \leq 0 \Rightarrow x - 0 \geq 0 \andop (c + 1) + (x - 0) = n)
        \end{array}
      $$
 
-     where the final step substitutes $$-1$$ and $$1$$ for $$s$$ respectively.
+     where the final step substitutes $$1$$ and $$0$$ for $$b$$ respectively.
      Now suppose $$x \geq 0 \andop c + x = n \andop \mathop{!}(x = 0)$$.
-     Then $$x > 0$$, so the first conjunct holds vacuously as its antecedent $$x < 0$$ is false.
-     For the second, as $$x \geq 0$$ we have $$x - 1 \geq 0$$ because $$x \neq 0$$ and we are working with integers, and $$(c + 1) + (x - 1) = c + x = n$$.
+     Then $$x > 0$$, so the second conjunct holds vacuously as its antecedent $$x \leq 0$$ is false.
+     For the first, we have $$x - 1 \geq 0$$ because $$x > 0$$ and we are working with integers, and $$(c + 1) + (x - 1) = c + x = n$$.
      So the invariant is preserved.
 
   3. If $$I \andop x = 0$$ then $$c + 0 = n$$ and so $$c = n$$ as required.
 
 Notice that, in step 2, the branch condition told us which case of the specification applies.
-Also notice how the substitutions bring in the _new_ value of $$s$$ - the only variable that the specification says $$\mathsf{sign}$$ changes - while everything else is left alone.
+Also notice how the substitutions bring in the _new_ value of $$b$$ - the only variable that the specification says $$\mathsf{isPos}$$ changes - while everything else is left alone.
 
 ## Checking a Loop
 
@@ -242,7 +244,18 @@ You will see more about undecidable problems in the next section of the unit.
 Typically, identifying a loop invariant involves some insight into the behaviour of the program - you need to consider how you expect the program to behave.
 That said, we can characterise the requirements of a loop invariant in the form of logical constraints.
 
-To ensure that $$\{ P \}\ S_0;\; \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ holds, where $$S_0$$ is whatever precedes the loop (possibly $$\mathsf{skip}$$), we need some invariant $$I$$ such that:
+To ensure that
+
+$$
+  \begin{array}{l}
+    \{ P \} \\
+    S_0;\; \\
+    \mathsf{while}\ e\ \{ S \} \\
+    \{ Q \}
+  \end{array}
+$$
+
+holds, where $$S_0$$ is whatever precedes the loop (possibly $$\mathsf{skip}$$), we need some invariant $$I$$ such that:
 
  - $$P \subseteq \mathsf{WP}(S_0,\, I)$$; that is, it is true prior to the execution of the loop.
 
@@ -250,16 +263,16 @@ To ensure that $$\{ P \}\ S_0;\; \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ holds, wh
 
  - $$I \andop {\mathop{!}e} \subseteq Q$$; that is, if the loop has terminated and the invariant is still true, then the desired post-condition is also true.
 
-<!-- Together, these give $$P \subseteq \mathsf{WP}(S_0,\, I) \subseteq \mathsf{WP}(S_0,\, \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q))$$ as required. -->
-<!-- When answering a question like this, it is a good idea to state the invariant, and then check each of the three constraints in turn, calculating weakest pre-conditions where needed. -->
-<!-- When the loop body or initialisation contains a statement known only by its specification, refer to the relevant case(s) of its specification in your calculation. -->
+Together, these give $$P \subseteq \mathsf{WP}(S_0,\, I) \subseteq \mathsf{WP}(S_0,\, \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q))$$ as required.
+When answering a question like this, it is a good idea to state the invariant, and then check each of the three constraints in turn, calculating weakest pre-conditions where needed.
+When the loop body or initialisation contains a statement known only by its specification, refer to the relevant case(s) of its specification in your calculation.
 
 Some tips for finding an invariant:
 
   - **Start from the post-condition.** The invariant, together with the failure of the branch condition, must imply the post-condition. What do you get for free from $$\mathop{!}e$$, and what must the invariant supply?
   - **Start from the pre-condition.** What is true after initialisation, and which parts of it stay true across iterations?
   - **Trace a few iterations.** Write down the values of the variables after $$0, 1, 2, \ldots$$ iterations and look for a relationship that persists, like $$2 * sum = i * (i - 1)$$. This is often a _generalisation_ of the post-condition, with a loop variable in place of its final value, much like an induction hypothesis.
-
+  
 ## Showing a Loop Does Not Terminate
 
 Recall that a statement that never terminates satisfies _any_ Hoare triple, and in particular $$\{ P \}\ S\ \{ \mathsf{false} \}$$ holds exactly when there are no terminating executions of $$S$$ from states in $$P$$.
