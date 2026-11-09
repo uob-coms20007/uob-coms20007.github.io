@@ -12,7 +12,7 @@ Having a mathematical description of a programming language's semantics enables 
 In particular, it can be used to mathematically prove they are correct according to some specification (or to understand why they are incorrect).
 The sort of properties we will look at are _functional correctness_ properties; that is, whether a program computes an intended function or not.
 
-## Complete Specifications
+## Reasoning with Specifications
 
 A natural way to say what a statement should do is to describe, exactly, what it computes, i.e. for each initial state, which terminal state does it reach.
 We will call this a _complete specification_.
@@ -57,12 +57,12 @@ There are two cases to consider.
 
 In either case $$\sigma_2(x) \geq 0$$ as required.
 
-## Hoare Triples
+# Partial Correctness and Hoare Triples
 
 The proof above is what we call a _partial correctness_ property: it says what holds of the final state _if_ the program terminates.
 Here the specification happens to guarantee termination, but the property itself doesn't depend on it.
 
-Reasoning directly from complete specifications works well for small programs, but it has limitations.
+Reasoning directly from complete specifications works well for small programs, but can be cumbersome as problems scale.
 <!-- We often only know, or only care about, part of a statement's behaviour - "this function returns something non-negative", or "this code increases $$x$$" - and such a statement has no complete specification.
 Moreover, each proof unfolds the specification of every statement afresh and splits into cases, so the work is repeated whenever the statement is used in a different program and the number of cases multiplies as more statements are put in sequence.
 And we cannot unfold a loop that may be executed any number of times. -->
@@ -159,8 +159,7 @@ $$
 $$
 
 is as precise as a triple with this pre-condition can be.
-Every other triple with this pre-condition (or a more restrictive one) can be obtained from it by weakening the post-condition.
-The weaker triple $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ x \geq b \}$$ is one such triple.
+Every other triple with this pre-condition can be obtained from it by weakening the post-condition, e.g.\ the weaker triple $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ x \geq b \}$$ is one such triple.
 It no longer tells us which value $$b$$ takes, and so it can't be used to recover the specification: the statement $$b \leftarrow 0$$ satisfies it as well, even though it behaves differently to $$\mathsf{isPos}_{x,b}$$ when $$x > 0$$.
 
 This is the trade-off.
@@ -222,7 +221,7 @@ Moreover, the triple from Step 2 is also satisfied by statements other than $$\m
 Reasoning this way means we can analyse individual parts of the program separately, without regard for the context in which they appear, and then later combine these summaries - a very useful feature to have when programs and their dependencies reach across hundreds of files, not all of which are available!
 In particular, we can use a triple for a statement we cannot inspect (e.g. an external function) in the same way, after weakening or strengthening it to fit our needs.
 
-## Weakest Pre-condition
+# Weakest Pre-condition
 
 The reasoning above relied on our spotting the right assertion to put between the two statements: the assertion $$x \geq b$$ was the interface between them, being both established by the first statement and sufficient for the second.
 Finding it took some insight, and we want to replace this insight with a calculation.
@@ -340,63 +339,16 @@ A common choice for assertion language is linear arithmetic, which does not perm
 Notice that the equations above for skip, assignment, sequence and conditional only ever use substitution and the Boolean connectives, and so they stay inside linear arithmetic - no quantifiers are needed - which is one reason why weakest pre-conditions are popular in practice.
 It is typically only the while loop, with its infinite behaviour, that may take us outside of any given assertion language.
 
-## Statements Specified by Their Behaviour
+## Checking a Triple
 
-Recall that we started with the statement $$\mathsf{isPos}_{x,b}$$, given only by a complete specification in terms of the operational semantics.
-We now see how to handle such a statement using weakest pre-conditions.
-
-Each case of such a specification describes what looks exactly like an assignment applied to those states that satisfy the case's condition.
-So, for a state to lead to $$Q$$, it must satisfy, for each case, that _if_ the case's condition holds, _then_ the updated state is in $$Q$$.
-For $$\mathsf{isPos}_{x,b}$$, whose cases are IP1 and IP2:
-
-$$
-  \mathsf{WP}(\mathsf{isPos}_{x,b},\, Q) = (x > 0 \Rightarrow Q[1/b]) \andop (x \leq 0 \Rightarrow Q[0/b])
-$$
-
-This is exactly the weakest pre-condition of $$\mathsf{if}\ x > 0\ \{ b \leftarrow 1 \}\ \mathsf{else}\ \{ b \leftarrow 0 \}$$, and in general we get one conjunct per case of the specification.
-The conditions of the specification describe the state _before_ the statement runs, which is just what the pre-condition describes, so they can be used as they are; we don't need to rename any variables, even if a condition mentions the variable that is being updated.
-The completeness of the specification is what makes this valid: it tells us that these cases are all the behaviours we need to account for.
-
-As a worked example, let us recheck the triple that we showed directly earlier:
-
-$$
-  \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
-$$
-
-Let $$Q$$ be the post-condition $$x \geq 0$$.
-We work backwards through the sequence, starting with the assignment:
-
-$$
-  \mathsf{WP}(x \leftarrow x - b,\, x \geq 0) = x - b \geq 0
-$$
-
-Call this assertion $$R$$.
-This is the assertion that we had to spot by ourselves when reasoning compositionally (it is equivalent to $$x \geq b$$), but now we have calculated it.
-Next we push $$R$$ back through $$\mathsf{isPos}_{x,b}$$.
-Substituting $$b = 1$$ in $$R$$ gives $$x - 1 \geq 0$$ and substituting $$b = 0$$ gives $$x - 0 \geq 0$$, and so:
-
-$$
-  \mathsf{WP}(\mathsf{isPos}_{x,b};\; x \leftarrow x - b,\, Q) = (x > 0 \Rightarrow x - 1 \geq 0) \andop (x \leq 0 \Rightarrow x - 0 \geq 0)
-$$
-
-The first conjunct holds in every state as $$x > 0$$ implies $$x \geq 1$$ when working with integers.
-The second conjunct is equivalent to $$x \leq 0 \Rightarrow x \geq 0$$, which holds exactly when $$x \geq 0$$ (in a state with $$x > 0$$ it holds vacuously, and otherwise it requires $$x = 0$$).
-So the weakest pre-condition is equivalent to $$x \geq 0$$ and the pre-condition $$x \geq 0$$ is included in it as required.
-Moreover, it is exactly the pre-condition we started with, which tells us that no more general pre-condition would suffice.
-Notice how this replaces both the case analysis in our earlier direct proof and the guessing of an intermediate assertion with a calculation.
-
-## Example: Checking a Triple
-
-Let us return to the question of how to determine whether a triple is valid.
-For instance, given the triple:
+Consider the triple:
 
 $$
   \{ \top \}\ y \leftarrow x;\ \mathsf{if}\ x < 0\ \{ x \leftarrow 0 - x \}\ \mathsf{else}\ \{ \mathsf{skip} \}\ \{ x \geq 0 \}
 $$
 
-does this program ensure that $$x$$ is non-negative after execution?
 Let $$S$$ denote the program.
-We calculate $$\mathsf{WP}(S,\, x \geq 0)$$ following the equations above, working backwards from the post-condition.
+To determine whether this program ensures that $$x$$ is non-negative after execution as specified, we calculate $$\mathsf{WP}(S,\, x \geq 0)$$ using the equations above, working backwards from the post-condition.
 
 **Sequence.** $$S$$ is a sequence, so we first calculate the weakest pre-condition of the conditional for $$x \geq 0$$, and then use this as the post-condition of $$y \leftarrow x$$.
 
@@ -436,7 +388,56 @@ Had we instead asked for the post-condition $$x > 0$$, the same calculation woul
 The check $$\top \subseteq x \neq 0$$ fails: the state $$[x \mapsto 0,\, y \mapsto 0]$$ is not in the weakest pre-condition, and indeed it terminates with $$x = 0$$.
 As the weakest pre-condition describes exactly the states that are guaranteed to end up in the post-condition, this tells us the triple is genuinely invalid, and moreover any state in $$P$$ outside the weakest pre-condition gives us a counterexample.
 
-# Summary
+## Statements Specified by Their Behaviour
+
+Recall that we started with the statement $$\mathsf{isPos}_{x,b}$$, given only by a specification in terms of the operational semantics.
+We then showed how this specification can be seen as the Hoare triple:
+$$
+  \{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ (x > 0 \andop b = 1) \orop (x = 0 \andop b = 0) \}
+$$
+
+As this statement's specification was complete, we can also determine a weakest pre-condition.
+Each case of such a specification describes what looks exactly like an assignment applied to those states that satisfy the case's condition.
+So, for a state to lead to $$Q$$, it must satisfy, for each case, that _if_ the case's condition holds, _then_ the updated state is in $$Q$$.
+For $$\mathsf{isPos}_{x,b}$$, whose cases are IP1 and IP2:
+
+$$
+  \mathsf{WP}(\mathsf{isPos}_{x,b},\, Q) = (x > 0 \Rightarrow Q[1/b]) \andop (x \leq 0 \Rightarrow Q[0/b])
+$$
+
+Unsurprisingly, this corresponds exactly to the weakest pre-condition of $$\mathsf{if}\ x > 0\ \{ b \leftarrow 1 \}\ \mathsf{else}\ \{ b \leftarrow 0 \}$$, and in general we get one conjunct per case of the specification.
+The conditions of the specification describe the state _before_ the statement runs, which is just what the pre-condition describes, so they can be used as they are; we don't need to rename any variables, even if a condition mentions the variable that is being updated.
+<!-- The completeness of the specification is what makes this valid: it tells us that these cases are all the behaviours we need to account for. -->
+
+As a worked example, let us recheck the triple that we showed directly earlier:
+
+$$
+  \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
+$$
+
+Let $$Q$$ be the post-condition $$x \geq 0$$.
+We work backwards through the sequence, starting with the assignment:
+
+$$
+  \mathsf{WP}(x \leftarrow x - b,\, x \geq 0) = x - b \geq 0
+$$
+
+Call this assertion $$R$$.
+This is the assertion that we had to spot by ourselves when reasoning compositionally (it is equivalent to $$x \geq b$$), but now we have calculated it.
+Next we push $$R$$ back through $$\mathsf{isPos}_{x,b}$$.
+Substituting $$b = 1$$ in $$R$$ gives $$x - 1 \geq 0$$ and substituting $$b = 0$$ gives $$x - 0 \geq 0$$, and so:
+
+$$
+  \mathsf{WP}(\mathsf{isPos}_{x,b};\; x \leftarrow x - b,\, Q) = (x > 0 \Rightarrow x - 1 \geq 0) \andop (x \leq 0 \Rightarrow x - 0 \geq 0)
+$$
+
+The first conjunct holds in every state as $$x > 0$$ implies $$x \geq 1$$ when working with integers.
+The second conjunct is equivalent to $$x \leq 0 \Rightarrow x \geq 0$$, which holds exactly when $$x \geq 0$$ (in a state with $$x > 0$$ it holds vacuously, and otherwise it requires $$x = 0$$).
+So the weakest pre-condition is equivalent to $$x \geq 0$$ and the pre-condition $$x \geq 0$$ is included in it as required.
+Moreover, it is exactly the pre-condition we started with, which tells us that no more general pre-condition would suffice.
+Notice how this replaces both the case analysis in our earlier direct proof and the guessing of an intermediate assertion with a calculation.
+
+## Summary
 
 To check whether $$\{ P \}\ S\ \{ Q \}$$ is valid:
 
