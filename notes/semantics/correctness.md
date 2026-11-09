@@ -7,15 +7,11 @@ parent: Semantics
 ---
 
 # Partial Correctness
-
+ 
 Having a mathematical description of a programming language's semantics enables us to formally reason about the behaviour of programs.
-However, it can be quite cumbersome doing so directly, and much of the field of programming languages is based on designing effective reasoning techniques.
-Hoare logic is one such framework.
-
-The sort of properties Hoare logic can be used for are _functional correctness_ properties; that is, whether a program computes an intended function or not.
-More specifically, we will look at _partial correctness_ which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result.
-Partial correctness disentangles the input-output expectations from the termination condition.
-
+In particular, it can be used to mathematically prove they are correct according to some specification (or to understand why they are incorrect).
+The sort of properties we will look at are _functional correctness_ properties; that is, whether a program computes an intended function or not.
+ 
 ## Complete Specifications
 
 A natural way to say what a statement should do is to describe, exactly, what it computes, i.e. for each initial state, which terminal state does it reach.
@@ -32,11 +28,12 @@ The subscripts are just a label for the variables the statement is concerned wit
 The specification is complete: these are the only terminal states the statement can reach, and it terminates in each case.
 Notice that $$\sigma[b \mapsto 1]$$ tells us that every variable other than $$b$$ keeps its value; this is just as important as the change itself.
 
-Given a complete specification, we can reason about programs that use the statement directly from the operational semantics.
+If implementing $$\mathsf{isPos}_{x,b}$$ we might want to prove that it matches this specification.
+However, given a complete specification, we can also reason about programs that use the statement directly from the operational semantics.
 
 ### Example: isPos
-Consider the program $$T = \mathsf{isPos}_{x,b};\; x \leftarrow x - b$$.
-We will show that, if $$\sigma_0(x) \geq 0$$ and $$\langle T,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$, then $$\sigma_2(x) \geq 0$$.
+Consider the program $$T = \mathsf{isPos}_{x,b};\; x \leftarrow x - b$$, where $$\mathsf{isPos}_{x,b}$$ is unspecified.
+We can show that, if $$\sigma_0(x) \geq 0$$ and $$\langle T,\, \sigma_0 \rangle \rightarrow^* \sigma_2$$, then $$\sigma_2(x) \geq 0$$.
 
 As per the operational semantics, the first statement $$\mathsf{isPos}_{x,b}$$ executes first, terminating in some state $$\sigma_1$$ with $$\langle \mathsf{isPos}_{x,b},\, \sigma_0 \rangle \rightarrow^* \sigma_1$$.
 The assignment then terminates in $$\sigma_2 = \sigma_1[x \mapsto \sigma_1(x) - \sigma_1(b)]$$.
@@ -49,7 +46,7 @@ There are two cases to consider.
 
 In either case $$\sigma_2(x) \geq 0$$ as required.
 
-### Example: sign
+<!-- ### Example: sign
 Now let $$\mathsf{sign}_{x,s}$$ be some statement such that:
 
   - **SG1.** if $$\sigma(x) < 0$$, then $$\langle \mathsf{sign}_{x,s},\, \sigma \rangle \rightarrow^* \sigma[s \mapsto -1]$$;
@@ -71,15 +68,14 @@ We will show that, for any $$\sigma_0$$ with $$\langle T,\, \sigma_0 \rangle \ri
   - If $$\sigma_0(x) < 0$$, then SG1 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$\sigma_0[s \mapsto -1]$$, and then $$x$$ becomes $$\sigma_0(x) - 1$$.
     Hence $$\sigma_2(x) < 0$$ and $$\sigma_2(s) = -1$$.
   - If $$\sigma_0(x) \geq 0$$, then SG2 applies and $$\mathsf{sign}_{x,s}$$ terminates in $$\sigma_0[s \mapsto 1]$$, and then $$x$$ becomes $$\sigma_0(x) + 1$$.
-    Hence $$\sigma_2(x) > 0$$ and $$\sigma_2(s) = 1$$.
+    Hence $$\sigma_2(x) > 0$$ and $$\sigma_2(s) = 1$$. -->
 
-### The limits of complete specifications
+## Partial Correctness
+
 Reasoning directly from complete specifications works well for small programs.
 The problem with this approach is that it quickly becomes unwieldy for complex programs which may have infinitely many distinct traces.
 Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
 These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition).
-
-## Hoare Triples
 
 <div class="defn" markdown="1">
   Given two subsets of states $$P,\, Q \subseteq \mathsf{State}$$ and a statement $$S \in \mathcal{S}$$, we write $$\{ P \}\ S\ \{ Q \}$$ to indicate that:
@@ -96,16 +92,20 @@ These conditions allow us to abstract away details of specific individual config
 In other words, a Hoare triple, i.e. a pre- and post-condition for a given statement, consists of two conditions on states such that when the statement is executed in a state that satisfies the pre-condition, if it terminates, then the terminal state will also satisfy the post-condition.
 If the statement doesn't terminate, however, then the Hoare triple says nothing about its behaviour and there is nothing to say that it will terminate.
 In particular, a statement that never terminates will in fact satisfy _any_ Hoare triple.
+These properties are known as _partial correctness_ properties, in contrast to _total correctness_ that also requires it describes a total function.
+<!-- which states that when the program terminates, i.e. reaches a terminal configuration, it produces the correct result. -->
+<!-- Partial correctness disentangles the input-output expectations from the termination condition. -->
 
 As an example, we may assert that $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$ as, for any state in which $$x > 0$$, when we execute this statement, it will reach a state in which $$x > 1$$.
 This gives us a way to summarise the behaviour of the program $$x \leftarrow x + 1$$ across infinitely many traces.
 
-The properties we proved directly in the previous section can be seen as Hoare triples.
-For instance, the first example showed that $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}$$, and the second that $$\{ \top \}\ \mathsf{sign}_{x,s};\; x \leftarrow x + s\ \{ (x < 0 \andop s = -1) \orop (x > 0 \andop s = 1) \}$$.
-Hoare triples are more general than complete specifications, however.
-A complete specification determines a triple for every pre- and post-condition that is consistent with it, but a triple can also be given for a statement whose exact behaviour we don't know or don't care about.
 Rather than specifying the exact input-output behaviour of a statement, a triple describes a relation that subsumes the particular function.
 For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any statement that will increase $$x$$ during any terminating trace, but it doesn't just have to be $$x \leftarrow x + 1$$ and nor does it need to be limited to updating $$x$$.
+Likewise, the properties we proved directly in the previous section can be seen as Hoare triples.
+For instance, the first example showed that $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}$$. 
+<!-- , and the second that $$\{ \top \}\ \mathsf{sign}_{x,s};\; x \leftarrow x + s\ \{ (x < 0 \andop s = -1) \orop (x > 0 \andop s = 1) \}$$. -->
+<!-- Hoare triples are more general than complete specifications, however. -->
+<!-- A complete specification determines a triple for every pre- and post-condition that is consistent with it, but a triple can also be given for a statement whose exact behaviour we don't know or don't care about. -->
 
 ## Assertion Languages
 Within the above examples, we have been using Boolean expressions to implicitly represent sets of states, e.g. where $$x > 0$$ represents the set $$ \{ \sigma \in \mathsf{State} \mid \llbracket x > 0 \rrbracket_\mathcal{B}(\sigma) = \top \}$$.
@@ -136,18 +136,15 @@ We will use extended Boolean expressions interchangeably with sets of states.
 You don't need to worry too much about the specifics of extended Boolean expressions; for the most part, they behave exactly like standard logical formulas and satisfy all the usual identities - feel free to use any logical expression within assertions.
 The key thing to remember, however, is that _free variables_ within assertions, i.e. those that are not bound by a quantifier, refer to _program variables_ and thus depend on the current state, e.g. $$\exists y.\, x = (2 * y) + 1$$ corresponds to the set of states in which the current value of the variable $$x$$ is odd.
 
-# Reasoning with Hoare Triples
+## Reasoning Compositionally
 
 <!-- The definition of a Hoare triple quantifies over all executions of a statement, so it is not something we want to check directly. -->
 The advantage of triples is that they let us analyse the parts of a program separately and then combine what we learn about each part.
 We will start by revisiting our earlier examples in this light, and then turn to a systematic method for doing it.
 
-## Reasoning Compositionally
-
 Let us revisit the program $$\mathsf{isPos}_{x,b};\; x \leftarrow x - b$$, using only a triple for each statement rather than unfolding specifications inside a proof about the whole program.
 
 **Step 1: a triple from the specification.**
-We turn the complete specification of $$\mathsf{isPos}_{x,b}$$ into a triple, once and for all.
 Let $$\sigma_0$$ be a state with $$\sigma_0(x) \geq 0$$.
 If $$\sigma_0(x) > 0$$, then case IP1 applies and $$\mathsf{isPos}_{x,b}$$ terminates in $$\sigma_0[b \mapsto 1]$$, in which $$x > 0$$ and $$b = 1$$.
 Otherwise $$\sigma_0(x) = 0$$, case IP2 applies, and it terminates in $$\sigma_0[b \mapsto 0]$$, in which $$x = 0$$ and $$b = 0$$.
@@ -192,16 +189,16 @@ The benefit is that the triple from Step 2 can be reused in other programs witho
 For instance, to analyse $$\mathsf{isPos}_{x,b};\; y \leftarrow x - b$$, all that is needed is a new triple for the assignment, $$\{ x \geq b \}\ y \leftarrow x - b\ \{ y \geq 0 \}$$, which can be chained with the triple from Step 2 to conclude $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; y \leftarrow x - b\ \{ y \geq 0 \}$$.
 Moreover, the triple from Step 2 is also satisfied by statements other than $$\mathsf{isPos}_{x,b}$$, so the same reasoning applies to anything that is only known to satisfy it.
 
-Observe that, having derived the triples, we never needed to look inside $$\mathsf{isPos}_{x,b}$$ again.
+<!-- Observe that, having derived the triples, we never needed to look inside $$\mathsf{isPos}_{x,b}$$ again.
 This is the pattern that we will use again and again:
 
   - turn the specification of each statement into a Hoare triple, considering each case of the specification;
   - adjust the pre- and post-conditions, by weakening the post-condition or strengthening the pre-condition (this is always safe, as we will see in a moment), so that the triples line up;
-  - chain the triples together according to the structure of the program.
+  - chain the triples together according to the structure of the program. -->
 
-The assertion in the middle, $$x \geq b$$, is the interface between the two statements.
+<!-- The assertion in the middle, $$x \geq b$$, is the interface between the two statements.
 Finding a good one took some insight - it was the one assertion that was both established by the first statement and sufficient for the second.
-Our next step is to replace this insight with a calculation, by working systematically from the desired post-condition.
+Our next step is to replace this insight with a calculation, by working systematically from the desired post-condition. -->
 
 ## Weakest Pre-condition
 
