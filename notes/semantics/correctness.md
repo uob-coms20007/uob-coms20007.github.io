@@ -60,12 +60,12 @@ In either case $$\sigma_2(x) \geq 0$$ as required.
 ## Hoare Triples
 
 The proof above is what we call a _partial correctness_ property: it says what holds of the final state _if_ the program terminates.
-The specification happens to guarantee termination, but the property itself doesn't depend on it.
+Here the specification happens to guarantee termination, but the property itself doesn't depend on it.
 
 Reasoning directly from complete specifications works well for small programs, but it has limitations.
-<!-- We often only know, or only care about, part of a statement's behaviour - "this function returns something non-negative", or "this code increases $$x$$" - and such a statement has no complete specification. -->
-<!-- Moreover, each proof unfolds the specification of every statement afresh and splits into cases, so the work is repeated whenever the statement is used in a different program and the number of cases multiplies as more statements are put in sequence. -->
-<!-- And we cannot unfold a loop that may be executed any number of times. -->
+<!-- We often only know, or only care about, part of a statement's behaviour - "this function returns something non-negative", or "this code increases $$x$$" - and such a statement has no complete specification.
+Moreover, each proof unfolds the specification of every statement afresh and splits into cases, so the work is repeated whenever the statement is used in a different program and the number of cases multiplies as more statements are put in sequence.
+And we cannot unfold a loop that may be executed any number of times. -->
 Instead, it is much easier to specify what is known as _pre-conditions_ and _post-conditions_ that describe sets of states before and after the execution of a given statement.
 These conditions allow us to abstract away details of specific individual configurations and focus on what properties hold of the state initially (i.e. the pre-condition) and what holds after the program if it terminates (i.e. the post-condition).
 Reasoning with them is the basis of what is known as _Hoare logic_.
@@ -92,7 +92,7 @@ This gives us a way to summarise the behaviour of the program $$x \leftarrow x +
 
 Rather than specifying the exact input-output behaviour of a statement, a triple describes a relation that subsumes the particular function.
 For instance, the triple $$\{ x > 0 \}\ S\ \{ x > 1 \}$$ is satisfied by any statement that will increase $$x$$ during any terminating trace, but it doesn't just have to be $$x \leftarrow x + 1$$ and nor does it need to be limited to updating $$x$$.
-Likewise, the property we proved directly in the previous section is a Hoare triple: it showed that $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}$$.
+Likewise, the property we proved directly earlier is a Hoare triple: it showed that $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}$$.
 
 ## Assertion Languages
 Within the above examples, we have been using Boolean expressions to implicitly represent sets of states, e.g. where $$x > 0$$ represents the set $$ \{ \sigma \in \mathsf{State} \mid \llbracket x > 0 \rrbracket_\mathcal{B}(\sigma) = \top \}$$.
@@ -126,11 +126,50 @@ The key thing to remember, however, is that _free variables_ within assertions, 
 Under this correspondence, conjunction, disjunction and negation of assertions correspond to intersection, union and complement of sets of states.
 We will write $$P \subseteq Q$$ (equivalently, $$P \Rightarrow Q$$) to say that every state satisfying $$P$$ also satisfies $$Q$$, where $$P \Rightarrow Q$$ is syntactic sugar for $$\mathop{!}P \orop Q$$.
 
+## Strengthening and Weakening
+
+A Hoare triple can be adapted to a different context by changing its pre- and post-condition, without looking at the statement again.
+Suppose $$\{ P_1 \}\ S\ \{ Q_1 \}$$ holds.
+
+  - We may _strengthen_ the pre-condition to any $$P_2 \subseteq P_1$$: any state in $$P_2$$ is also in $$P_1$$, and so any terminating execution from it ends in a state in $$Q_1$$.
+  - We may _weaken_ the post-condition to any $$Q_2 \supseteq Q_1$$: any terminal state in $$Q_1$$ is also in $$Q_2$$.
+
+Putting these together, if $$\{ P_1 \}\ S\ \{ Q_1 \}$$ holds, $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$, then $$\{ P_2 \}\ S\ \{ Q_2 \}$$ also holds.
+Indeed, if $$\sigma_0 \in P_2$$ and $$\langle S,\, \sigma_0 \rangle \rightarrow^* \sigma_1$$, then $$\sigma_0 \in P_1$$ so $$\sigma_1 \in Q_1$$ so $$\sigma_1 \in Q_2$$.
+
+For example, from $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$ we can weaken the post-condition to conclude $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x \geq 0 \}$$, as $$x > 1 \subseteq x \geq 0$$, or strengthen the pre-condition to conclude $$\{ x > 5 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$, as $$x > 5 \subseteq x > 0$$.
+
+What we mean by a "weaker" assertion is one that is more general, i.e. is true of more states.
+This may sound contradictory, but it is weaker in the sense that it tells us less about the initial or terminal state.
+
+A Hoare triple $$\{ P_1 \}\ S\ \{ Q_1 \}$$ is _stronger_ than another triple $$\{ P_2 \}\ S\ \{ Q_2 \}$$ if it gives us more information about the behaviour of $$S$$, i.e. if $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$.
+For example, the triple $$\{ \top \}\ S\ \{ x > 1 \}$$ is stronger than $$\{ x > 0 \}\ S\ \{ x \geq 0 \}$$ as it (a) assumes less about the initial state, i.e. has a weaker pre-condition and thus applies in more scenarios, and (b) tells us more about the possible terminal states, i.e. has a stronger post-condition.
+Notice that the direction of inclusion changes between the pre- and post-condition: a weaker pre-condition makes for a stronger triple as it covers a larger set of initial states, and a stronger post-condition makes for a stronger triple as it describes a more specific property of the terminal states.
+
+### Triples versus Complete Specifications
+
+Weakening highlights the difference between a Hoare triple and a complete specification.
+A complete specification determines exactly which terminal states are reached from each initial state.
+A triple only says that the terminal states lie within the post-condition, and so a triple can be weakened to say less.
+
+For instance, for $$\mathsf{isPos}_{x,b}$$, the specification tells us that, from states with $$x \geq 0$$, the terminal states are exactly those with $$(x > 0 \andop b = 1) \orop (x = 0 \andop b = 0)$$, and so
+
+$$
+  \{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ (x > 0 \andop b = 1) \orop (x = 0 \andop b = 0) \}
+$$
+
+is as precise as a triple with this pre-condition can be.
+Every other triple with this pre-condition (or a more restrictive one) can be obtained from it by weakening the post-condition.
+The weaker triple $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ x \geq b \}$$ is one such triple.
+It no longer tells us which value $$b$$ takes, and so it can't be used to recover the specification: the statement $$b \leftarrow 0$$ satisfies it as well, even though it behaves differently to $$\mathsf{isPos}_{x,b}$$ when $$x > 0$$.
+
+This is the trade-off.
+A weaker triple tells us less about the statement, but it applies to more statements, and it is easier to line up with the triples of other statements.
+This flexibility is what makes triples useful for composing reasoning about the parts of a program.
+
 ## Reasoning Compositionally
 
 The advantage of triples is that they let us analyse the parts of a program separately and then combine what we learn about each part.
-We will start by revisiting our earlier example in this light, and then turn to a systematic method for doing it.
-
 Let us revisit the program $$\mathsf{isPos}_{x,b};\; x \leftarrow x - b$$, using only a triple for each statement rather than unfolding specifications inside a proof about the whole program.
 
 **Step 1: a triple from the specification.**
@@ -148,7 +187,7 @@ Notice that we could say something about $$x$$ in the post-condition only becaus
 **Step 2: weakening the post-condition.**
 The post-condition we found is more precise than we need.
 In both disjuncts we have $$x \geq b$$: if $$x > 0$$ and $$b = 1$$ then $$x \geq 1 = b$$, and if $$x = 0$$ and $$b = 0$$ then $$x \geq 0 = b$$.
-Every terminal state satisfying the more precise post-condition also satisfies $$x \geq b$$, and so we may conclude the weaker triple (weakening a post-condition like this is always safe, as we will see in _Strengthening and Weakening_ below):
+So the post-condition is included in $$x \geq b$$, and we may weaken the post-condition as described above to conclude:
 
 $$
   \{ x \geq 0 \}\ \mathsf{isPos}_{x,b}\ \{ x \geq b \}
@@ -173,10 +212,15 @@ $$
   \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
 $$
 
+The same argument works in general: if $$\{ P \}\ S_1\ \{ Q \}$$ and $$\{ Q \}\ S_2\ \{ R \}$$, then $$\{ P \}\ S_1;\; S_2\ \{ R \}$$.
+
 **Reusing the triple.**
 The benefit is that the triple from Step 2 can be reused in other programs without unfolding the specification again.
 For instance, to analyse $$\mathsf{isPos}_{x,b};\; y \leftarrow x - b$$, all that is needed is a new triple for the assignment, $$\{ x \geq b \}\ y \leftarrow x - b\ \{ y \geq 0 \}$$, which can be chained with the triple from Step 2 to conclude $$\{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; y \leftarrow x - b\ \{ y \geq 0 \}$$.
 Moreover, the triple from Step 2 is also satisfied by statements other than $$\mathsf{isPos}_{x,b}$$, so the same reasoning applies to anything that is only known to satisfy it.
+
+Reasoning this way means we can analyse individual parts of the program separately, without regard for the context in which they appear, and then later combine these summaries - a very useful feature to have when programs and their dependencies reach across hundreds of files, not all of which are available!
+In particular, we can use a triple for a statement we cannot inspect (e.g. an external function) in the same way, after weakening or strengthening it to fit our needs.
 
 ## Weakest Pre-condition
 
@@ -274,6 +318,10 @@ $$
 Notice that we work through the sequence _backwards_: we start with the final post-condition, push it back through $$S_2$$ to find what must hold between the two statements, and then push that back through $$S_1$$.
 Notice also that we never have to consider the execution of the compound statement directly; we calculate it from the behaviour of each sub-statement.
 
+<!-- This agrees with the way we chained triples earlier. -->
+<!-- The weakest pre-condition is _monotonic_ in the post-condition: if $$Q_1 \subseteq Q_2$$ then $$\mathsf{WP}(S,\, Q_1) \subseteq \mathsf{WP}(S,\, Q_2)$$, as a state that is guaranteed to end up in $$Q_1$$ is also guaranteed to end up in the larger set $$Q_2$$. -->
+<!-- So, if $$\{ P \}\ S_1\ \{ Q \}$$ and $$\{ Q \}\ S_2\ \{ R \}$$, then $$P \subseteq \mathsf{WP}(S_1,\, Q) \subseteq \mathsf{WP}(S_1,\, \mathsf{WP}(S_2,\, R)) = \mathsf{WP}(S_1;\; S_2,\, R)$$, where the second inclusion uses $$Q \subseteq \mathsf{WP}(S_2,\, R)$$. -->
+
 ### Conditional
 Executing $$\mathsf{if}\ e\ \{ S_1 \}\ \mathsf{else}\ \{ S_2 \}$$ in a state $$\sigma$$ executes $$S_1$$ from $$\sigma$$ if $$\llbracket e \rrbracket_\mathcal{B}(\sigma) = \top$$ and executes $$S_2$$ from $$\sigma$$ otherwise.
 So a state satisfying $$e$$ leads to $$Q$$ exactly when it is in $$\mathsf{WP}(S_1,\, Q)$$, and a state satisfying $$\mathop{!}e$$ leads to $$Q$$ exactly when it is in $$\mathsf{WP}(S_2,\, Q)$$:
@@ -323,7 +371,7 @@ $$
 $$
 
 Call this assertion $$R$$.
-This is the assertion that we had to spot by ourselves in the previous section (it is equivalent to $$x \geq b$$), but now we have calculated it.
+This is the assertion that we had to spot by ourselves when reasoning compositionally (it is equivalent to $$x \geq b$$), but now we have calculated it.
 Next we push $$R$$ back through $$\mathsf{isPos}_{x,b}$$.
 Substituting $$b = 1$$ in $$R$$ gives $$x - 1 \geq 0$$ and substituting $$b = 0$$ gives $$x - 0 \geq 0$$, and so:
 
@@ -336,45 +384,6 @@ The second conjunct is equivalent to $$x \leq 0 \Rightarrow x \geq 0$$, which ho
 So the weakest pre-condition is equivalent to $$x \geq 0$$ and the pre-condition $$x \geq 0$$ is included in it as required.
 Moreover, it is exactly the pre-condition we started with, which tells us that no more general pre-condition would suffice.
 Notice how this replaces both the case analysis in our earlier direct proof and the guessing of an intermediate assertion with a calculation.
-
-## Strengthening and Weakening
-
-Not every triple we care about has the weakest pre-condition as its pre-condition.
-In practice we are usually given a specification $$\{ P \}\ S\ \{ Q \}$$ where $$P$$ is simply something we are willing to assume; it may be much more restrictive than $$\mathsf{WP}(S,\, Q)$$.
-That the triple is still valid whenever $$P \subseteq \mathsf{WP}(S,\, Q)$$ is the sense in which a pre-condition can be _strengthened_: if a triple holds with pre-condition $$P_1$$, then it holds with any $$P_2$$ such that $$P_2 \subseteq P_1$$.
-
-Similarly, the weakest pre-condition is _monotonic_ in the post-condition: if $$Q_1 \subseteq Q_2$$ then $$\mathsf{WP}(S,\, Q_1) \subseteq \mathsf{WP}(S,\, Q_2)$$, as a state that is guaranteed to end up in $$Q_1$$ is also guaranteed to end up in the larger set $$Q_2$$.
-Hence a triple that holds for the post-condition $$Q_1$$ also holds for any more general post-condition $$Q_2 \supseteq Q_1$$.
-
-Putting these together, if $$\{ P_1 \}\ S\ \{ Q_1 \}$$ holds, $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$, then $$\{ P_2 \}\ S\ \{ Q_2 \}$$ also holds:
-
-$$
-  P_2 \subseteq P_1 \subseteq \mathsf{WP}(S,\, Q_1) \subseteq \mathsf{WP}(S,\, Q_2)
-$$
-
-What we mean by a "weaker" assertion is one that is more general, i.e. is true of more states.
-This may sound contradictory, but it is weaker in the sense that it tells us less about the initial or terminal state.
-
-A Hoare triple $$\{ P_1 \}\ S\ \{ Q_1 \}$$ is _stronger_ than another triple $$\{ P_2 \}\ S\ \{ Q_2 \}$$ if it gives us more information about the behaviour of $$S$$, i.e. if $$P_2 \subseteq P_1$$ and $$Q_1 \subseteq Q_2$$.
-For example, the triple $$\{ \top \}\ S\ \{ x > 1 \}$$ is stronger than $$\{ x > 0 \}\ S\ \{ x \geq 0 \}$$ as it (a) assumes less about the initial state, i.e. has a weaker pre-condition and thus applies in more scenarios, and (b) tells us more about the possible terminal states, i.e. has a stronger post-condition.
-Notice that the direction of inclusion changes between the pre- and post-condition: a weaker pre-condition makes for a stronger triple as it covers a larger set of initial states, and a stronger post-condition makes for a stronger triple as it describes a more specific property of the terminal states.
-
-### Composing triples
-Being able to weaken a triple is useful when combining the facts we know about different statements.
-Suppose we know that $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x > 1 \}$$ and that $$\{ x \geq 0 \}\ y \leftarrow x\ \{ y \geq 0 \}$$ and we wish to derive a triple for $$x \leftarrow x + 1;\; y \leftarrow x$$.
-The post-condition of the first statement doesn't line up with the pre-condition of the second, but as $$x > 1 \subseteq x \geq 0$$ we can weaken the first triple to $$\{ x > 0 \}\ x \leftarrow x + 1\ \{ x \geq 0 \}$$.
-
-In general, if $$\{ P \}\ S_1\ \{ Q \}$$ and $$\{ Q \}\ S_2\ \{ R \}$$, then $$\{ P \}\ S_1;\; S_2\ \{ R \}$$, and we can see this directly from the equations above:
-
-$$
-  P \subseteq \mathsf{WP}(S_1,\, Q) \subseteq \mathsf{WP}(S_1,\, \mathsf{WP}(S_2,\, R)) = \mathsf{WP}(S_1;\; S_2,\, R)
-$$
-
-where the second inclusion is by monotonicity, using $$Q \subseteq \mathsf{WP}(S_2,\, R)$$.
-Applied to our example, we conclude $$\{ x > 0 \}\ x \leftarrow x + 1;\; y \leftarrow x\ \{ y \geq 0 \}$$.
-
-Reasoning this way means we can analyse individual parts of the program separately, without regard for the context in which they appear, and then later combine these summaries - a very useful feature to have when programs and their dependencies reach across hundreds of files, not all of which are available!
-In particular, we can use a triple for a statement we cannot inspect (e.g. an external function) in the same way, after weakening or strengthening it to fit our needs.
 
 ## Example: Checking a Triple
 
