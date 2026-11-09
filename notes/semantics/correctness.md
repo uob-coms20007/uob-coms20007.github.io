@@ -388,7 +388,7 @@ Had we instead asked for the post-condition $$x > 0$$, the same calculation woul
 The check $$\top \subseteq x \neq 0$$ fails: the state $$[x \mapsto 0,\, y \mapsto 0]$$ is not in the weakest pre-condition, and indeed it terminates with $$x = 0$$.
 As the weakest pre-condition describes exactly the states that are guaranteed to end up in the post-condition, this tells us the triple is genuinely invalid, and moreover any state in $$P$$ outside the weakest pre-condition gives us a counterexample.
 
-## Statements Specified by Their Behaviour
+<!-- ## Statements Specified by Their Behaviour
 
 Recall that we started with the statement $$\mathsf{isPos}_{x,b}$$, given only by a specification in terms of the operational semantics.
 We then showed how this specification can be seen as the Hoare triple:
@@ -409,7 +409,7 @@ Unsurprisingly, this corresponds exactly to the weakest pre-condition of $$\math
 The conditions of the specification describe the state _before_ the statement runs, which is just what the pre-condition describes, so they can be used as they are; we don't need to rename any variables, even if a condition mentions the variable that is being updated.
 <!-- The completeness of the specification is what makes this valid: it tells us that these cases are all the behaviours we need to account for. -->
 
-As a worked example, let us recheck the triple that we showed directly earlier:
+<!-- As a worked example, let us recheck the triple that we showed directly earlier:
 
 $$
   \{ x \geq 0 \}\ \mathsf{isPos}_{x,b};\; x \leftarrow x - b\ \{ x \geq 0 \}
@@ -435,7 +435,7 @@ The first conjunct holds in every state as $$x > 0$$ implies $$x \geq 1$$ when w
 The second conjunct is equivalent to $$x \leq 0 \Rightarrow x \geq 0$$, which holds exactly when $$x \geq 0$$ (in a state with $$x > 0$$ it holds vacuously, and otherwise it requires $$x = 0$$).
 So the weakest pre-condition is equivalent to $$x \geq 0$$ and the pre-condition $$x \geq 0$$ is included in it as required.
 Moreover, it is exactly the pre-condition we started with, which tells us that no more general pre-condition would suffice.
-Notice how this replaces both the case analysis in our earlier direct proof and the guessing of an intermediate assertion with a calculation.
+Notice how this replaces both the case analysis in our earlier direct proof and the guessing of an intermediate assertion with a calculation. --> -->
 
 ## Summary
 
