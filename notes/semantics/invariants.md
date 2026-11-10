@@ -8,15 +8,13 @@ parent: Semantics
 
 # Loop Invariants
 
-Last time we introduced Hoare triples, and saw how to calculate the weakest pre-condition for code without while loops.
-Today, we will look at while loops.
-
+Last time we introduced Hoare triples, and saw how to calculate the weakest pre-condition for code _without_ while loops.
 As while loops may iterate an arbitrary number of times, we cannot directly calculate their weakest pre-condition.
 Intuitively, they require some kind of inductive reasoning, much like a proof with infinitely many cases.
 
-Instead of computing $$\mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q)$$ itself, we will find a more set of states that we can show is _contained_ within it.
+Therefore, instead of computing $$\mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q)$$ itself, we will find a larger set of states that we can show is _contained_ within it.
 Then any pre-condition $$P \subseteq I$$ is also contained within it, and so $$\{ P \}\ \mathsf{while}\ e\ \{ S \}\ \{ Q \}$$ will hold.
-The set $$I$$ is called a loop _invariant_.
+The set $$I$$ is called a loop _invariant_, which we can think of as the induction hypothesis.
 
 ## Invariants
 
@@ -31,7 +29,9 @@ The set $$I$$ is called a loop _invariant_.
 </div>
 
 In other words, when the body of the loop is executed in a state that satisfies the branch condition $$e$$ and this other property $$I$$, then any terminal state will satisfy $$I$$ as well.
-So $$I$$ is a property that is _preserved_ across each iteration of the loop: if it is true before, then it is true after.
+So $$I$$ is a property that is _preserved_ across each iteration of the loop; that is, if it is true before, then it is true after.
+Much like proof by induction, we assume it held of the previous iteration and then show that it holds of the current iteration.
+
 As a result, no matter how many times the loop is executed, we still know that it will hold after the loop has terminated (if indeed it terminates), and we also know that $$\mathop{!}e$$ must be satisfied by the terminal state (otherwise the loop would carry on).
 We can use this to show that the triple holds:
 
@@ -40,7 +40,9 @@ $$
 $$
 
 for any choice of invariant $$I$$.
+
 <!-- 
+
 To see why this works, we show by induction on $$n$$ that $$I \subseteq W_n$$ for every $$n$$, with $$W_n$$ as above.
 
   - For $$n = 0$$, let $$\sigma \in I$$. We must show that $$\sigma$$ satisfies $$\mathop{!}e \Rightarrow Q$$. If $$\sigma$$ satisfies $$\mathop{!}e$$, then it satisfies $$I \andop \mathop{!}e$$ and hence $$Q$$ by assumption.
@@ -48,7 +50,8 @@ To see why this works, we show by induction on $$n$$ that $$I \subseteq W_n$$ fo
   - For $$n + 1$$, suppose $$I \subseteq W_n$$ and let $$\sigma \in I$$. We must show that $$\sigma$$ satisfies $$e \Rightarrow \mathsf{WP}(S,\, W_n)$$. If $$\sigma$$ satisfies $$e$$, then it satisfies $$I \andop e$$, and so it is in $$\mathsf{WP}(S,\, I)$$ because $$I$$ is a loop invariant. As $$I \subseteq W_n$$, monotonicity of the weakest pre-condition (in the post-condition) gives $$\mathsf{WP}(S,\, I) \subseteq \mathsf{WP}(S,\, W_n)$$, and so $$\sigma \in \mathsf{WP}(S,\, W_n)$$.
 
 Therefore, $$I \subseteq \bigcap_n W_n = \mathsf{WP}(\mathsf{while}\ e\ \{ S \},\, Q)$$.
-Taking $$Q$$ to be $$\mathop{!}e \andop I$$ gives the form you may see in textbooks: if $$\{ e \andop I \}\ S\ \{ I \}$$ then $$\{ I \}\ \mathsf{while}\ e\ \{ S \}\ \{ \mathop{!}e \andop I \}$$. -->
+Taking $$Q$$ to be $$\mathop{!}e \andop I$$ gives the form you may see in textbooks: if $$\{ e \andop I \}\ S\ \{ I \}$$ then $$\{ I \}\ \mathsf{while}\ e\ \{ S \}\ \{ \mathop{!}e \andop I \}$$.
+-->
 
 
 An invariant $$I$$ is an _under-approximation_ of the weakest pre-condition - a poor choice of $$I$$ may be too small to contain the pre-condition we want.
@@ -56,7 +59,7 @@ For example, $$\mathsf{false}$$ is always a loop invariant satisfying the condit
 
 ## A Simple Example
 
-Let's look at an example:
+<!-- Let's look at an example: -->
 
 $$
   \begin{array}{l}
@@ -191,7 +194,7 @@ Recall the statement $$\mathsf{isPos}_{x,b}$$ from last time:
   - **IP1.** if $$\sigma(x) > 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 1]$$;
   - **IP2.** otherwise, if $$\sigma(x) \leq 0$$, then $$\langle \mathsf{isPos}_{x,b},\, \sigma \rangle \rightarrow^* \sigma[b \mapsto 0]$$.
 
-and recall that its weakest pre-condition is $$\mathsf{WP}(\mathsf{isPos}_{x,b},\, Q) = (x > 0 \Rightarrow Q[1/b]) \andop (x \leq 0 \Rightarrow Q[0/b])$$.
+from this specification, we can see that its weakest pre-condition $$\mathsf{WP}(\mathsf{isPos}_{x,b},\, Q)$$ will be $$(x > 0 \Rightarrow Q[1/b]) \andop (x \leq 0 \Rightarrow Q[0/b])$$.
 
 Consider the following program $$S_3$$, which counts $$x$$ down to $$0$$, only decrementing it when it is positive, and uses $$c$$ to count the number of steps:
 
