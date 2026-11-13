@@ -248,3 +248,15 @@ semi-characteristic function $\xi_U$ is computable.
     Suppose we run this program starting with $n > 0$. If the Collatz sequence eventually reaches $1$, the `while` loop will terminate (with the value $1$ in `n`). Otherwise, the loop will run forever.
 
     What will happen if we start with $n = 0$?
+
+# WHILE Reference
+
+<div class="defn" markdown="1">
+
+$$
+  S \Coloneqq \mathsf{skip} \mid x \leftarrow A \mid S; S \mid \mathsf{if}\ B\ \{ S \}\ \mathsf{else}\ \{ S \} \mid \mathsf{while}\ B\ \{ S \}
+  A \Coloneqq x \mid n \mid A + A \mid A - A \mid A * A
+  B \Coloneqq \tt \mid \ff \mid \mathop{!}B \mid B \andop B \mid B \orop B \mid A = A \mid A \leq A
+$$
+
+</div>
