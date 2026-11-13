@@ -128,7 +128,7 @@ predicate $U \subseteq \mathbb{N}$ is called a _decision procedure_.
 Any predicate for which there is no decision procedure is called
 __undecidable__.
 
-## Examples
+## Example
 
 1. The predicate
    $$
@@ -183,9 +183,9 @@ forever.
 A predicate $U \subseteq \mathbb{N}$ is __semi-decidable__ just if its
 semi-characteristic function $\xi_U$ is computable.
 
-## Examples
+## Example
 
-2.  The predicate
+1.  The predicate
     $$
       U = \{ k \in \mathbb{N}^+ \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
     $$
@@ -218,6 +218,7 @@ semi-characteristic function $\xi_U$ is computable.
     However, we can show that $U$ is semi-decidable. Its semi-characteristic
     function $\xi_U$ is computed by the following program (wrt `n`), which
     calculates every number in the sequence until it reaches $1$.
+
     ```
     while (! (n = 1)) {
 
