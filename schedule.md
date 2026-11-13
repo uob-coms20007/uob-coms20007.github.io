@@ -134,7 +134,9 @@ Each week there will be exactly one problem sheet.  This is a 20cp unit, so you 
 ## Revision Material
 
 The following are practice papers based on previous year's exams.
-Note that in 2024 the exam was three hours, not the two hours that it will be this year.
+Note that in 2024 the exam was three hours, not the two hours that it will be this year.  Note that the course material has changed slightly over the years.  For example, last year the semantics part studied _strongest postcondition_ rather than _weakest precondition_; consequently you will not be equipped to solve Q2(c) part ii of the 2025 Winter Paper. 
 
- * Paper 1: [Questions](papers/2024.pdf), [Solutions](papers/2024-solutions.pdf)
- * Paper 2: [Questions](papers/2024-practice.pdf), [Solutions](papers/2024-practice-solutions.pdf)
+ * 2024 Practice Paper: [Questions](papers/2024-practice.pdf), [Solutions](papers/2024-practice-solutions.pdf)
+ * 2024 Winter Paper: [Questions](papers/2024.pdf), [Solutions](papers/2024-solutions.pdf)
+ * 2025 Winter Paper: [Questions](papers/2025.pdf), [Solutions](papers/2025-solutions.pdf)
+ 
