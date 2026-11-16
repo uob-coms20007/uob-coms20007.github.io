@@ -6,6 +6,9 @@ mathjax: true
 parent: Computability
 ---
 
+* [BluePeter File]("../../assets/samSlides/15-ComputabilityAndDecidabilityBP.pdf")
+* [Live File]("../../assets/samSlides/15-ComputabilityAndDecidabilityLive.pdf")
+
 # Computable Functions
 
 Let $\texttt{x}$ be a variable of the `while` language.
