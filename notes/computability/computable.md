@@ -6,8 +6,8 @@ mathjax: true
 parent: Computability
 ---
 
-* [BluePeter File]("https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityBP.pdf")
-* [Live File]("https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityLive.pdf")
+* [BluePeter File](https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityBP.pdf)
+* [Live File](https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityLive.pdf)
 
 # Computable Functions
 
