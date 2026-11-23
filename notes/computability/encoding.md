@@ -6,6 +6,7 @@ mathjax: true
 parent: Computability
 ---
 
+* [BluePeter File](https://uob-coms20007.github.io/assets/samSlides/16-EncodingFirst-OrderDataBP.pdf)
 * [Live File](https://uob-coms20007.github.io/assets/samSlides/16-EncodingFirst-OrderDataLive.pdf)
 
 # Bijections 

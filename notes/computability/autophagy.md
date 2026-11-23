@@ -6,6 +6,7 @@ mathjax: true
 parent: Computability
 ---
 
+* [Live File](https://uob-coms20007.github.io/assets/samSlides/17-WhileEatsItselfLive.pdf)
 
 # Gödel numberings
 
