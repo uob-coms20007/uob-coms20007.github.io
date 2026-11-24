@@ -6,7 +6,9 @@ mathjax: true
 parent: Computability
 ---
 
+* [BluePeter File](https://uob-coms20007.github.io/assets/samSlides/17-WhileEatsItselfBP.pdf)
 * [Live File](https://uob-coms20007.github.io/assets/samSlides/17-WhileEatsItselfLive.pdf)
+* [Church-Turing Slides](https://uob-coms20007.github.io/assets/samSlides/17-Church-Turing.pptx)
 
 # Gödel numberings
 
