@@ -17,6 +17,18 @@ We can sometimes prove that a predicate is undecidable by another method: we
 show that _if it were decidable_, then $\textsf{HALT}$ would be decidable as
 well. This is a _proof by reduction_.
 
+There are two styles of doing this proof:
+1. "From Scratch", which is what Sam presents in the lectures, and
+2. "Many-one", written up below.
+
+Both styles will be accepted in this unit, choose the one you prefer. Sheet answers will feature both styles, and in the exam, both will be accepted.
+
+# "From Scratch" Style
+
+COMING SOON
+
+# "Many-one" Style
+
 ## Definition
 
 Let $U, V \subseteq \mathbb{N}$ be predicates, and let $f : \mathbb{N} \to
