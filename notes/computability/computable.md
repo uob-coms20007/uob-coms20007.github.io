@@ -6,6 +6,9 @@ mathjax: true
 parent: Computability
 ---
 
+* [BluePeter File](https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityBP.pdf)
+* [Live File](https://uob-coms20007.github.io/assets/samSlides/15-ComputabilityAndDecidabilityLive.pdf)
+
 # Computable Functions
 
 Let $\texttt{x}$ be a variable of the `while` language.
@@ -128,7 +131,7 @@ predicate $U \subseteq \mathbb{N}$ is called a _decision procedure_.
 Any predicate for which there is no decision procedure is called
 __undecidable__.
 
-## Examples
+## Example
 
 1. The predicate
    $$
@@ -183,9 +186,9 @@ forever.
 A predicate $U \subseteq \mathbb{N}$ is __semi-decidable__ just if its
 semi-characteristic function $\xi_U$ is computable.
 
-## Examples
+## Example
 
-2.  The predicate
+1.  The predicate
     $$
       U = \{ k \in \mathbb{N}^+ \mid \text{ the Collatz sequence starting at $k$ eventually reaches 1 } \}
     $$
@@ -208,16 +211,17 @@ semi-characteristic function $\xi_U$ is computable.
     conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a
     famously unsolved problem of mathematics. It states that the Collatz
     sequence $a_0, a_1, \dots$ starting at any $a_0 \in \mathbb{N}^+$ will
-    eventually reach the number $1$. 
+    eventually reach the number $1$.
 
     If the Collatz conjecture is true, then every number is in the predicate
-    $U$, i.e. $U = \mathbb{N}$. Thus, if $U$ were proven to be decidable,
+    $U$, i.e. $U = \mathbb{N}^+$. Thus, if $U$ were proven to be decidable,
     then that would reveal a lot of interesting things for this unresolved
     conjecture!
 
     However, we can show that $U$ is semi-decidable. Its semi-characteristic
     function $\xi_U$ is computed by the following program (wrt `n`), which
     calculates every number in the sequence until it reaches $1$.
+
     ```
     while (! (n = 1)) {
 
@@ -248,3 +252,19 @@ semi-characteristic function $\xi_U$ is computable.
     Suppose we run this program starting with $n > 0$. If the Collatz sequence eventually reaches $1$, the `while` loop will terminate (with the value $1$ in `n`). Otherwise, the loop will run forever.
 
     What will happen if we start with $n = 0$?
+
+# WHILE Reference
+
+<div class="defn" markdown="1">
+
+$$
+  S \Coloneqq \mathsf{skip} \mid x \leftarrow A \mid S; S \mid \mathsf{if}\ B\ \{ S \}\ \mathsf{else}\ \{ S \} \mid \mathsf{while}\ B\ \{ S \}
+$$
+$$
+  A \Coloneqq x \mid n \mid A + A \mid A - A \mid A * A
+$$
+$$
+  B \Coloneqq \tt \mid \ff \mid \mathop{!}B \mid B \andop B \mid B \orop B \mid A = A \mid A \leq A
+$$
+
+</div>

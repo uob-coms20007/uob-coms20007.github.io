@@ -10,7 +10,7 @@ The unit is 100% assessed by a 2-hour written exam in the Winter assessment peri
 This exam is considered open book in the following sense:
 *Candidates may bring to the exam room 1 double-sided A4 page of notes in any format.*
 
-In addition, most of the important definitions from the unit are available for your reference at the back of the exam paper.  
+In addition, most of the important definitions from the unit are available for your reference at the back of the exam paper.  You can see exactly what is included [here](papers/reference.pdf).
 
 <!-- Here is the exact front- and backmatter of the exam paper that you will see on the day of your exam: [:open_book:](papers/rubric.pdf) -->
 
@@ -52,6 +52,8 @@ A few typical examples of the shape of 3* questions, but 3* questions are often 
 * Show that a predicate is undecidable.
 
 *Before the day of the exam, you should be confident in your ability to answer typical 1\* and 2\* questions.*
+
+See [Course Material](schedule.html) for revision questions, practice papers and past papers that you can attempt.
 
 <!-- General feedback sent to students on the overall performance in the 2024 exam, which had a relatively high average mark, can be viewed [here](feedback24.txt).  Note: that exam was 3 hours duration (your exam is 2 hours duration) and some of the material has changed this year, so you may find that some of the feedback doesn't apply. -->
 
