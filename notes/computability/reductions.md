@@ -21,11 +21,72 @@ There are two styles of doing this proof:
 1. "From Scratch", which is what Sam presents in the lectures, and
 2. "Many-one", written up below.
 
-Both styles will be accepted in this unit, choose the one you prefer. Sheet answers will feature both styles, and in the exam, both will be accepted.
+Both styles will be accepted in this unit, choose the one you prefer. Sheet answers will feature both styles, and, in the exam, both will be accepted.
 
-# "From Scratch" Style
+# "From Scratch" Styles
 
 COMING SOON
+
+## Example
+
+For example, we can show the undecidability of the set of (the Gödel numbers of) programs which _never_ go into an infinite loop:
+
+$$
+  \textsf{ALL} = \{ \ulcorner S \urcorner \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
+$$
+
+
+
+ALL is undecidable.
+Proof by reduction from the Halting Problem.
+Assume we have a decider D for ALL.
+We will now use this to construct a decider for HALT.
+This decider takes in an encoded program ⌜P⌝ and an input x.
+It will:
+- Create a new program Q
+	- ignores its input
+	- runs P on x
+	- Returns 0
+- run D on ⌜Q⌝
+
+This is a reduction because:
+- Q is only a member of ALL when it is a member of HALT:
+	- If it is in HALT, P will terminate on x, making this a roundabout `const 0` function that will terminate on all inputs (by virtue of being the const function, inputs are ignored)
+	- If it is not in HALT, it could not have been in ALL, because it will never terminate on any input
+
+This is computable because:
+- Creating Q is a clearly computable program transformation from P to Q that prepends taking and ignoring some import, and appends returning 0 after the code of P running on n
+- Q can be encoded as its Gödel Numbering
+
+However, the halting problem is know to be undecidable.
+Therefore ALL is also undecidable.
+
+## Reduction Template
+
+Reductions are quite formulaic, so I have made you a little template for such proofs:
+
+```
+TODO is undecidable.
+Proof by reduction from the Halting Problem.
+Assume we have a decider D for TODO.
+We will now use this to construct a decider for HALT.
+This decider takes in an encoded program ⌜P⌝ and an input x.
+It will:
+- Create a new program Q that
+	- TODO
+- Run D on Q
+This is a reduction because:
+- Q is only a member of TODO when it is a member of HALT:
+	- If it is in HALT, TODO
+	- If it is not in HALT, TODO
+This is computable because
+- TODO
+However, the halting problem is know to be undecidable.
+Therefore TODO is also undecidable.
+```
+
+Here TODO mark gaps that you will have to customise.
+NOTE:- some more complex reductions may require the template to be adapted e.g. in sheet 11, Q5, you will need to create two programs to run D. This is just a guide to help you get started and to ensure that you don't forget to argue for your reduction and its computability.
 
 # "Many-one" Style
 
