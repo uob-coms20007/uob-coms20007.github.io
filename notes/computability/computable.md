@@ -228,7 +228,7 @@ semi-characteristic function $\xi_U$ is computable.
       // Divide n by 2, putting the quotient in q and the remainder in r.
       q <- 0; r <- n;
       while (r >= 2) {
-        q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r > 0
+        q <- q + 1; r <- r - 2      // Loop invariant: n = q * 2 + r & r >= 0
       }
 
       // Depending on the parity compute the next element in the sequence.
