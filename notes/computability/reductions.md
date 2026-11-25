@@ -25,11 +25,11 @@ Both styles will be accepted in this unit, choose the one you prefer. Sheet answ
 
 # "From Scratch" Styles
 
-COMING SOON
+The best way to understand reductions is through an example:
 
 ## Example
 
-For example, we can show the undecidability of the set of (the Gödel numbers of) programs which _never_ go into an infinite loop:
+We can show the undecidability of the set of (the Gödel numbers of) programs which _never_ go into an infinite loop:
 
 $$
   \textsf{ALL} = \{ \ulcorner S \urcorner \mid \forall n \in \mathbb{N}.\  ⟦ S ⟧_\texttt{x}(n) \downarrow \}
@@ -55,8 +55,11 @@ This is a reduction because:
 	- If it is not in HALT, it could not have been in ALL, because it will never terminate on any input
 
 This is computable because:
-- Creating Q is a clearly computable program transformation from P to Q that prepends taking and ignoring some import, and appends returning 0 after the code of P running on n
-- Q can be encoded as its Gödel Numbering
+- Creating Q is a clearly computable program transformation from P to Q because it only:
+  * prepends taking and ignoring some input, which is standard programming
+  * runs P on n, whose computability follows from the computability of the Universal Function
+  * appends returning 0, which is also standard programming
+- Q can be encoded as its Gödel Numbering, allowing us to run D on it
 
 However, the halting problem is know to be undecidable.
 Therefore ALL is also undecidable.
