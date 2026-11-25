@@ -50,9 +50,9 @@ It will:
 - run D on ⌜Q⌝
 
 This is a reduction because:
-- Q is only a member of ALL when it is a member of HALT:
-	- If it is in HALT, P will terminate on x, making this a roundabout `const 0` function that will terminate on all inputs (by virtue of being the const function, inputs are ignored)
-	- If it is not in HALT, it could not have been in ALL, because it will never terminate on any input
+- Q is only a member of ALL when <P,x> is a member of HALT:
+	- If <P,x> is in HALT, P will terminate on x, making this a roundabout `const 0` function that will terminate on all inputs (by virtue of being the const function, inputs are ignored)
+	- If <P,x> is not in HALT, it could not have been in ALL, because it will never terminate on any input
 
 This is computable because:
 - Creating Q is a clearly computable program transformation from P to Q because it only:
