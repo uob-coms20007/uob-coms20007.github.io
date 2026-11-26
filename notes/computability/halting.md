@@ -6,6 +6,9 @@ mathjax: true
 parent: Computability
 ---
 
+* [BluePeter File](https://uob-coms20007.github.io/assets/samSlides/18-TheHaltingProblem.pdf)
+* [Live File](https://uob-coms20007.github.io/assets/samSlides/18-TheHaltingProblemLive.pdf)
+
 # The Halting Problem
 
 We will now prove a theorem due to [Alan Turing](https://en.wikipedia.org/wiki/Alan_Turing).
