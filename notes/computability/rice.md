@@ -88,7 +88,7 @@ which contains the (Gödel numbers of) programs which output $0$ on input $0$. �
 Reflecting $\mathcal{T}$, we obtain the set
 
 $$
-  T = \{ \ulcorner S \urcorner \mid ⟦ S ⟧_\texttt{x}(0) \text{ is a total function } \}
+  T = \{ \ulcorner S \urcorner \mid \forall n. ⟦ S ⟧_\texttt{x}(n) \text{ is a total function } \}
 $$
 
 which contains the (Gödel numbers of) programs which terminate on any input. ▣
