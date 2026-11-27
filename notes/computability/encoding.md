@@ -179,7 +179,8 @@ $$
   }
 $$
 
-To encode such a list as a number we define a function $\phi_\ast :
+For the following to work, we should fix a specific pairing function, so let's take
+the Cantor Pairing.  Then, to encode such a list as a number we define a function $\phi_\ast :
 \mathbb{N}^\ast \to \mathbb{N}$ by induction:
 
 $$
