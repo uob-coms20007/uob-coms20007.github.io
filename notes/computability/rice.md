@@ -11,8 +11,12 @@ parent: Computability
 We will now prove another fundamental result of computability theory, which
 is known as Rice's theorem.
 
+## Informally
+
 Rice's theorem says that **telling what a computer program does from looking
 at its source code is either trivial or impossible**.
+
+## Building Towards Stating this Formally
 
 We can state this in a more mathematical way. Let 
 
@@ -30,9 +34,11 @@ is the set of _all_ computable functions. $\mathcal{F}$ picks out only some of
 them, which we will regard as the "good" computable functions.
 
 We would like to be able to tell whether a computable function $f$ is "good",
-i.e. in $\mathcal{F}$, just by looking at its source code. 
+i.e. in $\mathcal{F}$, just by looking at its source code.
 
-### Example 1
+### What could we mean by good?
+
+#### Example 1
 
 Suppose that we want to decide whether a program returns $0$ when
 given input $0$. This amounts to asking whether the function it computes is
@@ -44,7 +50,7 @@ $$
 
 of computable functions that return $0$ on input $0$. ▣
 
-### Example 2
+#### Example 2
 
 Suppose that we want to decide whether a program terminates on all
 inputs. This amounts to asking whether the function it computes is in the set
@@ -55,7 +61,7 @@ $$
 
 of computable functions that are also total. ▣
 
-### Reflecting into the natural numbers
+### Reflecting into the natural numbers -- looking at the source code
 
 Given any predicate $\mathcal{F} \subseteq \mathbb{N} ⇀ \mathbb{N}$ on
 functions, we can _reflect_ it on the natural numbers under the Gödel numbering.
@@ -67,7 +73,7 @@ $$
 
 of (Gödel numbers of) programs which compute only "good" functions.
 
-### Example 1
+#### Example 1
 
 Reflecting $\mathcal{F}_0$, we obtain the set
 
@@ -77,7 +83,7 @@ $$
 
 which contains the (Gödel numbers of) programs which output $0$ on input $0$. ▣
 
-### Example 2
+#### Example 2
 
 Reflecting $\mathcal{T}$, we obtain the set
 
